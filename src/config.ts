@@ -1,79 +1,52 @@
 export const SITE = {
-    website: "https://simple-portfolio.vicbox.dev", // replace this with your deployed domain
-    title: "Simple Portfolio",
-    description: "A simple but beautiful portfolio created with Astro",
-    tags: ["portfolio", "Resume cv", "Astro"],
-    ogImage: "/og-image.webp",
-    logo: "logo",
-    logoText: "Portfolio",
-    lang: "en",
-    favicon: "/favicon.png",
-    repository: "https://github.com/vito8916/simple-portfolio.git",
-    author: "Victor Alvarado",
-    profile: "https://victoralvarado.dev/",
-}
+  website: "https://simple-portfolio.vicbox.dev", // replace this with your deployed domain
+  title: "Imanol 'Oman' Saldana",
+  description: "A simple but beautiful portfolio created with Astro",
+  tags: ["portfolio", "Resume cv", "Astro"],
+  ogImage: "/og-image.webp",
+  logo: "logo",
+  logoText: "Imanol",
+  lang: "en",
+  favicon: "/favicon.png",
+  repository: "https://github.com/imanol-s/oman-portfolio.git",
+  author: "Imanol Saldana",
+  profile: "https://victoralvarado.dev/",
+};
 
 export const ME = {
-    name: "VicBox Dot Dev",
-    profession: "Software Engineer | Full Stack Developer",
-    profileImage: "pp2.png",
-    profileFacts: [
-        {
-            value: 10,
-            description: "Years of Experience"
-        },
-        {
-            value: 5,
-            description: "Completed Projects"
-        },
-        {
-            value: 4,
-            description: "Satisfied Clients"
-        }
-    ],
-    contactInfo: {
-        email: "vicbox.dev@vicbox.dev",
-        linkedin: "https://www.linkedin.com/in/victor-alvaradohn",
-        resumeDoc: "resume.pdf",
+  name: "Imanol 'Oman' Saldana",
+  profession: "Software Developer",
+  profileImage: "Profile-1.png",
+  profileFacts: [
+    {
+      value: 4,
+      description: "Years of Evolution",
     },
-    aboutMe: "I am a software engineer with a passion for web development. I have experience in building web " + "applications using modern technologies. I am a self-taught developer who enjoys learning new things and " + "sharing knowledge with others.",
-}
+    {
+      value: 5,
+      description: "Projects Engineered",
+    },
+    {
+      value: "\u221e",
+      description: "Growth Horizons",
+    },
+  ],
+  contactInfo: {
+    email: "Imanol.dev@proton.me",
+    linkedin: "",
+    resumeDoc: "Current.resume.pdf",
+  },
+  aboutMe:
+    "I am a software developer with a passion for Computer Science. I have experience in building data " +
+    "driven solutions and collaborating on teams to solve complex problems. I am a formally educated developer who is very passionate about continous learning through " +
+    "technical rigor and empathetic leadership.",
+};
 
 export const SOCIALS = [
-    {
-        name: "Twitter",
-        url: "https://twitter.com/vicbox.dev",
-        icon: "twitter-x-fill",
-        show: true
-    },
-    {
-        name: "Facebook",
-        url: "https://www.facebook.com/vicbox.dev",
-        icon: "facebook-fill",
-        show: false
-    },
-    {
-        name: "Instagram",
-        url: "https://www.instagram.com/vicbox.dev",
-        icon: "instagram-fill",
-        show: true
-    },
-    {
-        name: "Youtube",
-        url: "https://www.youtube.com/vicbox.dev",
-        icon: "youtube-fill",
-        show: true
-    },
-    {
-        name: "TikTok",
-        url: "https://tiktok.com/vicbox.dev",
-        icon: "tik-fill",
-        show: false
-    },
-    {
-        name: "GitHub",
-        url: "https://github.com/vicbox.dev",
-        icon: "github-fill",
-        show: true
-    }
-]
+  {
+    name: "GitHub",
+    url: "https://github.com/imanol-s",
+    icon: "github-fill",
+    show: true,
+  },
+];

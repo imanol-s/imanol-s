@@ -1,41 +1,28 @@
 interface Education {
-    title: string;
-    startDate: string;
-    endDate?: string;
-    school: string;
-    location: string;
-    description: string;
-    currentUni: boolean;
+  title: string;
+  startDate: string;
+  endDate?: string;
+  school: string;
+  location: string;
+  description: string;
+  currentUni: boolean;
 }
 
-const  education: Education[] = [
-    {
-        title: "General English",
-        startDate: "2024-09-01",
-        endDate: "",
-        school: "University Name",
-        location: "United States",
-        description: "Developed and maintained web applications using React, NodeJs, and MongoDB.",
-        currentUni: true,
-    },
-    {
-        title: "Bachelor of Science in Computer Science",
-        startDate: "2014-09-01",
-        endDate: "2018-06-30",
-        school: "University Name",
-        location: "United States",
-        description: "Developed and maintained web applications using React, NodeJs, and MongoDB.",
-        currentUni: false,
-    },
-    {
-        title: "Bachelor of Science in Computer Science",
-        startDate: "2012-09-01",
-        endDate: "2013-06-30",
-        school: "University Name",
-        location: "United States",
-        description: "Developed and maintained web applications using React, NodeJs, and MongoDB.",
-        currentUni: false,
-    },
+const education: Education[] = [
+  {
+    title: "Bachelor of Science in Computer Science",
+    startDate: "2020-08-15",
+    endDate: "2025-12-15",
+    school: "University of Texas at Dallas",
+    location: "Texas, United States",
+    description:
+      "A rigorous program focused on algorithms, programming paradigms, and computational theory, " +
+      "combined with hands-on training in software development, systems design, and data-driven " +
+      "problem-solving. Emphasizes analytical thinking, collaborative project execution, and" +
+      "technical expertise in tools like Python, Java, and R, preparing graduates for roles in" +
+      "software engineering, data science, AI, and systems architecture.",
+    currentUni: true,
+  },
 ];
 
 export default education;
