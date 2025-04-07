@@ -1,10 +1,10 @@
 export const SITE = {
   website: "https://simple-portfolio.vicbox.dev", // replace this with your deployed domain
   title: "Imanol 'Oman' Saldana",
-  description: "A simple but beautiful portfolio created with Astro",
+  description: "Imanol's showcase",
   tags: ["portfolio", "Resume cv", "Astro"],
   ogImage: "/og-image.webp",
-  logo: "logo",
+  logo: "frog",
   logoText: "Imanol",
   lang: "en",
   favicon: "/favicon.png",
@@ -34,7 +34,7 @@ export const ME = {
   contactInfo: {
     email: "Imanol.dev@proton.me",
     linkedin: "",
-    resumeDoc: "Current.resume.pdf",
+    resumeDoc: "redacted.resume.pdf",
   },
   aboutMe:
     "I am a software developer with a passion for Computer Science. I have experience in building data " +

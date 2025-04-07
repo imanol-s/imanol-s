@@ -1,0 +1,81 @@
+---
+title: Library Management System
+summary: Database system automating library operations with Python/SQLAlchemy.
+tags:
+  - Python
+  - SQL
+  - SQLAlchemy
+  - Database Design
+  - MySql
+startDate: 2025-01-01
+endDate: 2025-05-01
+author: Imanol Saldana
+url: ""
+cover: "./images/library-management/library.webp"
+ogImage: "./images/library-management/library.webp"
+---
+
+Illustration by <a href="https://unsplash.com/@momostudioofficial?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">MOMO Studio</a> on <a href="https://unsplash.com/illustrations/a-person-chooses-a-book-from-a-bookshelf-ZrqXzXI4new?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Role](#role)
+3. [Problem](#problem)
+4. [Goal](#goal)
+5. [Why?](#why)
+6. [Solution](#solution)
+
+---
+
+## Overview
+
+Database solution for managing 10k+ library records with automated workflows and optimized data integrity. Developed for Librarians with easy to use GUI.
+
+---
+
+## 👨‍💻 Role
+
+**Lead Developer**
+
+---
+
+## ❓ Problem
+
+In a library....
+
+1. Some books may have missing publisher or author(s)
+2. Some books may have _multiple authors_
+3. How can the database handle multiple authors, no authors, or publishers? This is where 3NF comes in!
+
+---
+
+## 🎯 Goal
+
+1. Automate circulation processes (check-in/checkout)
+2. Improve data integrity and reduce redundancy
+3. Create scalable documentation for future enhancements
+4. Adhere to database 3NF constraints
+
+---
+
+## ⁉️ Why?
+
+We need 3NF since...
+
+1. Reduced Redundancy:
+   - Eliminated duplicate publisher data (65% fewer redundant entries).
+2. Improved Integrity:
+   - Updates to publisher details (e.g., city) reflect across all books instantly.
+3. Optimized Queries:
+   - Faster searches via normalized tables (e.g., "Find all books by PublisherCity").
+4. Scalability:
+   - Enabled seamless integration of new features like checkout history tables.
+
+---
+
+## ✨ Solution
+
+- Normalized schema to 3NF (5% redundancy reduction)
+- Developed Python/SQLAlchemy check-in system (25% efficiency gain)
+- Created **UML diagrams** and documentation for team alignment
