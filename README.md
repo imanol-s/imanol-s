@@ -9,4 +9,4 @@
 <br/>
 
 
-|&nbsp;&nbsp;&nbsp; Learn more @: [https://imanols.dev](https://imanols.dev) &nbsp;&nbsp;&nbsp;|
+&nbsp;&nbsp;&nbsp; Learn more @: [https://imanols.dev](https://imanols.dev) &nbsp;&nbsp;&nbsp;
