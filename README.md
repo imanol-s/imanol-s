@@ -1,9 +1,1 @@
-# Original template
-
-[GitHub Repository](https://github.com/vito8916/simple-portfolio.git)
-
----
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
+[![Imanol's GitHub stats](https://github-readme-stats.vercel.app/api?username=imanol-s)](https://github.com/anuraghazra/github-readme-stats)
