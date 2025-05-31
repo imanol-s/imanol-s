@@ -8,7 +8,7 @@
 **Data Quality Intern** &#12299;_Architect & maintainer for critical shared data across multiple departments._
 <br/>
 
-**Education* &#12299;_Bachelors of Science in Computer Science EST 25'_
+**Education** &#12299;_Bachelors of Science in Computer Science EST 25'_
 <br/>
 
 &nbsp;&nbsp;&nbsp; Learn more @: [https://imanols.dev](https://imanols.dev) &nbsp;&nbsp;&nbsp;
