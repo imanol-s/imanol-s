@@ -1,4 +1,4 @@
-### Hi, I'm Imanol! ⛷️
+### Hi, I'm Imanol (ee-mah-NOHL)! ⛷️
 &#12299; Life-long student with experience in developing scalable software solutions and leading projects. I am a formally educated developer who is very passionate about continous learning through technical rigor and empathetic leadership.
 
 ---
