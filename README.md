@@ -6,5 +6,5 @@
 ![c++](https://img.shields.io/static/v1?logo=cplusplus&label=&message=c%2B%2B&color=36465D&logoColor=AAA&style=flat-square&link=)
 
 
-**Data Quality Intern ** &#12299;_Architect & maintainer for critical shared data across multiple departments._
+**Data Quality Intern** &#12299;_Architect & maintainer for critical shared data across multiple departments._
 <br/>
