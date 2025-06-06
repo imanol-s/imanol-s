@@ -49,4 +49,10 @@ export const SOCIALS = [
     icon: "github-fill",
     show: true,
   },
+  {
+    name: "LinkedIn",
+    url: "https://linkedin.com/in/imanol-saldana",
+    icon: "linkedin-fill",
+    show: true,
+  },
 ];
