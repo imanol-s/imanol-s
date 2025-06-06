@@ -33,7 +33,7 @@ export const ME = {
   ],
   contactInfo: {
     email: "Imanol.dev@proton.me",
-    linkedin: "",
+    linkedin: "https://linkedin.com/in/imanol-saldana",
     resumeDoc: "redacted.resume.pdf",
   },
   aboutMe:
