@@ -4,13 +4,13 @@ publishDate: 2025-06-06
 title: Overcoming Ingrained Introversion
 tags:
   - Career
-  - Personal Growth
+  - Growth
   - Introversion
   - Communication
 description: Embracing discomfort, building confidence, and finding my voice.
 cover:
-  src: "./images/under_construction/under-construction.webp"
-  alt: "./images/under_construction/under-construction.webp"
+  src: "./images/under_construction/introversion.webp"
+  alt: "./images/under_construction/introversion.webp"
 ---
 
 # Introversion
