@@ -1,5 +1,5 @@
 ### 👋 Hi, I'm Imanol (ee-mah-NOHL)  
-⟫  *Lifelong learner passionate about building scalable software and leading with empathy.*
+  *Lifelong learner passionate about building scalable software and leading with empathy.*
 
 - 🎓 **B.S. in Computer Science** @ UT Dallas (Expected Dec 2025)  
 - 💼 **Materials Master Data Analyst Intern** @ Freeman  
