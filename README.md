@@ -4,7 +4,7 @@
 - 🎓 **B.S. in Computer Science** @ UT Dallas (Expected Dec 2025)  
 - 💼 **Materials Master Data Analyst Intern** @ Freeman  
 - 💡 I thrive on continuous learning, technical rigor, and collaborative problem-solving  
-- 🌐 [https://imanols.dev](Porfolio) | https://www.linkedin.com/in/imanol-saldana | https://github.com/imanol-s
+- 🌐 [Portfolio](https://imanols.dev) | [LinkedIn](https://www.linkedin.com/in/imanol-saldana) 
 
 ---
 
