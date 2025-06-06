@@ -44,33 +44,18 @@ interface WorkExperience {
  */
 const workExperience: WorkExperience[] = [
   {
-    title: "Frontend Developer",
-    startDate: "2020-03-10",
-    company: "Google Inc",
+    title: "Master Materials Data Analyst Intern",
+    startDate: "2025-05-27",
+    company: "Freeman",
     location: "United States",
     description:
-      "Developed and maintained web applications using React, NextJs, and Tailwind CSS.",
+      "At Freeman, I supported the integrity of over 25,000+ materials master records across enterprise systems. I collaborated with cross-functional teams to align data with business goals and contributed to the evaluation of MDM tools to improve governance. During a major ERP transition, I gained hands-on experience with large-scale data migration and system integration.",
     goals: [
-      "Developed and maintained web applications using React, NodeJs, and MongoDB.",
-      "Worked with the team to develop and maintain web applications using React, NodeJs, and MongoDB.",
-      "Created and maintained web applications using React, NodeJs, and MongoDB.",
+      "Maintain high-quality, reliable master data to support enterprise-wide decision-making.",
+      "Enhance data governance through modern MDM tools and practices.",
+      "Continuously improve data processes through Agile methodologies",
     ],
     currentJob: true,
-  },
-  {
-    title: "Software Engineer",
-    startDate: "2018-03-10",
-    endDate: "2020-03-10",
-    company: "Company Name",
-    location: "United States",
-    description:
-      "Developed and maintained web applications using React, NodeJs, and MongoDB.",
-    goals: [
-      "Developed and maintained web applications using React, NodeJs, and MongoDB.",
-      "Worked with the team to develop and maintain web applications using React, NodeJs, and MongoDB.",
-      "Created and maintained web applications using React, NodeJs, and MongoDB.",
-    ],
-    currentJob: false,
-  },
+  }
 ];
 export default workExperience;

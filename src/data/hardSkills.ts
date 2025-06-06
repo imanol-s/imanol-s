@@ -7,17 +7,17 @@ interface HardSkill {
 const hardSkills: HardSkill[] = [
   {
     name: "Java",
-    description: "My first programming language formally learned.",
+    description: "",
     icon: "java-fill",
   },
   {
     name: "Python",
-    description: "My favorite for easy scripting and fast development.",
+    description: "",
     icon: "python-fill",
   },
   {
     name: "MySQL",
-    description: "First database I learned and used in a DBMS",
+    description: "",
     icon: "mysql",
   },
 ];

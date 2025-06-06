@@ -11,6 +11,7 @@ interface Job {
     location: string;
     startDate: string;
     endDate: string;
+    description: string[];
     goals: string[];
     currentJob: boolean;
 }
@@ -22,6 +23,7 @@ const {
     location,
     startDate,
     endDate,
+    description,
     goals,
     currentJob,
 } = jobData as Job;
@@ -38,6 +40,7 @@ const {
         <span class="text-sm font-bold">/</span>
         <p class="truncate">{location}</p>
     </div>
+    <p class="text">{description}</p>
     <ul style="list-style: disc;">
         {goals.map((goal: string) => (
                 <li>{goal}</li>
