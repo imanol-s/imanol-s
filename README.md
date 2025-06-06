@@ -12,7 +12,7 @@
 
 **Languages:**  
 [![My Skills](https://skillicons.dev/icons?i=cpp,github,java,latex,linux,md,mysql,python&theme=dark)](https://skillicons.dev)
-![GitHub top language](https://img.shields.io/github/languages/top/:user/:repo)
+![GitHub top language](https://img.shields.io/github/languages/top/:imanol-s)
 
 
 **Libraries & Frameworks**  
