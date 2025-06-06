@@ -11,7 +11,7 @@
 ### 🛠️ Tech Stack
 
 **Languages:**  
-[![My Skills](https://skillicons.dev/icons?i=python,sql,unix,java,C++,github&perline=3)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=python,mysql,linux,java,c++,github&perline=3)](https://skillicons.dev)
 
 
 **Libraries & Frameworks:**  
