@@ -11,7 +11,7 @@
 ### 🛠️ Tech Stack
 
 **Languages:**  
-[![My Skills](https://skillicons.dev/icons?i=cpp,github,java,latex,linux,md,mysql,python&perline=3)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=cpp,github,java,latex,linux,md,mysql,python&perline=3&theme=dark)](https://skillicons.dev)
 
 **Libraries & Frameworks**  
 - 🐍 **Python**: NumPy, Pandas  
