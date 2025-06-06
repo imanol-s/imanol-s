@@ -11,12 +11,8 @@
 ### 🛠️ Tech Stack
 
 **Languages:**  
-[![My Skills](https://skillicons.dev/icons?i=python,SQL,Unix,Java,C++,Github&perline=3)](https://skillicons.dev)
-![Python](https://img.shields.io/badge/-Python-333s?style=flat&logo=python)  
-!SQL  
-!Unix  
-![LaTeX](https://img.shields.io/badgeo/badge/-UML-333?style=flat&logo=uml)  
-![SAP](https://img.shields.io/badge/-SAP-333?style=flat&logo=sap)
+[![My Skills](https://skillicons.dev/icons?i=python,sql,unix,java,C++,github&perline=3)](https://skillicons.dev)
+
 
 **Libraries & Frameworks:**  
 - NumPy  
