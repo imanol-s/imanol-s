@@ -11,6 +11,7 @@
 ### 🛠️ Tech Stack
 
 **Languages:**  
+[![My Skills](https://skillicons.dev/icons?i=python,SQL,Unix,Java,C++,Github&perline=3)](https://skillicons.dev)
 ![Python](https://img.shields.io/badge/-Python-333s?style=flat&logo=python)  
 !SQL  
 !Unix  
@@ -18,6 +19,6 @@
 ![SAP](https://img.shields.io/badge/-SAP-333?style=flat&logo=sap)
 
 **Libraries & Frameworks:**  
-!NumPy  
-!Pandas  
-!ggplot2
+- NumPy  
+- Pandas  
+- ggplot2
