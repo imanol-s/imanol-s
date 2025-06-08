@@ -10,7 +10,6 @@
 
 ### 🛠️ Tech Stack
 
-**Languages:**  
 [![My Skills](https://skillicons.dev/icons?i=cpp,github,java,latex,linux,md,mysql,python&theme=dark)](https://skillicons.dev)
 
 ---
