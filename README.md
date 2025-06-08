@@ -13,10 +13,6 @@
 **Languages:**  
 [![My Skills](https://skillicons.dev/icons?i=cpp,github,java,latex,linux,md,mysql,python&theme=dark)](https://skillicons.dev)
 
-**Libraries & Frameworks**  
-- 🐍 **Python**: NumPy, Pandas  
-- 📊 **R**: ggplot2
-
 ---
 
 *"At the end of the day, it's the end of the day"*
