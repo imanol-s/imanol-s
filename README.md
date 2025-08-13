@@ -1,7 +1,7 @@
 ### 👋 Hi, I'm Imanol (ee-mah-NOHL)  
   *Lifelong learner passionate about building scalable software and leading with empathy.*
 
-- 🎓 **B.S. in Computer Science** @ UT Dallas (Expected Dec 2025)  
+- 🎓 **B.S. in Computer Science** @ UT Dallas  
 - 💼 **Working in Data Operations** @ Freeman  
 - 💡 I thrive on continuous learning, technical rigor, and collaborative problem-solving  
 - 🌐 [Portfolio](https://imanols.dev) | [LinkedIn](https://www.linkedin.com/in/imanol-saldana) 
