@@ -46,16 +46,34 @@ const workExperience: WorkExperience[] = [
   {
     title: "Master Materials Data Analyst Intern",
     startDate: "2025-05-27",
+    endDate: "2025-08-16",
     company: "Freeman",
     location: "United States",
     description:
-      "At Freeman, I supported the integrity of over 25,000+ materials master records across enterprise systems. I collaborated with cross-functional teams to align data with business goals and contributed to the evaluation of MDM tools to improve governance. During a major ERP transition, I gained hands-on experience with large-scale data migration and system integration.",
+      "At Freeman, I supported the integrity of over 3,000+ materials master records across enterprise systems. I collaborated with cross-functional teams to align data with business goals and contributed to the evaluation of MDM tools to improve governance. During a major ERP transition, I gained hands-on experience with large-scale data migration and system integration.",
     goals: [
       "Maintain high-quality, reliable master data to support enterprise-wide decision-making.",
       "Enhance data governance through modern MDM tools and practices.",
       "Continuously improve data processes through Agile methodologies",
     ],
+    currentJob: false,
+  },
+
+  {
+    title: "Data Operations Analyst",
+    startDate: "2025-08-16",
+    company: "Freeman",
+    location: "United States",
+    description:
+      "At Freeman, I contined supporting the integrity of data across enterprise systems. I collaborate with multiple teams across the company to align data with business goals and contribute to the evaluation of MDM tools to improve governance. I continue to gain hands-on experience with large-scale data migration and system integration.",
+    goals: [
+      "Effective communication and collaboration with cross-functional teams",
+      "Adaptability to evolving data management technologies and practices",
+      "Strong problem-solving skills to address data quality issues",
+      "Attention to detail in managing and validating large datasets",
+      "Commitment to continuous learning and professional development in data management",
+    ],
     currentJob: true,
-  }
+  },
 ];
 export default workExperience;
