@@ -31,7 +31,7 @@ const {
     <h3 class="text-xl font-bold">{title}</h3>
     <div class="flex items-center gap-2">
       <Badge className="bg-primary-light dark:bg-primary-dark w-fit rounded-md whitespace-nowrap">
-        {formatDatetime(startDate)} - {currentUni ? "Present" : formatDatetime(endDate)}
+        {formatDatetime(startDate)} - {currentUni ? "Present" : endDate ? formatDatetime(endDate) : "Present"}
       </Badge>
       <p class="truncate">{school}</p>
       <span class="text-sm font-bold">/</span>

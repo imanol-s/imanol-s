@@ -21,7 +21,4 @@ export default defineConfig({
             theme: 'plastic',
             wrap: true,
         },
-    },
-    experimental: {
-        svg: true,
     }});
