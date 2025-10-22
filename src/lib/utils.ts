@@ -15,10 +15,10 @@ export function cn(...inputs: ClassValue[]) {
 /**
  * Formats the given datetime value into a localized date string.
  *
- * @param {any} datetime - The datetime value to be formatted. This can be any value that can be parsed by the JavaScript Date object.
- * @returns {string} - A string representing the formatted date in 'en-US' locale, displaying the year and short month.
+ * @param datetime - The datetime value to be formatted. Accepts Date objects, timestamps, or valid date strings.
+ * @returns A string representing the formatted date in 'en-US' locale, displaying the year and short month.
  */
-export const formatDatetime = (datetime: any) => {
+export const formatDatetime = (datetime: Date | string | number): string => {
   const d = new Date(datetime);
   return d.toLocaleDateString('en-US', {
     year: 'numeric',
