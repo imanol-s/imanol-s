@@ -1,14 +1,13 @@
 ---
 // components imports
 import { Button} from "./ui/button";
-import LinkedIn from "./icons/LinkedIn.astro";
 import DownloadArrow from "./icons/DownloadArrow.astro";
 
 // config import
 import { ME } from '@/config.ts';
 
 const resume = "/" + ME.contactInfo.resumeDoc;
-const {linkedin, email} = ME.contactInfo;
+const {email} = ME.contactInfo;
 ---
 <div class="profile-action-buttons w-full flex gap-2">
     <Button

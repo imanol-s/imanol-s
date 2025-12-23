@@ -1,6 +1,5 @@
 interface Education {
   title: string;
-  startDate?: string;
   endDate?: string;
   school: string;
   location: string;
@@ -11,7 +10,6 @@ interface Education {
 const education: Education[] = [
   {
     title: "Bachelor of Science in Computer Science",
-    startDate: undefined,
     endDate: "2025-12-18",
     school: "University of Texas at Dallas",
     location: "Texas, United States",
