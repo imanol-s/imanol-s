@@ -1,12 +1,16 @@
 ---
-// Lightweight Dallas crime correlation animation
-// Plays once (6 seconds) then stops
-const seed = 42; // Default seed, can be customized via props
-const { seed: customSeed = 42 } = Astro.props;
+// Dallas crime correlation animation with curated aesthetics
+// Plays once (6 seconds) then settles into resting state
+const { seed: customSeed = 77 } = Astro.props;
 ---
 
-<div class="dallas-animation-container">
-    <canvas id="dallas-canvas"></canvas>
+<div class="dallas-animation-wrapper">
+    <div class="dallas-animation-container">
+        <div class="animation-skeleton">
+            <div class="skeleton-pulse"></div>
+        </div>
+    </div>
+    <p class="animation-caption">Neighborhood clusters by crime-housing correlation</p>
 </div>
 
 <script define:vars={{ seed: customSeed }}>
@@ -24,24 +28,42 @@ const { seed: customSeed = 42 } = Astro.props;
         const container = document.querySelector('.dallas-animation-container');
         if (!container || container.dataset.initialized) return;
         container.dataset.initialized = 'true';
+        
+        // Hide skeleton once initialized
+        const skeleton = container.querySelector('.animation-skeleton');
+        if (skeleton) skeleton.style.display = 'none';
 
         new p5((p) => {
             let cells = [];
             let animProgress = 0;
             let animationComplete = false;
             const ANIMATION_DURATION = 360; // 6 seconds at 60fps
-            const RELAXATION_DURATION = 280; // Stop relaxation at ~4.6 seconds
+            const RELAXATION_DURATION = 280;
+            const EASING_START = 240; // Start easing at 4 seconds
+
+            // Curated color palette
+            const colors = {
+                // Low crime: cool teals/blues
+                lowCrime: { hueMin: 180, hueMax: 210 },
+                // High crime: warm coral/amber
+                highCrime: { hueMin: 15, hueMax: 45 },
+                // Background
+                bg: [250, 249, 245],
+                // Connection lines
+                lines: [60, 70, 80]
+            };
 
             const params = {
                 seed: seed,
-                pointCount: 80,
-                contrast: 0.8,
-                edgeWeight: 1.2,
-                noiseAmount: 0.008
+                pointCount: 65,
+                contrast: 0.85,
+                edgeWeight: 1.0,
+                noiseAmount: 0.006
             };
 
             p.setup = function() {
-                const canvas = p.createCanvas(800, 800);
+                // 16:9 aspect ratio
+                const canvas = p.createCanvas(960, 540);
                 canvas.parent(container);
                 
                 p.randomSeed(params.seed);
@@ -49,23 +71,30 @@ const { seed: customSeed = 42 } = Astro.props;
 
                 // Generate neighborhood data points
                 for (let i = 0; i < params.pointCount; i++) {
-                    let x = p.random(p.width * 0.1, p.width * 0.9);
+                    let x = p.random(p.width * 0.08, p.width * 0.92);
                     let y = p.random(p.height * 0.1, p.height * 0.9);
                     let crimeRate = p.random(0, 1);
-                    let propertyValue = 1 - crimeRate + p.random(-0.3, 0.3);
+                    let propertyValue = 1 - crimeRate + p.random(-0.25, 0.25);
                     propertyValue = p.constrain(propertyValue, 0, 1);
                     
                     cells.push({
                         x: x,
                         y: y,
+                        targetX: x,
+                        targetY: y,
                         crimeRate: crimeRate,
                         propertyValue: propertyValue,
-                        radius: p.random(30, 60)
+                        radius: p.random(25, 50)
                     });
                 }
 
-                p.background(250, 249, 245);
+                p.background(...colors.bg);
             };
+
+            // Easing function for smooth settling
+            function easeOutCubic(t) {
+                return 1 - Math.pow(1 - t, 3);
+            }
 
             p.draw = function() {
                 if (animationComplete) {
@@ -73,13 +102,22 @@ const { seed: customSeed = 42 } = Astro.props;
                     return;
                 }
 
-                p.background(250, 249, 245);
+                p.background(...colors.bg);
                 
                 animProgress++;
                 let progress = p.min(animProgress / ANIMATION_DURATION, 1);
                 
-                // Lloyd's relaxation (only during first part of animation)
+                // Apply easing near the end
+                let easedProgress = progress;
+                if (animProgress > EASING_START) {
+                    let easingProgress = (animProgress - EASING_START) / (ANIMATION_DURATION - EASING_START);
+                    easedProgress = easeOutCubic(p.min(easingProgress, 1));
+                }
+                
+                // Lloyd's relaxation with decreasing force
                 if (animProgress < RELAXATION_DURATION) {
+                    let relaxForce = p.map(animProgress, 0, RELAXATION_DURATION, 0.6, 0.1);
+                    
                     for (let cell of cells) {
                         let forceX = 0;
                         let forceY = 0;
@@ -89,110 +127,236 @@ const { seed: customSeed = 42 } = Astro.props;
                                 let dx = cell.x - other.x;
                                 let dy = cell.y - other.y;
                                 let dist = p.sqrt(dx * dx + dy * dy);
-                                if (dist < 80 && dist > 0) {
-                                    let force = (80 - dist) / 80;
+                                if (dist < 70 && dist > 0) {
+                                    let force = (70 - dist) / 70;
                                     forceX += (dx / dist) * force;
                                     forceY += (dy / dist) * force;
                                 }
                             }
                         }
                         
-                        cell.x += forceX * 0.5;
-                        cell.y += forceY * 0.5;
-                        cell.x = p.constrain(cell.x, 50, p.width - 50);
-                        cell.y = p.constrain(cell.y, 50, p.height - 50);
+                        cell.x += forceX * relaxForce;
+                        cell.y += forceY * relaxForce;
+                        cell.x = p.constrain(cell.x, 40, p.width - 40);
+                        cell.y = p.constrain(cell.y, 40, p.height - 40);
                     }
                 }
 
-                // Draw cells
-                for (let cell of cells) {
-                    drawCell(cell, progress);
+                // Calculate muting factor for resting state
+                let muteFactor = 1;
+                if (animProgress > ANIMATION_DURATION - 60) {
+                    muteFactor = p.map(animProgress, ANIMATION_DURATION - 60, ANIMATION_DURATION, 1, 0.7);
                 }
 
-                // Draw boundaries
-                p.stroke(40, 40, 45, 150);
-                p.strokeWeight(0.5);
-                p.noFill();
+                // Draw connection lines first (behind cells)
+                drawConnections(progress, muteFactor);
+
+                // Draw cells
+                for (let cell of cells) {
+                    drawCell(cell, progress, muteFactor);
+                }
+
+                // Stop when complete
+                if (animProgress >= ANIMATION_DURATION) {
+                    animationComplete = true;
+                    // Trigger fade-in complete class
+                    container.classList.add('animation-complete');
+                }
+            };
+
+            function drawConnections(progress, muteFactor) {
                 for (let i = 0; i < cells.length; i++) {
                     for (let j = i + 1; j < cells.length; j++) {
                         let c1 = cells[i];
                         let c2 = cells[j];
                         let dist = p.sqrt((c1.x - c2.x) ** 2 + (c1.y - c2.y) ** 2);
                         
-                        if (dist < 120) {
-                            let correlation = p.abs(c1.crimeRate - c2.crimeRate);
-                            let weight = p.map(correlation, 0, 1, 0.3, params.edgeWeight * 3);
-                            let alpha = p.map(dist, 0, 120, 150, 0);
+                        if (dist < 100) {
+                            let correlation = 1 - p.abs(c1.crimeRate - c2.crimeRate);
+                            let weight = p.map(correlation, 0, 1, 0.5, 2.5);
+                            let alpha = p.map(dist, 0, 100, 80, 0) * progress * muteFactor;
                             
-                            p.strokeWeight(weight);
-                            p.stroke(40, 40, 45, alpha * progress);
+                            // Gradient stroke based on connected nodes
+                            let midHue = (getHue(c1.crimeRate) + getHue(c2.crimeRate)) / 2;
                             
-                            // Organic distortion
+                            p.colorMode(p.HSB, 360, 100, 100, 100);
+                            p.strokeWeight(weight * params.edgeWeight);
+                            p.stroke(midHue, 25 * muteFactor, 60, alpha);
+                            
+                            // Organic curve
                             let midX = (c1.x + c2.x) / 2;
                             let midY = (c1.y + c2.y) / 2;
-                            let offsetX = p.noise(midX * params.noiseAmount, midY * params.noiseAmount) * 20 - 10;
-                            let offsetY = p.noise(midX * params.noiseAmount + 100, midY * params.noiseAmount) * 20 - 10;
+                            let offsetX = p.noise(midX * 0.01, midY * 0.01) * 15 - 7.5;
+                            let offsetY = p.noise(midX * 0.01 + 50, midY * 0.01) * 15 - 7.5;
                             
+                            p.noFill();
                             p.beginShape();
                             p.vertex(c1.x, c1.y);
                             p.quadraticVertex(midX + offsetX, midY + offsetY, c2.x, c2.y);
                             p.endShape();
+                            
+                            p.colorMode(p.RGB, 255);
                         }
                     }
                 }
+            }
 
-                // Stop when complete
-                if (animProgress >= ANIMATION_DURATION) {
-                    animationComplete = true;
+            function getHue(crimeRate) {
+                // Low crime (0) = teal/blue (180-210)
+                // High crime (1) = coral/amber (15-45)
+                if (crimeRate < 0.5) {
+                    return p.map(crimeRate, 0, 0.5, colors.lowCrime.hueMin, colors.lowCrime.hueMax);
+                } else {
+                    // Transition through green/yellow
+                    return p.map(crimeRate, 0.5, 1, colors.highCrime.hueMax + 90, colors.highCrime.hueMin);
                 }
-            };
+            }
 
-            function drawCell(cell, progress) {
-                // Color encoding
-                let hue = p.map(cell.crimeRate, 0, 1, 220, 0);
-                let sat = p.map(cell.propertyValue, 0, 1, 30, 80) * params.contrast;
-                let bright = p.map(cell.propertyValue, 0, 1, 60, 85);
+            function drawCell(cell, progress, muteFactor) {
+                // Curated color based on crime rate
+                let hue = getHue(cell.crimeRate);
+                let sat = p.map(cell.propertyValue, 0, 1, 40, 70) * params.contrast * muteFactor;
+                let bright = p.map(cell.propertyValue, 0, 1, 65, 88) * muteFactor + (1 - muteFactor) * 75;
                 
-                p.colorMode(p.HSB, 360, 100, 100);
-                p.fill(hue, sat, bright, progress * 100);
+                p.colorMode(p.HSB, 360, 100, 100, 100);
+                
+                // Subtle glow effect
+                let glowAlpha = 15 * progress * muteFactor;
                 p.noStroke();
+                p.fill(hue, sat * 0.5, bright, glowAlpha);
+                drawBlobShape(cell, cell.radius * 1.3);
                 
-                // Draw cell with noise distortion
+                // Main cell
+                p.fill(hue, sat, bright, progress * 95);
+                drawBlobShape(cell, cell.radius);
+                
+                // Inner highlight
+                p.fill(hue, sat * 0.3, p.min(bright + 15, 100), progress * 40);
+                drawBlobShape(cell, cell.radius * 0.5);
+                
+                p.colorMode(p.RGB, 255);
+            }
+
+            function drawBlobShape(cell, radius) {
                 p.beginShape();
-                let segments = 32;
+                let segments = 24;
                 for (let i = 0; i < segments; i++) {
                     let angle = (i / segments) * p.TWO_PI;
-                    let r = cell.radius;
+                    let r = radius;
                     let noiseVal = p.noise(
-                        cell.x * 0.01 + p.cos(angle) * 0.5,
-                        cell.y * 0.01 + p.sin(angle) * 0.5
+                        cell.x * 0.008 + p.cos(angle) * 0.5,
+                        cell.y * 0.008 + p.sin(angle) * 0.5
                     );
-                    r += p.map(noiseVal, 0, 1, -10, 10) * params.noiseAmount * 500;
+                    r += p.map(noiseVal, 0, 1, -8, 8);
                     
                     let x = cell.x + p.cos(angle) * r;
                     let y = cell.y + p.sin(angle) * r;
-                    p.vertex(x, y);
+                    p.curveVertex(x, y);
                 }
-                p.endShape(p.CLOSE);
-                
-                p.colorMode(p.RGB, 255);
+                // Close the shape smoothly
+                for (let i = 0; i < 3; i++) {
+                    let angle = (i / segments) * p.TWO_PI;
+                    let r = radius;
+                    let noiseVal = p.noise(
+                        cell.x * 0.008 + p.cos(angle) * 0.5,
+                        cell.y * 0.008 + p.sin(angle) * 0.5
+                    );
+                    r += p.map(noiseVal, 0, 1, -8, 8);
+                    let x = cell.x + p.cos(angle) * r;
+                    let y = cell.y + p.sin(angle) * r;
+                    p.curveVertex(x, y);
+                }
+                p.endShape();
             }
         }, container);
     }
 </script>
 
 <style>
+    .dallas-animation-wrapper {
+        width: 100%;
+        max-width: 960px;
+        margin: 1.5rem auto;
+        opacity: 0;
+        animation: fadeInAnimation 0.6s ease-out 0.2s forwards;
+    }
+    
+    @keyframes fadeInAnimation {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
     .dallas-animation-container {
         width: 100%;
-        height: auto;
+        aspect-ratio: 16 / 9;
         border-radius: 1rem;
         overflow: hidden;
-        background: #faf9f5;
+        background: linear-gradient(135deg, #faf9f5 0%, #f5f4f0 100%);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+        position: relative;
+    }
+    
+    .animation-skeleton {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #faf9f5 0%, #f0efeb 100%);
+    }
+    
+    .skeleton-pulse {
+        width: 60%;
+        height: 60%;
+        border-radius: 50%;
+        background: linear-gradient(90deg, #e8e7e3 25%, #f0efeb 50%, #e8e7e3 75%);
+        background-size: 200% 100%;
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
     }
     
     .dallas-animation-container canvas {
         width: 100% !important;
-        height: auto !important;
+        height: 100% !important;
         display: block;
+        object-fit: cover;
+    }
+    
+    .animation-caption {
+        text-align: center;
+        font-size: 0.8rem;
+        color: #6b7280;
+        margin-top: 0.75rem;
+        font-style: italic;
+    }
+    
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+        .dallas-animation-container {
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .animation-caption {
+            color: #9ca3af;
+        }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .dallas-animation-wrapper {
+            margin: 1rem auto;
+        }
+        
+        .dallas-animation-container {
+            border-radius: 0.75rem;
+        }
+        
+        .animation-caption {
+            font-size: 0.75rem;
+        }
     }
 </style>

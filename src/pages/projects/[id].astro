@@ -1,4 +1,3 @@
-
 ---
 import { getCollection, render } from "astro:content";
 import { Image } from "astro:assets";
@@ -20,34 +19,41 @@ const { post } = Astro.props;
 const { title, summary, tags, cover, ogImage, url, useAnimatedCover, animatedCoverComponent, animatedCoverSeed } = post.data;
 
 const { Content } = await render(post);
-
 ---
+
 <Layout title={title} description={summary} imageOg={ogImage} scrollSmooth={true}>
     <>
         <div class="flex justify-center mt-10">
             <BackBtn/>
         </div>
-        <div class="flex flex-col gap-6 justify-center items-center">
+        <div class="flex flex-col gap-4 justify-center items-center mb-6">
             <h1 class="text-3xl font-bold text-center">{title}</h1>
-            <p class="text-sm text-n500 dark:text-primary-light ">
+            <p class="text-sm text-n500 dark:text-primary-light">
                 {tags.join(', ')}
             </p>
         </div>
-        {useAnimatedCover ? (
-            animatedCoverComponent === 'RoboticsAnimation' ? 
-                <RoboticsAnimation seed={animatedCoverSeed ?? 42} /> :
-                <DallasAnimation seed={animatedCoverSeed ?? 42} />
-        ) : (
-            cover && <Image transition:name={`${post.id}-image`} class="rounded-2xl" src={cover} alt="Main project image"/>
-        )}
-        <p>
-            {summary}
-        </p>
-        <a href={url}>
-            Visit the project ↗
-        </a>
+        
+        {/* Cover section with proper spacing */}
+        <div class="cover-section">
+            {useAnimatedCover ? (
+                animatedCoverComponent === 'RoboticsAnimation' ? 
+                    <RoboticsAnimation seed={animatedCoverSeed ?? 42} /> :
+                    <DallasAnimation seed={animatedCoverSeed ?? 77} />
+            ) : (
+                cover && <Image transition:name={`${post.id}-image`} class="rounded-2xl w-full" src={cover} alt="Main project image"/>
+            )}
+        </div>
+        
+        <div class="project-summary">
+            <p class="text-lg text-n600 dark:text-n300">
+                {summary}
+            </p>
+            <a href={url} class="inline-flex items-center gap-1 text-primary-dark dark:text-primary-light hover:underline font-medium mt-2">
+                Visit the project ↗
+            </a>
+        </div>
 
-        <article id="article" class="mt-8 prose dark:prose-invert">
+        <article id="article" class="mt-8 prose dark:prose-invert max-w-none">
             <Content/>
         </article>
         <BackToTop />
@@ -60,3 +66,24 @@ const { Content } = await render(post);
     }
 </style>
 
+<style>
+    .cover-section {
+        margin: 0 -1rem;
+    }
+    
+    @media (min-width: 768px) {
+        .cover-section {
+            margin: 0;
+        }
+    }
+    
+    .project-summary {
+        margin-top: 1.5rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    :global(.dark) .project-summary {
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+</style>

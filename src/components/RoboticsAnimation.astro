@@ -1,12 +1,16 @@
 ---
-// Lightweight robotics pathfinding animation
-// Plays once (6 seconds) then stops
-const seed = 42; // Default seed, can be customized via props
+// Robotics pathfinding animation with curated aesthetics
+// Plays once (6 seconds) then settles into resting state
 const { seed: customSeed = 42 } = Astro.props;
 ---
 
-<div class="robotics-animation-container">
-    <canvas id="robotics-canvas"></canvas>
+<div class="robotics-animation-wrapper">
+    <div class="robotics-animation-container">
+        <div class="animation-skeleton">
+            <div class="skeleton-pulse"></div>
+        </div>
+    </div>
+    <p class="animation-caption">Autonomous pathfinding through terrain flow fields</p>
 </div>
 
 <script define:vars={{ seed: customSeed }}>
@@ -24,26 +28,41 @@ const { seed: customSeed = 42 } = Astro.props;
         const container = document.querySelector('.robotics-animation-container');
         if (!container || container.dataset.initialized) return;
         container.dataset.initialized = 'true';
+        
+        // Hide skeleton once initialized
+        const skeleton = container.querySelector('.animation-skeleton');
+        if (skeleton) skeleton.style.display = 'none';
 
         new p5((p) => {
             let particles = [];
             let terrainField = [];
             let cols, rows;
-            let scl = 8;
+            let scl = 10;
             let animProgress = 0;
             let animationComplete = false;
             const ANIMATION_DURATION = 360; // 6 seconds at 60fps
+            const FADE_START = 300; // Start fading at 5 seconds
+
+            // Curated color palette - cool cyans to warm oranges
+            const colorStops = [
+                { speed: 0, r: 45, g: 130, b: 180 },    // Slow: ocean blue
+                { speed: 0.3, r: 70, g: 180, b: 160 },  // Teal
+                { speed: 0.5, r: 120, g: 200, b: 120 }, // Green
+                { speed: 0.7, r: 220, g: 180, b: 80 },  // Gold
+                { speed: 1, r: 255, g: 130, b: 70 }     // Fast: coral orange
+            ];
 
             const params = {
                 seed: seed,
-                explorerCount: 800,
-                terrainScale: 0.006,
-                convergence: 1.5,
-                trailDecay: 0.96
+                explorerCount: 600,
+                terrainScale: 0.005,
+                convergence: 1.8,
+                trailDecay: 0.965
             };
 
             p.setup = function() {
-                const canvas = p.createCanvas(800, 800);
+                // 16:9 aspect ratio
+                const canvas = p.createCanvas(960, 540);
                 canvas.parent(container);
                 
                 p.randomSeed(params.seed);
@@ -68,8 +87,29 @@ const { seed: customSeed = 42 } = Astro.props;
                     terrainField.push(row);
                 }
 
-                p.background(18, 18, 20);
+                p.background(15, 18, 25);
             };
+
+            function getColorForSpeed(normalizedSpeed) {
+                // Find the two color stops to interpolate between
+                let lower = colorStops[0];
+                let upper = colorStops[colorStops.length - 1];
+                
+                for (let i = 0; i < colorStops.length - 1; i++) {
+                    if (normalizedSpeed >= colorStops[i].speed && normalizedSpeed <= colorStops[i + 1].speed) {
+                        lower = colorStops[i];
+                        upper = colorStops[i + 1];
+                        break;
+                    }
+                }
+                
+                let t = (normalizedSpeed - lower.speed) / (upper.speed - lower.speed || 1);
+                return {
+                    r: p.lerp(lower.r, upper.r, t),
+                    g: p.lerp(lower.g, upper.g, t),
+                    b: p.lerp(lower.b, upper.b, t)
+                };
+            }
 
             p.draw = function() {
                 if (animationComplete) {
@@ -77,35 +117,44 @@ const { seed: customSeed = 42 } = Astro.props;
                     return;
                 }
 
-                // Fade effect
-                p.fill(18, 18, 20, (1 - params.trailDecay) * 255);
+                // Fade effect with slight blue tint
+                p.noStroke();
+                p.fill(15, 18, 25, (1 - params.trailDecay) * 255);
                 p.rect(0, 0, p.width, p.height);
                 
                 animProgress++;
                 let progress = p.min(animProgress / ANIMATION_DURATION, 1);
+                
+                // Calculate fade factor for resting state
+                let fadeFactor = 1;
+                if (animProgress > FADE_START) {
+                    fadeFactor = p.map(animProgress, FADE_START, ANIMATION_DURATION, 1, 0.6);
+                }
 
                 // Update particles
                 for (let particle of particles) {
                     particle.follow(terrainField);
                     particle.update();
-                    particle.show(progress);
+                    particle.show(progress, fadeFactor);
                     particle.edges();
                 }
 
                 // Stop when complete
                 if (animProgress >= ANIMATION_DURATION) {
                     animationComplete = true;
+                    container.classList.add('animation-complete');
                 }
             };
 
             class Explorer {
                 constructor() {
                     this.pos = p.createVector(p.random(p.width), p.random(p.height));
+                    this.prevPos = this.pos.copy();
                     this.vel = p.createVector(0, 0);
                     this.acc = p.createVector(0, 0);
-                    this.maxSpeed = params.convergence * 2;
+                    this.maxSpeed = params.convergence * 2.5;
                     this.age = 0;
-                    this.maxAge = p.random(200, 400);
+                    this.maxAge = p.random(180, 350);
                 }
 
                 follow(field) {
@@ -114,7 +163,7 @@ const { seed: customSeed = 42 } = Astro.props;
                     x = p.constrain(x, 0, cols - 1);
                     y = p.constrain(y, 0, rows - 1);
                     let force = field[y][x].copy();
-                    force.mult(0.5);
+                    force.mult(0.4);
                     this.applyForce(force);
                 }
 
@@ -125,44 +174,38 @@ const { seed: customSeed = 42 } = Astro.props;
                 update() {
                     this.vel.add(this.acc);
                     this.vel.limit(this.maxSpeed);
+                    this.prevPos = this.pos.copy();
                     this.pos.add(this.vel);
                     this.acc.mult(0);
                     this.age++;
 
                     if (this.age > this.maxAge) {
                         this.pos = p.createVector(p.random(p.width), p.random(p.height));
+                        this.prevPos = this.pos.copy();
                         this.vel = p.createVector(0, 0);
                         this.age = 0;
                     }
                 }
 
-                show(progress) {
+                show(progress, fadeFactor) {
                     let speed = this.vel.mag();
-                    let normalizedSpeed = p.map(speed, 0, this.maxSpeed, 0, 1);
+                    let normalizedSpeed = p.constrain(p.map(speed, 0, this.maxSpeed, 0, 1), 0, 1);
                     
-                    let r, g, b;
-                    if (normalizedSpeed < 0.5) {
-                        r = p.lerp(60, 120, normalizedSpeed * 2);
-                        g = p.lerp(120, 200, normalizedSpeed * 2);
-                        b = p.lerp(200, 100, normalizedSpeed * 2);
-                    } else {
-                        r = p.lerp(120, 255, (normalizedSpeed - 0.5) * 2);
-                        g = p.lerp(200, 180, (normalizedSpeed - 0.5) * 2);
-                        b = p.lerp(100, 50, (normalizedSpeed - 0.5) * 2);
-                    }
-
-                    let ageOpacity = p.map(this.age, 0, this.maxAge, 180, 20);
+                    let col = getColorForSpeed(normalizedSpeed);
+                    let ageOpacity = p.map(this.age, 0, this.maxAge, 200, 30);
+                    let finalOpacity = ageOpacity * progress * fadeFactor;
                     
-                    p.stroke(r, g, b, ageOpacity * progress);
-                    p.strokeWeight(1 + normalizedSpeed);
-                    p.point(this.pos.x, this.pos.y);
+                    // Draw line from previous position for smoother trails
+                    p.stroke(col.r, col.g, col.b, finalOpacity);
+                    p.strokeWeight(1.2 + normalizedSpeed * 1.5);
+                    p.line(this.prevPos.x, this.prevPos.y, this.pos.x, this.pos.y);
                 }
 
                 edges() {
-                    if (this.pos.x > p.width) this.pos.x = 0;
-                    if (this.pos.x < 0) this.pos.x = p.width;
-                    if (this.pos.y > p.height) this.pos.y = 0;
-                    if (this.pos.y < 0) this.pos.y = p.height;
+                    if (this.pos.x > p.width) { this.pos.x = 0; this.prevPos.x = 0; }
+                    if (this.pos.x < 0) { this.pos.x = p.width; this.prevPos.x = p.width; }
+                    if (this.pos.y > p.height) { this.pos.y = 0; this.prevPos.y = 0; }
+                    if (this.pos.y < 0) { this.pos.y = p.height; this.prevPos.y = p.height; }
                 }
             }
         }, container);
@@ -170,17 +213,85 @@ const { seed: customSeed = 42 } = Astro.props;
 </script>
 
 <style>
+    .robotics-animation-wrapper {
+        width: 100%;
+        max-width: 960px;
+        margin: 1.5rem auto;
+        opacity: 0;
+        animation: fadeInAnimation 0.6s ease-out 0.2s forwards;
+    }
+    
+    @keyframes fadeInAnimation {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
     .robotics-animation-container {
         width: 100%;
-        height: auto;
+        aspect-ratio: 16 / 9;
         border-radius: 1rem;
         overflow: hidden;
-        background: #121214;
+        background: linear-gradient(135deg, #0f1219 0%, #1a1f2e 100%);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.15);
+        position: relative;
+    }
+    
+    .animation-skeleton {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #0f1219 0%, #1a1f2e 100%);
+    }
+    
+    .skeleton-pulse {
+        width: 40%;
+        height: 40%;
+        border-radius: 50%;
+        background: radial-gradient(circle, #2a3040 0%, #1a1f2e 70%);
+        animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+        0% { opacity: 0.3; transform: scale(0.95); }
+        100% { opacity: 0.6; transform: scale(1.05); }
     }
     
     .robotics-animation-container canvas {
         width: 100% !important;
-        height: auto !important;
+        height: 100% !important;
         display: block;
+        object-fit: cover;
+    }
+    
+    .animation-caption {
+        text-align: center;
+        font-size: 0.8rem;
+        color: #6b7280;
+        margin-top: 0.75rem;
+        font-style: italic;
+    }
+    
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+        .animation-caption {
+            color: #9ca3af;
+        }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .robotics-animation-wrapper {
+            margin: 1rem auto;
+        }
+        
+        .robotics-animation-container {
+            border-radius: 0.75rem;
+        }
+        
+        .animation-caption {
+            font-size: 0.75rem;
+        }
     }
 </style>
