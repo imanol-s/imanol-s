@@ -44,6 +44,39 @@ interface WorkExperience {
  */
 const workExperience: WorkExperience[] = [
   {
+    title: "Associate Data Analyst",
+    startDate: "2026-01-16",
+    endDate: null,
+    company: "Freeman",
+    location: "United States",
+    description:
+      "As an Associate Data Analyst at Freeman, I lead documentation and governance initiatives for 100+ material master data attributes across 4 legacy and S/4HANA systems. I develop Python automation scripts to streamline data validation and cleaning workflows, supporting the migration of 25,000+ material records during the company's ERP transformation. I collaborate cross-functionally with Sales, Materials Management, and IT teams to establish data standards and identify quality issues through analytical reporting.",
+    goals: [
+      "Establish robust data governance framework supporting enterprise-wide decision-making.",
+      "Automate data validation processes to improve efficiency and accuracy.",
+      "Drive data quality improvements throughout S/4HANA migration and beyond.",
+    ],
+    currentJob: true,
+  },
+
+  {
+    title: "Data Operations Analyst - Part Time",
+    startDate: "2025-08-16",
+    endDate: "2026-01-16",
+    company: "Freeman",
+    location: "United States",
+    description:
+      "At Freeman, I contined supporting the integrity of data across enterprise systems. I collaborate with multiple teams across the company to align data with business goals and contribute to the evaluation of MDM tools to improve governance. I continue to gain hands-on experience with large-scale data migration and system integration.",
+    goals: [
+      "Effective communication and collaboration with cross-functional teams",
+      "Adaptability to evolving data management technologies and practices",
+      "Strong problem-solving skills to address data quality issues",
+      "Attention to detail in managing and validating large datasets",
+      "Commitment to continuous learning and professional development in data management",
+    ],
+    currentJob: false,
+  },
+  {
     title: "Master Materials Data Analyst Intern",
     startDate: "2025-05-27",
     endDate: "2025-08-16",
@@ -57,23 +90,6 @@ const workExperience: WorkExperience[] = [
       "Continuously improve data processes through Agile methodologies",
     ],
     currentJob: false,
-  },
-
-  {
-    title: "Data Operations Analyst",
-    startDate: "2025-08-16",
-    company: "Freeman",
-    location: "United States",
-    description:
-      "At Freeman, I contined supporting the integrity of data across enterprise systems. I collaborate with multiple teams across the company to align data with business goals and contribute to the evaluation of MDM tools to improve governance. I continue to gain hands-on experience with large-scale data migration and system integration.",
-    goals: [
-      "Effective communication and collaboration with cross-functional teams",
-      "Adaptability to evolving data management technologies and practices",
-      "Strong problem-solving skills to address data quality issues",
-      "Attention to detail in managing and validating large datasets",
-      "Commitment to continuous learning and professional development in data management",
-    ],
-    currentJob: true,
   },
 ];
 export default workExperience;
