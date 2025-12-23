@@ -5,6 +5,8 @@ import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import BackBtn from "@/components/BackBtn.astro";
 import BackToTop from "../../components/BackToTop.astro";
+import RoboticsAnimation from "@/components/RoboticsAnimation.astro";
+import DallasAnimation from "@/components/DallasAnimation.astro";
 
 export async function getStaticPaths() {
     const posts = await getCollection('projects');
@@ -15,7 +17,7 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { title, summary, tags, cover, ogImage, url } = post.data;
+const { title, summary, tags, cover, ogImage, url, useAnimatedCover, animatedCoverComponent, animatedCoverSeed } = post.data;
 
 const { Content } = await render(post);
 
@@ -31,7 +33,13 @@ const { Content } = await render(post);
                 {tags.join(', ')}
             </p>
         </div>
-        <Image transition:name={`${post.id}-image`} class="rounded-2xl" src={cover} alt="Main project image"/>
+        {useAnimatedCover ? (
+            animatedCoverComponent === 'RoboticsAnimation' ? 
+                <RoboticsAnimation seed={animatedCoverSeed ?? 42} /> :
+                <DallasAnimation seed={animatedCoverSeed ?? 42} />
+        ) : (
+            cover && <Image transition:name={`${post.id}-image`} class="rounded-2xl" src={cover} alt="Main project image"/>
+        )}
         <p>
             {summary}
         </p>

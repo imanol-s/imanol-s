@@ -1,0 +1,81 @@
+---
+title: Autonomous Robotics Navigation Project
+summary: Reinforcement learning-based navigation system for legged ground robots to perform edge-following behaviors in outdoor maintenance environments.
+tags:
+  - Reinforcement Learning
+  - Robotics
+  - Python
+  - Machine Learning
+  - Isaac Lab
+startDate: 2025-08-01
+endDate: 2025-12-01
+author: Imanol Saldana
+url: https://github.com/imanol-s
+cover: null
+ogImage: "./images/robotics-nav/cover-static.webp"
+useAnimatedCover: true
+animatedCoverComponent: "RoboticsAnimation"
+animatedCoverSeed: 42
+---
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Role](#role)
+3. [Problem](#problem)
+4. [Goal](#goal)
+5. [Solution](#solution)
+6. [Challenges and Learnings](#challenges-and-learnings)
+
+---
+
+## Overview
+
+Developed an autonomous navigation system for a legged ground robot using reinforcement learning. The system enables robots to follow edges and navigate outdoor terrain for maintenance tasks through simulated training environments.
+
+**Institution:** University of Texas at Dallas / Sensori Robotics
+
+---
+
+## 👨💻 Role
+
+**Developer** – Implementation & Documentation
+
+---
+
+## ❓ Problem
+
+Legged ground robots face challenges with:
+
+1. Navigating complex outdoor terrain autonomously
+2. Following edges and boundaries for maintenance tasks
+3. Generalizing learned behaviors from simulation to real-world conditions
+4. Requiring extensive manual programming for navigation tasks
+
+---
+
+## 🎯 Goal
+
+1. Develop RL-based navigation system for autonomous edge-following
+2. Train robust policies that work across varying terrain conditions
+3. Create evaluation methodology for simulation-based validation
+4. Document system architecture for future development and iteration
+
+---
+
+## ✨ Solution
+
+- **RL System Development:** Implemented custom reward functions, termination conditions, and penalty structures in Python using Isaac Lab/Sim framework
+- **Policy Training:** Designed and trained RL policies through iterative experimentation, analyzing simulation performance data across multiple terrain scenarios
+- **Performance Analysis:** Created visualizations to evaluate agent behavior and identify optimization opportunities in edge-following tasks
+- **System Documentation:** Documented architecture showing integration of perception inputs (LiDAR, proprioception), navigation logic, and motor control
+- **Validation Framework:** Implemented simulation-based validation workflows using scenario checks and scripted test runs
+
+---
+
+## Challenges and Learnings
+
+- **Reward Function Design:** Balancing multiple objectives (edge-following accuracy, speed, stability) in reward structure required careful tuning
+- **Sim-to-Real Gap:** Understanding challenges of transferring learned behaviors from simulation to physical robots
+- **Performance Evaluation:** Learned to analyze RL training curves and identify issues like reward hacking or unstable learning
+- **Technical Communication:** Developed skills in documenting complex ML systems for technical and non-technical audiences
