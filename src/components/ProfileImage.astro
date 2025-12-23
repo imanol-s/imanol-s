@@ -6,16 +6,13 @@ import {Image} from 'astro:assets';
 // config import
 import {ME} from '@/config';
 
-// Dynamically import image
-
-/* Get image name from config */
+// Dynamically import image with eager loading for better performance
+// Eager loading ensures the image is bundled at build time
 const imageName = ME.profileImage;
-
-/* Create a full image path */
 const imagePath = `/src/assets/${imageName}`;
 
-/* Import image Dynamically*/
-const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/*.{jpeg,jpg,png,gif}');
+// Use eager loading to optimize build performance
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/*.{jpeg,jpg,png,gif}', { eager: true });
 
 /* Throw error if image does not exist */
 if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: "src/assets/*.{jpeg,jpg,png,gif}"`);
@@ -23,7 +20,7 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: 
 
 <Image
         class="rounded-full w-[130px] md:w-[140px] object-cover"
-        src={images[imagePath]()}
+        src={images[imagePath].default}
         alt="profile avatar"
         loading="eager"
 />
