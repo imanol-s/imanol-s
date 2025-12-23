@@ -22,7 +22,8 @@ const { seed: customSeed = 42 } = Astro.props;
 
     function initRoboticsAnimation() {
         const container = document.querySelector('.robotics-animation-container');
-        if (!container || container.querySelector('canvas').getContext('2d').canvas.width > 0) return;
+        if (!container || container.dataset.initialized) return;
+        container.dataset.initialized = 'true';
 
         new p5((p) => {
             let particles = [];
