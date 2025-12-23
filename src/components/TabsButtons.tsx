@@ -1,6 +1,12 @@
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "./ui/tabs.tsx";
+import type { ReactNode } from "react";
 
-const TabsButtons = (props:any) => {
+interface TabsButtonsProps {
+    portfolio?: ReactNode;
+    about?: ReactNode;
+}
+
+const TabsButtons = (props: TabsButtonsProps) => {
     return (
         <Tabs defaultValue="portfolio" className="w-full ">
             <TabsList className={"bg-white dark:bg-n700  w-full px-2 py-8 rounded-xl"}>

@@ -45,6 +45,10 @@ const {
     <link rel="icon" href={SITE.favicon}/>
     <link rel="canonical" href={canonicalURL}/>
 
+    <!-- Preconnect to external domains for faster resource loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title}/>
     <meta property="og:description" content={description}/>

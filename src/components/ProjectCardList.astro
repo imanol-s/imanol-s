@@ -24,6 +24,8 @@ const { title, tags, cover, id } = Astro.props as Props;
                     src={cover}
                     alt={`Cover preview of the project titled "${title}"`}
                     class="object-cover w-full h-full rounded-xl"
+                    widths={[150, 300]}
+                    sizes="(max-width: 768px) 100vw, 150px"
             />
         </div>
         <div class="flex flex-col gap-2 flex-1">
