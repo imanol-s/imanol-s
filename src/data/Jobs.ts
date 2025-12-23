@@ -14,7 +14,7 @@
  */
 interface WorkExperience {
   title: string;
-  startDate: string;
+  startDate?: string;
   endDate?: string;
   company: string;
   location: string;
@@ -46,6 +46,7 @@ const workExperience: WorkExperience[] = [
   {
     title: "Associate Data Analyst",
     startDate: "2026-01-16",
+    endDate: "current",
     company: "Freeman",
     location: "United States",
     description:
@@ -75,7 +76,6 @@ const workExperience: WorkExperience[] = [
     ],
     currentJob: false,
   },
-
   {
     title: "Master Materials Data Analyst Intern",
     startDate: "2025-05-27",

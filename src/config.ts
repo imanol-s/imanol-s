@@ -35,7 +35,7 @@ export const ME = {
   contactInfo: {
     email: "Imanol.dev@proton.me",
     linkedin: "https://linkedin.com/in/imanol-saldana",
-    resumeDoc: "resume.pdf",
+    resumeDoc: "Saldana.Resume.pdf",
   },
   aboutMe:
     "I am a software developer with a passion for Computer Science. I have experience in building data " +

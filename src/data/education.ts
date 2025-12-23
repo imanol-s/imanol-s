@@ -1,6 +1,5 @@
 interface Education {
   title: string;
-  startDate?: string;
   endDate?: string;
   school: string;
   location: string;
