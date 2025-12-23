@@ -9,6 +9,7 @@ startDate: 2024-08-01
 endDate: 2024-12-01
 author: Imanol Saldana
 url: https://github.com/imanol-s/Dallas-Crime-Analysis
+cover: "./images/crime-analysis/crime_analysis_footer.webp"
 ogImage: "./images/crime-analysis/crime_analysis_footer.webp"
 useAnimatedCover: true
 animatedCoverComponent: "DallasAnimation"
@@ -22,45 +23,49 @@ animatedCoverSeed: 77
 3. [Problem](#problem)
 4. [Goal](#goal)
 5. [Solution](#solution)
+6. [Challenges and Learnings](#challenges-and-learnings)
 
 ---
 
 ## Overview
 
-Statistical analysis of 50k+ crime/housing records to identify trends. Analyzing the relationship between _arrests_ and _property types_ to determine if a correlation exists between pricing and housing cost.
+End-to-end data science project analyzing the relationship between crime rates and housing prices across Dallas neighborhoods. Built predictive models to understand how crime patterns influence property values and identified geographic correlations.
+
+**Institution:** University of Texas at Dallas
 
 ---
 
 ## 👨‍💻 Role
 
-**Developer**
+**Developer** – Data Analysis & Modeling
 
 ---
 
 ## ❓ Problem
 
-1. Lack of data-driven understanding of crime's economic impacts
-2. Stakeholders need reliable data for predictive insights
-3. Understanding if the Statistical analysis performed is accurate
-4. Housing data is sparse and often requires payment
+Understanding urban housing markets requires:
+
+1. Analyzing complex relationships between crime and property values
+2. Processing and cleaning large datasets from multiple sources
+3. Identifying geographic patterns that affect housing costs
+4. Communicating statistical findings to inform policy decisions
 
 ---
 
 ## 🎯 Goal
 
-1. Determine safest location to reside in Dallas, Tx.
-2. Empower users to make informed life decisions with intuitive visualizations such as shape maps
-3. Determine arrest hotspots per zip-code
+1. Build predictive models for housing price trends based on crime data
+2. Identify spatial patterns between crime rates and housing costs
+3. Evaluate multiple modeling approaches for optimal performance
+4. Deliver actionable insights through clear visualizations and reporting
 
 ---
 
 ## ✨ Solution
 
-- Identify statistically significant crime/housing price relationships
-- Automated data cleaning workflows for 50k+ records
-- Implement DFW Map with hotspot visualizations automated using R
-- Communicate findings to non-technical stakeholders
-
-![Shapemap](./images/crime-analysis/crime_analysis_map.webp)
-
----
+- **Data Processing:** Cleaned and analyzed 20,000+ crime and housing records in R, handling missing values and data inconsistencies
+- **Feature Engineering:** Created features from crime density, location factors, and property characteristics
+- **Model Development:** Built and compared multiple models including linear regression, random forest, and k-NN classifiers
+- **Geospatial Analysis:** Developed ggplot2 dashboards to visualize geographic and statistical correlations across Dallas neighborhoods
+- **Spatial Insights:** Identified patterns showing how crime rates correlate with housing costs in different areas
+- **Documentation:** Delivered comprehensive technical report documenting data preprocessing, model evaluation, and interactive visualizations

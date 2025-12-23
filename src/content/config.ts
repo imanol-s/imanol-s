@@ -32,7 +32,7 @@ const projects = defineCollection({
       endDate: z.date(),
       summary: z.string(),
       url: z.string(),
-      cover: image().optional(),
+      cover: image(),
       tags: z.array(z.string()),
       ogImage: z.string(),
       // Animated cover fields
