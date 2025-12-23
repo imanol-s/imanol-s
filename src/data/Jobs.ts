@@ -65,7 +65,7 @@ const workExperience: WorkExperience[] = [
     company: "Freeman",
     location: "United States",
     description:
-      "At Freeman, I contined supporting the integrity of data across enterprise systems. I collaborate with multiple teams across the company to align data with business goals and contribute to the evaluation of MDM tools to improve governance. I continue to gain hands-on experience with large-scale data migration and system integration.",
+      "At Freeman, I continued supporting the integrity of data across enterprise systems. I collaborate with multiple teams across the company to align data with business goals and contribute to the evaluation of MDM tools to improve governance. I continue to gain hands-on experience with large-scale data migration and system integration.",
     goals: [
       "Effective communication and collaboration with cross-functional teams",
       "Adaptability to evolving data management technologies and practices",
