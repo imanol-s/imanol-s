@@ -23,6 +23,8 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in glob: 
         src={images[imagePath].default}
         alt="profile avatar"
         loading="eager"
+        fetchpriority="high"
+        decoding="async"
         widths={[130, 140, 260, 280]}
         sizes="(max-width: 768px) 130px, 140px"
 />

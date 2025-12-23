@@ -13,6 +13,8 @@ const { title, tags, cover, id, priority = false } = Astro.props;
                     alt={"cover preview of " + title}
                     class={"object-cover w-full h-full rounded-xl"}
                     loading={priority ? 'eager' : 'lazy'}
+                    fetchpriority={priority ? 'high' : 'auto'}
+                    decoding="async"
                     widths={[400, 800]}
                     sizes="(max-width: 768px) 100vw, 400px"
             />
