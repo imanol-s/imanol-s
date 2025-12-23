@@ -5,7 +5,7 @@ interface Education {
   school: string;
   location: string;
   description: string;
-  currentUni: boolean;
+  currentUni?: boolean;
 }
 
 const education: Education[] = [
