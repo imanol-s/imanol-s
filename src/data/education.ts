@@ -11,8 +11,7 @@ interface Education {
 const education: Education[] = [
   {
     title: "Bachelor of Science in Computer Science",
-    startDate: "2020-08-15",
-    endDate: "2025-12-15",
+    endDate: "2025-12-18",
     school: "University of Texas at Dallas",
     location: "Texas, United States",
     description:
@@ -21,7 +20,6 @@ const education: Education[] = [
       "problem-solving. Emphasizes analytical thinking, collaborative project execution, and" +
       "technical expertise in tools like Python, Java, and R, preparing myself for roles in" +
       " software engineering, data science, AI, and systems architecture.",
-    currentUni: true,
   },
 ];
 

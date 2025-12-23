@@ -31,10 +31,11 @@ export const ME = {
       description: "Growth Horizons",
     },
   ],
+  // email, resume, and linkedin url
   contactInfo: {
     email: "Imanol.dev@proton.me",
     linkedin: "https://linkedin.com/in/imanol-saldana",
-    resumeDoc: "redacted.resume.pdf",
+    resumeDoc: "resume.pdf",
   },
   aboutMe:
     "I am a software developer with a passion for Computer Science. I have experience in building data " +
