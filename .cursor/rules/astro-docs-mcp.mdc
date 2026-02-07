@@ -1,0 +1,19 @@
+---
+description: Use the Astro Docs MCP server for Astro-related questions
+globs: "**/*.astro"
+alwaysApply: false
+---
+
+# Astro Docs MCP
+
+An MCP server named **Astro docs** is available in this workspace.
+
+When working with `.astro` files or Astro configuration (`astro.config.mjs`), use the **Astro docs** MCP server to look up:
+
+- Astro API references and built-in components
+- Configuration options and integration setup
+- Content collections API and schema definitions
+- Routing, layouts, and page patterns
+- View transitions and client directives
+
+Prefer the MCP server over web search or guessing for any Astro-specific question.
