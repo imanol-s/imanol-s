@@ -12,7 +12,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://simple-portfolio.vicbox.dev/',
+    site: 'https://imanols.dev',
     integrations: [mdx(), react(), tailwind({
         applyBaseStyles: false,
     }), icon(), sitemap()],
