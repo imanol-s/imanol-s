@@ -1,0 +1,96 @@
+---
+description: Keep documentation in sync when application code changes
+globs: "**/*.{astro,ts,tsx,mjs,css,md,mdx}"
+alwaysApply: false
+---
+
+# Update Documentation on Code Change
+
+When modifying application code, check if any documentation files need corresponding updates. Documentation should be updated in the same change as the code — not as a separate follow-up.
+
+## When to Check for Doc Updates
+
+### Trigger Conditions
+
+Evaluate whether docs need updating when:
+
+- New components, pages, or routes are added or removed
+- Content collection schemas change (`src/content/config.ts`)
+- Site configuration changes (`src/config.ts`, `astro.config.mjs`, `tailwind.config.mjs`)
+- Build commands or scripts change (`package.json` scripts)
+- Navigation or menu structure changes (`src/data/menu.ts`)
+- Static data files change shape (`src/data/*.ts` interfaces)
+- New dependencies or integrations are added
+- Deployment configuration changes (`netlify.toml`)
+
+### What NOT to Update Docs For
+
+- Content-only changes (new blog posts, project entries)
+- Style tweaks that don't change conventions
+- Dependency patch/minor version bumps
+- Typo fixes in non-doc files
+
+## Documentation Files and Their Scope
+
+| File | Update when... |
+|------|---------------|
+| `CLAUDE.md` | Architecture, commands, schemas, conventions, or deployment config change |
+| `docs/SITE_STRUCTURE.md` | Pages, routes, components, or navigation flow change |
+| `docs/PERFORMANCE.md` | Performance optimizations are added or build stats significantly change |
+| `docs/NETLIFY_SUBDOMAINS.md` | DNS records or Netlify deployment architecture changes |
+| `.github/copilot-instructions.md` | Coding conventions, naming patterns, or architecture rules change |
+
+## Update Rules by Change Type
+
+### New Page or Route Added
+
+1. Add the route to the component tree in `docs/SITE_STRUCTURE.md`
+2. Add navigation transitions to the state diagram if applicable
+3. Update `CLAUDE.md` only if it introduces a new architectural pattern
+
+### Content Collection Schema Change
+
+1. Update the schema description in `CLAUDE.md` under **Content collections**
+2. Verify existing content files still match the new schema (`npm run build`)
+
+### New Component Added
+
+1. Add to the component tree in `docs/SITE_STRUCTURE.md` under its parent page
+2. If it's a React component with client hydration, note it in `CLAUDE.md` Architecture section
+
+### Configuration Change
+
+1. If `astro.config.mjs` changes: check `CLAUDE.md` Gotchas section
+2. If `tailwind.config.mjs` changes: check `CLAUDE.md` Styling section and `.github/copilot-instructions.md` Styling section
+3. If `netlify.toml` changes: check `CLAUDE.md` Deployment section
+
+### Dependency Added or Removed
+
+1. If it's a new integration (e.g., Astro integration): update `CLAUDE.md` Architecture
+2. If it changes the build command: update `CLAUDE.md` Commands
+
+### Breaking or Structural Change
+
+1. Update all affected doc files
+2. Remove stale references (old file paths, deleted components, outdated commands)
+3. Run `npm run build` to verify the project still builds
+
+## Quality Checks
+
+Before finalizing documentation updates:
+
+- All file paths referenced in docs exist
+- Cross-references between docs use correct relative paths (`docs/SITE_STRUCTURE.md` from root, `../CLAUDE.md` from `docs/`)
+- No duplication between `CLAUDE.md` and other docs — each file owns its scope
+- Commands are copy-paste ready and accurate
+- Code examples reflect the current codebase
+
+## Validation
+
+After updating documentation alongside code changes:
+
+```bash
+npm run build          # Ensures code + types are valid
+```
+
+Manually verify that referenced file paths and component names in documentation still exist.
