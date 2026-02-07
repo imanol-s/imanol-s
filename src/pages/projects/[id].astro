@@ -35,9 +35,9 @@ const { Content } = await render(post);
         <p>
             {summary}
         </p>
-        <a href={url}>
+        {url && <a href={url}>
             Visit the project ↗
-        </a>
+        </a>}
 
         <article id="article" class="mt-8 prose dark:prose-invert">
             <Content/>
