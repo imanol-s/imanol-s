@@ -29,7 +29,7 @@ const projects = defineCollection({
         startDate: z.date(),
         endDate: z.date(),
         summary: z.string(),
-        url: z.string(),
+        url: z.string().optional(),
         cover: image(),
         tags: z.array(z.string()),
         ogImage: z.string()

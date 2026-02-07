@@ -46,7 +46,6 @@ const workExperience: WorkExperience[] = [
   {
     title: "Associate Data Analyst",
     startDate: "2026-01-16",
-    endDate: "current",
     company: "Freeman",
     location: "United States",
     description:
@@ -55,6 +54,9 @@ const workExperience: WorkExperience[] = [
       "Establish robust data governance framework supporting enterprise-wide decision-making.",
       "Automate data validation processes to improve efficiency and accuracy.",
       "Drive data quality improvements throughout S/4HANA migration and beyond.",
+      "Lead project management and workflow coordination for data operations",
+      "Develop comprehensive data governance documentation and process frameworks",
+      "Drive cross-functional collaboration across Sales, IT, and Materials Management teams",
     ],
     currentJob: true,
   },
