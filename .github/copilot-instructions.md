@@ -73,6 +73,52 @@ export function cn(...inputs: ClassValue[]) {
 - Security headers are set in `netlify.toml` (`X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`)
 - Resume PDF is served as a static file from `public/` — do not inline sensitive personal data in source
 
+### XSS Prevention
+
+**CRITICAL**: Never use `innerHTML` or Astro's `set:html` directive with user-controlled data.
+
+- **Always use `textContent`** for plain text rendering to prevent HTML parsing
+- **Never use `innerHTML`** with any data that could come from user input, URL parameters, form fields, or external sources
+- **Build DOM elements manually** when markup is needed — use `createElement()` and `textContent` together
+
+**Bad (XSS vulnerable):**
+```javascript
+// ❌ NEVER DO THIS
+element.innerHTML = `Showing results for "${userInput}"`;
+```
+
+**Good (XSS safe):**
+```javascript
+// ✅ Safe: Use textContent
+element.textContent = `Showing results for "${userInput}"`;
+
+// ✅ Safe: Build DOM manually when markup is needed
+const container = document.getElementById('result');
+container.replaceChildren();
+const prefix = document.createTextNode('Showing results for "');
+const strong = document.createElement('strong');
+strong.textContent = userInput; // textContent escapes HTML
+const suffix = document.createTextNode('"');
+container.append(prefix, strong, suffix);
+```
+
+**In Astro components:**
+```astro
+<!-- ❌ NEVER DO THIS -->
+<div set:html={userInput} />
+
+<!-- ✅ SAFE: Use text interpolation -->
+<div>{userInput}</div>
+
+<!-- ✅ SAFE: Astro automatically escapes expressions -->
+<p>Welcome, {userName}!</p>
+```
+
+**Exception**: Only use `innerHTML` or `set:html` with:
+- Trusted, hardcoded HTML strings
+- Content sanitized by a trusted HTML sanitizer library (e.g., DOMPurify)
+- Content from your own content collections that you control
+
 ## Testing Guidelines
 
 - No test framework is configured — validate changes via `npm run build` (runs `astro check && astro build`)
