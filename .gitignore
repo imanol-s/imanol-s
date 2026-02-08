@@ -29,3 +29,9 @@ pnpm-debug.log*
 
 # claude files
 .claude/
+
+# playwright mcp artifacts
+.playwright-mcp/
+
+# temporary preview files
+*.playwright-mcp-*
