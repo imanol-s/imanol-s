@@ -43,6 +43,10 @@ No test framework is configured.
 
 Uses `astro-icon` package. Custom SVG icons stored in `src/icons/`. Reference by filename (e.g., `"github-fill"` for `github-fill.svg`).
 
+## Security
+
+**XSS Prevention**: Never use `innerHTML` with user-controlled data. Always use `textContent` for plain text or build DOM elements explicitly with `createElement()` + `textContent`. Only use `innerHTML` with static, trusted content. See `.github/copilot-instructions.md` for detailed examples and guidelines.
+
 ## Gotchas
 
 - **Shiki theme**: Code blocks use the `plastic` theme with wrapping enabled (configured in `astro.config.mjs`).

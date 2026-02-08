@@ -73,6 +73,55 @@ export function cn(...inputs: ClassValue[]) {
 - Security headers are set in `netlify.toml` (`X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`)
 - Resume PDF is served as a static file from `public/` — do not inline sensitive personal data in source
 
+### XSS Prevention
+
+**Never use `innerHTML` with user-controlled data** — it creates DOM-based XSS vulnerabilities where malicious HTML/JavaScript can be injected.
+
+```typescript
+// VULNERABLE: Never do this
+function displayName(name: string) {
+  const nameElement = document.getElementById('name-display');
+  if (nameElement) {
+    nameElement.innerHTML = `Showing results for "${name}"`; // XSS risk!
+  }
+}
+```
+
+**Always use `textContent` for plain text** — it prevents HTML parsing and script execution:
+
+```typescript
+// SAFE: Use textContent for user input
+function displayName(name: string) {
+  const nameElement = document.getElementById('name-display');
+  if (nameElement) {
+    nameElement.textContent = `Showing results for "${name}"`; // Safe!
+  }
+}
+```
+
+**For complex markup, build DOM elements explicitly**:
+
+```typescript
+// SAFE: Construct DOM nodes programmatically
+function displayName(name: string) {
+  const nameElement = document.getElementById('name-display');
+  if (nameElement) {
+    nameElement.replaceChildren();
+    const prefix = document.createTextNode('Showing results for "');
+    const strong = document.createElement('strong');
+    strong.textContent = name; // User input stays as text
+    const suffix = document.createTextNode('"');
+    nameElement.append(prefix, strong, suffix);
+  }
+}
+```
+
+**Guidelines**:
+- Use `textContent` or `innerText` for plain text content
+- Use `createElement()` + `textContent` for structured content with user input
+- Only use `innerHTML` with static, trusted content (e.g., hardcoded strings)
+- Never interpolate user input directly into HTML strings
+
 ## Testing Guidelines
 
 - No test framework is configured — validate changes via `npm run build` (runs `astro check && astro build`)
