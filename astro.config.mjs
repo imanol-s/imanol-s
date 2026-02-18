@@ -13,6 +13,11 @@ import sitemap from "@astrojs/sitemap";
 // https://astro.build/config
 export default defineConfig({
     site: 'https://imanols.dev',
+    vite: {
+        server: {
+            allowedHosts: ['devserver-feature-layout-optimization--imanols-dev.netlify.app'],
+        },
+    },
     integrations: [mdx(), react(), tailwind({
         applyBaseStyles: false,
     }), icon(), sitemap()],
