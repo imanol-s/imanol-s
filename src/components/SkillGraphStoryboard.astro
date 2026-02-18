@@ -1,0 +1,235 @@
+---
+import { getCollection } from "astro:content";
+import hardSkills from "@/data/hardSkills";
+import softSkills from "@/data/softSkills";
+
+type StoryArtifact = {
+  id: string;
+  name: string;
+  kind: "project" | "post";
+  href: string;
+  tags: string[];
+};
+
+type StoryFrame = {
+  id: string;
+  name: string;
+  kind: "hard" | "soft";
+  description: string;
+  aliases: string[];
+  artifacts: StoryArtifact[];
+};
+
+const softSkillsToShow = ["Communication", "Solving Problems", "Growth Mindset"];
+const softSkillsSubset = softSkills.filter((skill) => softSkillsToShow.includes(skill.name));
+
+const skillDescriptions: Record<string, string> = {
+  Java: "Algorithms and system modeling used in performance-sensitive work.",
+  Python: "Automation and data workflow design for faster, cleaner execution.",
+  MySQL: "Structured data modeling and query design for reliable information flow.",
+  "SAP S/4HANA": "Enterprise process understanding and operational systems context.",
+  Communication: "Turning complex technical work into clear, human-readable decisions.",
+  "Solving Problems": "Breaking down ambiguous challenges into concrete, testable paths.",
+  "Growth Mindset": "Iterative learning and adaptation when requirements evolve.",
+};
+
+const skillAliases: Record<string, string[]> = {
+  Java: ["java", "graph theory", "dynamic programming", "complexity analysis", "data structures"],
+  Python: ["python", "sqlalchemy", "sql", "database design", "mysql"],
+  MySQL: ["mysql", "sql", "database design"],
+  "SAP S/4HANA": ["requirements gathering", "user research", "accessibility"],
+  Communication: ["communication", "user research", "career", "introversion"],
+  "Solving Problems": ["data analysis", "predictive modeling", "path planning", "control systems"],
+  "Growth Mindset": ["growth", "simulation", "optimization", "research"],
+};
+
+const normalize = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
+const selectedHardSkills = hardSkills.map((skill) => skill.name);
+const selectedSkills = [...selectedHardSkills, ...softSkillsSubset.map((skill) => skill.name)];
+
+const projects = (await getCollection("projects"))
+  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime())
+  .slice(0, 5)
+  .map((project) => ({
+    id: `artifact:project:${project.id}`,
+    name: project.data.title,
+    kind: "project" as const,
+    href: `/projects/${project.id}`,
+    tags: project.data.tags.map(normalize),
+  }));
+
+const posts = (await getCollection("posts"))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3)
+  .map((post) => ({
+    id: `artifact:post:${post.id}`,
+    name: post.data.title,
+    kind: "post" as const,
+    href: `/blog/${post.id}`,
+    tags: post.data.tags.map(normalize),
+  }));
+
+const artifacts = [...projects, ...posts];
+
+const frames: StoryFrame[] = selectedSkills
+  .map((name) => {
+    const aliasSet = new Set((skillAliases[name] ?? [name]).map(normalize));
+    const linkedArtifacts = artifacts.filter((artifact) => artifact.tags.some((tag) => aliasSet.has(tag)));
+
+    return {
+      id: `story:${normalize(name).replace(/\s+/g, "-")}`,
+      name,
+      kind: (selectedHardSkills.includes(name) ? "hard" : "soft") as "hard" | "soft",
+      description: skillDescriptions[name] ?? "Applied across projects and writing.",
+      aliases: [...aliasSet],
+      artifacts: linkedArtifacts.slice(0, 3),
+    };
+  })
+  .filter((frame) => frame.artifacts.length > 0);
+---
+
+<div
+  data-skill-storyboard
+  data-story-count={String(frames.length)}
+  class="rounded-2xl border border-neutral-200 bg-gradient-to-b from-white to-neutral-50 p-5 shadow-sm dark:border-neutral-800 dark:from-neutral-900 dark:to-neutral-950"
+>
+  <div class="flex items-center justify-between gap-3">
+    <span
+      data-story-kind
+      class="inline-flex rounded-md bg-neutral-100 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-n500 dark:bg-neutral-800 dark:text-n200"
+    ></span>
+    <span data-story-counter class="text-xs text-n500 dark:text-n200"></span>
+  </div>
+
+  <h3 data-story-skill class="mt-3 text-2xl font-semibold text-n700 dark:text-light-theme"></h3>
+  <p data-story-description class="mt-2 text-base text-n500 dark:text-n200"></p>
+
+  <ul data-story-links class="mt-4 flex flex-col gap-2"></ul>
+
+  <div class="mt-4 h-1.5 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
+    <div
+      data-story-progress
+      class="h-full w-0 rounded-full bg-primary-light dark:bg-primary-dark"
+    ></div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ frames }}>
+  const STORY_INTERVAL_MS = 5000;
+
+  function initStoryboard(root) {
+    if (!(root instanceof HTMLElement) || root.dataset.initialized === "true") return;
+    root.dataset.initialized = "true";
+
+    if (!Array.isArray(frames) || frames.length === 0) {
+      root.innerHTML =
+        '<p class="text-sm text-n500 dark:text-n200">Add more tagged projects or posts to populate this slider.</p>';
+      return;
+    }
+
+    const skill = root.querySelector("[data-story-skill]");
+    const kind = root.querySelector("[data-story-kind]");
+    const counter = root.querySelector("[data-story-counter]");
+    const description = root.querySelector("[data-story-description]");
+    const links = root.querySelector("[data-story-links]");
+    const progress = root.querySelector("[data-story-progress]");
+
+    if (
+      !(skill instanceof HTMLElement) ||
+      !(kind instanceof HTMLElement) ||
+      !(counter instanceof HTMLElement) ||
+      !(description instanceof HTMLElement) ||
+      !(links instanceof HTMLElement) ||
+      !(progress instanceof HTMLElement)
+    ) {
+      return;
+    }
+
+    let index = 0;
+    let timerId = 0;
+
+    function renderFrame(nextIndex) {
+      index = nextIndex % frames.length;
+      const frame = frames[index];
+
+      kind.textContent = frame.kind === "hard" ? "Hard Skill" : "Soft Skill";
+      counter.textContent = `${index + 1} / ${frames.length}`;
+      skill.textContent = frame.name;
+      description.textContent = frame.description;
+
+      links.textContent = "";
+      for (const artifact of frame.artifacts) {
+        const item = document.createElement("li");
+        const anchor = document.createElement("a");
+        anchor.href = artifact.href;
+        anchor.className =
+          "block rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-n700 transition-colors hover:bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-900 dark:text-light-theme dark:hover:bg-neutral-800";
+        anchor.textContent = `${artifact.kind === "project" ? "Project" : "Post"}: ${artifact.name}`;
+        item.appendChild(anchor);
+        links.appendChild(item);
+      }
+
+      progress.style.transition = "none";
+      progress.style.width = "0%";
+      window.requestAnimationFrame(() => {
+        progress.style.transition = `width ${STORY_INTERVAL_MS}ms linear`;
+        progress.style.width = "100%";
+      });
+    }
+
+    function stopTimer() {
+      window.clearTimeout(timerId);
+      timerId = 0;
+    }
+
+    function scheduleNext() {
+      stopTimer();
+      timerId = window.setTimeout(() => {
+        renderFrame(index + 1);
+        scheduleNext();
+      }, STORY_INTERVAL_MS);
+    }
+
+    function play(restartFrame = false) {
+      if (restartFrame) {
+        renderFrame(index);
+      }
+      scheduleNext();
+    }
+
+    function pause() {
+      stopTimer();
+      progress.style.transition = "none";
+    }
+
+    root.addEventListener("mouseenter", pause);
+    root.addEventListener("mouseleave", () => play(true));
+    root.addEventListener("focusin", pause);
+    root.addEventListener("focusout", (event) => {
+      const nextTarget = event.relatedTarget;
+      if (nextTarget instanceof Node && root.contains(nextTarget)) {
+        return;
+      }
+      play(true);
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        pause();
+      } else {
+        play(true);
+      }
+    });
+
+    renderFrame(0);
+    play();
+  }
+
+  function initAllStoryboards() {
+    document.querySelectorAll("[data-skill-storyboard]").forEach((root) => initStoryboard(root));
+  }
+
+  initAllStoryboards();
+  document.addEventListener("astro:after-swap", initAllStoryboards);
+</script>
