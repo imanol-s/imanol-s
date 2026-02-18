@@ -1,0 +1,397 @@
+---
+import { getCollection } from "astro:content";
+import { ME } from "@/config";
+
+const resumeHref = `/${ME.contactInfo.resumeDoc}`;
+const emailHref = `mailto:${ME.contactInfo.email}?subject=${encodeURIComponent("Portfolio inquiry")}`;
+
+const latestProject = (await getCollection("projects")).sort(
+  (a, b) => b.data.startDate.getTime() - a.data.startDate.getTime()
+)[0];
+
+const latestPost = (await getCollection("posts")).sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+)[0];
+
+const actions = [
+  {
+    id: "home",
+    label: "Home",
+    description: "Go to the homepage",
+    href: "/",
+    kind: "route",
+    keywords: "profile landing about",
+  },
+  {
+    id: "projects",
+    label: "Projects",
+    description: "Browse all projects",
+    href: "/projects",
+    kind: "route",
+    keywords: "portfolio work build",
+  },
+  {
+    id: "blog",
+    label: "Blog",
+    description: "Read blog posts",
+    href: "/blog",
+    kind: "route",
+    keywords: "posts writing articles",
+  },
+  latestProject
+    ? {
+        id: "latest-project",
+        label: "Latest project",
+        description: latestProject.data.title,
+        href: `/projects/${latestProject.id}`,
+        kind: "route",
+        keywords: `newest recent ${latestProject.data.tags.join(" ")}`.trim(),
+      }
+    : null,
+  latestPost
+    ? {
+        id: "latest-post",
+        label: "Latest blog post",
+        description: latestPost.data.title,
+        href: `/blog/${latestPost.id}`,
+        kind: "route",
+        keywords: `newest recent ${latestPost.data.tags.join(" ")}`.trim(),
+      }
+    : null,
+  {
+    id: "email",
+    label: "Email me",
+    description: ME.contactInfo.email,
+    href: emailHref,
+    kind: "external",
+    keywords: "contact mail reach out",
+  },
+  {
+    id: "download-cv",
+    label: "Download CV",
+    description: "Open resume PDF",
+    href: resumeHref,
+    kind: "download",
+    keywords: "resume cv profile pdf",
+  },
+].filter(Boolean);
+---
+
+<div
+  data-command-palette
+  data-open="false"
+  class="fixed inset-0 z-50 hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+  aria-labelledby="command-palette-title"
+>
+  <button
+    type="button"
+    data-command-backdrop
+    class="absolute inset-0 bg-black/40 backdrop-blur-sm"
+    tabindex="-1"
+    aria-label="Close command palette"
+  />
+
+  <div class="relative mx-auto mt-20 w-[min(92vw,620px)] rounded-xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-950">
+    <div class="border-b border-neutral-200 p-3 dark:border-neutral-800">
+      <div class="flex items-center justify-between gap-2">
+        <h2 id="command-palette-title" class="text-sm font-semibold text-n700 dark:text-light-theme">
+          Quick actions
+        </h2>
+        <span class="text-xs text-n500 dark:text-n200">Esc to close</span>
+      </div>
+      <label for="command-palette-input" class="sr-only">Search commands</label>
+      <input
+        id="command-palette-input"
+        data-command-input
+        type="text"
+        autocomplete="off"
+        spellcheck="false"
+        class="mt-3 w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-n700 outline-none ring-offset-white placeholder:text-neutral-500 focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 dark:border-neutral-800 dark:bg-neutral-950 dark:text-light-theme dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300"
+        placeholder="Type a command..."
+      />
+      <p class="mt-2 text-xs text-n500 dark:text-n200">Use Cmd/Ctrl+K or / to open</p>
+    </div>
+
+    <ul
+      data-command-results
+      class="max-h-80 overflow-y-auto p-2"
+      role="listbox"
+      aria-label="Available commands"
+    />
+  </div>
+</div>
+
+<script is:inline define:vars={{ actions }}>
+  const COMMAND_PALETTE_BOUND_KEY = "commandPaletteBound";
+  const OPEN_EVENT = "command-palette:open";
+  const ROOT_SELECTOR = "[data-command-palette]";
+  const INPUT_SELECTOR = "[data-command-input]";
+  const RESULTS_SELECTOR = "[data-command-results]";
+
+  const allActions = Array.isArray(actions) ? actions : [];
+  let filteredActions = [...allActions];
+  let activeIndex = 0;
+  let previousFocusedElement = null;
+
+  function getNodes() {
+    const root = document.querySelector(ROOT_SELECTOR);
+    if (!(root instanceof HTMLElement)) return null;
+
+    const input = root.querySelector(INPUT_SELECTOR);
+    const results = root.querySelector(RESULTS_SELECTOR);
+
+    if (!(input instanceof HTMLInputElement) || !(results instanceof HTMLElement)) {
+      return null;
+    }
+
+    return { root, input, results };
+  }
+
+  function isPaletteOpen() {
+    const nodes = getNodes();
+    return nodes ? nodes.root.dataset.open === "true" : false;
+  }
+
+  function isEditableTarget(target) {
+    if (!(target instanceof HTMLElement)) return false;
+
+    const tagName = target.tagName;
+    return (
+      target.isContentEditable ||
+      tagName === "INPUT" ||
+      tagName === "TEXTAREA" ||
+      tagName === "SELECT"
+    );
+  }
+
+  function matchesAction(action, query) {
+    if (!query) return true;
+
+    const normalized = query.toLowerCase().trim();
+    if (!normalized) return true;
+
+    return [action.label, action.description, action.keywords]
+      .join(" ")
+      .toLowerCase()
+      .includes(normalized);
+  }
+
+  function executeAction(action) {
+    if (!action || !action.href) return;
+
+    closePalette();
+
+    if (action.kind === "external") {
+      window.location.href = action.href;
+      return;
+    }
+
+    if (action.kind === "download") {
+      window.open(action.href, "_blank", "noopener");
+      return;
+    }
+
+    window.location.assign(action.href);
+  }
+
+  function renderResults() {
+    const nodes = getNodes();
+    if (!nodes) return;
+
+    nodes.results.textContent = "";
+
+    if (filteredActions.length === 0) {
+      const emptyState = document.createElement("li");
+      emptyState.className = "rounded-md px-3 py-4 text-sm text-n500 dark:text-n200";
+      emptyState.textContent = "No commands found.";
+      nodes.results.appendChild(emptyState);
+      return;
+    }
+
+    filteredActions.forEach((action, index) => {
+      const item = document.createElement("li");
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.commandItem = "true";
+      button.dataset.commandIndex = String(index);
+      button.setAttribute("role", "option");
+      button.setAttribute("aria-selected", index === activeIndex ? "true" : "false");
+      button.className = [
+        "flex w-full items-start justify-between rounded-md px-3 py-2 text-left transition-colors",
+        index === activeIndex
+          ? "bg-neutral-100 text-n700 dark:bg-neutral-800 dark:text-light-theme"
+          : "text-n700 hover:bg-neutral-100 dark:text-light-theme dark:hover:bg-neutral-900",
+      ].join(" ");
+
+      const copy = document.createElement("span");
+      copy.className = "flex flex-col gap-0.5";
+
+      const label = document.createElement("span");
+      label.className = "text-sm font-medium";
+      label.textContent = action.label;
+
+      const description = document.createElement("span");
+      description.className = "text-xs text-n500 dark:text-n200";
+      description.textContent = action.description;
+
+      copy.appendChild(label);
+      copy.appendChild(description);
+
+      const hint = document.createElement("span");
+      hint.className = "ml-4 text-xs text-n500 dark:text-n200";
+      hint.textContent = action.kind === "download" ? "PDF" : action.kind === "external" ? "Mail" : "Open";
+
+      button.appendChild(copy);
+      button.appendChild(hint);
+      item.appendChild(button);
+      nodes.results.appendChild(item);
+    });
+  }
+
+  function openPalette() {
+    const nodes = getNodes();
+    if (!nodes) return;
+
+    previousFocusedElement =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+    nodes.root.classList.remove("hidden");
+    nodes.root.dataset.open = "true";
+    nodes.root.setAttribute("aria-hidden", "false");
+
+    nodes.input.value = "";
+    filteredActions = [...allActions];
+    activeIndex = 0;
+    renderResults();
+
+    window.requestAnimationFrame(() => {
+      nodes.input.focus();
+    });
+  }
+
+  function closePalette() {
+    const nodes = getNodes();
+    if (!nodes) return;
+
+    nodes.root.classList.add("hidden");
+    nodes.root.dataset.open = "false";
+    nodes.root.setAttribute("aria-hidden", "true");
+
+    if (previousFocusedElement instanceof HTMLElement) {
+      previousFocusedElement.focus();
+    }
+    previousFocusedElement = null;
+  }
+
+  function moveSelection(offset) {
+    if (filteredActions.length === 0) return;
+
+    activeIndex = (activeIndex + offset + filteredActions.length) % filteredActions.length;
+    renderResults();
+  }
+
+  function updateFilteredActions(query) {
+    filteredActions = allActions.filter((action) => matchesAction(action, query));
+    activeIndex = 0;
+    renderResults();
+  }
+
+  function handleKeydown(event) {
+    const target = event.target;
+    const shortcutPressed =
+      (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) ||
+      (event.key === "/" &&
+        !event.metaKey &&
+        !event.ctrlKey &&
+        !event.altKey &&
+        !event.shiftKey &&
+        !isEditableTarget(target));
+
+    if (!isPaletteOpen() && shortcutPressed) {
+      event.preventDefault();
+      openPalette();
+      return;
+    }
+
+    if (!isPaletteOpen()) return;
+
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closePalette();
+      return;
+    }
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      moveSelection(1);
+      return;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      moveSelection(-1);
+      return;
+    }
+
+    if (event.key === "Enter") {
+      const selectedAction = filteredActions[activeIndex];
+      if (!selectedAction) return;
+      event.preventDefault();
+      executeAction(selectedAction);
+    }
+  }
+
+  function handleInput(event) {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement)) return;
+    if (!target.matches(INPUT_SELECTOR)) return;
+
+    updateFilteredActions(target.value);
+  }
+
+  function handleClick(event) {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+
+    if (target.closest("[data-command-backdrop]")) {
+      closePalette();
+      return;
+    }
+
+    const itemButton = target.closest("[data-command-item]");
+    if (!(itemButton instanceof HTMLElement)) return;
+
+    const index = Number(itemButton.dataset.commandIndex);
+    const action = filteredActions[index];
+    if (!action) return;
+
+    executeAction(action);
+  }
+
+  function initPaletteResults() {
+    filteredActions = [...allActions];
+    activeIndex = 0;
+    renderResults();
+  }
+
+  function bindCommandPalette() {
+    initPaletteResults();
+
+    if (document.documentElement.dataset[COMMAND_PALETTE_BOUND_KEY] === "true") {
+      return;
+    }
+
+    document.documentElement.dataset[COMMAND_PALETTE_BOUND_KEY] = "true";
+    document.addEventListener("keydown", handleKeydown);
+    document.addEventListener("input", handleInput);
+    document.addEventListener("click", handleClick);
+    window.addEventListener(OPEN_EVENT, openPalette);
+  }
+
+  bindCommandPalette();
+  document.addEventListener("astro:after-swap", bindCommandPalette);
+</script>

@@ -1,0 +1,64 @@
+<button
+  type="button"
+  data-command-palette-hint
+  class="fixed bottom-4 right-4 z-40 inline-flex items-center gap-2 rounded-lg border border-neutral-300 bg-white/95 px-3 py-1.5 text-xs font-medium text-n700 shadow-sm backdrop-blur hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 dark:border-neutral-700 dark:bg-neutral-900/95 dark:text-light-theme dark:hover:bg-neutral-800 dark:focus-visible:ring-neutral-300"
+  aria-label="Open command palette"
+>
+  <span class="text-n500 dark:text-n200">Quick actions</span>
+  <span class="inline-flex items-center gap-1">
+    <kbd
+      data-command-modifier
+      class="inline-flex h-6 min-w-[1.5rem] items-center justify-center rounded border border-neutral-300 bg-neutral-50 px-2 text-sm font-semibold leading-none text-n700 dark:border-neutral-600 dark:bg-neutral-800 dark:text-light-theme"
+      aria-hidden="true"
+    >
+      ⌃
+    </kbd>
+    <span
+      class="inline-flex h-6 items-center justify-center px-0.5 text-xs font-semibold text-n500 dark:text-n200"
+      aria-hidden="true"
+    >
+      +
+    </span>
+    <kbd
+      class="inline-flex h-6 min-w-[1.5rem] items-center justify-center rounded border border-neutral-300 bg-neutral-50 px-2 text-sm font-semibold leading-none text-n700 dark:border-neutral-600 dark:bg-neutral-800 dark:text-light-theme"
+      aria-hidden="true"
+    >
+      K
+    </kbd>
+  </span>
+  <span data-command-shortcut-label class="sr-only">Ctrl + K</span>
+</button>
+
+<script is:inline>
+  const HINT_SELECTOR = "[data-command-palette-hint]";
+  const MODIFIER_SELECTOR = "[data-command-modifier]";
+  const LABEL_SELECTOR = "[data-command-shortcut-label]";
+  const OPEN_EVENT = "command-palette:open";
+
+  function initCommandPaletteHint() {
+    const hint = document.querySelector(HINT_SELECTOR);
+    if (!(hint instanceof HTMLButtonElement) || hint.dataset.bound === "true") {
+      return;
+    }
+
+    hint.dataset.bound = "true";
+
+    const modifier = hint.querySelector(MODIFIER_SELECTOR);
+    const label = hint.querySelector(LABEL_SELECTOR);
+    if (modifier instanceof HTMLElement) {
+      const userAgent = navigator.userAgent || "";
+      const isMac = /Mac|iPhone|iPad|iPod/i.test(userAgent);
+      modifier.textContent = isMac ? "⌘" : "⌃";
+      if (label instanceof HTMLElement) {
+        label.textContent = isMac ? "Command + K" : "Control + K";
+      }
+    }
+
+    hint.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent(OPEN_EVENT));
+    });
+  }
+
+  initCommandPaletteHint();
+  document.addEventListener("astro:after-swap", initCommandPaletteHint);
+</script>

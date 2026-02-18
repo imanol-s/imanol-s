@@ -5,6 +5,8 @@ import '@/styles/globals.css'
 
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
+import CommandPalette from "@/components/CommandPalette.astro";
+import CommandPaletteHint from "@/components/CommandPaletteHint.astro";
 
 import {SITE} from '@/config';
 
@@ -69,6 +71,8 @@ const {
 <main class="container py-24 flex gap-8 flex-col" role="main"  id="top">
     <slot/>
 </main>
+<CommandPalette />
+<CommandPaletteHint />
 <form name="growth-events" data-netlify="true" netlify-honeypot="bot-field" hidden>
     <input type="hidden" name="form-name" value="growth-events"/>
     <input type="text" name="event"/>
