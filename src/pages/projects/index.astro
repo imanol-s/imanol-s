@@ -27,7 +27,7 @@ const allProjects = (await getCollection('projects'))
             </div>
         </section>
         <!--Projects List-->
-        <section class="flex flex-col gap-8">
+        <section class="grid grid-cols-1 gap-8 xl:grid-cols-2">
             {allProjects.length > 0 ? (
                 allProjects.map((project: Project) => (
                         <ProjectCardList

@@ -10,12 +10,18 @@ import ProfileFacts from "../components/ProfileFacts.astro";
 
 <Layout title="Imanol Saldana Portfolio" description="Developer Portfolio" scrollSmooth={false} widthMode="wide">
     <>
-        <ProfileInfo/>
-        <ProfileFacts/>
-        <ProfileActionButton/>
-        <TabsButtons client:visible>
-            <ProjectsCC slot="portfolio"/>
-            <AboutMeCC slot="about"/>
-        </TabsButtons>
+        <div class="grid grid-cols-1 gap-10 xl:grid-cols-[320px,minmax(0,1fr)] xl:gap-12">
+            <aside class="self-start space-y-6 xl:sticky xl:top-28">
+                <ProfileInfo/>
+                <ProfileFacts/>
+                <ProfileActionButton/>
+            </aside>
+            <section class="min-w-0">
+                <TabsButtons client:visible>
+                    <ProjectsCC slot="portfolio"/>
+                    <AboutMeCC slot="about"/>
+                </TabsButtons>
+            </section>
+        </div>
     </>
 </Layout>

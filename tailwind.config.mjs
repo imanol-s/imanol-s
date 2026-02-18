@@ -16,8 +16,8 @@ export default {
     extend: {
       maxWidth: {
         "layout-reading": "52rem",
-        "layout-standard": "72rem",
-        "layout-wide": "86rem",
+        "layout-standard": "78rem",
+        "layout-wide": "96rem",
       },
       borderRadius: {
         lg: "var(--radius)",
