@@ -18,7 +18,7 @@ const allProjects = (await getCollection('projects'))
     .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
 ---
 
-<Layout title="Imanol | My Projects" description="A list of my projects" scrollSmooth={false}>
+<Layout title="Imanol | My Projects" description="A list of my projects" scrollSmooth={false} widthMode="wide">
     <>
         <!--Projects Section-->
         <section class="border-bottom">

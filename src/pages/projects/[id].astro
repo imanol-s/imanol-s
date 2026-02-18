@@ -21,7 +21,7 @@ const { title, summary, tags, cover, ogImage, url } = post.data;
 const { Content } = await render(post);
 
 ---
-<Layout title={title} description={summary} imageOg={ogImage} scrollSmooth={true}>
+<Layout title={title} description={summary} imageOg={ogImage} scrollSmooth={true} widthMode="reading">
     <>
         <div class="flex justify-center mt-10">
             <BackBtn/>
@@ -55,4 +55,3 @@ const { Content } = await render(post);
         @apply text-2xl font-bold my-4;
     }
 </style>
-

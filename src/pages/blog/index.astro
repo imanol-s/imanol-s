@@ -22,7 +22,7 @@ const allPost = (await getCollection('posts'))
     .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 ---
 
-<Layout title="Imanol | Blog" description="Blog posts" scrollSmooth={false}>
+<Layout title="Imanol | Blog" description="Blog posts" scrollSmooth={false} widthMode="standard">
     <>
         <!--Blog Section-->
         <section class="border-bottom">

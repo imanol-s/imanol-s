@@ -20,7 +20,7 @@ const {title, description, tags, cover} = post.data;
 
 const {Content} = await render(post);
 ---
-<Layout title={title} description={description} imageOg={cover.src.src} scrollSmooth={true}>
+<Layout title={title} description={description} imageOg={cover.src.src} scrollSmooth={true} widthMode="reading">
     <>
         <div class="flex justify-center mt-10">
             <BackBtn/>

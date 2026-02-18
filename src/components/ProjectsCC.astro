@@ -12,11 +12,11 @@ const allProjects = (await getCollection('projects'))
 
 <!--Grid section to show the projects in to columns -->
 <>
-    <section class="mt-10 px-4 w-full">
+    <section class="mt-8 w-full">
         <div class="mb-4">
             <h2 class="text-3xl font-bold mb-4">Projects</h2>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {
                 allProjects.map((project, index) => (
                         <ProjectCard
@@ -37,6 +37,5 @@ const allProjects = (await getCollection('projects'))
         </a>
     </div>
 </>
-
 
 

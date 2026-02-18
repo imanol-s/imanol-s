@@ -14,6 +14,11 @@ export default {
       padding: "2rem",
     },
     extend: {
+      maxWidth: {
+        "layout-reading": "52rem",
+        "layout-standard": "72rem",
+        "layout-wide": "86rem",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

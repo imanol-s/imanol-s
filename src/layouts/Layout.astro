@@ -13,6 +13,7 @@ import {SITE} from '@/config';
 interface Props {
     title?: string;
     scrollSmooth: boolean;
+    widthMode?: 'reading' | 'standard' | 'wide';
     description?: string;
     tags?: string[];
     author?: string;
@@ -26,9 +27,16 @@ const {
     tags = SITE.tags,
     author = SITE.author,
     scrollSmooth,
+    widthMode = 'standard',
     canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
     imageOg = SITE.ogImage,
 } = Astro.props;
+
+const widthModeClass = {
+    reading: 'max-w-layout-reading',
+    standard: 'max-w-layout-standard',
+    wide: 'max-w-layout-wide',
+} as const;
 ---
 
 <!doctype html>
@@ -68,7 +76,7 @@ const {
 </head>
 <body class="bg-light-theme dark:bg-dark-theme antialiased text-n700 dark:text-light-theme w-full h-screen flex flex-col">
 <Navbar/>
-<main class="container py-24 flex gap-8 flex-col" role="main"  id="top">
+<main class={cn("w-full mx-auto px-4 sm:px-6 lg:px-8 py-24 flex gap-8 flex-col", widthModeClass[widthMode])} role="main"  id="top">
     <slot/>
 </main>
 <CommandPalette />
