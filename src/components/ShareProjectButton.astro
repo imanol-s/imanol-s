@@ -1,0 +1,144 @@
+---
+import { buttonVariants } from "@/components/ui/button";
+
+interface Props {
+  title: string;
+  contentId: string;
+}
+
+const { title, contentId } = Astro.props as Props;
+---
+<div class="flex flex-col items-start gap-2">
+  <button
+    type="button"
+    data-share-project-button
+    data-project-title={title}
+    data-content-id={contentId}
+    class={buttonVariants({ variant: "outline", size: "sm" }) + " border-primary-light dark:border-primary-dark"}
+  >
+    Share this project
+  </button>
+  <p
+    class="hidden text-sm text-n500 dark:text-primary-light"
+    data-share-feedback
+    role="status"
+    aria-live="polite"
+  />
+</div>
+
+<script>
+  const FORM_NAME = "growth-events";
+
+  const trackEvent = (eventName: string, data: Record<string, string> = {}) => {
+    const payload = new URLSearchParams({
+      "form-name": FORM_NAME,
+      event: eventName,
+      path: window.location.pathname,
+      timestamp: new Date().toISOString(),
+      ...data,
+    }).toString();
+
+    if (navigator.sendBeacon) {
+      const blob = new Blob([payload], { type: "application/x-www-form-urlencoded" });
+      navigator.sendBeacon("/", blob);
+      return;
+    }
+
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: payload,
+    }).catch(() => {
+      // Best-effort event tracking.
+    });
+  };
+
+  const buildShareUrl = (method: string) => {
+    const url = new URL(window.location.href);
+    url.search = "";
+    url.hash = "";
+    url.searchParams.set("ref", "share");
+    url.searchParams.set("utm_source", "project_share");
+    url.searchParams.set("utm_medium", method);
+    return url.toString();
+  };
+
+  const initShareButton = () => {
+    const shareButton = document.querySelector<HTMLButtonElement>("[data-share-project-button]");
+    const feedback = document.querySelector<HTMLParagraphElement>("[data-share-feedback]");
+
+    if (!shareButton || shareButton.dataset.bound === "true") {
+      return;
+    }
+
+    shareButton.dataset.bound = "true";
+
+    let hideTimer: ReturnType<typeof setTimeout> | undefined;
+    const setFeedback = (message: string) => {
+      if (!feedback) {
+        return;
+      }
+
+      feedback.textContent = message;
+      feedback.classList.remove("hidden");
+
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+      }
+
+      hideTimer = setTimeout(() => {
+        feedback.classList.add("hidden");
+      }, 3500);
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("ref") === "share") {
+      trackEvent("share_visit", {
+        content_id: shareButton.dataset.contentId ?? "",
+        utm_source: params.get("utm_source") ?? "",
+        utm_medium: params.get("utm_medium") ?? "",
+      });
+    }
+
+    shareButton.addEventListener("click", async () => {
+      const contentId = shareButton.dataset.contentId ?? "";
+      const projectTitle = shareButton.dataset.projectTitle ?? "this project";
+      const canNativeShare = typeof navigator.share === "function";
+
+      if (canNativeShare) {
+        const shareUrl = buildShareUrl("native");
+        try {
+          await navigator.share({
+            title: `${projectTitle} | Imanol Saldana`,
+            text: `Take a look at this project: ${projectTitle}`,
+            url: shareUrl,
+          });
+          trackEvent("share_clicked", { content_id: contentId, method: "native" });
+          setFeedback("Thanks for sharing.");
+          return;
+        } catch (error) {
+          if (error instanceof Error && error.name === "AbortError") {
+            return;
+          }
+        }
+      }
+
+      const shareUrl = buildShareUrl("copy_link");
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        trackEvent("share_clicked", { content_id: contentId, method: "copy_link" });
+        setFeedback("Link copied. Share it with someone.");
+      } catch {
+        trackEvent("share_clicked", { content_id: contentId, method: "copy_failed" });
+        setFeedback(`Copy failed. Share manually: ${shareUrl}`);
+      }
+    });
+  };
+
+  if (document.body.dataset.shareProjectTrackingBound !== "true") {
+    document.addEventListener("astro:page-load", initShareButton);
+    document.body.dataset.shareProjectTrackingBound = "true";
+  }
+
+  initShareButton();
+</script>

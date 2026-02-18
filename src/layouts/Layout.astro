@@ -69,6 +69,16 @@ const {
 <main class="container py-24 flex gap-8 flex-col" role="main"  id="top">
     <slot/>
 </main>
+<form name="growth-events" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="growth-events"/>
+    <input type="text" name="event"/>
+    <input type="text" name="path"/>
+    <input type="text" name="content_id"/>
+    <input type="text" name="method"/>
+    <input type="text" name="utm_source"/>
+    <input type="text" name="utm_medium"/>
+    <input type="text" name="timestamp"/>
+</form>
 <Footer/>
 </body>
 </html>

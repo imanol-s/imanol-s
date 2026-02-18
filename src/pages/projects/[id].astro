@@ -5,6 +5,7 @@ import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import BackBtn from "@/components/BackBtn.astro";
 import BackToTop from "../../components/BackToTop.astro";
+import ShareProjectButton from "@/components/ShareProjectButton.astro";
 
 export async function getStaticPaths() {
     const posts = await getCollection('projects');
@@ -35,9 +36,12 @@ const { Content } = await render(post);
         <p>
             {summary}
         </p>
-        {url && <a href={url}>
-            Visit the project ↗
-        </a>}
+        <div class="flex flex-col items-start gap-3">
+            {url && <a href={url}>
+                Visit the project ↗
+            </a>}
+            <ShareProjectButton title={title} contentId={post.id} />
+        </div>
 
         <article id="article" class="mt-8 prose dark:prose-invert">
             <Content/>
