@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ProfileInfo from "../components/ProfileInfo.astro";
+import SkillGraphStoryboard from "../components/SkillGraphStoryboard.astro";
 import ProfileActionButton from "../components/ProfileActionButton.astro";
 import TabsButtons from "../components/TabsButtons.tsx";
 import ProjectsCC from '@/components/ProjectsCC.astro';
@@ -13,6 +14,7 @@ import ProfileFacts from "../components/ProfileFacts.astro";
         <div class="grid grid-cols-1 gap-10 xl:grid-cols-[320px,minmax(0,1fr)] xl:gap-12">
             <aside class="self-start space-y-6 xl:sticky xl:top-28">
                 <ProfileInfo/>
+                <SkillGraphStoryboard/>
                 <ProfileFacts/>
                 <ProfileActionButton/>
             </aside>
