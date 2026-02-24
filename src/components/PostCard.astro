@@ -1,57 +1,59 @@
 ---
-import {Image} from "astro:assets";
-import ClockIcon from "@/icons/time-line.svg";
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 
 interface Props {
-    id: string;
-    title: string;
-    description: string;
-    publishDate: Date;
-    tags: string[];
-    cover: {
-        src: ImageMetadata;
-        alt?: string;
-    };
+  id: string;
+  title: string;
+  description: string;
+  publishDate: Date;
+  tags: string[];
+  cover: {
+    src: ImageMetadata;
+    alt?: string;
+  };
 }
 
-const {id, title, description, publishDate, tags, cover} = Astro.props as Props;
+const { id, title, description, publishDate, tags, cover } =
+  Astro.props as Props;
 ---
 
-<a href=`/blog/${id}` aria-label=`Read post about ${title}` class="flex flex-col md:flex-row md:items-center gap-4">
-    <!--post cover-->
-    <div class="flex-none w-full md:w-40 h-40 overflow-hidden rounded-xl">
-        <Image 
-                transition:name={`${id}-image`} 
-                src={cover.src} 
-                alt={cover.alt ?? title}
-                class="w-full h-full object-cover rounded-xl"
-                widths={[160, 320]}
-                sizes="(max-width: 768px) 100vw, 160px"
-        />
+<a
+  href={`/blog/${id}`}
+  aria-label={`Read post about ${title}`}
+  class="flex flex-col md:flex-row md:items-center gap-4"
+>
+  <!--post cover-->
+  <div class="flex-none w-full md:w-40 h-40 overflow-hidden rounded-xl">
+    <Image
+      transition:name={`${id}-image`}
+      src={cover.src}
+      alt={cover.alt ?? title}
+      class="w-full h-full object-cover rounded-xl"
+      widths={[160, 320]}
+      sizes="(max-width: 768px) 100vw, 160px"
+    />
+  </div>
+  <!--post info-->
+  <div class="flex flex-col gap-2">
+    <div class="flex items-center gap-1.5">
+      <div class="flex items-center gap-1">
+        <Icon name="time-line" class="w-4 h-4 text-gray-500" />
+        <time
+          class="text-sm text-gray-500"
+          datetime={publishDate.toISOString()}
+        >
+          {publishDate.toDateString()}
+        </time>
+      </div>
+      <span class="text-gray-500"> &middot; </span>
+      <div class="flex gap-2">
+        {tags.map((tag) => <span class="text-sm text-gray-500">#{tag}</span>)}
+      </div>
     </div>
-    <!--post info-->
-    <div class="flex flex-col gap-2">
-        <div class="flex items-center gap-1.5">
-            <div class="flex items-center gap-1">
-                <ClockIcon class="w-4 h-4 text-gray-500"/>
-                <time class="text-sm text-gray-500" datetime={publishDate.toISOString()}>
-                    {publishDate.toDateString()}
-                </time>
-            </div>
-            <span class=" text-gray-500">
-                                        &middot;
-                                    </span>
-            <div class="flex gap-2">
-                {tags.map((tag) => (
-                        <span class="text-sm text-gray-500">
-                                                    #{tag}
-                                                </span>
-                ))}
-            </div>
-        </div>
-        <h3 class="text-xl font-bold">{title}</h3>
-        <div class="flex flex-col gap-4">
-            <p class="text-sm">{description}</p>
-        </div>
+    <h3 class="text-xl font-bold">{title}</h3>
+    <div class="flex flex-col gap-4">
+      <p class="text-sm">{description}</p>
     </div>
+  </div>
 </a>

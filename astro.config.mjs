@@ -1,5 +1,5 @@
 // @ts-check
-import {defineConfig} from 'astro/config';
+import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 
 import react from "@astrojs/react";
@@ -12,13 +12,20 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://imanols.dev',
-    integrations: [mdx(), react(), tailwind({
-        applyBaseStyles: false,
-    }), icon(), sitemap()],
-    markdown: {
-        shikiConfig: {
-            theme: 'plastic',
-            wrap: true,
-        },
-    }});
+  site: "https://imanols.dev",
+  integrations: [
+    react(),
+    mdx(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
+    icon(),
+    sitemap(),
+  ],
+  markdown: {
+    shikiConfig: {
+      theme: "plastic",
+      wrap: true,
+    },
+  },
+});
