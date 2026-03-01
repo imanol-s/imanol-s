@@ -81,7 +81,8 @@ function sectionHref(anchor: string) {
   function setupMobileMenu() {
     const btn = document.getElementById('mobile-menu-btn');
     const menu = document.getElementById('mobile-menu');
-    if (!btn || !menu) return;
+    if (!btn || !menu || btn.dataset.bound === 'true') return;
+    btn.dataset.bound = 'true';
 
     btn.addEventListener('click', () => {
       const expanded = btn.getAttribute('aria-expanded') === 'true';

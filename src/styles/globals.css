@@ -171,6 +171,7 @@
   }
   .dark .cta-primary:hover {
     background-color: white;
+    color: #0f172a;
   }
   .horizontal-scroll-snap {
     display: flex;

@@ -42,18 +42,19 @@ export default function TopoBackground() {
       mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
     };
 
-    const tick = (timestamp: number) => {
-      if (!reducedMotion.current) {
-        const scrollShift = scrollY * 0.05;
-        const mx = mouseX * 8;
-        const my = mouseY * 8;
-        container.style.transform = `translateY(${scrollShift}px) translate(${mx}px, ${my}px)`;
+    if (reducedMotion.current) return;
 
-        if (timestamp - lastSeedTime.current > 2000) {
-          lastSeedTime.current = timestamp;
-          seed = (seed % 10) + 1;
-          turbulenceRef.current?.setAttribute("seed", String(seed));
-        }
+    const tick = (timestamp: number) => {
+      if (reducedMotion.current) return;
+      const scrollShift = scrollY * 0.05;
+      const mx = mouseX * 8;
+      const my = mouseY * 8;
+      container.style.transform = `translateY(${scrollShift}px) translate(${mx}px, ${my}px)`;
+
+      if (timestamp - lastSeedTime.current > 2000) {
+        lastSeedTime.current = timestamp;
+        seed = (seed % 10) + 1;
+        turbulenceRef.current?.setAttribute("seed", String(seed));
       }
       rafId.current = requestAnimationFrame(tick);
     };

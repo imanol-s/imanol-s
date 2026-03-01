@@ -54,7 +54,8 @@ const TypewriterText = ({ text }: { text: string }) => {
 
   return (
     <h1
-      className="relative cursor-pointer select-none text-5xl md:text-7xl font-display font-bold mb-4 leading-tight"
+      className="relative cursor-pointer select-none text-5xl md:text-7xl font-display font-bold mb-4 leading-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary rounded"
+      role="button"
       aria-label={text}
       onClick={skip}
       tabIndex={0}
