@@ -50,9 +50,11 @@ export default function TopoBackground() {
       const my = mouseY * 8;
       container.style.transform = `translateY(${scrollShift}px) translate(${mx}px, ${my}px)`;
 
-      phase += 0.0004;
-      const bfx = (0.01 + Math.sin(phase) * 0.003).toFixed(5);
-      const bfy = (0.01 + Math.cos(phase * 0.73) * 0.003).toFixed(5);
+      // Continuous flow: oscillate baseFrequency with two independent rates.
+      // Large range (0.0025–0.0055) makes morphing visually prominent.
+      phase += 0.0006;
+      const bfx = (0.004 + Math.sin(phase) * 0.0015).toFixed(5);
+      const bfy = (0.004 + Math.cos(phase * 0.73) * 0.0015).toFixed(5);
       turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
 
       rafId.current = requestAnimationFrame(tick);
@@ -69,11 +71,9 @@ export default function TopoBackground() {
     };
   }, []);
 
-  const contourGroups = [
-    { cx: 500, cy: 500, radii: [80, 130, 185, 245, 310, 380, 455, 530] },
-    { cx: 300, cy: 350, radii: [60, 110, 170, 240, 320, 410] },
-    { cx: 720, cy: 650, radii: [70, 125, 190, 265, 350] },
-  ];
+  // Horizontal parallels: displaced by the noise filter into organic terrain contours.
+  // Lines extend past viewBox edges (-50 to 1050) so displacement never reveals gaps.
+  const lineYs = Array.from({ length: 78 }, (_, i) => -20 + i * 14);
 
   return (
     <>
@@ -92,29 +92,46 @@ export default function TopoBackground() {
             className="w-full h-full"
           >
             <defs>
-              <filter id="topo-warp">
+              {/*
+               * Large filter region prevents clipping when lines are displaced
+               * far from their original position (scale=280 can move ±140 units).
+               */}
+              <filter
+                id="topo-warp"
+                x="-40%"
+                y="-40%"
+                width="180%"
+                height="180%"
+              >
                 <feTurbulence
                   ref={turbulenceRef}
                   type="fractalNoise"
-                  baseFrequency="0.01"
-                  numOctaves={2}
-                  seed={1}
+                  baseFrequency="0.004"
+                  numOctaves={5}
+                  seed={2}
                   result="noise"
                 />
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale={50} />
+                <feDisplacementMap
+                  in="SourceGraphic"
+                  in2="noise"
+                  scale={280}
+                  xChannelSelector="R"
+                  yChannelSelector="G"
+                  result="displaced"
+                />
+                {/* Sub-pixel smoothing to remove rasterization jaggedness */}
+                <feGaussianBlur in="displaced" stdDeviation="0.4" />
               </filter>
             </defs>
             <g
               filter="url(#topo-warp)"
               fill="none"
-              stroke="rgba(0, 229, 255, 0.12)"
+              stroke="rgba(0, 229, 255, 0.10)"
               strokeWidth="0.8"
             >
-              {contourGroups.map((group, gi) =>
-                group.radii.map((r) => (
-                  <circle key={`${gi}-${r}`} cx={group.cx} cy={group.cy} r={r} />
-                )),
-              )}
+              {lineYs.map((y) => (
+                <line key={y} x1={-50} y1={y} x2={1050} y2={y} />
+              ))}
             </g>
           </svg>
         </div>
