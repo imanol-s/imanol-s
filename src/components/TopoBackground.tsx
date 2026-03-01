@@ -8,7 +8,6 @@ export default function TopoBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const rafId = useRef(0);
-  const lastSeedTime = useRef(0);
   const reducedMotion = useRef(false);
 
   useEffect(() => {
@@ -31,7 +30,7 @@ export default function TopoBackground() {
     let scrollY = 0;
     let mouseX = 0;
     let mouseY = 0;
-    let seed = 1;
+    let phase = 0;
 
     const handleScroll = () => {
       scrollY = window.scrollY;
@@ -44,18 +43,18 @@ export default function TopoBackground() {
 
     if (reducedMotion.current) return;
 
-    const tick = (timestamp: number) => {
+    const tick = () => {
       if (reducedMotion.current) return;
       const scrollShift = scrollY * 0.05;
       const mx = mouseX * 8;
       const my = mouseY * 8;
       container.style.transform = `translateY(${scrollShift}px) translate(${mx}px, ${my}px)`;
 
-      if (timestamp - lastSeedTime.current > 2000) {
-        lastSeedTime.current = timestamp;
-        seed = (seed % 10) + 1;
-        turbulenceRef.current?.setAttribute("seed", String(seed));
-      }
+      phase += 0.0004;
+      const bfx = (0.01 + Math.sin(phase) * 0.003).toFixed(5);
+      const bfy = (0.01 + Math.cos(phase * 0.73) * 0.003).toFixed(5);
+      turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
+
       rafId.current = requestAnimationFrame(tick);
     };
 
