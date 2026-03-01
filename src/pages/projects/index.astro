@@ -14,7 +14,7 @@ const allProjects = (await getCollection('projects'))
   </section>
 
   <section class="flex flex-col gap-8">
-    {allProjects.map((project, i) => (
+    {allProjects.map((project) => (
       <a
         href={`/projects/${project.id}`}
         class="group flex flex-col md:flex-row md:items-center gap-6 p-4 cad-border bg-slate-50/50 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-800 transition-colors"
