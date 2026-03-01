@@ -86,6 +86,10 @@ Uses inline SVGs for all icons (GitHub, LinkedIn, Download, language icons). The
 - **Tailwind v4 scoped styles**: Astro `<style>` blocks cannot use `@apply` with Tailwind classes unless `@reference` is added. Prefer plain CSS in scoped styles.
 - **No `cn()` utility**: Removed with shadcn migration. Use template literals or ternaries for conditional classes.
 
+## Pull Requests
+
+When creating PRs, use plain bullet points (`-`) for test plans — NOT checkboxes (`- [ ]`). Checkboxes create dangling unchecked items that never get updated. The test plan is informational for the reviewer, not a tracking checklist.
+
 ## Deployment
 
 Hosted on **Netlify** with build config in `netlify.toml`. DNS managed via Netlify DNS for `imanols.dev`. See `docs/NETLIFY_SUBDOMAINS.md` for subdomain setup workflow.
