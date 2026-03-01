@@ -30,7 +30,7 @@ const {
 ---
 
 <!doctype html>
-<html lang={SITE.lang ?? "en"} class={`dark${scrollSmooth ? " scroll-smooth" : ""}`}>
+<html lang={SITE.lang ?? "en"} class={`dark bg-[var(--color-background-dark)]${scrollSmooth ? " scroll-smooth" : ""}`}>
 <head>
     <meta name="msapplication-TileColor" content="#000000"/>
     <meta name="viewport" content="width=device-width"/>
@@ -65,13 +65,14 @@ const {
     <title>{title}</title>
     <ClientRouter/>
 </head>
-<body class="min-h-screen bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)] font-body text-slate-800 dark:text-slate-200 transition-colors duration-300 selection:bg-primary selection:text-white">
+<body class="min-h-screen bg-transparent font-body text-slate-800 dark:text-slate-200 transition-colors duration-300 selection:bg-primary selection:text-white">
 
 <script is:inline>
   document.documentElement.classList.add('dark');
 </script>
 
 <TopoBackground client:only="react" />
+<div class="fixed inset-0 z-[2] pointer-events-none bg-[var(--color-background-dark)]/50" aria-hidden="true"></div>
 <SiteHeader />
 
 <main class="relative z-10 max-w-7xl mx-auto px-6 py-12">
