@@ -6,14 +6,13 @@ applyTo: "**/*.{astro,ts,tsx,mjs,css,md,mdx}"
 
 ## Purpose
 
-Review instructions for a personal portfolio site built with Astro 5, React 18, Tailwind CSS 3, and TypeScript. Applies to all source files under `src/`, config files at the root, and content collections.
+Review instructions for a personal portfolio site built with Astro 5, React 18, Tailwind CSS 4, and TypeScript. Applies to all source files under `src/`, config files at the root, and content collections.
 
 ## Naming Conventions
 
-- **Astro components**: PascalCase (e.g., `ProfileInfo.astro`, `PostCard.astro`)
-- **React components**: PascalCase `.tsx` files (e.g., `TabsButtons.tsx`)
-- **shadcn/ui components**: lowercase in `src/components/ui/` (e.g., `badge.tsx`, `button.tsx`)
-- **Data files**: PascalCase or camelCase in `src/data/` (e.g., `Jobs.ts`, `hardSkills.ts`)
+- **Astro components**: PascalCase (e.g., `SiteHeader.astro`, `PostCard.astro`)
+- **React components**: PascalCase `.tsx` files (e.g., `TopoBackground.tsx`, `TypewriterText.tsx`)
+- **Data files**: PascalCase or camelCase in `src/data/` (e.g., `Jobs.ts`, `education.ts`)
 - **Content files**: kebab-case for posts and projects (e.g., `crime-analysis.mdx`)
 - **SVG icons**: kebab-case in `src/icons/` (e.g., `github-fill.svg`)
 - **Interfaces**: PascalCase, defined in the file that uses them (not in separate type files)
@@ -24,47 +23,33 @@ Review instructions for a personal portfolio site built with Astro 5, React 18, 
 - TypeScript in strict mode (`astro/tsconfigs/strict`)
 - Prefer `const` for values that don't change; use arrow functions for utility exports
 - Use proper TypeScript interfaces instead of `any` — define props interfaces in each component
-- JSDoc comments on exported utility functions with `@param` and `@return` tags
-- Astro component frontmatter uses section comments to organize imports (e.g., `// component imports`, `// library imports`)
+- No `cn()` utility — use template literals or ternaries for conditional classes
 
 ```typescript
 // Correct: typed interface + destructured props
-interface Job {
+interface Props {
     title: string;
-    company: string;
-    currentJob: boolean;
+    description: string;
 }
-const { jobData } = Astro.props;
-const { title, company, currentJob } = jobData as Job;
-```
-
-```typescript
-// Correct: utility function with JSDoc
-/**
- * Merges multiple class values into a single string.
- * @param {...ClassValue[]} inputs - Class values to merge.
- * @return {string} Merged class names.
- */
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+const { title, description } = Astro.props;
 ```
 
 ## Architecture Rules
 
 - **Astro-first**: Default to `.astro` components. Only use React (`.tsx`) when client-side interactivity is required
-- **Island architecture**: React components hydrate via `client:visible`, `client:idle`, or `client:load` — never hydrate entire pages
+- **Island architecture**: Only two React islands ship JS to the client:
+  - `TopoBackground.tsx` — animated SVG background (`client:only="react"`, skips SSR)
+  - `TypewriterText.tsx` — hero name animation (`client:load`, SSR-safe)
 - **Content collections**: All blog/project content goes through Astro content collections with Zod schemas in `src/content/config.ts` — do not bypass with raw file reads
-- **Static data**: Typed arrays/objects exported from `src/data/*.ts` for non-content data (jobs, skills, education)
+- **Static data**: Typed arrays/objects exported from `src/data/*.ts` for non-content data (jobs, education)
 - **Single layout**: All pages use `src/layouts/Layout.astro` — do not create additional layouts without justification
-- **shadcn/ui**: Add new UI primitives via `npx shadcn@latest add <component>`, do not hand-roll components that shadcn provides
+- **No shadcn/ui**: The shadcn stack has been removed. Build components with Tailwind utility classes directly
 
 ## Error Handling
 
 - Content collection schemas validate at build time via Zod — ensure all required fields are present in frontmatter
 - The `astro check` command runs before every build (`npm run build`) — all TypeScript errors must be resolved
 - Use optional chaining for fields marked optional in schemas (e.g., `url` in projects)
-- Provide fallback rendering for empty collections (see `projects/index.astro` pattern: `allProjects.length > 0 ? ... : <p>No projects found.</p>`)
 
 ## Security Considerations
 
@@ -132,14 +117,16 @@ function displayName(name: string) {
 
 - Use Astro's `<Image>` component for all images — provides automatic WebP conversion and responsive sizing
 - Set `loading="eager"` and `fetchpriority="high"` only for above-the-fold images; use `loading="lazy"` for everything else
-- Use `import.meta.glob` with `{ eager: true }` for build-time image loading
-- Keep the container narrow: max `520px` at lg, `620px` at xl — do not override without design intent
-- Minimize client-side JavaScript: only `TabsButtons.tsx` should hydrate; avoid adding new React islands unless truly interactive
+- Keep client JS minimal: only `TopoBackground.tsx` and `TypewriterText.tsx` hydrate — avoid adding new React islands unless truly interactive
+- Container: `max-w-7xl mx-auto px-6`
 
 ## Styling
 
-- Use project color tokens from `tailwind.config.mjs` — do not use hardcoded hex values
-- Dark mode is `prefers-color-scheme: media` (not class-based) — always provide both light and dark variants
-- Light mode primary: `primary-light` (gold `#FBD144`); dark mode primary: `primary-dark` (olive `#556B2F`)
-- Prose/typography colors are mapped in `src/styles/globals.css` — update both light and dark sections together
-- Use the `cn()` utility from `src/lib/utils.ts` for conditional class merging in React components
+- **Tailwind CSS 4** with CSS-first config in `src/styles/globals.css` — all tokens defined in `@theme {}` block
+- Dark mode is **class-based** via `<html class="dark">` (set by inline script in Layout.astro) — use `dark:` prefix in Tailwind or `.dark` selector in custom CSS
+- Design system: blueprint/topographic theme with slate palette
+- Color tokens: `primary` (#64748b), `accent` (#94a3b8), `background-light` (#f8fafc), `background-dark` (#0f172a)
+- Fonts: JetBrains Mono (`font-display`) for headings/nav/CTAs, Inter (`font-body`) for body text
+- Custom utility classes in globals.css: `cad-border`, `cta-primary`, `drawing-hover`, `focus-ring`, `horizontal-scroll-snap`, `typing-caret`, `project-mdx`, `topo-lines`
+- Blog prose uses `@tailwindcss/typography` `.prose` class with custom color overrides in globals.css
+- Scoped Astro `<style>` blocks cannot use `@apply` with Tailwind classes unless `@reference` is added — prefer plain CSS in scoped styles
