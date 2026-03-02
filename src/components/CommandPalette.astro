@@ -89,18 +89,18 @@ const actions = [
   <button
     type="button"
     data-command-backdrop
-    class="absolute inset-0 bg-black/40 backdrop-blur-sm"
+    class="absolute inset-0 bg-slate-950/60"
     tabindex="-1"
     aria-label="Close command palette"
   />
 
-  <div class="relative mx-auto mt-20 w-[min(92vw,620px)] rounded-xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-950">
-    <div class="border-b border-neutral-200 p-3 dark:border-neutral-800">
+  <div class="relative mx-auto mt-20 w-[min(92vw,620px)] rounded-sm border border-slate-200 bg-slate-50 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <div class="border-b border-slate-200 p-3 dark:border-slate-800">
       <div class="flex items-center justify-between gap-2">
-        <h2 id="command-palette-title" class="text-sm font-semibold text-n700 dark:text-light-theme">
+        <h2 id="command-palette-title" class="text-sm font-display font-bold text-slate-800 dark:text-slate-100">
           Quick actions
         </h2>
-        <span class="text-xs text-n500 dark:text-n200">Esc to close</span>
+        <span class="text-xs font-display text-slate-500 dark:text-slate-400">Esc to close</span>
       </div>
       <label for="command-palette-input" class="sr-only">Search commands</label>
       <input
@@ -109,10 +109,10 @@ const actions = [
         type="text"
         autocomplete="off"
         spellcheck="false"
-        class="mt-3 w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-n700 outline-none ring-offset-white placeholder:text-neutral-500 focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 dark:border-neutral-800 dark:bg-neutral-950 dark:text-light-theme dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300"
+        class="mt-3 w-full rounded-sm border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background-light)] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-400 dark:focus-visible:ring-offset-[var(--color-background-dark)]"
         placeholder="Type a command..."
       />
-      <p class="mt-2 text-xs text-n500 dark:text-n200">Use Cmd/Ctrl+K or / to open</p>
+      <p class="mt-2 text-xs font-display text-slate-500 dark:text-slate-400">Use Cmd/Ctrl+K or / to open</p>
     </div>
 
     <ul
@@ -205,7 +205,7 @@ const actions = [
 
     if (filteredActions.length === 0) {
       const emptyState = document.createElement("li");
-      emptyState.className = "rounded-md px-3 py-4 text-sm text-n500 dark:text-n200";
+      emptyState.className = "rounded-sm px-3 py-4 text-sm text-slate-500 dark:text-slate-400";
       emptyState.textContent = "No commands found.";
       nodes.results.appendChild(emptyState);
       return;
@@ -221,10 +221,10 @@ const actions = [
       button.setAttribute("role", "option");
       button.setAttribute("aria-selected", index === activeIndex ? "true" : "false");
       button.className = [
-        "flex w-full items-start justify-between rounded-md px-3 py-2 text-left transition-colors",
+        "flex w-full items-start justify-between rounded-sm px-3 py-2 text-left transition-colors",
         index === activeIndex
-          ? "bg-neutral-100 text-n700 dark:bg-neutral-800 dark:text-light-theme"
-          : "text-n700 hover:bg-neutral-100 dark:text-light-theme dark:hover:bg-neutral-900",
+          ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100"
+          : "text-slate-800 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800",
       ].join(" ");
 
       const copy = document.createElement("span");
@@ -235,14 +235,14 @@ const actions = [
       label.textContent = action.label;
 
       const description = document.createElement("span");
-      description.className = "text-xs text-n500 dark:text-n200";
+      description.className = "text-xs text-slate-500 dark:text-slate-400";
       description.textContent = action.description;
 
       copy.appendChild(label);
       copy.appendChild(description);
 
       const hint = document.createElement("span");
-      hint.className = "ml-4 text-xs text-n500 dark:text-n200";
+      hint.className = "ml-4 text-xs text-slate-500 dark:text-slate-400";
       hint.textContent = action.kind === "download" ? "PDF" : action.kind === "external" ? "Mail" : "Open";
 
       button.appendChild(copy);

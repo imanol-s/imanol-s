@@ -63,10 +63,10 @@ export default function LoadingOverlay() {
       <DottedGlowBackground
         gap={14}
         radius={1.5}
-        darkColor="#94a3b8"
-        darkGlowColor="#64748b"
-        color="#94a3b8"
-        glowColor="#64748b"
+        darkColor="var(--color-accent)"
+        darkGlowColor="var(--color-primary)"
+        color="var(--color-accent)"
+        glowColor="var(--color-primary)"
         opacity={0.8}
         speedMin={0.3}
         speedMax={1.0}

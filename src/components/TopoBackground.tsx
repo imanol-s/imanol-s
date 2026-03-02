@@ -101,7 +101,8 @@ export default function TopoBackground() {
             <g
               filter="url(#topo-warp)"
               fill="none"
-              stroke="rgba(0, 229, 255, 0.22)"
+              stroke="var(--color-accent)"
+              strokeOpacity="0.22"
               strokeWidth="0.8"
             >
               {lineYs.map((y) => (

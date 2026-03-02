@@ -21,7 +21,7 @@ const allProjects = (await getCollection('projects'))
   .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
 
 const currentIndex = allProjects.findIndex(p => p.id === post.id);
-const projectLabel = `PROJECT_${String(currentIndex + 1).padStart(2, '0')}`;
+const projectLabel = `Project ${String(currentIndex + 1).padStart(2, '0')}`;
 const prev = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
 const next = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
 
@@ -121,7 +121,7 @@ function fmtDate(d: Date): string {
           </p>
           <div class="flex flex-col gap-2">
             {tags.map((tag: string) => (
-              <span class="font-display text-sm px-3 py-2 cad-border bg-slate-50/50 dark:bg-slate-900/30 text-slate-700 dark:text-slate-300">
+              <span class="font-display text-sm px-3 py-2 cad-border bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300">
                 {tag}
               </span>
             ))}
