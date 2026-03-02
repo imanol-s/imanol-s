@@ -60,20 +60,6 @@
     animation: topo-drift 55s ease-in-out infinite;
     will-change: transform;
   }
-  @keyframes topo-drift {
-    0% {
-      transform: translate(0, 0) rotate(0deg);
-    }
-    33% {
-      transform: translate(-5%, -3%) rotate(1.5deg);
-    }
-    66% {
-      transform: translate(3%, -2%) rotate(-1deg);
-    }
-    100% {
-      transform: translate(0, 0) rotate(0deg);
-    }
-  }
   @media (prefers-reduced-motion: reduce) {
     .topo-lines {
       animation: none !important;
@@ -337,6 +323,21 @@
     margin: 1.5rem 0;
     color: #64748b;
     font-style: italic;
+  }
+}
+
+@keyframes topo-drift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(-5%, -3%) rotate(1.5deg);
+  }
+  66% {
+    transform: translate(3%, -2%) rotate(-1deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
   }
 }
 
