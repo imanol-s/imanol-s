@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react";
  * Handles its own rAF loop + reduced-motion media query internally.
  */
 export default function TopoBackground() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const rafId = useRef(0);
   const reducedMotion = useRef(false);
@@ -24,31 +23,12 @@ export default function TopoBackground() {
   }, []);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    let scrollY = 0;
-    let mouseX = 0;
-    let mouseY = 0;
-    let phase = 0;
-
-    const handleScroll = () => {
-      scrollY = window.scrollY;
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-    };
-
     if (reducedMotion.current) return;
+
+    let phase = 0;
 
     const tick = () => {
       if (reducedMotion.current) return;
-      const scrollShift = scrollY * 0.05;
-      const mx = mouseX * 8;
-      const my = mouseY * 8;
-      container.style.transform = `translateY(${scrollShift}px) translate(${mx}px, ${my}px)`;
 
       // Continuous flow: oscillate baseFrequency with two independent rates.
       // Large range (0.0025–0.0055) makes morphing visually prominent.
@@ -60,13 +40,9 @@ export default function TopoBackground() {
       rafId.current = requestAnimationFrame(tick);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     rafId.current = requestAnimationFrame(tick);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(rafId.current);
     };
   }, []);
@@ -80,7 +56,6 @@ export default function TopoBackground() {
       <div className="fixed inset-0 pointer-events-none blueprint-grid z-[-1]" />
 
       <div
-        ref={containerRef}
         className="fixed inset-0 pointer-events-none"
         style={{ zIndex: -2 }}
       >
