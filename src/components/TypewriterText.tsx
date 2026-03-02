@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
+const SESSION_KEY = "heroNameTyped";
+
 // LoadingOverlay: 600ms opaque + 500ms fade = 1100ms; add 100ms buffer
 const OVERLAY_CLEAR_MS = 1200;
 
@@ -29,7 +31,14 @@ const TypewriterText = ({ text }: { text: string }) => {
     setDone(false);
     abortRef.current = false;
 
-    if (reducedMotion) {
+    let alreadyPlayed = false;
+    try {
+      alreadyPlayed = sessionStorage.getItem(SESSION_KEY) === "true";
+    } catch {
+      // sessionStorage unavailable (private mode, quota exceeded, etc.)
+    }
+
+    if (reducedMotion || alreadyPlayed) {
       setDisplayed(text);
       setDone(true);
       return;
@@ -44,6 +53,7 @@ const TypewriterText = ({ text }: { text: string }) => {
       if (index < text.length) {
         timeoutRef.current = setTimeout(type, 35 + Math.random() * 25);
       } else {
+        try { sessionStorage.setItem(SESSION_KEY, "true"); } catch { /* storage unavailable */ }
         setDone(true);
       }
     };
@@ -59,6 +69,7 @@ const TypewriterText = ({ text }: { text: string }) => {
   const skip = useCallback(() => {
     abortRef.current = true;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    try { sessionStorage.setItem(SESSION_KEY, "true"); } catch { /* storage unavailable */ }
     setDisplayed(text);
     setDone(true);
   }, [text]);
