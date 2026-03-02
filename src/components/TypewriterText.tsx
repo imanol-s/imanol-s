@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
+const SESSION_KEY = "heroNameTyped";
+
 const TypewriterText = ({ text }: { text: string }) => {
   const [displayed, setDisplayed] = useState("");
   const [done, setDone] = useState(false);
@@ -10,7 +12,7 @@ const TypewriterText = ({ text }: { text: string }) => {
     : false;
 
   useEffect(() => {
-    if (reducedMotion) {
+    if (reducedMotion || sessionStorage.getItem(SESSION_KEY) === "true") {
       setDisplayed(text);
       setDone(true);
       return;
@@ -26,6 +28,7 @@ const TypewriterText = ({ text }: { text: string }) => {
       if (index < text.length) {
         timeoutRef.current = setTimeout(type, 35 + Math.random() * 25);
       } else {
+        sessionStorage.setItem(SESSION_KEY, "true");
         setDone(true);
       }
     };
@@ -40,6 +43,7 @@ const TypewriterText = ({ text }: { text: string }) => {
   const skip = useCallback(() => {
     abortRef.current = true;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    sessionStorage.setItem(SESSION_KEY, "true");
     setDisplayed(text);
     setDone(true);
   }, [text]);
