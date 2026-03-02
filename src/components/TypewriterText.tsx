@@ -1,36 +1,35 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-const SESSION_KEY = "heroTyped";
 // LoadingOverlay: 600ms opaque + 500ms fade = 1100ms; add 100ms buffer
 const OVERLAY_CLEAR_MS = 1200;
-
-function sessionFlag(action: "get" | "set"): boolean {
-  try {
-    if (action === "set") {
-      sessionStorage.setItem(SESSION_KEY, "1");
-      return true;
-    }
-    return sessionStorage.getItem(SESSION_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
 
 const TypewriterText = ({ text }: { text: string }) => {
   const [displayed, setDisplayed] = useState("");
   const [done, setDone] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState<boolean | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef(false);
-  const reducedMotion = typeof window !== "undefined"
-    ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    : false;
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateReducedMotion = () => setReducedMotion(mediaQuery.matches);
+
+    updateReducedMotion();
+    mediaQuery.addEventListener("change", updateReducedMotion);
+
+    return () => mediaQuery.removeEventListener("change", updateReducedMotion);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion === null) return;
+
     setDisplayed("");
     setDone(false);
     abortRef.current = false;
 
-    if (reducedMotion || sessionFlag("get")) {
+    if (reducedMotion) {
       setDisplayed(text);
       setDone(true);
       return;
@@ -46,7 +45,6 @@ const TypewriterText = ({ text }: { text: string }) => {
         timeoutRef.current = setTimeout(type, 35 + Math.random() * 25);
       } else {
         setDone(true);
-        sessionFlag("set");
       }
     };
 
@@ -63,7 +61,6 @@ const TypewriterText = ({ text }: { text: string }) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setDisplayed(text);
     setDone(true);
-    sessionFlag("set");
   }, [text]);
 
   useEffect(() => {
@@ -90,7 +87,7 @@ const TypewriterText = ({ text }: { text: string }) => {
       </span>
       <span aria-hidden="true" className="absolute inset-0">
         {displayed}
-        {!reducedMotion && (
+        {reducedMotion === false && (
           <span className={`typing-caret ${done ? "hidden-caret" : ""}`} />
         )}
       </span>
