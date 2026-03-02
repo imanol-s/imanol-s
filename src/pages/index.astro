@@ -1,21 +1,322 @@
 ---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import ProfileInfo from "../components/ProfileInfo.astro";
-import ProfileActionButton from "../components/ProfileActionButton.astro";
-import TabsButtons from "../components/TabsButtons.tsx";
-import ProjectsCC from '@/components/ProjectsCC.astro';
-import AboutMeCC from "../components/AboutMeCC.astro";
-import ProfileFacts from "../components/ProfileFacts.astro";
+import TypewriterText from '../components/TypewriterText.tsx';
+import { ME, SOCIALS } from '../config';
+import workExperience from '../data/Jobs';
+import education from '../data/education';
+import { getTechIconPath } from '../data/techIcons';
+import profileImage from '../assets/Profile-1.png';
+
+const allProjects = (await getCollection('projects'))
+  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+
+const github = SOCIALS.find(s => s.name === 'GitHub');
+const linkedin = SOCIALS.find(s => s.name === 'LinkedIn');
+
+// Format date for timeline
+function fmtDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).toUpperCase();
+}
+
+// First 3 jobs for the timeline
+const timelineJobs = workExperience.slice(0, 3);
+const edu = education[0];
+const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
 ---
 
-<Layout title="Imanol Saldana Portfolio" description="Developer Portfolio" scrollSmooth={false}>
-    <>
-        <ProfileInfo/>
-        <ProfileFacts/>
-        <ProfileActionButton/>
-        <TabsButtons client:visible>
-            <ProjectsCC slot="portfolio"/>
-            <AboutMeCC slot="about"/>
-        </TabsButtons>
-    </>
+<Layout title="Imanol Saldana Portfolio" description="Building data pipelines, automated validation tools, and internal systems to ensure data integrity and operational efficiency." scrollSmooth={true}>
+  <!-- ═══ HERO ═══ -->
+  <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32">
+    <div class="lg:col-span-7">
+      <TypewriterText client:load text="Imanol Saldana" />
+      <div class="text-lg md:text-xl font-display text-primary mb-8 tracking-tight">
+        Data Analytics &bull; Data Science &bull; Software
+      </div>
+      <p class="text-xl text-slate-700 dark:text-slate-200 max-w-2xl mb-10 leading-relaxed font-light">
+        Building data pipelines, automated validation tools, and internal
+        systems to ensure data integrity and operational efficiency.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+        <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-start group">
+          <h3 class="font-display font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
+            Data science & analytics
+          </h3>
+        </div>
+        <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-start group">
+          <h3 class="font-display font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
+            Automation & tooling
+          </h3>
+        </div>
+        <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-start group">
+          <h3 class="font-display font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
+            Systems & reliability
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div class="lg:col-span-5 flex justify-center">
+      <div class="relative group">
+        <div class="absolute -inset-4 border border-dashed border-primary/40 group-hover:scale-105 transition-transform duration-700"></div>
+        <Image
+          src={profileImage}
+          alt="Imanol Saldana portrait"
+          class="w-64 h-64 grayscale contrast-125 object-cover cad-border brightness-90"
+          width={256}
+          height={256}
+        />
+        <div class="absolute bottom-4 -right-8 flex flex-col gap-2">
+          {github?.show && (
+            <a
+              class="w-10 h-10 bg-[var(--color-background-dark)] text-white flex items-center justify-center hover:bg-primary transition-colors focus-ring"
+              href={github.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+            </a>
+          )}
+          {linkedin?.show && (
+            <a
+              class="w-10 h-10 bg-[var(--color-background-dark)] text-white flex items-center justify-center hover:bg-primary transition-colors focus-ring"
+              href={linkedin.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PROJECTS ═══ -->
+  <section class="mb-32" id="projects">
+    <div class="flex items-end justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
+      <div>
+        <h2 class="text-3xl font-display font-bold">PROJECTS</h2>
+      </div>
+    </div>
+    <div class="horizontal-scroll-snap pb-6">
+      {allProjects.map((project) => (
+        <div class="group flex flex-col cad-border bg-slate-50 dark:bg-slate-900 overflow-hidden grid-pulse shadow-sm">
+          <div class="relative h-[160px] overflow-hidden border-b border-slate-200 dark:border-slate-800">
+            <Image
+              src={project.data.cover}
+              alt={project.data.title}
+              class="absolute inset-0 w-full h-full object-cover grayscale opacity-60 group-hover:scale-105 transition-transform duration-1000"
+              width={350}
+              height={160}
+            />
+            <div class="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
+          </div>
+          <div class="p-5 flex flex-col flex-grow">
+            <h3 class="text-lg font-bold mb-3 group-hover:text-primary transition-colors">
+              {project.data.title}
+            </h3>
+            <p class="text-xs text-slate-700 dark:text-slate-300 mb-4 leading-relaxed flex-grow">
+              {project.data.summary}
+            </p>
+            <div class="flex flex-col gap-2 mt-auto">
+              <a
+                href={`/projects/${project.id}`}
+                class="cta-primary w-full"
+              >
+                VIEW PROJECT
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-8 text-center">
+      <a
+        class="inline-flex items-center gap-4 text-sm font-display uppercase tracking-widest text-slate-600 dark:text-slate-400 hover:text-primary transition-colors focus-ring px-2 py-1"
+        href="/projects"
+      >
+        <span class="h-[1px] w-12 bg-slate-400 dark:bg-slate-600"></span>
+        Browse Full Archive
+        <span class="h-[1px] w-12 bg-slate-400 dark:bg-slate-600"></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ EXPERIENCE + TECH SPECS ═══ -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-32" id="experience">
+    <div class="lg:col-span-8">
+      <h2 class="text-2xl font-display font-bold mb-8 flex items-center gap-4 uppercase">
+        Professional Log
+        <span class="h-[1px] flex-grow bg-slate-200 dark:bg-slate-800"></span>
+      </h2>
+      <div class="space-y-12">
+        {timelineJobs.map((job, i) => (
+          <div class="relative pl-8 border-l border-slate-200 dark:border-slate-800">
+            {i === 0 ? (
+              <div class="absolute -left-1.5 top-0 w-3 h-3 bg-primary ring-4 ring-[var(--color-background-light)] dark:ring-[var(--color-background-dark)]"></div>
+            ) : (
+              <div class="absolute -left-1.5 top-0 w-3 h-3 border border-primary bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)] ring-4 ring-[var(--color-background-light)] dark:ring-[var(--color-background-dark)]"></div>
+            )}
+            <div class="cad-border bg-slate-50 dark:bg-slate-900 p-5">
+              <div class="text-xs font-display text-primary mb-1 font-bold">
+                {job.startDate ? fmtDate(job.startDate) : ''} — {job.currentJob ? 'PRESENT' : job.endDate ? fmtDate(job.endDate) : ''}
+              </div>
+              <h4 class="text-xl font-bold text-slate-900 dark:text-white">
+                {job.title}
+              </h4>
+              <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                {job.company} / {job.location}
+              </p>
+              <p class="text-slate-800 dark:text-slate-200 leading-relaxed mb-4">
+                {job.description.length > 200 ? job.description.slice(0, 200).replace(/\s+\S*$/, '') + '...' : job.description}
+              </p>
+              {i === 0 && (
+                <ul class="text-[14px] space-y-2 text-slate-700 dark:text-slate-300 list-disc list-inside marker:text-primary">
+                  {job.goals.slice(0, 3).map((goal) => (
+                    <li>{goal}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        ))}
+
+        {/* Education milestone */}
+        {edu && (
+          <div class="relative pl-8 border-l border-slate-200 dark:border-slate-800">
+            <div class="absolute -left-1.5 top-0 w-3 h-3 border border-primary bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)] ring-4 ring-[var(--color-background-light)] dark:ring-[var(--color-background-dark)]"></div>
+            <div class="cad-border bg-slate-50 dark:bg-slate-900 p-5">
+              <div class="text-xs font-display text-primary mb-1 font-bold">
+                {edu.endDate ? fmtDate(edu.endDate) : ''}
+              </div>
+              <h4 class="text-xl font-bold uppercase tracking-tight text-slate-900 dark:text-white">
+                {edu.title}
+              </h4>
+              <p class="text-slate-600 dark:text-slate-400 text-sm">
+                {edu.school} / {edu.location}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <div class="lg:col-span-4">
+      <h2 class="text-2xl font-display font-bold mb-8 flex items-center gap-4 uppercase">
+        Tech Specs
+        <span class="h-[1px] flex-grow bg-slate-200 dark:bg-slate-800"></span>
+      </h2>
+      <div class="space-y-8">
+        <!-- Core Languages -->
+        <div>
+          <h5 class="text-[12px] uppercase tracking-widest text-slate-500 mb-3 font-bold">
+            Core Languages
+          </h5>
+          <div class="grid grid-cols-2 gap-3">
+            {coreLanguages.map((tech) => (
+              <div class="p-3 cad-border bg-slate-50 dark:bg-slate-900 flex items-center gap-2 hover:bg-white dark:hover:bg-slate-800 transition-colors group">
+                <img
+                  src={getTechIconPath(tech)}
+                  alt={`${tech} icon`}
+                  width="16"
+                  height="16"
+                  loading="lazy"
+                  decoding="async"
+                  class="group-hover:scale-110 transition-transform"
+                />
+                <span class="text-sm font-display">{tech}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Competencies -->
+        <div>
+          <h5 class="text-[12px] uppercase tracking-widest text-slate-500 mb-4 font-bold">
+            Competencies
+          </h5>
+          <div class="font-display">
+            <ul class="flex flex-col gap-2">
+              <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/50 hover:border-primary transition-colors cursor-default">
+                <span class="text-sm text-slate-800 dark:text-slate-200 tracking-tight font-medium">Data Governance</span>
+              </li>
+              <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/50 hover:border-primary transition-colors cursor-default">
+                <span class="text-sm text-slate-800 dark:text-slate-200 tracking-tight font-medium">Simulation & Robotics</span>
+              </li>
+              <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/50 hover:border-primary transition-colors cursor-default">
+                <span class="text-sm text-slate-800 dark:text-slate-200 tracking-tight font-medium">ERP (SAP S/4HANA)</span>
+              </li>
+              <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/50 hover:border-primary transition-colors cursor-default">
+                <span class="text-sm text-slate-800 dark:text-slate-200 tracking-tight font-medium">Predictive Modeling</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Communication -->
+        <div class="pt-2">
+          <h5 class="text-[12px] uppercase tracking-widest text-slate-500 mb-3 font-bold">
+            Communication
+          </h5>
+          <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/50 p-4 font-display text-sm">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-slate-700 dark:text-slate-300">ENGLISH</span>
+              <span class="text-primary font-bold text-xs">NATIVE</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-slate-700 dark:text-slate-300">SPANISH</span>
+              <span class="text-primary font-bold text-xs">BILINGUAL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ABOUT ═══ -->
+  <section id="about" class="mb-32">
+    <div class="flex items-end justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
+      <h2 class="text-3xl font-display font-bold">ABOUT ME</h2>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-8">
+        <p class="text-xl text-slate-700 dark:text-slate-200 leading-relaxed font-light mb-8">
+          I am a software developer with a background in computer science,
+          focused on building data-driven tools and automation that improve
+          reliability and clarity in real-world systems. My work centers on
+          clean implementation, reproducible analysis, and collaborating
+          across teams to solve practical data and engineering problems.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900">
+            <h3 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
+              Location
+            </h3>
+            <p class="font-display text-sm text-slate-800 dark:text-slate-200">
+              42.94&deg; N, 78.88&deg; W
+            </p>
+          </div>
+          <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900">
+            <h3 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
+              Contact
+            </h3>
+            <a
+              href={`mailto:${ME.contactInfo.email}`}
+              class="font-display text-sm text-primary drawing-hover focus-ring rounded-sm"
+            >
+              {ME.contactInfo.email}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>

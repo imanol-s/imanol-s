@@ -79,9 +79,9 @@ const workExperience: WorkExperience[] = [
     currentJob: false,
   },
   {
-    title: "Master Materials Data Analyst Intern",
-    startDate: "2025-05-27",
-    endDate: "2025-08-16",
+    title: "Master Materials Data Steward Intern",
+    startDate: "2025-05-01",
+    endDate: "2025-08-31",
     company: "Freeman",
     location: "United States",
     description:

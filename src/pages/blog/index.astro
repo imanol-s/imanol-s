@@ -25,9 +25,9 @@ const allPost = (await getCollection('posts'))
 <Layout title="Imanol | Blog" description="Blog posts" scrollSmooth={false}>
     <>
         <!--Blog Section-->
-        <section class="border-bottom">
+        <section class="border-b border-slate-200 dark:border-slate-800 pb-4 mb-8">
             <div class="mb-4">
-                <h2 class="text-3xl font-bold mb-8">Brain dump</h2>
+                <h2 class="text-3xl font-display font-bold">Brain dump</h2>
             </div>
         </section>
 
@@ -44,7 +44,7 @@ const allPost = (await getCollection('posts'))
                         />
                 ))
             ) : (
-                    <p>No posts found.</p>
+                    <p class="text-slate-500 font-display text-sm">No posts found.</p>
             )
             }
         </section>

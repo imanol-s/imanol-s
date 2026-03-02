@@ -9,13 +9,14 @@ stateDiagram-v2
     [*] --> Home : /
 
     state Home {
-        [*] --> PortfolioTab
-        PortfolioTab --> AboutTab : Tab switch
-        AboutTab --> PortfolioTab : Tab switch
+        [*] --> HeroSection
+        HeroSection --> ProjectsSection : scroll
+        ProjectsSection --> ExperienceSection : scroll
+        ExperienceSection --> AboutSection : scroll
     }
 
-    Home --> ProjectDetail : Click project card
-    Home --> ProjectsList : "See All Projects" or Navbar
+    Home --> ProjectDetail : Click project card / "VIEW PROJECT"
+    Home --> ProjectsList : "Browse Full Archive"
 
     state ProjectsList {
         SortedCards : Cards sorted by startDate desc
@@ -29,21 +30,22 @@ stateDiagram-v2
     BlogList --> PostDetail : Click card
 
     state ProjectDetail {
-        MDXContent : MDX body + optional external URL
+        MDXContent : Two-column: MDX body (left) + sidebar (right)
+        PrevNext : Previous/Next project navigation
     }
 
     state PostDetail {
-        MarkdownContent : Markdown body
+        MarkdownContent : Markdown body with prose styling
     }
 
     state NotFound {
-        Error404 : 404 page
+        Error404 : 404 page with CTA back to home
     }
-    NotFound --> Home : "Go back home"
+    NotFound --> Home : "Back to home"
 
     note right of Home
-        Navbar on all pages:
-        Home | Projects | Blog
+        SiteHeader on all pages:
+        [IMANOL] | PROJECTS | EXPERIENCE | ABOUT | RESUME
     end note
 ```
 
@@ -51,42 +53,53 @@ stateDiagram-v2
 
 ```
 / (index.astro)
-├── ProfileInfo, ProfileImage
-├── ProfileFacts
-├── ProfileActionButton        → CV download, mailto
-└── TabsButtons (React)        → client:visible hydration
-    ├── slot="portfolio" → ProjectsCC
-    │   ├── ProjectCard[]      → links to /projects/[id]
-    │   └── "See All Projects" → links to /projects
-    └── slot="about" → AboutMeCC
-        ├── JobDetails         → data from Jobs.ts
-        ├── EduDetail          → data from education.ts
-        └── SkillCard          → data from hardSkills.ts, softSkills.ts, languages.ts
+├── TypewriterText (React)    → client:load hydration, hero name animation
+├── Hero section              → subtitle, blurb, 3 capability tiles
+├── Portrait                  → <Image> with cad-border, social icon links
+├── Projects section          → horizontal-scroll-snap cards from content collection
+│   └── Project cards         → cover image, title, summary, VIEW PROJECT CTA
+├── Experience section
+│   ├── Timeline (left)       → data from Jobs.ts (2 jobs) + education.ts
+│   └── Tech Specs (right)    → Core Languages, Competencies, Communication
+└── About section             → blurb, location tile, contact tile
 
 /projects (projects/index.astro)
-└── ProjectCardList[]          → links to /projects/[id]
+└── Project list cards[]      → cover image, tags, title, summary → links to /projects/[id]
 
 /projects/[id] (projects/[id].astro)
-├── BackBtn                    → history.back()
-├── Image (view transition)
-├── <Content/> (rendered MDX)
-└── BackToTop
+├── Breadcrumb                → ← Projects (links to /#projects)
+├── Project label             → PROJECT_01, PROJECT_02, etc.
+├── Title + tag pills
+├── Hero image                → <Image> with cad-border, grayscale
+├── Two-column body
+│   ├── Left (8/12)           → Overview label + summary + <Content/> in .project-mdx
+│   └── Right (4/12)          → Links (if url valid) + Stack pills + Timeline
+└── Prev/Next navigation
 
 /blog (blog/index.astro)
-└── PostCard[]                 → links to /blog/[id]
+└── PostCard[]                → links to /blog/[id]
 
 /blog/[id] (blog/[id].astro)
-├── BackBtn                    → history.back()
+├── BackBtn                   → history.back()
 ├── Image (view transition)
-├── <Content/> (rendered MD)
+├── <Content/> (rendered MD in .prose)
 └── BackToTop
 
 404 (404.astro)
-└── "Go back home"             → links to /
+└── "Back to home"            → links to /
 ```
 
 ## Shared Across All Pages
 
-- `Layout.astro` — wraps every page (see `../CLAUDE.md` for SEO/styling details)
-- `Navbar.astro` — fixed top nav; links defined in `src/data/menu.ts`
-- `Footer.astro` — template credit
+- `Layout.astro` — wraps every page: SEO head, font preloads, dark mode init, TopoBackground, SiteHeader, SiteFooter
+- `SiteHeader.astro` — sticky top nav with [IMANOL] logo, section links, RESUME download, mobile hamburger
+- `SiteFooter.astro` — "Ready to construct?" CTA, email, GitHub/LinkedIn icons, copyright
+- `TopoBackground.tsx` — React island: animated SVG contours + parallax (before header in DOM)
+
+## Data Flow
+
+- **Project cards on home page**: `getCollection('projects')` sorted by startDate desc
+- **Project detail**: `getStaticPaths()` generates one page per MDX file in `src/content/projects/`
+- **Experience timeline**: imported from `src/data/Jobs.ts` (first 2 entries) + `src/data/education.ts`
+- **Contact/Social**: sourced from `src/config.ts` (`ME.contactInfo`, `SOCIALS`)
+- **Blog**: `getCollection('posts')` sorted by publishDate desc

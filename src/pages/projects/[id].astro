@@ -2,67 +2,192 @@
 import { getCollection, render } from "astro:content";
 import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
-import BackBtn from "@/components/BackBtn.astro";
-import BackToTop from "../../components/BackToTop.astro";
+import { getTechIconPath } from "../../data/techIcons";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("projects");
-  return posts.map((post) => ({
+  const posts = await getCollection('projects');
+  return posts.map(post => ({
     params: { id: post.id },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const { title, summary, tags, cover, ogImage, url } = post.data;
+const { title, summary, tags, cover, ogImage, url, startDate, endDate } = post.data;
 
 const { Content } = await render(post);
+
+// Sorted project list for prev/next + label
+const allProjects = (await getCollection('projects'))
+  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+
+const currentIndex = allProjects.findIndex(p => p.id === post.id);
+const projectLabel = `Project ${String(currentIndex + 1).padStart(2, '0')}`;
+const prev = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
+const next = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
+
+// Only show external link if url is real (not placeholder)
+const hasValidUrl = url && url.trim() !== '' && url !== 'https://google.com';
+
+function fmtDate(d: Date): string {
+  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+}
 ---
 
-<Layout
-  title={title}
-  description={summary}
-  imageOg={ogImage}
-  scrollSmooth={true}
->
-  <>
-    <div class="flex justify-center mt-10">
-      <BackBtn />
-    </div>
-    <div class="flex flex-col gap-6 justify-center items-center">
-      <h1 class="text-3xl font-bold text-center">{title}</h1>
-      <p class="text-sm text-n500 dark:text-primary-light">
-        {tags.join(", ")}
-      </p>
-    </div>
-    <Image
-      transition:name={`${post.id}-image`}
-      class="rounded-2xl"
-      src={cover}
-      alt="Main project image"
-    />
-    <p>
-      {summary}
+<Layout title={title} description={summary} imageOg={ogImage} scrollSmooth={true}>
+  <!-- Breadcrumb -->
+  <nav aria-label="Breadcrumb" class="mb-10">
+    <a
+      href="/#projects"
+      class="drawing-hover focus-ring rounded-sm inline-flex items-center gap-2 font-display text-xs uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
+    >
+      &larr; Projects
+    </a>
+  </nav>
+
+  <!-- Project Hero -->
+  <div class="mb-12">
+    <p class="font-display text-xs text-primary tracking-widest mb-3">
+      {projectLabel}
     </p>
-    <div class="flex flex-col items-start gap-3">
-      {
-        url && (
-          <a href={url} target="_blank" rel="noopener noreferrer">
-            Visit the project ↗
-          </a>
-        )
-      }
+
+    <h1 class="text-4xl md:text-6xl font-display font-bold leading-tight mb-6">
+      {title}
+    </h1>
+
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-8">
+        {tags.map((tag: string) => (
+          <span class="font-display text-[11px] uppercase tracking-widest px-2 py-1 border border-slate-200 dark:border-slate-800 text-slate-500">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+
+    <!-- Hero image -->
+    <div class="cad-border overflow-hidden">
+      <Image
+        src={cover}
+        alt={title}
+        class="w-full h-[280px] md:h-[360px] object-cover grayscale opacity-60"
+        width={1280}
+        height={360}
+      />
+    </div>
+  </div>
+
+  <!-- 2-Column Body -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mt-12">
+    <!-- Left col — overview + MDX content -->
+    <div class="lg:col-span-8">
+      <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
+        Overview
+      </p>
+      <p class="text-lg text-slate-700 dark:text-slate-200 leading-relaxed font-light mb-10">
+        {summary}
+      </p>
+
+      <div class="project-mdx">
+        <Content />
+      </div>
     </div>
 
-    <article id="article" class="mt-8 prose dark:prose-invert">
-      <Content />
-    </article>
-    <BackToTop />
-  </>
-</Layout>
+    <!-- Right col — links + stack + timeline -->
+    <div class="lg:col-span-4 space-y-10">
+      {/* External link — only if valid */}
+      {hasValidUrl && (
+        <div>
+          <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
+            Links
+          </p>
+          <div class="flex flex-col gap-3">
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="cta-primary w-full focus-ring"
+            >
+              Visit the project
+            </a>
+          </div>
+        </div>
+      )}
 
-<style is:global>
-  h2 {
-    @apply text-2xl font-bold my-4;
-  }
-</style>
+      {/* Stack */}
+      {tags.length > 0 && (
+        <div>
+          <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
+            Stack
+          </p>
+          <div class="flex flex-col gap-2">
+            {tags.map((tag: string) => (
+              <span class="font-display text-sm px-3 py-2 cad-border bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 inline-flex items-center gap-2">
+                <img
+                  src={getTechIconPath(tag)}
+                  alt={`${tag} icon`}
+                  width="16"
+                  height="16"
+                  loading="lazy"
+                  decoding="async"
+                />
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Timeline */}
+      {(startDate || endDate) && (
+        <div>
+          <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-3">
+            Timeline
+          </p>
+          <p class="font-display text-sm text-slate-700 dark:text-slate-300">
+            {startDate && fmtDate(startDate)}
+            {startDate && endDate && ' — '}
+            {endDate && fmtDate(endDate)}
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Prev / Next Navigation -->
+  <div class="mt-16 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <div class="flex justify-between items-start gap-8">
+      {prev ? (
+        <a
+          href={`/projects/${prev.id}`}
+          class="group drawing-hover focus-ring rounded-sm flex flex-col gap-1 max-w-xs"
+          aria-label={`Previous project: ${prev.data.title}`}
+        >
+          <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-primary transition-colors">
+            &larr; Prev
+          </span>
+          <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">
+            {prev.data.title}
+          </span>
+        </a>
+      ) : (
+        <div aria-hidden="true"></div>
+      )}
+
+      {next ? (
+        <a
+          href={`/projects/${next.id}`}
+          class="group drawing-hover focus-ring rounded-sm flex flex-col gap-1 items-end max-w-xs text-right"
+          aria-label={`Next project: ${next.data.title}`}
+        >
+          <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-primary transition-colors">
+            Next &rarr;
+          </span>
+          <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">
+            {next.data.title}
+          </span>
+        </a>
+      ) : null}
+    </div>
+  </div>
+</Layout>

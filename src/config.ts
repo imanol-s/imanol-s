@@ -15,7 +15,7 @@ export const SITE = {
 
 export const ME = {
   name: "Imanol 'Oman' Saldana",
-  profession: "Software Developer",
+  profession: "Data Analytics / Data Science / Software",
   profileImage: "Profile-1.png",
   profileFacts: [
     {
@@ -38,9 +38,8 @@ export const ME = {
     resumeDoc: "Saldana.Resume.pdf",
   },
   aboutMe:
-    "I am a software developer with a passion for Computer Science. I have experience in building data " +
-    "driven solutions and collaborating on teams to solve complex problems. I am a formally educated developer who is very passionate about continous learning through " +
-    "technical rigor and empathetic leadership.",
+    "Building data pipelines, automated validation tools, and internal systems " +
+    "to ensure data integrity and operational efficiency.",
 };
 
 export const SOCIALS = [

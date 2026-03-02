@@ -1,45 +1,62 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import {getCollection} from 'astro:content';
-import ProjectCardList from '@/components/ProjectCardList.astro';
-
-interface Project {
-    id: string;
-    data: {
-        title: string;
-        summary: string;
-        tags: string[];
-        cover: ImageMetadata;
-        startDate: Date;
-    };
-}
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { getTechIconPath } from '../../data/techIcons';
 
 const allProjects = (await getCollection('projects'))
-    .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
 ---
 
-<Layout title="Imanol | My Projects" description="A list of my projects" scrollSmooth={false}>
-    <>
-        <!--Projects Section-->
-        <section class="border-bottom">
-            <div class="mb-4">
-                <h2 class="text-3xl font-bold mb-8">My Projects</h2>
-            </div>
-        </section>
-        <!--Projects List-->
-        <section class="flex flex-col gap-8">
-            {allProjects.length > 0 ? (
-                allProjects.map((project: Project) => (
-                        <ProjectCardList
-                                id={project.id}
-                                title={project.data.title}
-                                tags={project.data.tags}
-                                cover={project.data.cover}
-                        />
-                ))
-            ) : (
-                    <p>No projects found.</p>
-            )}
-        </section>
-    </>
+<Layout title="Imanol | Projects" description="A list of my projects" scrollSmooth={false}>
+  <section class="mb-8">
+    <h1 class="text-3xl font-display font-bold mb-2">PROJECTS</h1>
+    <p class="text-slate-500 font-display text-sm">{allProjects.length} projects</p>
+  </section>
+
+  <section class="flex flex-col gap-8">
+    {allProjects.length === 0 && (
+      <p class="text-slate-500 font-display text-sm">No projects found.</p>
+    )}
+    {allProjects.map((project) => (
+      <a
+        href={`/projects/${project.id}`}
+        class="group flex flex-col md:flex-row md:items-center gap-6 p-5 cad-border bg-slate-50 dark:bg-slate-900 hover:bg-white dark:hover:bg-slate-800 transition-colors"
+        aria-label={`View project "${project.data.title}"`}
+      >
+        <div class="h-[200px] md:w-[200px] md:h-[140px] flex-none overflow-hidden">
+          <Image
+            src={project.data.cover}
+            alt={`Cover for ${project.data.title}`}
+            class="object-cover w-full h-full grayscale opacity-60 group-hover:scale-105 transition-transform duration-700"
+            width={200}
+            height={140}
+          />
+        </div>
+        <div class="flex flex-col gap-2 flex-1">
+          <div class="flex flex-wrap gap-2">
+            {project.data.tags.map((tag) => (
+              <span class="inline-flex items-center gap-1.5 px-2 py-1 border border-slate-200 dark:border-slate-800 text-[11px] uppercase tracking-widest text-slate-500 font-display">
+                <img
+                  src={getTechIconPath(tag)}
+                  alt={`${tag} icon`}
+                  width="16"
+                  height="16"
+                  loading="lazy"
+                  decoding="async"
+                />
+                {tag}
+              </span>
+            ))}
+          </div>
+          <h2 class="font-bold text-xl text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+            {project.data.title}
+          </h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            {project.data.summary}
+          </p>
+        </div>
+      </a>
+    ))}
+  </section>
 </Layout>

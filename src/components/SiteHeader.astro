@@ -1,0 +1,107 @@
+---
+const pathname = Astro.url.pathname;
+const isHome = pathname === "/";
+
+function sectionHref(anchor: string) {
+  return isHome ? anchor : `/${anchor}`;
+}
+---
+
+<header class="sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800 bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)]">
+  <nav
+    class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between"
+    aria-label="Site navigation"
+  >
+    <a
+      href="/"
+      class="flex items-center space-x-2 font-display font-bold text-lg tracking-tighter focus-ring rounded-sm"
+      aria-label="Home — Imanol Saldana"
+    >
+      <span class="text-primary">[</span>
+      <span>IMANOL</span>
+      <span class="text-primary">]</span>
+    </a>
+
+    <!-- Desktop nav -->
+    <div class="hidden md:flex items-center space-x-8 font-display text-sm">
+      <a
+        class="drawing-hover hover:text-primary transition-colors focus-ring rounded-sm"
+        href={sectionHref("#projects")}
+      >
+        PROJECTS
+      </a>
+      <a
+        class="drawing-hover hover:text-primary transition-colors focus-ring rounded-sm"
+        href={sectionHref("#experience")}
+      >
+        EXPERIENCE
+      </a>
+      <a
+        class="drawing-hover hover:text-primary transition-colors focus-ring rounded-sm"
+        href={sectionHref("#about")}
+      >
+        ABOUT
+      </a>
+      <a
+        class="cta-primary focus-ring"
+        href="/Saldana.Resume.pdf"
+      >
+        RESUME
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="mobile-menu-btn"
+      class="md:hidden p-2 text-slate-500 hover:text-primary focus-ring rounded-sm"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)]">
+    <div class="flex flex-col px-6 py-4 space-y-4 font-display text-sm">
+      <a class="hover:text-primary transition-colors focus-ring rounded-sm" href={sectionHref("#projects")}>PROJECTS</a>
+      <a class="hover:text-primary transition-colors focus-ring rounded-sm" href={sectionHref("#experience")}>EXPERIENCE</a>
+      <a class="hover:text-primary transition-colors focus-ring rounded-sm" href={sectionHref("#about")}>ABOUT</a>
+      <a class="cta-primary focus-ring w-fit" href="/Saldana.Resume.pdf">
+        RESUME
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  function setupMobileMenu() {
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    if (!btn || !menu || btn.dataset.bound === 'true') return;
+    btn.dataset.bound = 'true';
+
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      menu.classList.toggle('hidden');
+    });
+
+    // Close menu when a link is clicked
+    menu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  setupMobileMenu();
+  if (!(window as unknown as Record<string, boolean>).__siteHeaderListenerRegistered) {
+    (window as unknown as Record<string, boolean>).__siteHeaderListenerRegistered = true;
+    document.addEventListener('astro:after-swap', setupMobileMenu);
+  }
+</script>

@@ -20,6 +20,9 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Windows Zone.Identifier metadata files
+*:Zone.Identifier*
+
 # jetbrains setting folder
 .idea/
 
@@ -29,3 +32,9 @@ pnpm-debug.log*
 
 # claude files
 .claude/
+
+# playwright mcp artifacts
+.playwright-mcp/
+
+# temporary preview files
+*.playwright-mcp-*

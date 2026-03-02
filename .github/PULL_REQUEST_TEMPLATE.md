@@ -13,11 +13,11 @@
 
 <!-- How to verify the changes work -->
 
-- [ ] `npm run build` passes
-- [ ] Previewed locally with `npm run preview`
+- `npm run build` passes
+- Previewed locally with `npm run preview`
 
 ## Checklist
 
-- [ ] Type-check passes (`astro check`)
-- [ ] Docs updated if needed (CLAUDE.md, docs/)
-- [ ] Conventional commit message used
+- Type-check passes (`astro check`)
+- Docs updated if needed (CLAUDE.md, docs/)
+- Conventional commit message used

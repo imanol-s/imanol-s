@@ -1,75 +1,39 @@
 {
-  "name": "astro-simple-portfolio",
+  "name": "imanol-portfolio",
   "type": "module",
-  "version": "1.1.0",
-  "description": "free and open-source portfolio template site built with Astro.",
+  "version": "2.0.0",
+  "description": "Imanol Saldana — personal portfolio",
   "license": "MIT",
   "private": true,
   "author": {
-    "name": "Victor Alvarado"
-  },
-  "homepage": "https://simple-portfolio.vicbox.dev",
-  "contributors": [
-    {
-      "name": "Victor Alvarado",
-      "email": "victoralvarado.dev@gmail.com",
-      "url": "https://victoralvarado.dev"
-    }
-  ],
-  "keywords": [
-    "portfolio",
-    "Astro",
-    "react",
-    "tailwindcss",
-    "typescript",
-    "shadCn"
-  ],
-  "repository": {
-    "type": "git",
-    "url": ""
+    "name": "Imanol Saldana"
   },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "prepare": "husky"
+    "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.6",
-    "@astrojs/mdx": "^4.3.13",
-    "@astrojs/react": "^4.4.2",
-    "@astrojs/sitemap": "^3.7.0",
-    "@astrojs/tailwind": "^6.0.2",
-    "@radix-ui/react-slot": "1.2.4",
-    "@radix-ui/react-tabs": "1.1.13",
-    "@types/react": "18.3.12",
-    "@types/react-dom": "18.3.1",
-    "astro": "^5.17.3",
-    "astro-icon": "1.1.5",
-    "class-variance-authority": "0.7.1",
-    "clsx": "2.1.1",
-    "extract-colors": "4.2.1",
-    "lucide-react": "0.575.0",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "tailwind-merge": "2.5.4",
-    "tailwindcss": "3.4.14",
-    "tailwindcss-animate": "1.0.7",
-    "typescript": "5.9.3"
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^4.0.2",
+    "@astrojs/react": "^4.1.1",
+    "@astrojs/sitemap": "^3.2.1",
+    "@tailwindcss/typography": "^0.5.15",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "astro": "^5.0.9",
+    "astro-icon": "^1.1.2",
+    "lucide-react": "^0.456.0",
+    "motion": "^12.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.6.3"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.4.2",
-    "@commitlint/config-conventional": "20.4.2",
-    "@tailwindcss/typography": "0.5.19",
-    "husky": "9.1.7",
-    "lint-staged": "16.2.7",
-    "prettier-plugin-astro": "^0.14.1"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,mjs,astro,md,mdx}": [
-      "prettier --write"
-    ]
+    "shadcn": "^3.8.5"
   }
 }

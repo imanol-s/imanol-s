@@ -1,18 +1,17 @@
 ---
 import {ClientRouter} from 'astro:transitions';
-import {cn} from "../lib/utils";
-import '@/styles/globals.css'
+import '@/styles/globals.css';
 
-import Navbar from "../components/Navbar.astro";
-import Footer from "../components/Footer.astro";
-import CommandPalette from "@/components/CommandPalette.astro";
-import CommandPaletteHint from "@/components/CommandPaletteHint.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import TopoBackground from "../components/TopoBackground.tsx";
+import LoadingOverlay from "../components/LoadingOverlay.tsx";
 
 import {SITE} from '@/config';
 
 interface Props {
     title?: string;
-    scrollSmooth: boolean;
+    scrollSmooth?: boolean;
     description?: string;
     tags?: string[];
     author?: string;
@@ -25,14 +24,14 @@ const {
     description = SITE.description,
     tags = SITE.tags,
     author = SITE.author,
-    scrollSmooth,
+    scrollSmooth = false,
     canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
     imageOg = SITE.ogImage,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={SITE.lang ?? "en"} class={cn({"scroll-smooth": scrollSmooth})}>
+<html lang={SITE.lang ?? "en"} class={`dark bg-[var(--color-background-dark)]${scrollSmooth ? " scroll-smooth" : ""}`}>
 <head>
     <meta name="msapplication-TileColor" content="#000000"/>
     <meta name="viewport" content="width=device-width"/>
@@ -47,9 +46,10 @@ const {
     <link rel="icon" href={SITE.favicon}/>
     <link rel="canonical" href={canonicalURL}/>
 
-    <!-- Preconnect to external domains for faster resource loading -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+    <!-- Font preloads -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title}/>
@@ -66,23 +66,20 @@ const {
     <title>{title}</title>
     <ClientRouter/>
 </head>
-<body class="bg-light-theme dark:bg-dark-theme antialiased text-n700 dark:text-light-theme w-full h-screen flex flex-col">
-<Navbar/>
-<main class="container py-24 flex gap-8 flex-col" role="main"  id="top">
+<body class="min-h-screen bg-transparent font-body text-slate-800 dark:text-slate-200 transition-colors duration-300 selection:bg-primary selection:text-white">
+
+<script is:inline>
+  document.documentElement.classList.add('dark');
+</script>
+
+<LoadingOverlay client:load />
+<TopoBackground client:only="react" />
+<SiteHeader />
+
+<main class="relative z-10 max-w-7xl mx-auto px-6 py-12">
     <slot/>
 </main>
-<CommandPalette />
-<CommandPaletteHint />
-<form name="growth-events" data-netlify="true" netlify-honeypot="bot-field" hidden>
-    <input type="hidden" name="form-name" value="growth-events"/>
-    <input type="text" name="event"/>
-    <input type="text" name="path"/>
-    <input type="text" name="content_id"/>
-    <input type="text" name="method"/>
-    <input type="text" name="utm_source"/>
-    <input type="text" name="utm_medium"/>
-    <input type="text" name="timestamp"/>
-</form>
-<Footer/>
+
+<SiteFooter />
 </body>
 </html>
