@@ -5,6 +5,7 @@ export default function LoadingOverlay() {
   const [active, setActive] = useState(true);
   const [fading, setFading] = useState(false);
   const fadeTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const pageLoadTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const fadeOut = useCallback(() => {
     setFading(true);
@@ -35,7 +36,9 @@ export default function LoadingOverlay() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const showOnSwap = () => fadeIn();
-    const hideOnLoad = () => setTimeout(fadeOut, 300);
+    const hideOnLoad = () => {
+      pageLoadTimerRef.current = setTimeout(fadeOut, 300);
+    };
 
     document.addEventListener("astro:before-swap", showOnSwap);
     document.addEventListener("astro:page-load", hideOnLoad);
@@ -43,6 +46,7 @@ export default function LoadingOverlay() {
       document.removeEventListener("astro:before-swap", showOnSwap);
       document.removeEventListener("astro:page-load", hideOnLoad);
       clearTimeout(fadeTimerRef.current);
+      clearTimeout(pageLoadTimerRef.current);
     };
   }, [fadeIn, fadeOut]);
 
