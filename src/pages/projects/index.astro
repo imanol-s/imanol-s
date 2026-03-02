@@ -20,10 +20,10 @@ const allProjects = (await getCollection('projects'))
     {allProjects.map((project) => (
       <a
         href={`/projects/${project.id}`}
-        class="group flex flex-col md:flex-row md:items-center gap-6 p-4 cad-border bg-slate-50/50 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-800 transition-colors"
+        class="group flex flex-col md:flex-row md:items-center gap-6 p-4 cad-border bg-slate-50 dark:bg-slate-900 hover:bg-white dark:hover:bg-slate-800 transition-colors"
         aria-label={`View project "${project.data.title}"`}
       >
-        <div class="rounded-lg h-[200px] md:w-[200px] md:h-[140px] flex-none overflow-hidden">
+        <div class="h-[200px] md:w-[200px] md:h-[140px] flex-none overflow-hidden">
           <Image
             src={project.data.cover}
             alt={`Cover for ${project.data.title}`}

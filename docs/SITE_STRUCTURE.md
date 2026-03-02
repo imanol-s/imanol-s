@@ -94,7 +94,7 @@ stateDiagram-v2
 - `Layout.astro` — wraps every page: SEO head, font preloads, dark mode init, TopoBackground, SiteHeader, SiteFooter
 - `SiteHeader.astro` — sticky top nav with [IMANOL] logo, section links, RESUME download, mobile hamburger
 - `SiteFooter.astro` — "Ready to construct?" CTA, email, GitHub/LinkedIn icons, copyright
-- `TopoBackground.tsx` — React island: animated SVG contours + parallax (before header in DOM)
+- `TopoBackground.tsx` — React island: animated SVG contours (before header in DOM)
 
 ## Data Flow
 

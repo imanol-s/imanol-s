@@ -10,7 +10,7 @@ Only two React components hydrate on the client:
 
 | Component | Directive | Size (gzip) | Purpose |
 |---|---|---|---|
-| `TopoBackground.tsx` | `client:only="react"` | ~1.1 KB | Animated SVG contours + parallax |
+| `TopoBackground.tsx` | `client:only="react"` | ~1.1 KB | Animated SVG contours |
 | `TypewriterText.tsx` | `client:load` | ~0.7 KB | Hero name character animation |
 
 Everything else is server-rendered Astro (zero client JS).
@@ -53,8 +53,8 @@ Everything else is server-rendered Astro (zero client JS).
 
 ### Background Performance
 - `TopoBackground` owns a single `requestAnimationFrame` loop
-- Event listeners use `{ passive: true }` for scroll/mousemove
-- SVG turbulence seed cycles every 2s (not every frame)
+- No mouse/scroll parallax listeners are attached
+- SVG turbulence baseFrequency is animated each frame via rAF
 - All background layers use `pointer-events: none`
 
 ## Astro-Specific Patterns

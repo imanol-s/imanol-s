@@ -23,12 +23,12 @@ const { id, title, description, publishDate, tags, cover } =
   aria-label={`Read post about ${title}`}
   class="flex flex-col md:flex-row md:items-center gap-4"
 >
-  <div class="flex-none w-full md:w-40 h-40 overflow-hidden rounded-xl">
+  <div class="flex-none w-full md:w-40 h-40 overflow-hidden">
     <Image
       transition:name={`${id}-image`}
       src={cover.src}
       alt={cover.alt ?? title}
-      class="w-full h-full object-cover rounded-xl"
+      class="w-full h-full object-cover"
       widths={[160, 320]}
       sizes="(max-width: 768px) 100vw, 160px"
     />
@@ -36,17 +36,17 @@ const { id, title, description, publishDate, tags, cover } =
   <div class="flex flex-col gap-2">
     <div class="flex items-center gap-1.5">
       <div class="flex items-center gap-1">
-        <Icon name="time-line" class="w-4 h-4 text-gray-500" />
+        <Icon name="time-line" class="w-4 h-4 text-slate-500" />
         <time
-          class="text-sm text-gray-500"
+          class="text-sm text-slate-500"
           datetime={publishDate.toISOString()}
         >
           {publishDate.toDateString()}
         </time>
       </div>
-      <span class="text-gray-500"> &middot; </span>
+      <span class="text-slate-500"> &middot; </span>
       <div class="flex gap-2">
-        {tags.map((tag) => <span class="text-sm text-gray-500">#{tag}</span>)}
+        {tags.map((tag) => <span class="text-sm text-slate-500">#{tag}</span>)}
       </div>
     </div>
     <h3 class="text-xl font-bold">{title}</h3>

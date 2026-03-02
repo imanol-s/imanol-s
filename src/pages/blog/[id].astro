@@ -27,11 +27,11 @@ const {Content} = await render(post);
         </div>
         <div class="flex flex-col gap-6 justify-center items-center">
             <h1 class="text-3xl font-bold text-center">{title}</h1>
-            <p class="text-sm text-n500 dark:text-primary-light ">
+            <p class="text-sm text-slate-500 dark:text-slate-400">
                 {tags.join(', ')}
             </p>
         </div>
-        <Image transition:name={`${post.id}-image`} class="rounded-2xl h-[400px] object-cover" src={cover.src}
+        <Image transition:name={`${post.id}-image`} class="h-[400px] object-cover" src={cover.src}
                alt="Main project image"/>
         <article id="article" class="mt-8 prose dark:prose-invert">
             <Content/>
