@@ -66,7 +66,7 @@ Text roles: `slate-900`/`white` (strong), `slate-800`/`200` (primary), `slate-60
 - `Layout.astro` — SEO head, font preloads, dark mode init, TopoBackground, LoadingOverlay, SiteHeader, SiteFooter
 - `SiteHeader.astro` — Sticky nav with logo, section links, resume download, mobile hamburger
 - `SiteFooter.astro` — Contact CTA, social links (GitHub/LinkedIn from config.ts), copyright
-- `TopoBackground.tsx` — React island: animated SVG contours + parallax + seed cycling
+- `TopoBackground.tsx` — React island: animated SVG contours + parallax (continuous baseFrequency oscillation via rAF)
 - `LoadingOverlay.tsx` — React island: full-screen overlay shown during page transitions (View Transitions API)
 
 **Blog** (kept from original):
@@ -82,6 +82,7 @@ Uses inline SVGs for all icons (GitHub, LinkedIn, Download, language icons). The
 
 ## Gotchas
 
+- **View Transitions + `<script>` blocks**: Astro re-runs inline `<script>` blocks on every navigation swap — always guard event listeners with `removeEventListener` before re-adding (or use a boolean flag) to prevent stacking. SiteHeader mobile menu hit this.
 - **Shiki theme**: Code blocks use the `plastic` theme with wrapping enabled (configured in `astro.config.mjs`)
 - **TypewriterText SSR**: Uses `typeof window !== "undefined"` guard for `window.matchMedia` — safe with `client:load`
 - **TopoBackground**: Must use `client:only="react"` (browser-only rAF loop, `useRef` for SVG elements)
@@ -96,18 +97,6 @@ When creating PRs, use plain bullet points (`-`) for test plans — NOT checkbox
 ## Deployment
 
 Hosted on **Netlify** with build config in `netlify.toml`. DNS managed via Netlify DNS for `imanols.dev`. See `docs/NETLIFY_SUBDOMAINS.md` for subdomain setup workflow.
-
-## Communication Style
-
-When I ask a high-level or advisory question, give a direct conversational answer first before exploring the codebase. Only use tools if I explicitly ask you to investigate.
-
-## Task Agents / Parallel Work
-
-When I say "use task-distributor" or "use parallel agents", use the Task tool to spawn sub-agents. Do NOT overcomplicate with separate plugin specs or permission scaffolding — keep it simple with direct file creation.
-
-## Session Management
-
-Be aware of context window limits. For large multi-phase projects, complete one phase fully and write a handoff document before starting the next. Don't launch many parallel agents simultaneously.
 
 ## MCP Servers
 
