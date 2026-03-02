@@ -33,9 +33,24 @@ const TypewriterText = ({ text }: { text: string }) => {
       }
     };
 
-    timeoutRef.current = setTimeout(type, 200);
+    const startAnimation = () => {
+      timeoutRef.current = setTimeout(type, 100);
+    };
+
+    // Start only after the loading overlay has fully faded out.
+    // The 1500ms fallback handles the case where the event fired before this
+    // listener was registered (e.g., very fast load / overlay already gone).
+    const fallbackTimer = setTimeout(startAnimation, 1500);
+    const onOverlayDone = () => {
+      clearTimeout(fallbackTimer);
+      document.removeEventListener('hero:overlay-done', onOverlayDone);
+      startAnimation();
+    };
+    document.addEventListener('hero:overlay-done', onOverlayDone);
 
     return () => {
+      clearTimeout(fallbackTimer);
+      document.removeEventListener('hero:overlay-done', onOverlayDone);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

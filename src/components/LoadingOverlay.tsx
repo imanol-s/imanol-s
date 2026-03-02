@@ -12,6 +12,7 @@ export default function LoadingOverlay() {
     fadeTimerRef.current = setTimeout(() => {
       setActive(false);
       setFading(false);
+      document.dispatchEvent(new CustomEvent('hero:overlay-done'));
     }, 500);
   }, []);
 
@@ -25,6 +26,7 @@ export default function LoadingOverlay() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setActive(false);
+      document.dispatchEvent(new CustomEvent('hero:overlay-done'));
       return;
     }
     const timer = setTimeout(fadeOut, 600);
