@@ -19,6 +19,7 @@ No test framework is configured.
 **Astro + React island pattern**: Most components are `.astro` files (server-rendered). React (`.tsx`) is only used where client-side interactivity is needed:
 - `TopoBackground.tsx` — animated SVG background (`client:only="react"`)
 - `TypewriterText.tsx` — hero name animation (`client:load`)
+- `LoadingOverlay.tsx` — page transition overlay (`client:load`; listens to `astro:before-swap` / `astro:page-load`)
 
 **Content collections** (`src/content/config.ts`): Two collections using Astro's glob loader:
 - `posts` — Markdown/MDX blog posts in `src/content/posts/`, schema requires `publishDate`, `title`, `tags`, `description`, `cover` image
@@ -62,10 +63,11 @@ Text roles: `slate-900`/`white` (strong), `slate-800`/`200` (primary), `slate-60
 ## Components
 
 **Shared layout** (every page):
-- `Layout.astro` — SEO head, font preloads, dark mode init, TopoBackground, SiteHeader, SiteFooter
+- `Layout.astro` — SEO head, font preloads, dark mode init, TopoBackground, LoadingOverlay, SiteHeader, SiteFooter
 - `SiteHeader.astro` — Sticky nav with logo, section links, resume download, mobile hamburger
 - `SiteFooter.astro` — Contact CTA, social links (GitHub/LinkedIn from config.ts), copyright
 - `TopoBackground.tsx` — React island: animated SVG contours + parallax + seed cycling
+- `LoadingOverlay.tsx` — React island: full-screen overlay shown during page transitions (View Transitions API)
 
 **Blog** (kept from original):
 - `PostCard.astro`, `BackBtn.astro`, `BackToTop.astro`
@@ -83,6 +85,7 @@ Uses inline SVGs for all icons (GitHub, LinkedIn, Download, language icons). The
 - **Shiki theme**: Code blocks use the `plastic` theme with wrapping enabled (configured in `astro.config.mjs`)
 - **TypewriterText SSR**: Uses `typeof window !== "undefined"` guard for `window.matchMedia` — safe with `client:load`
 - **TopoBackground**: Must use `client:only="react"` (browser-only rAF loop, `useRef` for SVG elements)
+- **LoadingOverlay**: Uses `client:load`; `window.matchMedia` and event listeners are inside `useEffect` so SSR-safe. Uses two refs (`fadeTimerRef`, `pageLoadTimerRef`) to track all timeouts for leak-free cleanup.
 - **Tailwind v4 scoped styles**: Astro `<style>` blocks cannot use `@apply` with Tailwind classes unless `@reference` is added. Prefer plain CSS in scoped styles.
 - **No `cn()` utility**: Removed with shadcn migration. Use template literals or ternaries for conditional classes.
 
