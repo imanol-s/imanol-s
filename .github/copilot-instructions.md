@@ -8,6 +8,12 @@ applyTo: "**/*.{astro,ts,tsx,mjs,css,md,mdx}"
 
 Review instructions for a personal portfolio site built with Astro 5, React 18, Tailwind CSS 4, and TypeScript. Applies to all source files under `src/`, config files at the root, and content collections.
 
+## Instruction Precedence
+
+- This file is the canonical instruction source for coding agents in this repository.
+- If `AGENTS.md` or `CLAUDE.md` conflicts with this file, this file takes precedence.
+- `AGENTS.md` and `CLAUDE.md` should only contain tool-specific deltas and links back to this file.
+
 ## Naming Conventions
 
 - **Astro components**: PascalCase (e.g., `SiteHeader.astro`, `PostCard.astro`)
