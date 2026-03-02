@@ -10,13 +10,16 @@ const TypewriterText = ({ text }: { text: string }) => {
     : false;
 
   useEffect(() => {
+    setDisplayed("");
+    setDone(false);
+    abortRef.current = false;
+
     if (reducedMotion) {
       setDisplayed(text);
       setDone(true);
       return;
     }
 
-    abortRef.current = false;
     let index = 0;
 
     const type = () => {
@@ -33,9 +36,10 @@ const TypewriterText = ({ text }: { text: string }) => {
     timeoutRef.current = setTimeout(type, 200);
 
     return () => {
+      abortRef.current = true;
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [text, reducedMotion]);
 
   const skip = useCallback(() => {
     abortRef.current = true;

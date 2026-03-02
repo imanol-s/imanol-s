@@ -100,5 +100,8 @@ function sectionHref(anchor: string) {
   }
 
   setupMobileMenu();
-  document.addEventListener('astro:after-swap', setupMobileMenu);
+  if (!(window as unknown as Record<string, boolean>).__siteHeaderListenerRegistered) {
+    (window as unknown as Record<string, boolean>).__siteHeaderListenerRegistered = true;
+    document.addEventListener('astro:after-swap', setupMobileMenu);
+  }
 </script>

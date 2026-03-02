@@ -14,6 +14,9 @@ const allProjects = (await getCollection('projects'))
   </section>
 
   <section class="flex flex-col gap-8">
+    {allProjects.length === 0 && (
+      <p class="text-slate-500 font-display text-sm">No projects found.</p>
+    )}
     {allProjects.map((project) => (
       <a
         href={`/projects/${project.id}`}
