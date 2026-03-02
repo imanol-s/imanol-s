@@ -5,6 +5,7 @@ import '@/styles/globals.css';
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import TopoBackground from "../components/TopoBackground.tsx";
+import LoadingOverlay from "../components/LoadingOverlay.tsx";
 
 import {SITE} from '@/config';
 
@@ -71,6 +72,7 @@ const {
   document.documentElement.classList.add('dark');
 </script>
 
+<LoadingOverlay client:load />
 <TopoBackground client:only="react" />
 <div class="fixed inset-0 z-[2] pointer-events-none bg-[var(--color-background-dark)]/50" aria-hidden="true"></div>
 <SiteHeader />
