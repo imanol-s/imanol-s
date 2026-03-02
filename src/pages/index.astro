@@ -6,6 +6,7 @@ import TypewriterText from '../components/TypewriterText.tsx';
 import { ME, SOCIALS } from '../config';
 import workExperience from '../data/Jobs';
 import education from '../data/education';
+import { getTechIconPath } from '../data/techIcons';
 import profileImage from '../assets/Profile-1.png';
 
 const allProjects = (await getCollection('projects'))
@@ -23,9 +24,10 @@ function fmtDate(dateStr: string): string {
   }).toUpperCase();
 }
 
-// First 2 jobs for the timeline
-const timelineJobs = workExperience.slice(0, 2);
+// First 3 jobs for the timeline
+const timelineJobs = workExperience.slice(0, 3);
 const edu = education[0];
+const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
 ---
 
 <Layout title="Imanol Saldana Portfolio" description="Building data pipelines, automated validation tools, and internal systems to ensure data integrity and operational efficiency." scrollSmooth={true}>
@@ -219,22 +221,20 @@ const edu = education[0];
             Core Languages
           </h5>
           <div class="grid grid-cols-2 gap-3">
-            <div class="p-3 cad-border bg-slate-50 dark:bg-slate-900 flex items-center gap-2 hover:bg-white dark:hover:bg-slate-800 transition-colors group">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary group-hover:scale-110 transition-transform"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-              <span class="text-sm font-display">Python</span>
-            </div>
-            <div class="p-3 cad-border bg-slate-50 dark:bg-slate-900 flex items-center gap-2 hover:bg-white dark:hover:bg-slate-800 transition-colors group">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary group-hover:scale-110 transition-transform"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-              <span class="text-sm font-display">Java</span>
-            </div>
-            <div class="p-3 cad-border bg-slate-50 dark:bg-slate-900 flex items-center gap-2 hover:bg-white dark:hover:bg-slate-800 transition-colors group">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary group-hover:scale-110 transition-transform"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
-              <span class="text-sm font-display">SQL</span>
-            </div>
-            <div class="p-3 cad-border bg-slate-50 dark:bg-slate-900 flex items-center gap-2 hover:bg-white dark:hover:bg-slate-800 transition-colors group">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary group-hover:scale-110 transition-transform"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/><line x1="12" y1="2" x2="12" y2="22"/></svg>
-              <span class="text-sm font-display">R</span>
-            </div>
+            {coreLanguages.map((tech) => (
+              <div class="p-3 cad-border bg-slate-50 dark:bg-slate-900 flex items-center gap-2 hover:bg-white dark:hover:bg-slate-800 transition-colors group">
+                <img
+                  src={getTechIconPath(tech)}
+                  alt={`${tech} icon`}
+                  width="16"
+                  height="16"
+                  loading="lazy"
+                  decoding="async"
+                  class="group-hover:scale-110 transition-transform"
+                />
+                <span class="text-sm font-display">{tech}</span>
+              </div>
+            ))}
           </div>
         </div>
 

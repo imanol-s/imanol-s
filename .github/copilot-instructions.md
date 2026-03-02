@@ -119,6 +119,14 @@ function displayName(name: string) {
 - Type-checking is the primary safety net; ensure `astro check` passes with 0 errors and 0 warnings
 - Preview production builds locally with `npm run preview` before deploying
 
+### Mandatory Post-Edit Validation (Agent Requirement)
+
+- After **any file edit**, agents must run `npm run build` before finalizing a response.
+- After a successful build, agents must start preview with `npm run preview -- --port 4321`.
+- Agents must not consider a task complete until both commands have been executed and outcomes reported.
+- If port `4321` is occupied, agents should free the port and retry on `4321` rather than silently switching ports.
+- If build or preview fails, agents must report the exact blocker and either fix it or stop only when genuinely blocked.
+
 ## Performance
 
 - Use Astro's `<Image>` component for all images — provides automatic WebP conversion and responsive sizing
