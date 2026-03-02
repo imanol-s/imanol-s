@@ -12,7 +12,14 @@ const TypewriterText = ({ text }: { text: string }) => {
     : false;
 
   useEffect(() => {
-    if (reducedMotion || sessionStorage.getItem(SESSION_KEY) === "true") {
+    let alreadyPlayed = false;
+    try {
+      alreadyPlayed = sessionStorage.getItem(SESSION_KEY) === "true";
+    } catch {
+      // sessionStorage unavailable (private mode, quota exceeded, etc.)
+    }
+
+    if (reducedMotion || alreadyPlayed) {
       setDisplayed(text);
       setDone(true);
       return;
@@ -28,29 +35,17 @@ const TypewriterText = ({ text }: { text: string }) => {
       if (index < text.length) {
         timeoutRef.current = setTimeout(type, 35 + Math.random() * 25);
       } else {
-        sessionStorage.setItem(SESSION_KEY, "true");
+        try { sessionStorage.setItem(SESSION_KEY, "true"); } catch { /* storage unavailable; animation will replay on next visit */ }
         setDone(true);
       }
     };
 
-    const startAnimation = () => {
-      timeoutRef.current = setTimeout(type, 100);
-    };
-
-    // Start only after the loading overlay has fully faded out.
-    // The 1500ms fallback handles the case where the event fired before this
-    // listener was registered (e.g., very fast load / overlay already gone).
-    const fallbackTimer = setTimeout(startAnimation, 1500);
-    const onOverlayDone = () => {
-      clearTimeout(fallbackTimer);
-      document.removeEventListener('hero:overlay-done', onOverlayDone);
-      startAnimation();
-    };
-    document.addEventListener('hero:overlay-done', onOverlayDone);
+    // Wait for the LoadingOverlay to fully clear before starting.
+    // LoadingOverlay takes 600ms (wait) + 500ms (CSS fade) = ~1100ms to clear;
+    // the 100ms buffer ensures the overlay is fully gone before the first character types.
+    timeoutRef.current = setTimeout(type, 1200);
 
     return () => {
-      clearTimeout(fallbackTimer);
-      document.removeEventListener('hero:overlay-done', onOverlayDone);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -58,7 +53,7 @@ const TypewriterText = ({ text }: { text: string }) => {
   const skip = useCallback(() => {
     abortRef.current = true;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    sessionStorage.setItem(SESSION_KEY, "true");
+    try { sessionStorage.setItem(SESSION_KEY, "true"); } catch { /* storage unavailable; animation will replay on next visit */ }
     setDisplayed(text);
     setDone(true);
   }, [text]);
