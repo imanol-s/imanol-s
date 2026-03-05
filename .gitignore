@@ -38,3 +38,6 @@ pnpm-debug.log*
 
 # temporary preview files
 *.playwright-mcp-*
+
+# terrain preview screenshots
+terrain-previews/

@@ -1,8 +1,4 @@
-import { useEffect, useRef } from "react";
-
-// Horizontal parallels: displaced by the noise filter into organic terrain contours.
-// Lines extend past viewBox edges (-50 to 1050) so displacement never reveals gaps.
-const lineYs = Array.from({ length: 78 }, (_, i) => -20 + i * 14);
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Fixed animated topographic background — shared across all pages.
@@ -12,6 +8,16 @@ export default function TopoBackground() {
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const rafId = useRef(0);
   const reducedMotion = useRef(false);
+  const [dims, setDims] = useState({ width: 2000, height: 2000 });
+
+  useEffect(() => {
+    const update = () => {
+      setDims({ width: window.innerWidth * 2, height: window.innerHeight * 2 });
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   useEffect(() => {
     reducedMotion.current = window.matchMedia(
@@ -56,6 +62,11 @@ export default function TopoBackground() {
     };
   }, []);
 
+  const lineYs = Array.from(
+    { length: Math.ceil(dims.height / 14) + 3 },
+    (_, i) => -20 + i * 14,
+  );
+
   return (
     <>
       <div className="fixed inset-0 pointer-events-none blueprint-grid z-[-1]" />
@@ -66,7 +77,7 @@ export default function TopoBackground() {
       >
         <div className="topo-lines">
           <svg
-            viewBox="0 0 1000 1000"
+            viewBox={`0 0 ${dims.width} ${dims.height}`}
             xmlns="http://www.w3.org/2000/svg"
             preserveAspectRatio="xMidYMid slice"
             className="w-full h-full"
@@ -87,7 +98,7 @@ export default function TopoBackground() {
                   ref={turbulenceRef}
                   type="fractalNoise"
                   baseFrequency="0.004"
-                  numOctaves={5}
+                  numOctaves={6}
                   seed={2}
                   result="noise"
                 />
@@ -111,7 +122,7 @@ export default function TopoBackground() {
               strokeWidth="0.8"
             >
               {lineYs.map((y) => (
-                <line key={y} x1={-50} y1={y} x2={1050} y2={y} />
+                <line key={y} x1={-50} y1={y} x2={dims.width + 50} y2={y} />
               ))}
             </g>
           </svg>
