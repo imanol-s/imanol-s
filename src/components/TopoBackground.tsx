@@ -1,14 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 
+/** Retrieve or generate a session-scoped seed for feTurbulence. */
+function getSessionSeed(): number {
+  const key = "topo-seed";
+  const stored = sessionStorage.getItem(key);
+  if (stored !== null) return parseInt(stored, 10);
+  const seed = Math.floor(Math.random() * 10000);
+  sessionStorage.setItem(key, String(seed));
+  return seed;
+}
+
 /**
  * Fixed animated topographic background — shared across all pages.
  * Handles its own rAF loop + reduced-motion media query internally.
+ * Terrain shape is randomised once per session via a sessionStorage seed.
  */
 export default function TopoBackground() {
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const rafId = useRef(0);
   const reducedMotion = useRef(false);
   const [dims, setDims] = useState({ width: 2000, height: 2000 });
+  // Initialised to 2 (SSR-safe default); replaced with session seed on mount.
+  const [seed, setSeed] = useState(2);
 
   useEffect(() => {
     const updateDims = () => {
@@ -36,6 +49,10 @@ export default function TopoBackground() {
       }
       window.removeEventListener("resize", handleResize);
     };
+  }, []);
+
+  useEffect(() => {
+    setSeed(getSessionSeed());
   }, []);
 
   useEffect(() => {
@@ -118,7 +135,7 @@ export default function TopoBackground() {
                   type="fractalNoise"
                   baseFrequency="0.004"
                   numOctaves={6}
-                  seed={2}
+                  seed={seed}
                   result="noise"
                 />
                 <feDisplacementMap
