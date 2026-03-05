@@ -35,9 +35,11 @@ const ICON_MAP: Record<string, string> = {
 
 const normalizeTechName = (tech: string): string => tech.trim().toLowerCase();
 
-export const getTechIconPath = (tech: string): string => {
+export const getTechIconPath = (tech: string): string | null => {
   const normalizedTech = normalizeTechName(tech);
-  const mappedIcon = ICON_MAP[normalizedTech] ?? 'file';
+  const mappedIcon = ICON_MAP[normalizedTech];
+
+  if (!mappedIcon || mappedIcon === 'file') return null;
 
   return `${TECH_ICON_BASE_PATH}/${mappedIcon}.svg`;
 };

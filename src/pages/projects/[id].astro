@@ -121,19 +121,24 @@ function fmtDate(d: Date): string {
             Stack
           </p>
           <div class="flex flex-col gap-2">
-            {tags.map((tag: string) => (
-              <span class="font-display text-sm px-3 py-2 cad-border bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 inline-flex items-center gap-2">
-                <img
-                  src={getTechIconPath(tag)}
-                  alt={`${tag} icon`}
-                  width="16"
-                  height="16"
-                  loading="lazy"
-                  decoding="async"
-                />
-                {tag}
-              </span>
-            ))}
+            {tags.map((tag: string) => {
+              const iconPath = getTechIconPath(tag);
+              return (
+                <span class="font-display text-sm px-3 py-2 cad-border bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 inline-flex items-center gap-2">
+                  {iconPath && (
+                    <img
+                      src={iconPath}
+                      alt={`${tag} icon`}
+                      width="16"
+                      height="16"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
+                  {tag}
+                </span>
+              );
+            })}
           </div>
         </div>
       )}

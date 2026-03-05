@@ -221,20 +221,25 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
             Core Languages
           </h5>
           <div class="grid grid-cols-2 gap-3">
-            {coreLanguages.map((tech) => (
-              <div class="p-3 cad-border bg-slate-50 dark:bg-slate-900 flex items-center gap-2 hover:bg-white dark:hover:bg-slate-800 transition-colors group">
-                <img
-                  src={getTechIconPath(tech)}
-                  alt={`${tech} icon`}
-                  width="16"
-                  height="16"
-                  loading="lazy"
-                  decoding="async"
-                  class="group-hover:scale-110 transition-transform"
-                />
-                <span class="text-sm font-display">{tech}</span>
-              </div>
-            ))}
+            {coreLanguages.map((tech) => {
+              const iconPath = getTechIconPath(tech);
+              return (
+                <div class="p-3 cad-border bg-slate-50 dark:bg-slate-900 flex items-center gap-2 hover:bg-white dark:hover:bg-slate-800 transition-colors group">
+                  {iconPath && (
+                    <img
+                      src={iconPath}
+                      alt={`${tech} icon`}
+                      width="16"
+                      height="16"
+                      loading="lazy"
+                      decoding="async"
+                      class="group-hover:scale-110 transition-transform"
+                    />
+                  )}
+                  <span class="text-sm font-display">{tech}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
 

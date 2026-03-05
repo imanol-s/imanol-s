@@ -35,19 +35,24 @@ const allProjects = (await getCollection('projects'))
         </div>
         <div class="flex flex-col gap-2 flex-1">
           <div class="flex flex-wrap gap-2">
-            {project.data.tags.map((tag) => (
-              <span class="inline-flex items-center gap-1.5 px-2 py-1 border border-slate-200 dark:border-slate-800 text-[11px] uppercase tracking-widest text-slate-500 font-display">
-                <img
-                  src={getTechIconPath(tag)}
-                  alt={`${tag} icon`}
-                  width="16"
-                  height="16"
-                  loading="lazy"
-                  decoding="async"
-                />
-                {tag}
-              </span>
-            ))}
+            {project.data.tags.map((tag) => {
+              const iconPath = getTechIconPath(tag);
+              return (
+                <span class="inline-flex items-center gap-1.5 px-2 py-1 border border-slate-200 dark:border-slate-800 text-[11px] uppercase tracking-widest text-slate-500 font-display">
+                  {iconPath && (
+                    <img
+                      src={iconPath}
+                      alt={`${tag} icon`}
+                      width="16"
+                      height="16"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
+                  {tag}
+                </span>
+              );
+            })}
           </div>
           <h2 class="font-bold text-xl text-slate-900 dark:text-white group-hover:text-primary transition-colors">
             {project.data.title}
