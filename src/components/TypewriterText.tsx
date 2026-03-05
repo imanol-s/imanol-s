@@ -98,9 +98,9 @@ const TypewriterText = ({ text }: { text: string }) => {
       </span>
       <span aria-hidden="true" className="absolute inset-0">
         {displayed}
-        {reducedMotion === false && (
+        {reducedMotion === false ? (
           <span className={`typing-caret ${done ? "hidden-caret" : ""}`} />
-        )}
+        ) : null}
       </span>
     </h1>
   );

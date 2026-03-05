@@ -1,5 +1,9 @@
 import { useEffect, useRef } from "react";
 
+// Horizontal parallels: displaced by the noise filter into organic terrain contours.
+// Lines extend past viewBox edges (-50 to 1050) so displacement never reveals gaps.
+const lineYs = Array.from({ length: 78 }, (_, i) => -20 + i * 14);
+
 /**
  * Fixed animated topographic background — shared across all pages.
  * Handles its own rAF loop + reduced-motion media query internally.
@@ -33,8 +37,8 @@ export default function TopoBackground() {
       // Continuous flow: oscillate baseFrequency with two independent rates.
       // Large range (0.0025–0.0055) makes morphing visually prominent.
       phase += 0.0006;
-      const bfx = (0.004 + Math.sin(phase) * 0.0015).toFixed(5);
-      const bfy = (0.004 + Math.cos(phase * 0.73) * 0.0015).toFixed(5);
+      const bfx = (0.004 + Math.sin(phase) * 0.0015).toFixed(4);
+      const bfy = (0.004 + Math.cos(phase * 0.73) * 0.0015).toFixed(4);
       turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
 
       rafId.current = requestAnimationFrame(tick);
@@ -46,10 +50,6 @@ export default function TopoBackground() {
       cancelAnimationFrame(rafId.current);
     };
   }, []);
-
-  // Horizontal parallels: displaced by the noise filter into organic terrain contours.
-  // Lines extend past viewBox edges (-50 to 1050) so displacement never reveals gaps.
-  const lineYs = Array.from({ length: 78 }, (_, i) => -20 + i * 14);
 
   return (
     <>

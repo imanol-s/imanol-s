@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 
 type DottedGlowBackgroundProps = {
@@ -148,7 +146,10 @@ export const DottedGlowBackground = ({
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const ro = new ResizeObserver(resize);
+    const ro = new ResizeObserver(() => {
+      resize();
+      regenDots();
+    });
     ro.observe(container);
     resize();
 
@@ -233,11 +234,6 @@ export const DottedGlowBackground = ({
       raf = requestAnimationFrame(draw);
     };
 
-    const handleResize = () => {
-      resize();
-      regenDots();
-    };
-
     const observer = new IntersectionObserver(
       (entries) => {
         isVisible = entries[0]?.isIntersecting ?? true;
@@ -246,13 +242,11 @@ export const DottedGlowBackground = ({
     );
     observer.observe(container);
 
-    window.addEventListener("resize", handleResize);
     raf = requestAnimationFrame(draw);
 
     return () => {
       stopped = true;
       cancelAnimationFrame(raf);
-      window.removeEventListener("resize", handleResize);
       observer.disconnect();
       ro.disconnect();
     };
