@@ -9,6 +9,9 @@ import tailwindcss from "@tailwindcss/vite";
 // https://astro.build/config
 export default defineConfig({
     site: 'https://imanols.dev',
+    redirects: {
+        '/blog/Overcoming-Ingraned-Introversion': '/blog/Overcoming-Ingrained-Introversion',
+    },
     integrations: [mdx(), react(), icon(), sitemap()],
     vite: {
         plugins: [tailwindcss()],
