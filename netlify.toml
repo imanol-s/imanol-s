@@ -2,6 +2,30 @@
   command = "npm run build"
   publish = "dist"
 
+[[redirects]]
+  from = "/blog/overcoming-ingraned-introversion"
+  to = "/blog/overcoming-ingrained-introversion/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/overcoming-ingraned-introversion/"
+  to = "/blog/overcoming-ingrained-introversion/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/Overcoming-Ingraned-Introversion"
+  to = "/blog/overcoming-ingrained-introversion/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/Overcoming-Ingraned-Introversion/"
+  to = "/blog/overcoming-ingrained-introversion/"
+  status = 301
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]
