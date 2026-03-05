@@ -41,7 +41,7 @@ const { id, title, description, publishDate, tags, cover } =
           class="text-sm text-slate-500"
           datetime={publishDate.toISOString()}
         >
-          {publishDate.toDateString()}
+          {publishDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
         </time>
       </div>
       <span class="text-slate-500"> &middot; </span>
