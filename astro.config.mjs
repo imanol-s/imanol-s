@@ -11,6 +11,7 @@ export default defineConfig({
     site: 'https://imanols.dev',
     redirects: {
         '/blog/Overcoming-Ingraned-Introversion': '/blog/Overcoming-Ingrained-Introversion',
+        '/blog/overcoming-ingraned-introversion': '/blog/overcoming-ingrained-introversion',
     },
     integrations: [mdx(), react(), icon(), sitemap()],
     vite: {
