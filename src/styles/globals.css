@@ -358,38 +358,40 @@
 }
 
 /* ── Blog prose overrides (replaces old theme() references) ──────── */
-.prose {
-  color: #334155;
-  --tw-prose-headings: #334155;
-  --tw-prose-p: #334155;
-  --tw-prose-a: #64748b;
-  --tw-prose-blockquote: #64748b;
-  --tw-prose-figcaption: #64748b;
-  --tw-prose-strong: #334155;
-  --tw-prose-code: #334155;
-  --tw-prose-ol: #334155;
-  --tw-prose-ul: #334155;
-  --tw-prose-li-marker: #64748b;
-  --tw-prose-hr: #64748b;
-}
+@layer utilities {
+  .prose {
+    color: #334155;
+    --tw-prose-headings: #334155;
+    --tw-prose-p: #334155;
+    --tw-prose-a: #64748b;
+    --tw-prose-blockquote: #64748b;
+    --tw-prose-figcaption: #64748b;
+    --tw-prose-strong: #334155;
+    --tw-prose-code: #334155;
+    --tw-prose-ol: #334155;
+    --tw-prose-ul: #334155;
+    --tw-prose-li-marker: #64748b;
+    --tw-prose-hr: #64748b;
+  }
 
-.dark .prose {
-  color: #e2e8f0;
-  --tw-prose-headings: #f1f5f9;
-  --tw-prose-p: #f1f5f9;
-  --tw-prose-a: #94a3b8;
-  --tw-prose-blockquote: #64748b;
-  --tw-prose-figcaption: #f1f5f9;
-  --tw-prose-strong: #f1f5f9;
-  --tw-prose-code: #f1f5f9;
-  --tw-prose-ol: #f1f5f9;
-  --tw-prose-ul: #f1f5f9;
-  --tw-prose-li-marker: #64748b;
-  --tw-prose-hr: #64748b;
-}
+  .dark .prose {
+    color: #e2e8f0;
+    --tw-prose-headings: #f1f5f9;
+    --tw-prose-p: #f1f5f9;
+    --tw-prose-a: #94a3b8;
+    --tw-prose-blockquote: #64748b;
+    --tw-prose-figcaption: #f1f5f9;
+    --tw-prose-strong: #f1f5f9;
+    --tw-prose-code: #f1f5f9;
+    --tw-prose-ol: #f1f5f9;
+    --tw-prose-ul: #f1f5f9;
+    --tw-prose-li-marker: #64748b;
+    --tw-prose-hr: #64748b;
+  }
 
-.prose img {
-  border-radius: 1rem;
+  .prose img {
+    border-radius: 1rem;
+  }
 }
 
 /* ── Code block styles (from original globals) ───────────────────── */
