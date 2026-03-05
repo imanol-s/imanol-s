@@ -84,14 +84,8 @@ const TypewriterText = ({ text }: { text: string }) => {
 
   return (
     <h1
-      className="relative cursor-pointer select-none text-5xl md:text-7xl font-display font-bold mb-4 leading-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary rounded"
-      role="button"
+      className="relative text-5xl md:text-7xl font-display font-bold mb-4 leading-tight rounded"
       aria-label={text}
-      onClick={skip}
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") skip();
-      }}
     >
       <span aria-hidden="true" className="invisible">
         {text}
@@ -102,6 +96,17 @@ const TypewriterText = ({ text }: { text: string }) => {
           <span className={`typing-caret ${done ? "hidden-caret" : ""}`} />
         ) : null}
       </span>
+      {!done && (
+        <button
+          type="button"
+          className="sr-only focus:not-sr-only focus:absolute focus:inset-0 focus:z-10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+          aria-label="Skip typewriter animation"
+          onClick={skip}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") skip();
+          }}
+        />
+      )}
     </h1>
   );
 };

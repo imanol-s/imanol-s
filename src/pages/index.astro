@@ -44,19 +44,19 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
         <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-start group">
-          <h3 class="font-display font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
+          <p class="font-display font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
             Data science & analytics
-          </h3>
+          </p>
         </div>
         <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-start group">
-          <h3 class="font-display font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
+          <p class="font-display font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
             Automation & tooling
-          </h3>
+          </p>
         </div>
         <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-start group">
-          <h3 class="font-display font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
+          <p class="font-display font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
             Systems & reliability
-          </h3>
+          </p>
         </div>
       </div>
     </div>
@@ -99,7 +99,7 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
   </section>
 
   <!-- ═══ PROJECTS ═══ -->
-  <section class="mb-32" id="projects">
+  <section class="mb-32" id="projects" aria-label="Projects">
     <div class="flex items-end justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
       <div>
         <h2 class="text-3xl font-display font-bold">PROJECTS</h2>
@@ -151,7 +151,7 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
   </section>
 
   <!-- ═══ EXPERIENCE + TECH SPECS ═══ -->
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-32" id="experience">
+  <section class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-32" id="experience" aria-label="Experience">
     <div class="lg:col-span-8">
       <h2 class="text-2xl font-display font-bold mb-8 flex items-center gap-4 uppercase">
         Professional Log
@@ -169,9 +169,9 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
               <div class="text-xs font-display text-primary mb-1 font-bold">
                 {job.startDate ? fmtDate(job.startDate) : ''} — {job.currentJob ? 'PRESENT' : job.endDate ? fmtDate(job.endDate) : ''}
               </div>
-              <h4 class="text-xl font-bold text-slate-900 dark:text-white">
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white">
                 {job.title}
-              </h4>
+              </h3>
               <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">
                 {job.company} / {job.location}
               </p>
@@ -197,9 +197,9 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
               <div class="text-xs font-display text-primary mb-1 font-bold">
                 {edu.endDate ? fmtDate(edu.endDate) : ''}
               </div>
-              <h4 class="text-xl font-bold uppercase tracking-tight text-slate-900 dark:text-white">
+              <h3 class="text-xl font-bold uppercase tracking-tight text-slate-900 dark:text-white">
                 {edu.title}
-              </h4>
+              </h3>
               <p class="text-slate-600 dark:text-slate-400 text-sm">
                 {edu.school} / {edu.location}
               </p>
@@ -217,9 +217,9 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
       <div class="space-y-8">
         <!-- Core Languages -->
         <div>
-          <h5 class="text-[12px] uppercase tracking-widest text-slate-500 mb-3 font-bold">
+          <h3 class="text-[12px] uppercase tracking-widest text-slate-500 mb-3 font-bold">
             Core Languages
-          </h5>
+          </h3>
           <div class="grid grid-cols-2 gap-3">
             {coreLanguages.map((tech) => {
               const iconPath = getTechIconPath(tech);
@@ -245,9 +245,9 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
 
         <!-- Competencies -->
         <div>
-          <h5 class="text-[12px] uppercase tracking-widest text-slate-500 mb-4 font-bold">
+          <h3 class="text-[12px] uppercase tracking-widest text-slate-500 mb-4 font-bold">
             Competencies
-          </h5>
+          </h3>
           <div class="font-display">
             <ul class="flex flex-col gap-2">
               <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/50 hover:border-primary transition-colors cursor-default">
@@ -268,9 +268,9 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
 
         <!-- Communication -->
         <div class="pt-2">
-          <h5 class="text-[12px] uppercase tracking-widest text-slate-500 mb-3 font-bold">
+          <h3 class="text-[12px] uppercase tracking-widest text-slate-500 mb-3 font-bold">
             Communication
-          </h5>
+          </h3>
           <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/50 p-4 font-display text-sm">
             <div class="flex justify-between items-center mb-2">
               <span class="text-slate-700 dark:text-slate-300">ENGLISH</span>
@@ -284,10 +284,10 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- ═══ ABOUT ═══ -->
-  <section id="about" class="mb-32">
+  <section id="about" class="mb-32" aria-label="About">
     <div class="flex items-end justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
       <h2 class="text-3xl font-display font-bold">ABOUT ME</h2>
     </div>
@@ -300,27 +300,29 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
           clean implementation, reproducible analysis, and collaborating
           across teams to solve practical data and engineering problems.
         </p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900">
-            <h3 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
+            <dt class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
               Location
-            </h3>
-            <p class="font-display text-sm text-slate-800 dark:text-slate-200">
+            </dt>
+            <dd class="font-display text-sm text-slate-800 dark:text-slate-200">
               42.94&deg; N, 78.88&deg; W
-            </p>
+            </dd>
           </div>
           <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900">
-            <h3 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
+            <dt class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
               Contact
-            </h3>
-            <a
-              href={`mailto:${ME.contactInfo.email}`}
-              class="font-display text-sm text-primary drawing-hover focus-ring rounded-sm"
-            >
-              {ME.contactInfo.email}
-            </a>
+            </dt>
+            <dd>
+              <a
+                href={`mailto:${ME.contactInfo.email}`}
+                class="font-display text-sm text-primary drawing-hover focus-ring rounded-sm"
+              >
+                {ME.contactInfo.email}
+              </a>
+            </dd>
           </div>
-        </div>
+        </dl>
       </div>
     </div>
   </section>

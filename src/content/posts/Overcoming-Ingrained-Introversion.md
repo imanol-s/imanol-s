@@ -10,7 +10,7 @@ tags:
 description: Embracing discomfort, building confidence, and finding my voice.
 cover:
   src: "./images/under_construction/introversion.webp"
-  alt: "./images/under_construction/introversion.webp"
+  alt: "Abstract illustration representing introversion and quiet reflection"
 ---
 
 # Introversion

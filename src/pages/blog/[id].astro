@@ -20,7 +20,7 @@ const {title, description, tags, cover} = post.data;
 
 const {Content} = await render(post);
 ---
-<Layout title={title} description={description} imageOg={cover.src.src} scrollSmooth={true}>
+<Layout title={title} description={description} imageOg={new URL(cover.src.src, Astro.site).href} scrollSmooth={true}>
     <>
         <div class="flex justify-center mt-10">
             <BackBtn/>
@@ -33,7 +33,7 @@ const {Content} = await render(post);
         </div>
         <div class="cad-border overflow-hidden">
             <Image transition:name={`${post.id}-image`} class="w-full h-[400px] object-cover" src={cover.src}
-                   alt="Main project image"/>
+                   alt={cover.alt ?? title}/>
         </div>
         <article id="article" class="mt-8 prose dark:prose-invert">
             <Content/>

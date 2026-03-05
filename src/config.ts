@@ -1,7 +1,7 @@
 export const SITE = {
   website: "https://imanols.dev", // replace this with your deployed domain
   title: "Imanol 'Oman' Saldana",
-  description: "Imanol's showcase",
+  description: "Imanol Saldana — software engineer portfolio featuring projects in data science, robotics, and full-stack development.",
   tags: ["portfolio", "Resume cv", "Astro"],
   ogImage: "/og-image.webp",
   logo: "frog",

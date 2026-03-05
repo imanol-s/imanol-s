@@ -242,11 +242,23 @@ export const DottedGlowBackground = ({
     );
     observer.observe(container);
 
-    raf = requestAnimationFrame(draw);
+    const motionMql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!motionMql.matches) {
+      raf = requestAnimationFrame(draw);
+    }
+    const onMotionChange = () => {
+      if (motionMql.matches) {
+        cancelAnimationFrame(raf);
+      } else {
+        raf = requestAnimationFrame(draw);
+      }
+    };
+    motionMql.addEventListener("change", onMotionChange);
 
     return () => {
       stopped = true;
       cancelAnimationFrame(raf);
+      motionMql.removeEventListener("change", onMotionChange);
       observer.disconnect();
       ro.disconnect();
     };
