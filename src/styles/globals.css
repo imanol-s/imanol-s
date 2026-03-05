@@ -141,7 +141,11 @@
       linear-gradient(rgba(100, 116, 139, 0.1) 1px, transparent 1px),
       linear-gradient(90deg, rgba(100, 116, 139, 0.1) 1px, transparent 1px);
     background-size: 20px 20px;
-    transition: background-image 0.5s ease;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .grid-pulse:hover {
+      transition: background-image 0.5s ease;
+    }
   }
   .cta-primary {
     display: inline-flex;
