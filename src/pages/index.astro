@@ -169,9 +169,9 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
               <div class="text-xs font-display text-primary mb-1 font-bold">
                 {job.startDate ? fmtDate(job.startDate) : ''} — {job.currentJob ? 'PRESENT' : job.endDate ? fmtDate(job.endDate) : ''}
               </div>
-              <h4 class="text-xl font-bold text-slate-900 dark:text-white">
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white">
                 {job.title}
-              </h4>
+              </h3>
               <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">
                 {job.company} / {job.location}
               </p>
@@ -197,9 +197,9 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
               <div class="text-xs font-display text-primary mb-1 font-bold">
                 {edu.endDate ? fmtDate(edu.endDate) : ''}
               </div>
-              <h4 class="text-xl font-bold uppercase tracking-tight text-slate-900 dark:text-white">
+              <h3 class="text-xl font-bold uppercase tracking-tight text-slate-900 dark:text-white">
                 {edu.title}
-              </h4>
+              </h3>
               <p class="text-slate-600 dark:text-slate-400 text-sm">
                 {edu.school} / {edu.location}
               </p>
@@ -217,9 +217,9 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
       <div class="space-y-8">
         <!-- Core Languages -->
         <div>
-          <h5 class="text-[12px] uppercase tracking-widest text-slate-500 mb-3 font-bold">
+          <h3 class="text-[12px] uppercase tracking-widest text-slate-500 mb-3 font-bold">
             Core Languages
-          </h5>
+          </h3>
           <div class="grid grid-cols-2 gap-3">
             {coreLanguages.map((tech) => {
               const iconPath = getTechIconPath(tech);
@@ -245,9 +245,9 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
 
         <!-- Competencies -->
         <div>
-          <h5 class="text-[12px] uppercase tracking-widest text-slate-500 mb-4 font-bold">
+          <h3 class="text-[12px] uppercase tracking-widest text-slate-500 mb-4 font-bold">
             Competencies
-          </h5>
+          </h3>
           <div class="font-display">
             <ul class="flex flex-col gap-2">
               <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/50 hover:border-primary transition-colors cursor-default">
@@ -268,9 +268,9 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
 
         <!-- Communication -->
         <div class="pt-2">
-          <h5 class="text-[12px] uppercase tracking-widest text-slate-500 mb-3 font-bold">
+          <h3 class="text-[12px] uppercase tracking-widest text-slate-500 mb-3 font-bold">
             Communication
-          </h5>
+          </h3>
           <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/50 p-4 font-display text-sm">
             <div class="flex justify-between items-center mb-2">
               <span class="text-slate-700 dark:text-slate-300">ENGLISH</span>
