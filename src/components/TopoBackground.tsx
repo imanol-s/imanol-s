@@ -37,8 +37,13 @@ export default function TopoBackground() {
       // Continuous flow: oscillate baseFrequency with two independent rates.
       // Large range (0.0025–0.0055) makes morphing visually prominent.
       phase += 0.0006;
-      const bfx = (0.004 + Math.sin(phase) * 0.0015).toFixed(4);
-      const bfy = (0.004 + Math.cos(phase * 0.73) * 0.0015).toFixed(4);
+      // toFixed(5) is intentional — do NOT reduce precision here.
+      // Per-frame delta is ~0.0000009 (phase step 0.0006 × amplitude 0.0015).
+      // At toFixed(4) the attribute stays identical for ~111 frames before
+      // jumping, producing visible stutter. 5 decimal places keeps each step
+      // (~0.00001) small enough to appear continuous at 60 fps.
+      const bfx = (0.004 + Math.sin(phase) * 0.0015).toFixed(5);
+      const bfy = (0.004 + Math.cos(phase * 0.73) * 0.0015).toFixed(5);
       turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
 
       rafId.current = requestAnimationFrame(tick);
