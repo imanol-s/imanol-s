@@ -11,12 +11,31 @@ export default function TopoBackground() {
   const [dims, setDims] = useState({ width: 2000, height: 2000 });
 
   useEffect(() => {
-    const update = () => {
+    const updateDims = () => {
       setDims({ width: window.innerWidth * 2, height: window.innerHeight * 2 });
     };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+
+    let resizeTimeoutId: number | undefined;
+
+    const handleResize = () => {
+      if (resizeTimeoutId !== undefined) {
+        window.clearTimeout(resizeTimeoutId);
+      }
+      resizeTimeoutId = window.setTimeout(() => {
+        updateDims();
+        resizeTimeoutId = undefined;
+      }, 150);
+    };
+
+    updateDims();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      if (resizeTimeoutId !== undefined) {
+        window.clearTimeout(resizeTimeoutId);
+      }
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
