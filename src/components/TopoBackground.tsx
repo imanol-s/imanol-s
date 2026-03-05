@@ -99,8 +99,8 @@ export default function TopoBackground() {
   }, []);
 
   const lineYs = Array.from(
-    { length: Math.ceil(dims.height / 14) + 3 },
-    (_, i) => -20 + i * 14,
+    { length: Math.ceil(dims.height / 24) + 3 },
+    (_, i) => -20 + i * 24,
   );
 
   return (
@@ -133,15 +133,15 @@ export default function TopoBackground() {
                 <feTurbulence
                   ref={turbulenceRef}
                   type="fractalNoise"
-                  baseFrequency="0.004"
-                  numOctaves={6}
+                  baseFrequency="0.002"
+                  numOctaves={2}
                   seed={seed}
                   result="noise"
                 />
                 <feDisplacementMap
                   in="SourceGraphic"
                   in2="noise"
-                  scale={280}
+                  scale={380}
                   xChannelSelector="R"
                   yChannelSelector="G"
                   result="displaced"
@@ -154,8 +154,8 @@ export default function TopoBackground() {
               filter="url(#topo-warp)"
               fill="none"
               stroke="var(--color-accent)"
-              strokeOpacity="0.22"
-              strokeWidth="0.8"
+              strokeOpacity="0.40"
+              strokeWidth="1.2"
             >
               {lineYs.map((y) => (
                 <line key={y} x1={-50} y1={y} x2={dims.width + 50} y2={y} />
