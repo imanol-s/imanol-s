@@ -415,5 +415,10 @@ code {
   min-width: 100%;
   line-height: 1.7;
   font-size: 0.875rem;
-  transition: color 0.5s;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  code {
+    transition: color 0.5s;
+  }
 }
