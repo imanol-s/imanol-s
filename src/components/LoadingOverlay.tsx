@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { DottedGlowBackground } from "./ui/dotted-glow-background";
 
 export default function LoadingOverlay() {
-  const [active, setActive] = useState(true);
+  const [active, setActive] = useState(() => typeof window !== "undefined");
   const [fading, setFading] = useState(false);
   const fadeTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const pageLoadTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);

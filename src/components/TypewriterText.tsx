@@ -6,7 +6,7 @@ const SESSION_KEY = "heroNameTyped";
 const OVERLAY_CLEAR_MS = 1200;
 
 const TypewriterText = ({ text }: { text: string }) => {
-  const [displayed, setDisplayed] = useState("");
+  const [displayed, setDisplayed] = useState(text);
   const [done, setDone] = useState(false);
   const [reducedMotion, setReducedMotion] = useState<boolean | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
