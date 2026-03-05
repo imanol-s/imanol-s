@@ -300,27 +300,29 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
           clean implementation, reproducible analysis, and collaborating
           across teams to solve practical data and engineering problems.
         </p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900">
-            <h3 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
+            <dt class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
               Location
-            </h3>
-            <p class="font-display text-sm text-slate-800 dark:text-slate-200">
+            </dt>
+            <dd class="font-display text-sm text-slate-800 dark:text-slate-200">
               42.94&deg; N, 78.88&deg; W
-            </p>
+            </dd>
           </div>
           <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900">
-            <h3 class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
+            <dt class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
               Contact
-            </h3>
-            <a
-              href={`mailto:${ME.contactInfo.email}`}
-              class="font-display text-sm text-primary drawing-hover focus-ring rounded-sm"
-            >
-              {ME.contactInfo.email}
-            </a>
+            </dt>
+            <dd>
+              <a
+                href={`mailto:${ME.contactInfo.email}`}
+                class="font-display text-sm text-primary drawing-hover focus-ring rounded-sm"
+              >
+                {ME.contactInfo.email}
+              </a>
+            </dd>
           </div>
-        </div>
+        </dl>
       </div>
     </div>
   </section>
