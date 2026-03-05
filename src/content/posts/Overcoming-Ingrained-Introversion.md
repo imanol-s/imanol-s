@@ -33,8 +33,8 @@ As a Computer Science major, I was well aware that technical skills often take c
 Small, intentional shifts:
 
 - **Prepared Participation**: I started preparing talking points before meetings to feel more confident speaking up. This would include taking notes, transcribing meetings, and tracking domain conversations.
-- **One-on-One Connections**: I am working on a short one-on-one chats with my manager to build rapport in a low-pressure setting. Being clear and concicse about my personal goals vertically align my experience directly.
-- **Visible Wins**: I shared and asked for reccomendations on improving my communication style.
+- **One-on-One Connections**: I am working on a short one-on-one chats with my manager to build rapport in a low-pressure setting. Being clear and concise about my personal goals vertically align my experience directly.
+- **Visible Wins**: I shared and asked for recommendations on improving my communication style.
 
 ## Embracing Discomfort
 
@@ -42,7 +42,7 @@ Growth rarely happens in comfort zones. I volunteered to lead a sprint retrospec
 
 ## What I Learned
 
-- **Introversion is not a barrier**—but it does require strategy in environments that reward extroverted behaviors. Removing the fricton takes conscious effort.
+- **Introversion is not a barrier**—but it does require strategy in environments that reward extroverted behaviors. Removing the friction takes conscious effort.
 - **Empathy is a strength**—it helped me listen deeply, understand team dynamics, and lead with intention.
 - **Visibility matters**—not for ego, but for impact.
 
