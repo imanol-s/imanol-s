@@ -66,7 +66,7 @@ const { title, description } = Astro.props;
 
 ### XSS Prevention
 
-**Never use `innerHTML` with user-controlled data** — it creates DOM-based XSS vulnerabilities where malicious HTML/JavaScript can be injected.
+**Never use `innerHTML` or Astro's `set:html` directive with user-controlled data** — it creates DOM-based XSS vulnerabilities where malicious HTML/JavaScript can be injected.
 
 ```typescript
 // VULNERABLE: Never do this
@@ -112,6 +112,22 @@ function displayName(name: string) {
 - Use `createElement()` + `textContent` for structured content with user input
 - Only use `innerHTML` with static, trusted content (e.g., hardcoded strings)
 - Never interpolate user input directly into HTML strings
+
+**In Astro components, use `{}` interpolation — never `set:html` with dynamic data**:
+
+```astro
+<!-- ❌ NEVER DO THIS -->
+<div set:html={userInput} />
+
+<!-- ✅ SAFE: Astro automatically escapes expressions -->
+<div>{userInput}</div>
+<p>Welcome, {userName}!</p>
+```
+
+**Exception**: `innerHTML` / `set:html` is acceptable only with:
+- Hardcoded, static HTML strings
+- Content sanitized by a trusted library (e.g., DOMPurify)
+- Content from your own Astro content collections that you fully control
 
 ## Testing Guidelines
 
