@@ -1,22 +1,58 @@
 import { useEffect, useRef, useState } from "react";
 
+/** Retrieve or generate a session-scoped seed for feTurbulence. */
+function getSessionSeed(): number {
+  const key = "topo-seed";
+  const stored = sessionStorage.getItem(key);
+  if (stored !== null) return parseInt(stored, 10);
+  const seed = Math.floor(Math.random() * 10000);
+  sessionStorage.setItem(key, String(seed));
+  return seed;
+}
+
 /**
  * Fixed animated topographic background — shared across all pages.
  * Handles its own rAF loop + reduced-motion media query internally.
+ * Terrain shape is randomised once per session via a sessionStorage seed.
  */
 export default function TopoBackground() {
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const rafId = useRef(0);
   const reducedMotion = useRef(false);
   const [dims, setDims] = useState({ width: 2000, height: 2000 });
+  // Initialised to 2 (SSR-safe default); replaced with session seed on mount.
+  const [seed, setSeed] = useState(2);
 
   useEffect(() => {
-    const update = () => {
+    const updateDims = () => {
       setDims({ width: window.innerWidth * 2, height: window.innerHeight * 2 });
     };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+
+    let resizeTimeoutId: number | undefined;
+
+    const handleResize = () => {
+      if (resizeTimeoutId !== undefined) {
+        window.clearTimeout(resizeTimeoutId);
+      }
+      resizeTimeoutId = window.setTimeout(() => {
+        updateDims();
+        resizeTimeoutId = undefined;
+      }, 150);
+    };
+
+    updateDims();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      if (resizeTimeoutId !== undefined) {
+        window.clearTimeout(resizeTimeoutId);
+      }
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    setSeed(getSessionSeed());
   }, []);
 
   useEffect(() => {
@@ -63,8 +99,8 @@ export default function TopoBackground() {
   }, []);
 
   const lineYs = Array.from(
-    { length: Math.ceil(dims.height / 14) + 3 },
-    (_, i) => -20 + i * 14,
+    { length: Math.ceil(dims.height / 24) + 3 },
+    (_, i) => -20 + i * 24,
   );
 
   return (
@@ -85,7 +121,7 @@ export default function TopoBackground() {
             <defs>
               {/*
                * Large filter region prevents clipping when lines are displaced
-               * far from their original position (scale=280 can move ±140 units).
+               * far from their original position (scale=380 can move ±190 units).
                */}
               <filter
                 id="topo-warp"
@@ -97,15 +133,15 @@ export default function TopoBackground() {
                 <feTurbulence
                   ref={turbulenceRef}
                   type="fractalNoise"
-                  baseFrequency="0.004"
-                  numOctaves={6}
-                  seed={2}
+                  baseFrequency="0.002"
+                  numOctaves={2}
+                  seed={seed}
                   result="noise"
                 />
                 <feDisplacementMap
                   in="SourceGraphic"
                   in2="noise"
-                  scale={280}
+                  scale={380}
                   xChannelSelector="R"
                   yChannelSelector="G"
                   result="displaced"
@@ -118,8 +154,8 @@ export default function TopoBackground() {
               filter="url(#topo-warp)"
               fill="none"
               stroke="var(--color-accent)"
-              strokeOpacity="0.22"
-              strokeWidth="0.8"
+              strokeOpacity="0.40"
+              strokeWidth="1.2"
             >
               {lineYs.map((y) => (
                 <line key={y} x1={-50} y1={y} x2={dims.width + 50} y2={y} />
