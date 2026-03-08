@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { DottedGlowBackground } from "./ui/dotted-glow-background";
 
 export default function LoadingOverlay() {
-  const [active, setActive] = useState(() => typeof window !== "undefined");
+  const [active, setActive] = useState(false);
   const [fading, setFading] = useState(false);
   const fadeTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const pageLoadTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -21,12 +21,10 @@ export default function LoadingOverlay() {
     setFading(false);
   }, []);
 
-  // Initial load: fade out after short delay
+  // Initial load: activate overlay then fade out after short delay
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setActive(false);
-      return;
-    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    setActive(true);
     const timer = setTimeout(fadeOut, 600);
     return () => clearTimeout(timer);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

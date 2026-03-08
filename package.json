@@ -5,6 +5,9 @@
   "description": "Imanol Saldana — personal portfolio",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "author": {
     "name": "Imanol Saldana"
   },
