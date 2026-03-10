@@ -79,7 +79,7 @@ const workExperience: WorkExperience[] = [
     currentJob: false,
   },
   {
-    title: "Master Materials Data Steward Intern",
+    title: "Material Master Data Steward Intern",
     startDate: "2025-05-01",
     endDate: "2025-08-31",
     company: "Freeman",

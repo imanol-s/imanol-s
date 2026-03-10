@@ -32,5 +32,7 @@ Instructions for AI coding assistants working with this repository.
 - Nav links use `text-primary` base with `hover:text-white` (muted → bright on hover)
 - Card titles stay bright on hover; interactivity signaled via border and image effects
 - Build command: `npm run build` runs `astro check && astro build`; preview on port 4321
+- Netlify pins Node 20 via `NODE_VERSION` in `netlify.toml`
+- Fonts self-hosted via `@fontsource-variable` (Inter + JetBrains Mono) — no Google Fonts CDN
 - Project subagents in `.cursor/agents/`: `coding-specialist` (mandatory for code changes), `software-architect`, `performance-optimizer`
 - Experience card descriptions render in full with no truncation

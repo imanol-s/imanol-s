@@ -61,7 +61,8 @@ const { title, description } = Astro.props;
 
 - Never commit secrets or API keys; no `.env` files are used in this project
 - External links use `target="_blank"` with `rel="noopener noreferrer"`
-- Security headers are set in `netlify.toml` (`X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`)
+- Security headers are set in `netlify.toml` (`X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, `Content-Security-Policy`)
+- Netlify build environment pins Node 20 via `NODE_VERSION` in `netlify.toml`
 - Resume PDF is served as a static file from `public/` — do not inline sensitive personal data in source
 
 ### XSS Prevention
