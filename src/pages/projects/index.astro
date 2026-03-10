@@ -3,12 +3,13 @@ import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import { getTechIconPath } from '../../data/techIcons';
+import { SITE } from '../../config';
 
 const allProjects = (await getCollection('projects'))
   .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
 ---
 
-<Layout title="Imanol | Projects" description="A list of my projects" scrollSmooth={false}>
+<Layout title={`${SITE.logoText} | Projects`} description="A list of my projects" scrollSmooth={false}>
   <section class="border-b border-slate-200 dark:border-slate-800 pb-4 mb-8">
     <h1 class="text-3xl font-display font-bold mb-2">PROJECTS</h1>
     <p class="text-slate-500 font-display text-sm">{allProjects.length} projects</p>

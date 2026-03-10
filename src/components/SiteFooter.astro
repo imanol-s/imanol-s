@@ -1,5 +1,5 @@
 ---
-import { ME, SOCIALS } from '../config';
+import { ME, SITE, SOCIALS } from '../config';
 
 const email = ME.contactInfo.email;
 const github = SOCIALS.find(s => s.name === 'GitHub');
@@ -49,9 +49,9 @@ const linkedin = SOCIALS.find(s => s.name === 'LinkedIn');
     </div>
   </div>
   <div class="mt-24 flex justify-between items-center text-[10px] uppercase tracking-widest text-slate-500 font-display font-medium">
-    <span>&copy; {new Date().getFullYear()} Imanol Saldana</span>
+    <span>&copy; {new Date().getFullYear()} {SITE.author}</span>
     <span>Portfolio</span>
-    <span>38.25&deg; N, 122.41&deg; W</span>
+    <span>{ME.location}</span>
   </div>
   </div>
 </footer>

@@ -1,10 +1,14 @@
 ---
+import { ME, SITE } from '../config';
+
 const pathname = Astro.url.pathname;
 const isHome = pathname === "/";
 
 function sectionHref(anchor: string) {
   return isHome ? anchor : `/${anchor}`;
 }
+
+const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 ---
 
 <header class="sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800 bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)]">
@@ -15,10 +19,10 @@ function sectionHref(anchor: string) {
     <a
       href="/"
       class="flex items-center space-x-2 font-display font-bold text-lg tracking-tighter focus-ring rounded-sm"
-      aria-label="Home — Imanol Saldana"
+      aria-label={`Home — ${ME.name}`}
     >
       <span class="text-primary">[</span>
-      <span>IMANOL</span>
+      <span>{SITE.logoText.toUpperCase()}</span>
       <span class="text-primary">]</span>
     </a>
 
@@ -50,7 +54,7 @@ function sectionHref(anchor: string) {
       </a>
       <a
         class="cta-primary focus-ring"
-        href="/Saldana.Resume.pdf"
+        href={resumeHref}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -78,7 +82,7 @@ function sectionHref(anchor: string) {
       <a class="text-primary hover:text-white transition-colors focus-ring rounded-sm" href={sectionHref("#experience")}>EXPERIENCE</a>
       <a class="text-primary hover:text-white transition-colors focus-ring rounded-sm" href={sectionHref("#about")}>ABOUT</a>
       <a class="text-primary hover:text-white transition-colors focus-ring rounded-sm" href="/blog">BLOG</a>
-      <a class="cta-primary focus-ring w-fit" href="/Saldana.Resume.pdf" target="_blank" rel="noopener noreferrer">
+      <a class="cta-primary focus-ring w-fit" href={resumeHref} target="_blank" rel="noopener noreferrer">
         RESUME
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       </a>

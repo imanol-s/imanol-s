@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import TypewriterText from '../components/TypewriterText.tsx';
-import { ME, SOCIALS } from '../config';
+import { ME, SITE, SOCIALS } from '../config';
 import workExperience from '../data/Jobs';
 import education from '../data/education';
 import { getTechIconPath } from '../data/techIcons';
@@ -15,7 +15,6 @@ const allProjects = (await getCollection('projects'))
 const github = SOCIALS.find(s => s.name === 'GitHub');
 const linkedin = SOCIALS.find(s => s.name === 'LinkedIn');
 
-// Format date for timeline
 function fmtDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-US', {
     month: 'short',
@@ -24,40 +23,29 @@ function fmtDate(dateStr: string): string {
   }).toUpperCase();
 }
 
-// First 3 jobs for the timeline
 const timelineJobs = workExperience.slice(0, 3);
 const edu = education[0];
-const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
 ---
 
-<Layout title="Imanol Saldana Portfolio" description="Building data pipelines, automated validation tools, and internal systems to ensure data integrity and operational efficiency." scrollSmooth={true}>
+<Layout title={`${SITE.author} | Portfolio`} description={ME.aboutMe} scrollSmooth={true}>
   <!-- ═══ HERO ═══ -->
   <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32" aria-label="Hero">
     <div class="lg:col-span-7">
-      <TypewriterText client:load text="Imanol Saldana" />
+      <TypewriterText client:load text={ME.name} />
       <div class="text-lg md:text-xl font-display text-primary mb-8 tracking-tight">
-        Data Analytics &bull; Data Science &bull; Software
+        {ME.profession.join(' \u2022 ')}
       </div>
       <p class="text-xl text-slate-700 dark:text-slate-200 max-w-2xl mb-10 leading-relaxed font-light">
-        Building data pipelines, automated validation tools, and internal
-        systems to ensure data integrity and operational efficiency.
+        {ME.aboutMe}
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-        <div class="p-5 cad-border bg-slate-50 dark:bg-slate-900 flex flex-col justify-center items-start group">
-          <p class="font-display font-bold text-slate-900 dark:text-white mb-1">
-            Data science & analytics
-          </p>
-        </div>
-        <div class="p-5 cad-border bg-slate-50 dark:bg-slate-900 flex flex-col justify-center items-start group">
-          <p class="font-display font-bold text-slate-900 dark:text-white mb-1">
-            Automation & tooling
-          </p>
-        </div>
-        <div class="p-5 cad-border bg-slate-50 dark:bg-slate-900 flex flex-col justify-center items-start group">
-          <p class="font-display font-bold text-slate-900 dark:text-white mb-1">
-            Systems & reliability
-          </p>
-        </div>
+        {ME.focusAreas.map((area) => (
+          <div class="p-5 cad-border bg-slate-50 dark:bg-slate-900 flex flex-col justify-center items-start group">
+            <p class="font-display font-bold text-slate-900 dark:text-white mb-1">
+              {area}
+            </p>
+          </div>
+        ))}
       </div>
     </div>
     <div class="lg:col-span-5 flex justify-center">
@@ -65,7 +53,7 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
         <div class="absolute -inset-4 border border-dashed border-primary/40 group-hover:scale-105 transition-transform duration-700"></div>
         <Image
           src={profileImage}
-          alt="Imanol Saldana portrait"
+          alt={`${ME.name} portrait`}
           class="w-64 h-64 grayscale contrast-125 object-cover cad-border brightness-90"
           width={256}
           height={256}
@@ -224,7 +212,7 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
             Core Languages
           </h3>
           <div class="grid grid-cols-2 gap-3">
-            {coreLanguages.map((tech) => {
+            {ME.coreLanguages.map((tech) => {
               const iconPath = getTechIconPath(tech);
               return (
                 <div class="p-3 cad-border bg-slate-50 dark:bg-slate-900 flex items-center gap-2 hover:bg-white dark:hover:bg-slate-800 transition-colors group">
@@ -251,22 +239,13 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
           <h3 class="text-xs uppercase tracking-widest text-slate-500 mb-4 font-bold">
             Competencies
           </h3>
-          <div class="font-display">
-            <ul class="flex flex-col gap-2">
+          <ul class="flex flex-col gap-2 font-display">
+            {ME.competencies.map((item) => (
               <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary transition-colors cursor-default">
-                <span class="text-sm text-slate-800 dark:text-slate-200 tracking-tight font-medium">Data Governance</span>
+                <span class="text-sm text-slate-800 dark:text-slate-200 tracking-tight font-medium">{item}</span>
               </li>
-              <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary transition-colors cursor-default">
-                <span class="text-sm text-slate-800 dark:text-slate-200 tracking-tight font-medium">Simulation & Robotics</span>
-              </li>
-              <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary transition-colors cursor-default">
-                <span class="text-sm text-slate-800 dark:text-slate-200 tracking-tight font-medium">ERP (SAP S/4HANA)</span>
-              </li>
-              <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary transition-colors cursor-default">
-                <span class="text-sm text-slate-800 dark:text-slate-200 tracking-tight font-medium">Predictive Modeling</span>
-              </li>
-            </ul>
-          </div>
+            ))}
+          </ul>
         </div>
 
         <!-- Communication -->
@@ -275,14 +254,12 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
             Communication
           </h3>
           <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 font-display text-sm">
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-slate-700 dark:text-slate-200">ENGLISH</span>
-              <span class="text-primary font-bold text-xs">NATIVE</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-slate-700 dark:text-slate-200">SPANISH</span>
-              <span class="text-primary font-bold text-xs">BILINGUAL</span>
-            </div>
+            {ME.languages.map((lang, i) => (
+              <div class:list={["flex justify-between items-center", { "mb-2": i < ME.languages.length - 1 }]}>
+                <span class="text-slate-700 dark:text-slate-200">{lang.name.toUpperCase()}</span>
+                <span class="text-primary font-bold text-xs">{lang.level.toUpperCase()}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -297,19 +274,27 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
       <div class="lg:col-span-8">
         <p class="text-xl text-slate-700 dark:text-slate-200 leading-relaxed font-light mb-8">
-          I am a software developer with a background in computer science,
-          focused on building data-driven tools and automation that improve
-          reliability and clarity in real-world systems. My work centers on
-          clean implementation, reproducible analysis, and collaborating
-          across teams to solve practical data and engineering problems.
+          {ME.bio}
         </p>
+        <div class="grid grid-cols-3 gap-4 mb-8">
+          {ME.profileFacts.map((fact) => (
+            <div class="p-5 cad-border bg-slate-50 dark:bg-slate-900 text-center">
+              <p class="font-display text-2xl font-bold text-slate-900 dark:text-white mb-1">
+                {fact.value}
+              </p>
+              <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">
+                {fact.description}
+              </p>
+            </div>
+          ))}
+        </div>
         <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="p-5 cad-border bg-slate-50 dark:bg-slate-900">
             <dt class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
               Location
             </dt>
             <dd class="font-display text-sm text-slate-800 dark:text-slate-200">
-              38.25&deg; N, 122.41&deg; W
+              {ME.location}
             </dd>
           </div>
           <div class="p-5 cad-border bg-slate-50 dark:bg-slate-900">
