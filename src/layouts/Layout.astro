@@ -74,51 +74,48 @@ const {
 <div id="loading-overlay" class="fixed inset-0 z-50 bg-[var(--color-background-dark)]" style="transition:opacity .5s" aria-hidden="true"></div>
 <script is:inline>
   (function () {
-    function getOverlay() {
-      return document.getElementById('loading-overlay');
-    }
+    // Guard on window (not dataset) — Astro's ClientRouter wipes <html>
+    // dataset attributes on every navigation, defeating any dataset guard.
+    if (window.__astroOverlayListeners) return;
+    window.__astroOverlayListeners = true;
 
-    // Captures the target at call-time so each invocation operates on the
-    // correct overlay instance even after a DOM swap replaces the element.
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var isFirstLoad = true;
+
+    // Always look up the overlay inside the setTimeout callbacks so we get
+    // the element that is actually in the DOM at execution time, not a stale
+    // reference captured when the script first ran.
     function hideOverlay(delay) {
-      var target = getOverlay();
-      if (!target) return;
       setTimeout(function () {
-        target.style.opacity = '0';
+        var el = document.getElementById('loading-overlay');
+        if (!el) return;
+        if (reduced) { el.style.display = 'none'; return; }
+        el.style.opacity = '0';
         setTimeout(function () {
-          target.style.display = 'none';
+          var el2 = document.getElementById('loading-overlay');
+          if (el2) el2.style.display = 'none';
         }, 500);
       }, delay);
     }
 
-    var o = getOverlay();
-    if (!o) return;
+    // astro:page-load fires on initial load AND after every client-side
+    // navigation, making it the single reliable trigger for hiding.
+    // 600ms on first load (content needs more time to paint);
+    // 300ms on transitions (new page HTML is already present).
+    document.addEventListener('astro:page-load', function () {
+      var delay = isFirstLoad ? 600 : 300;
+      isFirstLoad = false;
+      hideOverlay(delay);
+    });
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      o.remove();
-      return;
-    }
-
-    // Hide the overlay on every (re-)execution — covers both initial page
-    // load and post-swap re-runs triggered by Astro's ClientRouter.
-    hideOverlay(600);
-
-    // Register navigation listeners only once to prevent accumulation across
-    // repeated script re-runs on each client-side navigation.
-    // NOTE: document.documentElement.dataset is reset by Astro's <html> attribute
-    // sync on every swap, so the guard must live on window instead.
-    if (window.__astroOverlayListeners) return;
-    window.__astroOverlayListeners = true;
-
+    // Re-show the overlay at the start of every navigation so the swap is
+    // visually covered while the new page is fetched and inserted.
     document.addEventListener('astro:before-swap', function () {
-      var el = getOverlay();
+      if (reduced) return;
+      var el = document.getElementById('loading-overlay');
       if (!el) return;
       el.style.display = '';
       el.style.opacity = '1';
-    });
-
-    document.addEventListener('astro:page-load', function () {
-      hideOverlay(300);
     });
   })();
 </script>
