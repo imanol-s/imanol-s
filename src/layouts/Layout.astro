@@ -105,8 +105,10 @@ const {
 
     // Register navigation listeners only once to prevent accumulation across
     // repeated script re-runs on each client-side navigation.
-    if (document.documentElement.dataset.overlayListeners === 'true') return;
-    document.documentElement.dataset.overlayListeners = 'true';
+    // NOTE: document.documentElement.dataset is reset by Astro's <html> attribute
+    // sync on every swap, so the guard must live on window instead.
+    if (window.__astroOverlayListeners) return;
+    window.__astroOverlayListeners = true;
 
     document.addEventListener('astro:before-swap', function () {
       var el = getOverlay();
