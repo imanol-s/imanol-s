@@ -23,6 +23,9 @@ Instructions for AI coding assistants working with this repository.
 - Run `/test-server` to validate site changes (build → preview → browser inspection)
 - No redundant HTML comments or unnecessary code comments
 - When asked about the best approach, provide a clear recommendation with rationale rather than only listing options
+- No GitHub Actions CI — linting runs locally via pre-commit hooks; this is intentional and sufficient
+- React island architecture is frozen; do not add, remove, or convert islands without explicit user approval
+- When making infrastructure or config changes, update AGENTS.md and copilot-instructions.md in the same commit
 
 ## Learned Workspace Facts
 
@@ -34,5 +37,6 @@ Instructions for AI coding assistants working with this repository.
 - Build command: `npm run build` runs `astro check && astro build`; preview on port 4321
 - Netlify pins Node 20 via `NODE_VERSION` in `netlify.toml`
 - Fonts self-hosted via `@fontsource-variable` (Inter + JetBrains Mono) — no Google Fonts CDN
+- Two React islands only: `TopoBackground.tsx` (`client:only="react"`) and `TypewriterText.tsx` (`client:load`)
 - Project subagents in `.cursor/agents/`: `coding-specialist` (mandatory for code changes), `software-architect`, `performance-optimizer`
 - Experience card descriptions render in full with no truncation

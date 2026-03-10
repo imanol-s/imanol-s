@@ -109,6 +109,7 @@ function displayName(name: string) {
 ```
 
 **Guidelines**:
+
 - Use `textContent` or `innerText` for plain text content
 - Use `createElement()` + `textContent` for structured content with user input
 - Only use `innerHTML` with static, trusted content (e.g., hardcoded strings)
@@ -126,6 +127,7 @@ function displayName(name: string) {
 ```
 
 **Exception**: `innerHTML` / `set:html` is acceptable only with:
+
 - Hardcoded, static HTML strings
 - Content sanitized by a trusted library (e.g., DOMPurify)
 - Content from your own Astro content collections that you fully control
