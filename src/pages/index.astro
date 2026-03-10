@@ -44,17 +44,17 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
         <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-start group">
-          <p class="font-display font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
+          <p class="font-display font-bold text-slate-900 dark:text-white mb-1">
             Data science & analytics
           </p>
         </div>
         <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-start group">
-          <p class="font-display font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
+          <p class="font-display font-bold text-slate-900 dark:text-white mb-1">
             Automation & tooling
           </p>
         </div>
         <div class="p-5 cad-border bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-start group">
-          <p class="font-display font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
+          <p class="font-display font-bold text-slate-900 dark:text-white mb-1">
             Systems & reliability
           </p>
         </div>
@@ -119,7 +119,7 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
             <div class="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
           </div>
           <div class="p-5 flex flex-col flex-grow">
-            <h3 class="text-lg font-bold mb-3 group-hover:text-primary transition-colors">
+            <h3 class="text-lg font-bold mb-3">
               {project.data.title}
             </h3>
             <p class="text-xs text-slate-700 dark:text-slate-300 mb-4 leading-relaxed flex-grow">
@@ -140,7 +140,7 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
 
     <div class="mt-8 text-center">
       <a
-        class="inline-flex items-center gap-4 text-sm font-display uppercase tracking-widest text-slate-600 dark:text-slate-400 hover:text-primary transition-colors focus-ring px-2 py-1"
+        class="inline-flex items-center gap-4 text-sm font-display uppercase tracking-widest text-slate-600 dark:text-slate-400 hover:text-white transition-colors focus-ring px-2 py-1"
         href="/projects"
       >
         <span class="h-[1px] w-12 bg-slate-400 dark:bg-slate-600"></span>
@@ -176,7 +176,7 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
                 {job.company} / {job.location}
               </p>
               <p class="text-slate-800 dark:text-slate-200 leading-relaxed mb-4">
-                {job.description.length > 200 ? job.description.slice(0, 200).replace(/\s+\S*$/, '') + '...' : job.description}
+                {job.description}
               </p>
               {i === 0 && (
                 <ul class="text-[14px] space-y-2 text-slate-700 dark:text-slate-300 list-disc list-inside marker:text-primary">
