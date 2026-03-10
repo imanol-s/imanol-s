@@ -24,6 +24,8 @@ Instructions for AI coding assistants working with this repository.
 - Run `/test-server` to validate site changes (build → preview → browser inspection)
 - No redundant HTML comments or unnecessary code comments
 - When asked about the best approach, provide a clear recommendation with rationale rather than only listing options
+- When proposing style changes, audit all touch points across the codebase before implementing — show full impact surface
+- Accessibility fixes should include WCAG contrast ratios and visual comparisons (e.g., Paper artboards or side-by-side screenshots)
 - No GitHub Actions CI — linting runs locally via pre-commit hooks; this is intentional and sufficient
 - React island architecture is frozen; do not add, remove, or convert islands without explicit user approval
 - When making infrastructure or config changes, update AGENTS.md and copilot-instructions.md in the same commit
@@ -44,3 +46,5 @@ Instructions for AI coding assistants working with this repository.
 - Project subagents in `.cursor/agents/`: `coding-specialist` (mandatory for code changes), `software-architect`, `performance-optimizer`
 - Experience card descriptions render in full with no truncation
 - `src/config.ts` is the single source of truth for all personal/site data — full field reference in `.github/copilot-instructions.md` under "Site Configuration"
+- Paper MCP is used for design prototyping; designs live in a Paper file with separate pages per section (Home, Projects, Blog)
+- Tag pills appear in `projects/index.astro` (listing) and `projects/[id].astro` (hero + stack sidebar) — stack sidebar uses a different, already-accessible style

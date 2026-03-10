@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import { getTechIconPath } from "../../data/techIcons";
+import TagPill from "../../components/TagPill.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection('projects');
@@ -58,9 +59,7 @@ function fmtDate(d: Date): string {
     {tags.length > 0 && (
       <div class="flex flex-wrap gap-2 mb-8">
         {tags.map((tag: string) => (
-          <span class="font-display text-[11px] uppercase tracking-widest px-2 py-1 border border-slate-200 dark:border-slate-800 text-slate-500">
-            {tag}
-          </span>
+          <TagPill tag={tag} />
         ))}
       </div>
     )}
