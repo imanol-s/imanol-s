@@ -73,14 +73,51 @@ const {
 
 <div id="loading-overlay" class="fixed inset-0 z-50 bg-[var(--color-background-dark)]" style="transition:opacity .5s" aria-hidden="true"></div>
 <script is:inline>
-  (function(){
-    var o=document.getElementById("loading-overlay");
-    if(!o)return;
-    if(window.matchMedia("(prefers-reduced-motion:reduce)").matches){o.remove();return}
-    function fadeOut(d){setTimeout(function(){o.style.opacity="0";setTimeout(function(){o.style.opacity="1";o.style.display="none"},500)},d)}
-    fadeOut(600);
-    document.addEventListener("astro:before-swap",function(){o.style.display="";o.style.opacity="1"});
-    document.addEventListener("astro:page-load",function(){fadeOut(300)});
+  (function () {
+    function getOverlay() {
+      return document.getElementById('loading-overlay');
+    }
+
+    // Captures the target at call-time so each invocation operates on the
+    // correct overlay instance even after a DOM swap replaces the element.
+    function hideOverlay(delay) {
+      var target = getOverlay();
+      if (!target) return;
+      setTimeout(function () {
+        target.style.opacity = '0';
+        setTimeout(function () {
+          target.style.display = 'none';
+        }, 500);
+      }, delay);
+    }
+
+    var o = getOverlay();
+    if (!o) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      o.remove();
+      return;
+    }
+
+    // Hide the overlay on every (re-)execution — covers both initial page
+    // load and post-swap re-runs triggered by Astro's ClientRouter.
+    hideOverlay(600);
+
+    // Register navigation listeners only once to prevent accumulation across
+    // repeated script re-runs on each client-side navigation.
+    if (document.documentElement.dataset.overlayListeners === 'true') return;
+    document.documentElement.dataset.overlayListeners = 'true';
+
+    document.addEventListener('astro:before-swap', function () {
+      var el = getOverlay();
+      if (!el) return;
+      el.style.display = '';
+      el.style.opacity = '1';
+    });
+
+    document.addEventListener('astro:page-load', function () {
+      hideOverlay(300);
+    });
   })();
 </script>
 <TopoBackground client:only="react" />
