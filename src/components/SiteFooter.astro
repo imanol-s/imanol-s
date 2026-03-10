@@ -22,10 +22,10 @@ const linkedin = SOCIALS.find(s => s.name === 'LinkedIn');
       >
         {email}
       </a>
-      <div class="flex gap-6 mt-4 opacity-50">
+      <div class="flex gap-6 mt-4">
         {github?.show && (
           <a
-            class="hover:opacity-100 transition-opacity focus-ring rounded-full"
+            class="text-slate-500 hover:text-white transition-colors focus-ring rounded-full"
             href={github.url}
             target="_blank"
             rel="noopener noreferrer"
@@ -36,7 +36,7 @@ const linkedin = SOCIALS.find(s => s.name === 'LinkedIn');
         )}
         {linkedin?.show && (
           <a
-            class="hover:opacity-100 transition-opacity focus-ring rounded-full"
+            class="text-slate-500 hover:text-white transition-colors focus-ring rounded-full"
             href={linkedin.url}
             target="_blank"
             rel="noopener noreferrer"

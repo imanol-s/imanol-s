@@ -9,7 +9,7 @@ const allProjects = (await getCollection('projects'))
 ---
 
 <Layout title="Imanol | Projects" description="A list of my projects" scrollSmooth={false}>
-  <section class="mb-8">
+  <section class="border-b border-slate-200 dark:border-slate-800 pb-4 mb-8">
     <h1 class="text-3xl font-display font-bold mb-2">PROJECTS</h1>
     <p class="text-slate-500 font-display text-sm">{allProjects.length} projects</p>
   </section>
@@ -54,7 +54,7 @@ const allProjects = (await getCollection('projects'))
               );
             })}
           </div>
-          <h2 class="font-bold text-xl text-slate-900 dark:text-white">
+          <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white">
             {project.data.title}
           </h2>
           <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">

@@ -124,7 +124,7 @@ function fmtDate(d: Date): string {
             {tags.map((tag: string) => {
               const iconPath = getTechIconPath(tag);
               return (
-                <span class="font-display text-sm px-3 py-2 cad-border bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 inline-flex items-center gap-2">
+                <span class="font-display text-sm px-3 py-2 cad-border bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-200 inline-flex items-center gap-2">
                   {iconPath && (
                     <img
                       src={iconPath}
@@ -149,7 +149,7 @@ function fmtDate(d: Date): string {
           <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-3">
             Timeline
           </p>
-          <p class="font-display text-sm text-slate-700 dark:text-slate-300">
+          <p class="font-display text-sm text-slate-700 dark:text-slate-200">
             {startDate && fmtDate(startDate)}
             {startDate && endDate && ' — '}
             {endDate && fmtDate(endDate)}
