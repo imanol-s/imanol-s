@@ -5,7 +5,6 @@ import '@/styles/globals.css';
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import TopoBackground from "../components/TopoBackground.tsx";
-import LoadingOverlay from "../components/LoadingOverlay.tsx";
 import CommandPalette from "../components/CommandPalette.astro";
 import CommandPaletteHint from "../components/CommandPaletteHint.astro";
 
@@ -48,10 +47,6 @@ const {
     <link rel="icon" href={SITE.favicon}/>
     <link rel="canonical" href={canonicalURL}/>
 
-    <!-- Font preloads -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title}/>
@@ -68,7 +63,7 @@ const {
     <title>{title}</title>
     <ClientRouter/>
 </head>
-<body class="min-h-screen bg-transparent font-body text-slate-800 dark:text-slate-200 transition-colors duration-300 selection:bg-primary selection:text-white">
+<body class="min-h-screen bg-transparent font-body text-slate-800 dark:text-slate-200 selection:bg-primary selection:text-white">
 
 <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2">Skip to main content</a>
 
@@ -76,7 +71,18 @@ const {
   document.documentElement.classList.add('dark');
 </script>
 
-<LoadingOverlay client:load />
+<div id="loading-overlay" class="fixed inset-0 z-50 bg-[var(--color-background-dark)]" style="transition:opacity .5s" aria-hidden="true"></div>
+<script is:inline>
+  (function(){
+    var o=document.getElementById("loading-overlay");
+    if(!o)return;
+    if(window.matchMedia("(prefers-reduced-motion:reduce)").matches){o.remove();return}
+    function fadeOut(d){setTimeout(function(){o.style.opacity="0";setTimeout(function(){o.style.opacity="1";o.style.display="none"},500)},d)}
+    fadeOut(600);
+    document.addEventListener("astro:before-swap",function(){o.style.display="";o.style.opacity="1"});
+    document.addEventListener("astro:page-load",function(){fadeOut(300)});
+  })();
+</script>
 <TopoBackground client:only="react" />
 <CommandPalette />
 <CommandPaletteHint />

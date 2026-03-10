@@ -33,7 +33,7 @@ const {Content} = await render(post);
         </div>
         <div class="cad-border overflow-hidden">
             <Image transition:name={`${post.id}-image`} class="w-full h-[400px] object-cover" src={cover.src}
-                   alt={cover.alt ?? title}/>
+                   alt={cover.alt ?? title} width={1280} height={400} loading="eager" fetchpriority="high" />
         </div>
         <article id="article" class="mt-8 prose dark:prose-invert scroll-mt-20">
             <Content/>

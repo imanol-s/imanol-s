@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
@@ -52,9 +54,9 @@
   }
   .topo-lines {
     position: fixed;
-    inset: -50%;
-    width: 200%;
-    height: 200%;
+    inset: -25%;
+    width: 150%;
+    height: 150%;
     z-index: 1;
     pointer-events: none;
     animation: topo-drift 55s ease-in-out infinite;

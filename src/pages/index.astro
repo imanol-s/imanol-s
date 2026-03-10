@@ -69,6 +69,8 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
           class="w-64 h-64 grayscale contrast-125 object-cover cad-border brightness-90"
           width={256}
           height={256}
+          loading="eager"
+          fetchpriority="high"
         />
         <div class="absolute bottom-4 -right-8 flex flex-col gap-2">
           {github?.show && (
@@ -115,6 +117,7 @@ const coreLanguages = ['Python', 'Java', 'SQL', 'R'];
               class="absolute inset-0 w-full h-full object-cover grayscale opacity-60 group-hover:scale-105 transition-transform duration-1000"
               width={350}
               height={160}
+              sizes="(min-width: 768px) 350px, 300px"
             />
             <div class="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
           </div>
