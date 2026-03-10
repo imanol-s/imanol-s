@@ -51,6 +51,52 @@ const { title, description } = Astro.props;
 - **Single layout**: All pages use `src/layouts/Layout.astro` — do not create additional layouts without justification
 - **No shadcn/ui**: The shadcn stack has been removed. Build components with Tailwind utility classes directly
 
+## Site Configuration (`src/config.ts`)
+
+`src/config.ts` is the **single source of truth** for all personal and site data. Never hardcode personal values (name, bio, email, location, profession, etc.) anywhere in templates or components — always derive them from this file.
+
+**Rule**: When adding or editing a field in `src/config.ts`, update both `AGENTS.md` and `.github/copilot-instructions.md` in the same commit to keep this reference current.
+
+### `SITE` — site-wide metadata
+
+| Field | Value | Used by |
+|---|---|---|
+| `website` | `https://imanols.dev` | Canonical domain reference |
+| `title` | `"Imanol 'Oman' Saldana"` | Layout default title |
+| `description` | Portfolio SEO description | Layout default meta description |
+| `tags` | `["portfolio", "Resume cv", "Astro"]` | Meta keywords |
+| `ogImage` | `/og-image.webp` | Open Graph image |
+| `logo` | `"frog"` | Logo icon name |
+| `logoText` | `"Imanol"` | Nav brand text, page title prefixes |
+| `lang` | `"en"` | `<html lang>` attribute |
+| `favicon` | `/favicon.png` | `<link rel="icon">` |
+| `repository` | GitHub repo URL | Reference only |
+| `author` | `"Imanol Saldana"` | Meta author, copyright line |
+| `profile` | `https://imanols.dev` | Canonical profile URL |
+
+### `ME` — personal content
+
+| Field | Type | Used by |
+|---|---|---|
+| `name` | `string` | TypewriterText, image alt, nav aria-label |
+| `profession` | `string[]` | Hero subtitle (joined with `•`) |
+| `profileImage` | `string` | Filename reference for profile photo |
+| `aboutMe` | `string` | Hero paragraph, Layout description default |
+| `bio` | `string` | About section long-form paragraph |
+| `location` | `string` | About section dl, footer coordinates |
+| `focusAreas` | `string[]` | Hero specialty cards (3 boxes) |
+| `coreLanguages` | `string[]` | Tech Specs — Core Languages grid |
+| `competencies` | `string[]` | Tech Specs — Competencies list |
+| `languages` | `{name, level}[]` | Tech Specs — Communication table |
+| `profileFacts` | `{value, description}[]` | About section stats row |
+| `contactInfo.email` | `string` | Footer, About section, CommandPalette |
+| `contactInfo.linkedin` | `string` | Reference for LinkedIn URL |
+| `contactInfo.resumeDoc` | `string` | Resume PDF filename (served from `public/`) |
+
+### `SOCIALS` — social link entries
+
+Each entry: `{ name, url, icon, show }`. Consumed via `SOCIALS.find(s => s.name === '...')` in `SiteFooter.astro` and `index.astro`. The `icon` field is a legacy string name — inline SVGs are used instead of `<Icon>` calls.
+
 ## Error Handling
 
 - Content collection schemas validate at build time via Zod — ensure all required fields are present in frontmatter

@@ -26,6 +26,8 @@ Instructions for AI coding assistants working with this repository.
 - No GitHub Actions CI — linting runs locally via pre-commit hooks; this is intentional and sufficient
 - React island architecture is frozen; do not add, remove, or convert islands without explicit user approval
 - When making infrastructure or config changes, update AGENTS.md and copilot-instructions.md in the same commit
+- **Never hardcode personal values** (name, bio, email, location, profession, etc.) in templates — always derive from `src/config.ts`
+- **When editing `src/config.ts`** (adding, renaming, or removing fields), update the config reference table in `.github/copilot-instructions.md` and this file in the same commit
 
 ## Learned Workspace Facts
 
@@ -40,3 +42,4 @@ Instructions for AI coding assistants working with this repository.
 - Two React islands only: `TopoBackground.tsx` (`client:only="react"`) and `TypewriterText.tsx` (`client:load`)
 - Project subagents in `.cursor/agents/`: `coding-specialist` (mandatory for code changes), `software-architect`, `performance-optimizer`
 - Experience card descriptions render in full with no truncation
+- `src/config.ts` is the single source of truth for all personal/site data — full field reference in `.github/copilot-instructions.md` under "Site Configuration"
