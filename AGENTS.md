@@ -12,6 +12,7 @@ Instructions for AI coding assistants working with this repository.
 - Prefer concise, direct responses.
 - For high-level questions, answer directly first; only explore code if needed.
 - If asked to use parallel agents, spawn sub-agents via the Task tool.
+- **Always work on the `ui-migration` branch.** Cloud agent sessions default to creating a new branch; immediately switch to `ui-migration` at session start (`git checkout ui-migration`) and push all commits directly to it. Never leave work on a session-scoped branch.
 
 ## Learned User Preferences
 
