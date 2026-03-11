@@ -49,10 +49,10 @@ const workExperience: WorkExperience[] = [
     company: "Freeman",
     location: "United States",
     description:
-      "As an Associate Data Analyst at Freeman, I lead documentation and governance initiatives for 100+ material master data attributes across 4 legacy and S/4HANA systems. I develop Python automation scripts to streamline data validation and cleaning workflows, supporting the migration of 25,000+ material records during the company's ERP transformation. I collaborate cross-functionally with Sales, Materials Management, and IT teams to establish data standards and identify quality issues through analytical reporting.",
+      "Lead documentation and governance for 100+ material master data attributes across 4 legacy and S/4HANA systems. Develop Python automation for data validation and cleaning, supporting migration of 25,000+ material records during ERP transformation. Collaborate with Sales, Materials Management, and IT to define data standards and identify quality issues through analytical reporting.",
     goals: [
-      "Establish robust data governance framework supporting enterprise-wide decision-making.",
-      "Automate data validation processes to improve efficiency and accuracy.",
+      "Defined validation rules and documentation for enterprise master data attributes across SAP and legacy systems.",
+      "Built Python scripts to validate and clean data during a 25,000+ record ERP migration.",
       "Drive data quality improvements throughout S/4HANA migration and beyond.",
       "Lead project management and workflow coordination for data operations",
       "Develop comprehensive data governance documentation and process frameworks",
@@ -68,7 +68,7 @@ const workExperience: WorkExperience[] = [
     company: "Freeman",
     location: "United States",
     description:
-      "At Freeman, I continued supporting the integrity of data across enterprise systems. I collaborate with multiple teams across the company to align data with business goals and contribute to the evaluation of MDM tools to improve governance. I continue to gain hands-on experience with large-scale data migration and system integration.",
+      "Supported data integrity across enterprise systems. Collaborated with multiple teams to align data with business goals and contributed to evaluation of MDM tools for governance. Worked on large-scale data migration and system integration.",
     goals: [
       "Effective communication and collaboration with cross-functional teams",
       "Adaptability to evolving data management technologies and practices",
@@ -85,7 +85,7 @@ const workExperience: WorkExperience[] = [
     company: "Freeman",
     location: "United States",
     description:
-      "At Freeman, I supported the integrity of over 3,000+ materials master records across enterprise systems. I collaborated with cross-functional teams to align data with business goals and contributed to the evaluation of MDM tools to improve governance. During a major ERP transition, I gained hands-on experience with large-scale data migration and system integration.",
+      "Supported integrity of 3,000+ material master records across enterprise systems. Collaborated with cross-functional teams to align data with business goals and contributed to evaluation of MDM tools. Worked on large-scale data migration and system integration during ERP transition.",
     goals: [
       "Maintain high-quality, reliable master data to support enterprise-wide decision-making.",
       "Enhance data governance through modern MDM tools and practices.",

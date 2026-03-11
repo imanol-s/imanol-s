@@ -1,6 +1,6 @@
 export const SITE = {
   website: "https://imanols.dev", // replace this with your deployed domain
-  title: "Imanol 'Oman' Saldana",
+  title: "Imanol Saldana",
   description: "Imanol Saldana — software engineer portfolio featuring projects in data science, robotics, and full-stack development.",
   tags: ["portfolio", "Resume cv", "Astro"],
   ogImage: "/og-image.webp",
@@ -14,18 +14,15 @@ export const SITE = {
 };
 
 export const ME = {
-  name: "Imanol 'Oman' Saldana",
+  name: "Imanol Saldana",
   profession: ["Data Analytics", "Data Science", "Software"],
   profileImage: "Profile-1.png",
   aboutMe:
-    "Building data pipelines, automated validation tools, and internal systems " +
-    "to ensure data integrity and operational efficiency.",
+    "Computer science–trained developer focused on data science, automation, and software. " +
+    "I build data-driven tools and workflows that improve reliability, clarity, and decision-making in real-world systems.",
   bio:
-    "I am a software developer with a background in computer science, " +
-    "focused on building data-driven tools and automation that improve " +
-    "reliability and clarity in real-world systems. My work centers on " +
-    "clean implementation, reproducible analysis, and collaborating " +
-    "across teams to solve practical data and engineering problems.",
+    "Computer science–trained developer focused on data science, automation, and software. " +
+    "I build data-driven tools and workflows that improve reliability, clarity, and decision-making in real-world systems.",
   location: "38.25\u00b0 N, 122.41\u00b0 W",
   focusAreas: [
     "Data science & analytics",
@@ -42,11 +39,6 @@ export const ME = {
   languages: [
     { name: "English", level: "Native" },
     { name: "Spanish", level: "Bilingual" },
-  ],
-  profileFacts: [
-    { value: 4, description: "Years of Evolution" },
-    { value: 5, description: "Projects Engineered" },
-    { value: "\u221e", description: "Growth Horizons" },
   ],
   contactInfo: {
     email: "Imanol.dev@proton.me",
