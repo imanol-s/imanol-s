@@ -4,7 +4,7 @@ summary: PERT-based scheduling tool for modeling task dependencies and identifyi
 tags:
   - Java
   - Graph Theory
-  - Dynamic Programming
+  - Topological Sort
   - Complexity Analysis
   - Data Structures
 startDate: 2024-08-01
@@ -53,9 +53,9 @@ For more reading: <a href="https://en.wikipedia.org/wiki/Program_evaluation_and_
 
 ## 🎯 Goal
 
-1. Develop O(n) algorithm for critical path identification
-2. Model both AND/OR task dependencies
-3. Achieve 95% accuracy vs. ground truth schedules
+1. Develop O(V+E) algorithm for critical path identification
+2. Model task dependencies in a DAG with cycle detection
+3. Compute per-task scheduling windows and identify zero-slack critical tasks
 
 ---
 
@@ -63,15 +63,17 @@ For more reading: <a href="https://en.wikipedia.org/wiki/Program_evaluation_and_
 
 ### Graph Representation
 
-- Designed adjacency list structure with edge weights for task durations
-- Implemented topological sort using Kahn's algorithm (indegree counting)
+- Adjacency list structure with directed edges representing task dependencies
+- DFS-based topological sort with `onStack[]` tracking to detect cycles — returns `null` if the graph is not a valid DAG
 
 ### PERT Implementation
 
-- Calculated expected time for stochastic tasks
-- Performed forward/backward passes with memoization for O(n) efficiency
+- **Forward pass**: iterates vertices in topological order; for each vertex, `ES = max(EF of predecessors)`, `EF = ES + duration`
+- **Backward pass**: initializes all vertices' `LF` to project completion time, then processes in reverse topological order; `LF = min(LS of successors)`, `LS = LF - duration`
+- **Slack**: computed as `LF − EF` across all vertices using a parallel stream
 
 ### Critical Path Analysis
 
-- Identified zero-slack tasks constituting critical path
-- Determine optimal task to perform
+- Zero-slack tasks constitute the critical path
+- `numCritical()` counts critical vertices; `criticalPath()` returns the total project duration (max EF across all vertices)
+- Scheduling output per task: EC, LC, slack, and critical flag

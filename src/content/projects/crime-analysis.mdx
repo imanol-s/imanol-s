@@ -3,6 +3,8 @@ title: Dallas Crime Effect on Housing Prices
 summary: Data analysis examining relationships between crime patterns and housing prices across Dallas neighborhoods.
 tags:
   - R
+  - ggplot2
+  - dplyr
   - Data Analysis
   - Predictive Modeling
 startDate: 2024-08-01
@@ -27,11 +29,17 @@ ogImage: "./images/crime-analysis/crime_analysis_footer.webp"
 
 Statistical analysis of 50k+ crime/housing records to identify trends. Analyzing the relationship between _arrests_ and _property types_ to determine if a correlation exists between pricing and housing cost.
 
+**Data sources:**
+- Dallas Police Department arrests dataset (`Police_Arrests.csv`) — includes arrest zip code per incident
+- Zillow Dallas housing listings (`Zillow-dallas.csv`) — property prices keyed by zip code
+
+Findings compiled into a stakeholder report (`DallasArrests.pdf`).
+
 ---
 
 ## 👨‍💻 Role
 
-**Developer**
+**Developer (Group Project)**
 
 ---
 
@@ -54,8 +62,12 @@ Statistical analysis of 50k+ crime/housing records to identify trends. Analyzing
 
 ## ✨ Solution
 
+- Cleaned and preprocessed both datasets for zip-code-level join using `dplyr`
+- Grouped arrests by `Arrest.Zipcode` to produce per-zip arrest counts
+- Computed average and median property prices per zip from Zillow data
+- Merged both datasets on zip code to produce a unified summary table, exported as `Dallas_Arrests_Property_Summary.csv`
+- Visualized total arrests vs. average property price per zip via `ggplot2` scatter plot
 - Identify statistically significant crime/housing price relationships
-- Automated data cleaning workflows for 50k+ records
 - Implement DFW Map with hotspot visualizations automated using R
 - Communicate findings to non-technical stakeholders
 
