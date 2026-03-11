@@ -2,7 +2,10 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { DottedGlowBackground } from "./ui/dotted-glow-background";
 
 export default function LoadingOverlay() {
-  const [active, setActive] = useState(false);
+  // Start active so the overlay is visible on first React render.
+  // The static #loading-overlay div covers the page before React hydrates;
+  // the mount effect hands off from that div to this animated component.
+  const [active, setActive] = useState(true);
   const [fading, setFading] = useState(false);
   const fadeTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const pageLoadTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -21,20 +24,31 @@ export default function LoadingOverlay() {
     setFading(false);
   }, []);
 
-  // Initial load: activate overlay then fade out after short delay
+  // Initial load: hide the static fallback div, then fade out.
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    setActive(true);
+    const staticEl = document.getElementById("loading-overlay");
+    if (staticEl) staticEl.style.display = "none";
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setActive(false);
+      return;
+    }
+
     const timer = setTimeout(fadeOut, 600);
     return () => clearTimeout(timer);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [fadeOut]);
 
-  // Astro view transitions: show on swap, hide on page-load
+  // Astro view transitions: show on swap, hide on page-load.
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const showOnSwap = () => fadeIn();
     const hideOnLoad = () => {
+      // Each navigation swaps in a fresh #loading-overlay from the new page HTML;
+      // hide it so it doesn't linger after the React overlay fades out.
+      const staticEl = document.getElementById("loading-overlay");
+      if (staticEl) staticEl.style.display = "none";
       pageLoadTimerRef.current = setTimeout(fadeOut, 300);
     };
 

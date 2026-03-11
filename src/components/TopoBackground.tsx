@@ -20,8 +20,8 @@ export default function TopoBackground() {
   const rafId = useRef(0);
   const reducedMotion = useRef(false);
   const [dims, setDims] = useState({ width: 2000, height: 2000 });
-  // Initialised to 2 (SSR-safe default); replaced with session seed on mount.
-  const [seed, setSeed] = useState(2);
+  // Lazy initializer runs once on mount (client-only, sessionStorage always available).
+  const [seed] = useState(getSessionSeed);
 
   useEffect(() => {
     const updateDims = () => {
@@ -41,7 +41,7 @@ export default function TopoBackground() {
     };
 
     updateDims();
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
 
     return () => {
       if (resizeTimeoutId !== undefined) {
@@ -49,10 +49,6 @@ export default function TopoBackground() {
       }
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
-
-  useEffect(() => {
-    setSeed(getSessionSeed());
   }, []);
 
   useEffect(() => {

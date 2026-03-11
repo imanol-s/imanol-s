@@ -5,6 +5,7 @@ import '@/styles/globals.css';
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import TopoBackground from "../components/TopoBackground.tsx";
+import LoadingOverlay from "../components/LoadingOverlay.tsx";
 import CommandPalette from "../components/CommandPalette.astro";
 import CommandPaletteHint from "../components/CommandPaletteHint.astro";
 
@@ -71,54 +72,8 @@ const {
   document.documentElement.classList.add('dark');
 </script>
 
-<div id="loading-overlay" class="fixed inset-0 z-50 bg-[var(--color-background-dark)]" style="transition:opacity .5s" aria-hidden="true"></div>
-<script is:inline>
-  (function () {
-    // Guard on window (not dataset) — Astro's ClientRouter wipes <html>
-    // dataset attributes on every navigation, defeating any dataset guard.
-    if (window.__astroOverlayListeners) return;
-    window.__astroOverlayListeners = true;
-
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var isFirstLoad = true;
-
-    // Always look up the overlay inside the setTimeout callbacks so we get
-    // the element that is actually in the DOM at execution time, not a stale
-    // reference captured when the script first ran.
-    function hideOverlay(delay) {
-      setTimeout(function () {
-        var el = document.getElementById('loading-overlay');
-        if (!el) return;
-        if (reduced) { el.style.display = 'none'; return; }
-        el.style.opacity = '0';
-        setTimeout(function () {
-          var el2 = document.getElementById('loading-overlay');
-          if (el2) el2.style.display = 'none';
-        }, 500);
-      }, delay);
-    }
-
-    // astro:page-load fires on initial load AND after every client-side
-    // navigation, making it the single reliable trigger for hiding.
-    // 600ms on first load (content needs more time to paint);
-    // 300ms on transitions (new page HTML is already present).
-    document.addEventListener('astro:page-load', function () {
-      var delay = isFirstLoad ? 600 : 300;
-      isFirstLoad = false;
-      hideOverlay(delay);
-    });
-
-    // Re-show the overlay at the start of every navigation so the swap is
-    // visually covered while the new page is fetched and inserted.
-    document.addEventListener('astro:before-swap', function () {
-      if (reduced) return;
-      var el = document.getElementById('loading-overlay');
-      if (!el) return;
-      el.style.display = '';
-      el.style.opacity = '1';
-    });
-  })();
-</script>
+<div id="loading-overlay" class="fixed inset-0 z-50 bg-[var(--color-background-dark)]" aria-hidden="true"></div>
+<LoadingOverlay client:only="react" />
 <TopoBackground client:only="react" />
 <CommandPalette />
 <CommandPaletteHint />
