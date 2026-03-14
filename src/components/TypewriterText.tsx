@@ -33,7 +33,7 @@ const TypewriterText = ({ text }: { text: string }) => {
     try {
       alreadyPlayed = sessionStorage.getItem(SESSION_KEY) === "true";
     } catch {
-      // sessionStorage unavailable (private mode, quota exceeded, etc.)
+      // storage unavailable
     }
 
     if (reducedMotion || alreadyPlayed) {

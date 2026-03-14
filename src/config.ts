@@ -21,7 +21,6 @@ export const ME = {
   name: "Imanol Saldana",
   profession: ["Data Analytics", "Data Science", "Software"],
   profileImage: "Profile-1.png",
-  aboutMe: bio,
   bio,
   location: "38.25\u00b0 N, 122.41\u00b0 W",
   focusAreas: [

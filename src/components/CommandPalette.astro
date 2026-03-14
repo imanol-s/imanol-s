@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { ME } from "@/config";
+import { ME } from "../config";
 
 const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 const emailHref = `mailto:${ME.contactInfo.email}?subject=${encodeURIComponent("Portfolio inquiry")}`;

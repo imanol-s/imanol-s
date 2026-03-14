@@ -20,7 +20,7 @@ const timelineJobs = workExperience.slice(0, 3);
 const edu = education[0];
 ---
 
-<Layout title={`${SITE.author} | Portfolio`} description={ME.aboutMe} scrollSmooth={true}>
+<Layout title={`${SITE.author} | Portfolio`} description={ME.bio} scrollSmooth={true}>
   <!-- ═══ HERO ═══ -->
   <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32" aria-label="Hero">
     <div class="lg:col-span-7">
@@ -29,7 +29,7 @@ const edu = education[0];
         {ME.profession.join(' \u2022 ')}
       </div>
       <p class="text-xl text-slate-700 dark:text-slate-200 max-w-2xl mb-10 leading-relaxed font-light">
-        {ME.aboutMe}
+        {ME.bio}
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
         {ME.focusAreas.map((area) => (

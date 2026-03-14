@@ -1,5 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 
+const PHASE_STEP = 0.0006;
+const BASE_FREQ_CENTER = 0.004;
+const BASE_FREQ_AMPLITUDE = 0.0015;
+const Y_RATE_MULTIPLIER = 0.73;
+const DISPLACEMENT_SCALE = 380;
+const LINE_SPACING = 24;
+const LINE_START_OFFSET = -20;
+const RESIZE_DEBOUNCE_MS = 150;
+const INITIAL_DIMENSION = 2000;
+
 /** Retrieve or generate a session-scoped seed for feTurbulence. */
 function getOrCreateSessionSeed(): number {
   const key = "topo-seed";
@@ -15,6 +25,52 @@ function getOrCreateSessionSeed(): number {
   }
 }
 
+/** Animate feTurbulence baseFrequency with rAF, respecting reduced-motion. */
+function useTopoAnimation(
+  turbulenceRef: React.RefObject<SVGFETurbulenceElement | null>,
+) {
+  const rafId = useRef(0);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let reducedMotion = mql.matches;
+    let phase = 0;
+
+    const tick = () => {
+      if (reducedMotion) return;
+      phase += PHASE_STEP;
+      // toFixed(5) is intentional — do NOT reduce precision here.
+      // Per-frame delta is ~0.0000009 (phase step × amplitude).
+      // At toFixed(4) the attribute stays identical for ~111 frames before
+      // jumping, producing visible stutter. 5 decimal places keeps each step
+      // small enough to appear continuous at 60 fps.
+      const bfx = (BASE_FREQ_CENTER + Math.sin(phase) * BASE_FREQ_AMPLITUDE).toFixed(5);
+      const bfy = (BASE_FREQ_CENTER + Math.cos(phase * Y_RATE_MULTIPLIER) * BASE_FREQ_AMPLITUDE).toFixed(5);
+      turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
+      rafId.current = requestAnimationFrame(tick);
+    };
+
+    const startLoop = () => {
+      rafId.current = requestAnimationFrame(tick);
+    };
+    const stopLoop = () => cancelAnimationFrame(rafId.current);
+
+    if (!reducedMotion) startLoop();
+
+    const onChange = (e: MediaQueryListEvent) => {
+      reducedMotion = e.matches;
+      if (e.matches) stopLoop();
+      else startLoop();
+    };
+
+    mql.addEventListener("change", onChange);
+    return () => {
+      mql.removeEventListener("change", onChange);
+      stopLoop();
+    };
+  }, [turbulenceRef]);
+}
+
 /**
  * Fixed animated topographic background — shared across all pages.
  * Handles its own rAF loop + reduced-motion media query internally.
@@ -22,10 +78,7 @@ function getOrCreateSessionSeed(): number {
  */
 export default function TopoBackground() {
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
-  const rafId = useRef(0);
-  const reducedMotion = useRef(false);
-  const [dims, setDims] = useState({ width: 2000, height: 2000 });
-  // Lazy initializer runs once on mount (client-only, sessionStorage always available).
+  const [dims, setDims] = useState({ width: INITIAL_DIMENSION, height: INITIAL_DIMENSION });
   const [seed] = useState(getOrCreateSessionSeed);
 
   useEffect(() => {
@@ -42,7 +95,7 @@ export default function TopoBackground() {
       resizeTimeoutId = window.setTimeout(() => {
         updateDims();
         resizeTimeoutId = undefined;
-      }, 150);
+      }, RESIZE_DEBOUNCE_MS);
     };
 
     updateDims();
@@ -56,56 +109,11 @@ export default function TopoBackground() {
     };
   }, []);
 
-  useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    reducedMotion.current = mql.matches;
-
-    let phase = 0;
-
-    const startLoop = () => {
-      const tick = () => {
-        if (reducedMotion.current) return;
-
-        // Continuous flow: oscillate baseFrequency with two independent rates.
-        // Large range (0.0025–0.0055) makes morphing visually prominent.
-        phase += 0.0006;
-        // toFixed(5) is intentional — do NOT reduce precision here.
-        // Per-frame delta is ~0.0000009 (phase step 0.0006 × amplitude 0.0015).
-        // At toFixed(4) the attribute stays identical for ~111 frames before
-        // jumping, producing visible stutter. 5 decimal places keeps each step
-        // (~0.00001) small enough to appear continuous at 60 fps.
-        const bfx = (0.004 + Math.sin(phase) * 0.0015).toFixed(5);
-        const bfy = (0.004 + Math.cos(phase * 0.73) * 0.0015).toFixed(5);
-        turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
-
-        rafId.current = requestAnimationFrame(tick);
-      };
-      rafId.current = requestAnimationFrame(tick);
-    };
-
-    const stopLoop = () => cancelAnimationFrame(rafId.current);
-
-    if (!reducedMotion.current) startLoop();
-
-    const onChange = (e: MediaQueryListEvent) => {
-      reducedMotion.current = e.matches;
-      if (e.matches) {
-        stopLoop();
-      } else {
-        startLoop();
-      }
-    };
-
-    mql.addEventListener("change", onChange);
-    return () => {
-      mql.removeEventListener("change", onChange);
-      stopLoop();
-    };
-  }, []);
+  useTopoAnimation(turbulenceRef);
 
   const lineYs = Array.from(
-    { length: Math.ceil(dims.height / 24) + 3 },
-    (_, i) => -20 + i * 24,
+    { length: Math.ceil(dims.height / LINE_SPACING) + 3 },
+    (_, i) => LINE_START_OFFSET + i * LINE_SPACING,
   );
 
   return (
@@ -126,7 +134,7 @@ export default function TopoBackground() {
             <defs>
               {/*
                * Large filter region prevents clipping when lines are displaced
-               * far from their original position (scale=380 can move ±190 units).
+               * far from their original position (scale can move ±190 units).
                */}
               <filter
                 id="topo-warp"
@@ -146,7 +154,7 @@ export default function TopoBackground() {
                 <feDisplacementMap
                   in="SourceGraphic"
                   in2="noise"
-                  scale={380}
+                  scale={DISPLACEMENT_SCALE}
                   xChannelSelector="R"
                   yChannelSelector="G"
                   result="displaced"

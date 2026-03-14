@@ -27,8 +27,8 @@ describe("ME config", () => {
     expect(ME.contactInfo.resumeDoc).toBeTruthy();
   });
 
-  it("aboutMe and bio reference the same value", () => {
-    expect(ME.aboutMe).toBe(ME.bio);
+  it("has a bio", () => {
+    expect(ME.bio).toBeTruthy();
   });
 });
 

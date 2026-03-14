@@ -1,6 +1,6 @@
 ---
 import {ClientRouter} from 'astro:transitions';
-import '@/styles/globals.css';
+import '../styles/globals.css';
 
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
@@ -9,7 +9,7 @@ import LoadingOverlay from "../components/LoadingOverlay.tsx";
 import CommandPalette from "../components/CommandPalette.astro";
 import CommandPaletteHint from "../components/CommandPaletteHint.astro";
 
-import {SITE} from '@/config';
+import {SITE} from '../config';
 
 interface Props {
     title?: string;
