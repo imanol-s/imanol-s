@@ -4,9 +4,10 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import TypewriterText from '../components/TypewriterText.tsx';
 import { ME, SITE, SOCIALS } from '../config';
-import workExperience from '../data/Jobs';
+import workExperience from '../data/jobs';
 import education from '../data/education';
 import { getTechIconPath } from '../data/techIcons';
+import { fmtDate } from '../utils/dates';
 import profileImage from '../assets/Profile-1.png';
 
 const allProjects = (await getCollection('projects'))
@@ -14,14 +15,6 @@ const allProjects = (await getCollection('projects'))
 
 const github = SOCIALS.find(s => s.name === 'GitHub');
 const linkedin = SOCIALS.find(s => s.name === 'LinkedIn');
-
-function fmtDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('en-US', {
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).toUpperCase();
-}
 
 const timelineJobs = workExperience.slice(0, 3);
 const edu = education[0];

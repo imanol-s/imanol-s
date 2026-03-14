@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 
 /** Retrieve or generate a session-scoped seed for feTurbulence. */
-function getSessionSeed(): number {
+function getOrCreateSessionSeed(): number {
   const key = "topo-seed";
-  const stored = sessionStorage.getItem(key);
-  if (stored !== null) return parseInt(stored, 10);
-  const seed = Math.floor(Math.random() * 10000);
-  sessionStorage.setItem(key, String(seed));
-  return seed;
+  try {
+    const stored = sessionStorage.getItem(key);
+    if (stored !== null) return parseInt(stored, 10);
+    const seed = Math.floor(Math.random() * 10000);
+    sessionStorage.setItem(key, String(seed));
+    return seed;
+  } catch {
+    // sessionStorage unavailable (private mode, quota exceeded, etc.)
+    return Math.floor(Math.random() * 10000);
+  }
 }
 
 /**
@@ -21,7 +26,7 @@ export default function TopoBackground() {
   const reducedMotion = useRef(false);
   const [dims, setDims] = useState({ width: 2000, height: 2000 });
   // Lazy initializer runs once on mount (client-only, sessionStorage always available).
-  const [seed] = useState(getSessionSeed);
+  const [seed] = useState(getOrCreateSessionSeed);
 
   useEffect(() => {
     const updateDims = () => {

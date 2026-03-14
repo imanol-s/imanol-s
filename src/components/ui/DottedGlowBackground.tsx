@@ -1,42 +1,56 @@
 import { useEffect, useRef, useState } from "react";
 
+type DottedGlowColors = {
+  dot?: string;
+  glow?: string;
+  darkDot?: string;
+  darkGlow?: string;
+};
+
+type DottedGlowCssVars = {
+  colorLight?: string;
+  colorDark?: string;
+  glowLight?: string;
+  glowDark?: string;
+};
+
+type DottedGlowSpeed = {
+  min?: number;
+  max?: number;
+  scale?: number;
+};
+
 type DottedGlowBackgroundProps = {
   className?: string;
   gap?: number;
   radius?: number;
-  color?: string;
-  darkColor?: string;
-  glowColor?: string;
-  darkGlowColor?: string;
-  colorLightVar?: string;
-  colorDarkVar?: string;
-  glowColorLightVar?: string;
-  glowColorDarkVar?: string;
+  colors?: DottedGlowColors;
+  cssVars?: DottedGlowCssVars;
   opacity?: number;
   backgroundOpacity?: number;
-  speedMin?: number;
-  speedMax?: number;
-  speedScale?: number;
+  speed?: DottedGlowSpeed;
 };
 
-export const DottedGlowBackground = ({
+export default function DottedGlowBackground({
   className,
   gap = 12,
   radius = 2,
-  color = "rgba(0,0,0,0.7)",
-  darkColor,
-  glowColor = "rgba(0, 170, 255, 0.85)",
-  darkGlowColor,
-  colorLightVar,
-  colorDarkVar,
-  glowColorLightVar,
-  glowColorDarkVar,
+  colors: {
+    dot: color = "rgba(0,0,0,0.7)",
+    glow: glowColor = "rgba(0, 170, 255, 0.85)",
+    darkDot: darkColor,
+    darkGlow: darkGlowColor,
+  } = {},
+  cssVars: {
+    colorLight: colorLightVar,
+    colorDark: colorDarkVar,
+    glowLight: glowColorLightVar,
+    glowDark: glowColorDarkVar,
+  } = {},
   opacity = 0.6,
   backgroundOpacity = 0,
-  speedMin = 0.4,
-  speedMax = 1.3,
-  speedScale = 1,
-}: DottedGlowBackgroundProps) => {
+  speed: { min: speedMin = 0.4, max: speedMax = 1.3, scale: speedScale = 1 } = {},
+}: DottedGlowBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [resolvedColor, setResolvedColor] = useState<string>(color);
@@ -201,7 +215,7 @@ export const DottedGlowBackground = ({
           1,
           `rgba(0,0,0,${Math.min(Math.max(backgroundOpacity, 0), 1)})`,
         );
-        ctx.fillStyle = grad as unknown as CanvasGradient;
+        ctx.fillStyle = grad;
         ctx.fillRect(0, 0, width, height);
       }
 
@@ -286,4 +300,4 @@ export const DottedGlowBackground = ({
       />
     </div>
   );
-};
+}

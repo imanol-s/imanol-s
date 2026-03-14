@@ -13,16 +13,16 @@ export const SITE = {
   profile: "https://imanols.dev",
 };
 
+const bio =
+  "Computer science–trained developer focused on data science, automation, and software. " +
+  "I build data-driven tools and workflows that improve reliability, clarity, and decision-making in real-world systems.";
+
 export const ME = {
   name: "Imanol Saldana",
   profession: ["Data Analytics", "Data Science", "Software"],
   profileImage: "Profile-1.png",
-  aboutMe:
-    "Computer science–trained developer focused on data science, automation, and software. " +
-    "I build data-driven tools and workflows that improve reliability, clarity, and decision-making in real-world systems.",
-  bio:
-    "Computer science–trained developer focused on data science, automation, and software. " +
-    "I build data-driven tools and workflows that improve reliability, clarity, and decision-making in real-world systems.",
+  aboutMe: bio,
+  bio,
   location: "38.25\u00b0 N, 122.41\u00b0 W",
   focusAreas: [
     "Data science & analytics",

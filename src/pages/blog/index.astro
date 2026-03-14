@@ -1,23 +1,9 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from 'astro:content';
 import PostCard from "../../components/PostCard.astro";
 import { SITE } from '../../config';
-
-interface Post {
-    id: string;
-    data: {
-        title: string;
-        description: string;
-        publishDate: Date;
-        tags: string[];
-        cover: {
-            src: ImageMetadata;
-            alt?: string;
-        };
-    };
-}
-
 
 const allPost = (await getCollection('posts'))
     .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
@@ -34,7 +20,7 @@ const allPost = (await getCollection('posts'))
 
         <section class="flex flex-col gap-8">
             {allPost.length > 0 ? (
-                allPost.map((post: Post) => (
+                allPost.map((post: CollectionEntry<'posts'>) => (
                         <PostCard
                                 id={post.id}
                                 title={post.data.title}

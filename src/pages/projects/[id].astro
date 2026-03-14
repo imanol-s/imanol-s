@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import { getTechIconPath } from "../../data/techIcons";
+import { fmtDate } from "../../utils/dates";
 import TagPill from "../../components/TagPill.astro";
 
 export async function getStaticPaths() {
@@ -29,10 +30,6 @@ const next = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 
 
 // Only show external link if url is real (not placeholder)
 const hasValidUrl = url && url.trim() !== '' && url !== 'https://google.com';
-
-function fmtDate(d: Date): string {
-  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
-}
 ---
 
 <Layout title={title} description={summary} imageOg={ogImage} scrollSmooth={true}>

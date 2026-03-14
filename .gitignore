@@ -41,3 +41,6 @@ pnpm-debug.log*
 
 # terrain preview screenshots
 terrain-previews/
+
+# desloppify local state
+.desloppify/

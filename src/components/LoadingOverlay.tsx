@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { DottedGlowBackground } from "./ui/dotted-glow-background";
+import DottedGlowBackground from "./ui/DottedGlowBackground";
 
 export default function LoadingOverlay() {
   // Start active so the overlay is visible on first React render.
@@ -75,13 +75,14 @@ export default function LoadingOverlay() {
       <DottedGlowBackground
         gap={14}
         radius={1.5}
-        darkColor="var(--color-accent)"
-        darkGlowColor="var(--color-primary)"
-        color="var(--color-accent)"
-        glowColor="var(--color-primary)"
+        colors={{
+          dot: "var(--color-accent)",
+          glow: "var(--color-primary)",
+          darkDot: "var(--color-accent)",
+          darkGlow: "var(--color-primary)",
+        }}
         opacity={0.8}
-        speedMin={0.3}
-        speedMax={1.0}
+        speed={{ min: 0.3, max: 1.0 }}
       />
     </div>
   );

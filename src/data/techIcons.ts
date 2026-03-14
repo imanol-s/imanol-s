@@ -1,6 +1,6 @@
 const TECH_ICON_BASE_PATH = '/icons/catppuccin';
 
-const ICON_MAP: Record<string, string> = {
+const ICON_MAP: Record<string, string | undefined> = {
   accessibility: 'file',
   astro: 'astro',
   'control systems': 'file',

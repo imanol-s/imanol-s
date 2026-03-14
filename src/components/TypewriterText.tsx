@@ -13,8 +13,6 @@ const TypewriterText = ({ text }: { text: string }) => {
   const abortRef = useRef(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const updateReducedMotion = () => setReducedMotion(mediaQuery.matches);
 
