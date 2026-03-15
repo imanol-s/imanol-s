@@ -129,14 +129,6 @@ function useResolvedColors(
   return { resolvedColor, resolvedGlowColor };
 }
 
-type CanvasMotionConfig = {
-  canvasRef: React.RefObject<HTMLCanvasElement | null>;
-  containerRef: React.RefObject<HTMLDivElement | null>;
-  gap: number;
-  speedMin: number;
-  speedMax: number;
-};
-
 /** Scale canvas to match container at the device pixel ratio (capped at 2×). */
 function resizeCanvas(
   el: HTMLCanvasElement,
@@ -192,13 +184,16 @@ function useCanvasResize(
 }
 
 function useDotAnimation(
-  config: CanvasMotionConfig,
+  canvasRef: React.RefObject<HTMLCanvasElement | null>,
+  containerRef: React.RefObject<HTMLDivElement | null>,
+  gap: number,
+  speedMin: number,
+  speedMax: number,
   radius: number,
   opacity: number,
   color: string,
   glowColor: string,
 ) {
-  const { canvasRef, containerRef, gap, speedMin, speedMax } = config;
   const dotsRef = useRef<Dot[]>([]);
 
   const drawFn = useCallback(
@@ -271,7 +266,11 @@ export default function DottedGlowBackground({
   );
 
   useDotAnimation(
-    { canvasRef, containerRef, gap, speedMin, speedMax },
+    canvasRef,
+    containerRef,
+    gap,
+    speedMin,
+    speedMax,
     radius,
     opacity,
     resolvedColor,

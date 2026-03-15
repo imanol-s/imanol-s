@@ -98,7 +98,7 @@ describe("DottedGlowBackground", () => {
     rafSpy.mockRestore();
   });
 
-  it("registers matchMedia change listener and re-resolves color on dark-mode event", async () => {
+  it("registers matchMedia change listener and switches fill color on dark-mode event", async () => {
     let capturedChangeHandler: ((e: { matches: boolean }) => void) | undefined;
     const mql = {
       matches: false,
@@ -114,7 +114,36 @@ describe("DottedGlowBackground", () => {
     };
     vi.stubGlobal("matchMedia", vi.fn().mockReturnValue(mql));
 
-    const { container } = render(
+    // Intercept canvas draws to capture the resolved fill color after mode switch.
+    let capturedFillStyle = "";
+    const mockCtx = {
+      get fillStyle() { return capturedFillStyle; },
+      set fillStyle(v: string) { capturedFillStyle = v; },
+      shadowColor: "",
+      shadowBlur: 0,
+      globalAlpha: 1,
+      canvas: { width: 0, height: 0 },
+      clearRect: vi.fn(),
+      arc: vi.fn(),
+      fill: vi.fn(),
+      beginPath: vi.fn(),
+      save: vi.fn(),
+      restore: vi.fn(),
+      setTransform: vi.fn(),
+      createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
+    };
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
+      mockCtx as unknown as CanvasRenderingContext2D,
+    );
+
+    let pendingRaf: FrameRequestCallback | undefined;
+    vi.stubGlobal("requestAnimationFrame", (cb: FrameRequestCallback) => {
+      pendingRaf = cb;
+      return 1;
+    });
+    vi.stubGlobal("cancelAnimationFrame", vi.fn());
+
+    render(
       <DottedGlowBackground
         colors={{ dot: "black", glow: "blue", darkDot: "white", darkGlow: "cyan" }}
       />,
@@ -122,9 +151,13 @@ describe("DottedGlowBackground", () => {
 
     expect(capturedChangeHandler).toBeDefined();
 
-    // Fire dark-mode change — component must survive and remain mounted
+    // Make detectDarkMode() return true via the documentElement class (avoids mutating
+    // the shared matchMedia mock which would also disable the animation loop).
+    document.documentElement.classList.add("dark");
     await act(async () => { capturedChangeHandler?.({ matches: true }); });
-    expect(container.querySelector("canvas")).not.toBeNull();
+    await act(async () => { pendingRaf?.(performance.now()); });
+    expect(capturedFillStyle).toBe("white");
+    document.documentElement.classList.remove("dark");
   });
 
   it("uses dark fill color when documentElement 'dark' class is present at mount", async () => {

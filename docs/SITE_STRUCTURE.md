@@ -59,7 +59,7 @@ stateDiagram-v2
 ├── Projects section          → horizontal-scroll-snap cards from content collection
 │   └── Project cards         → cover image, title, summary, VIEW PROJECT CTA
 ├── Experience section
-│   ├── Timeline (left)       → data from Jobs.ts (2 jobs) + education.ts
+│   ├── Timeline (left)       → data from Jobs.ts (first 3 entries) + education.ts
 │   └── Tech Specs (right)    → Core Languages, Competencies, Communication
 └── About section             → blurb, location tile, contact tile
 
