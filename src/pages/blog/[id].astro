@@ -20,8 +20,9 @@ const {post} = Astro.props;
 const {title, description, tags, cover} = post.data;
 
 const {Content} = await render(post);
+const ogImage = new URL(cover.src.src, Astro.site).href;
 ---
-<Layout title={title} description={description} imageOg={new URL(cover.src.src, Astro.site).href} scrollSmooth={true}>
+<Layout title={title} description={description} imageOg={ogImage} scrollSmooth={true}>
     <div class="flex justify-center mt-10">
         <BackBtn/>
     </div>

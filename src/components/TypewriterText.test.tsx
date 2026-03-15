@@ -80,4 +80,35 @@ describe("TypewriterText", () => {
     const heading = screen.getByRole("heading");
     expect(heading.querySelector(".typing-caret")).toBeNull();
   });
+
+  it("types characters progressively after OVERLAY_CLEAR_MS delay", async () => {
+    vi.useFakeTimers();
+    // Fix jitter so each char fires at exactly 35ms
+    vi.spyOn(Math, "random").mockReturnValue(0);
+    render(<TypewriterText text="Hi!" />);
+
+    // Let initial effects fire (reducedMotion is set to false)
+    await act(async () => { vi.advanceTimersByTime(0); });
+
+    const getAnimatedSpan = () =>
+      screen.getByRole("heading").querySelectorAll("span")[1];
+
+    // Animation hasn't started yet — displayed is empty
+    expect(getAnimatedSpan().textContent).toBe("");
+
+    // Advance to OVERLAY_CLEAR_MS — first char fires, schedules next at 35ms
+    await act(async () => { vi.advanceTimersByTime(1200); });
+    expect(getAnimatedSpan().textContent).toBe("H");
+
+    // Advance one 35ms tick → second char
+    await act(async () => { vi.advanceTimersByTime(35); });
+    expect(getAnimatedSpan().textContent).toBe("Hi");
+
+    // Run remaining timers — all characters typed, session flag set
+    await act(async () => { vi.runAllTimers(); });
+    expect(getAnimatedSpan().textContent).toBe("Hi!");
+    expect(sessionStorage.getItem("heroNameTyped")).toBe("true");
+
+    vi.useRealTimers();
+  });
 });

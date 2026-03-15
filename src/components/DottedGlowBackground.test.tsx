@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render } from "@testing-library/react";
+import { render, act } from "@testing-library/react";
 import DottedGlowBackground from "./DottedGlowBackground";
 
 function mockMatchMedia(matches = false) {
@@ -96,5 +96,54 @@ describe("DottedGlowBackground", () => {
     render(<DottedGlowBackground />);
     expect(rafSpy).not.toHaveBeenCalled();
     rafSpy.mockRestore();
+  });
+
+  it("invokes the matchMedia change listener when dark mode fires", async () => {
+    let capturedChangeHandler: ((e: { matches: boolean }) => void) | undefined;
+    const mql = {
+      matches: false,
+      addEventListener: vi.fn((_type: string, handler: (e: { matches: boolean }) => void) => {
+        capturedChangeHandler = handler;
+      }),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+      media: "(prefers-color-scheme: dark)",
+      onchange: null,
+    };
+    vi.stubGlobal("matchMedia", vi.fn().mockReturnValue(mql));
+
+    const { container } = render(
+      <DottedGlowBackground
+        colors={{ dot: "black", glow: "blue", darkDot: "white", darkGlow: "cyan" }}
+      />,
+    );
+
+    // useResolvedColors must have registered the change listener
+    expect(capturedChangeHandler).toBeDefined();
+
+    // Fire the dark-mode change event and verify the component updates without errors
+    await act(async () => {
+      capturedChangeHandler?.({ matches: true });
+    });
+    expect(container.querySelector("canvas")).not.toBeNull();
+  });
+
+  it("updates resolved colors when documentElement gains 'dark' class", async () => {
+    const { container } = render(
+      <DottedGlowBackground
+        colors={{ dot: "black", glow: "blue", darkDot: "white", darkGlow: "cyan" }}
+      />,
+    );
+
+    // Simulate dark-mode toggle via MutationObserver code path
+    await act(async () => {
+      document.documentElement.classList.add("dark");
+    });
+    expect(container.querySelector("canvas")).not.toBeNull();
+
+    // Cleanup
+    document.documentElement.classList.remove("dark");
   });
 });

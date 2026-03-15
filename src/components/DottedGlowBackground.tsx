@@ -129,7 +129,7 @@ function useResolvedColors(
   return { resolvedColor, resolvedGlowColor };
 }
 
-type AnimationConfig = {
+type CanvasMotionConfig = {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
   containerRef: React.RefObject<HTMLDivElement | null>;
   gap: number;
@@ -192,7 +192,7 @@ function useCanvasResize(
 }
 
 function useDotAnimation(
-  config: AnimationConfig,
+  config: CanvasMotionConfig,
   radius: number,
   opacity: number,
   color: string,

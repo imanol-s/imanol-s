@@ -228,124 +228,6 @@
     }
   }
 
-  /* ── MDX prose content (project detail pages) ──────────────────────── */
-  .project-mdx {
-    color: #334155;
-    line-height: 1.8;
-    font-size: 1rem;
-  }
-  .dark .project-mdx {
-    color: #cbd5e1;
-  }
-  .project-mdx h2 {
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: #0f172a;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e2e8f0;
-  }
-  .dark .project-mdx h2 {
-    color: white;
-    border-bottom-color: #1e293b;
-  }
-  .project-mdx h3 {
-    font-family: var(--font-display);
-    font-size: 1rem;
-    font-weight: 700;
-    color: #0f172a;
-    margin-top: 1.75rem;
-    margin-bottom: 0.5rem;
-  }
-  .dark .project-mdx h3 {
-    color: white;
-  }
-  .project-mdx p {
-    margin-bottom: 1.25rem;
-  }
-  .project-mdx ul,
-  .project-mdx ol {
-    padding-left: 1.5rem;
-    margin-bottom: 1.25rem;
-  }
-  .project-mdx li {
-    margin-bottom: 0.4rem;
-  }
-  .project-mdx ul > li {
-    list-style-type: disc;
-  }
-  .project-mdx ul > li::marker {
-    color: var(--color-primary);
-  }
-  .project-mdx ol > li {
-    list-style-type: decimal;
-  }
-  .project-mdx hr {
-    border: none;
-    border-top: 1px solid #e2e8f0;
-    margin: 2.5rem 0;
-  }
-  .dark .project-mdx hr {
-    border-top-color: #1e293b;
-  }
-  .project-mdx a {
-    color: var(--color-primary);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-  .project-mdx strong {
-    font-weight: 600;
-    color: #0f172a;
-  }
-  .dark .project-mdx strong {
-    color: white;
-  }
-  .project-mdx em {
-    font-style: italic;
-  }
-  .project-mdx code {
-    font-family: var(--font-display);
-    font-size: 0.85em;
-    background: #f1f5f9;
-    color: #1e293b;
-    padding: 0.15em 0.4em;
-    border-radius: 3px;
-  }
-  .dark .project-mdx code {
-    background: #1e293b;
-    color: #e2e8f0;
-  }
-  .project-mdx pre {
-    background: #0f172a;
-    color: #e2e8f0;
-    padding: 1.25rem;
-    overflow-x: auto;
-    margin-bottom: 1.25rem;
-    border: 1px solid #334155;
-    font-family: var(--font-display);
-    font-size: 0.85rem;
-    line-height: 1.6;
-  }
-  .project-mdx img {
-    max-width: 100%;
-    height: auto;
-    margin: 1.5rem 0;
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    display: block;
-  }
-  .project-mdx blockquote {
-    border-left: 3px solid var(--color-primary);
-    padding-left: 1rem;
-    margin: 1.5rem 0;
-    color: #64748b;
-    font-style: italic;
-  }
-  .dark .project-mdx blockquote {
-    color: var(--color-accent);
-  }
 }
 
 @keyframes topo-drift {
@@ -397,6 +279,26 @@
 
   .prose img {
     border-radius: 1rem;
+  }
+
+  /* Brand overrides shared by blog and project prose */
+  .prose h2,
+  .prose h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  .prose h2 {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .dark .prose h2 {
+    border-bottom-color: #1e293b;
+  }
+  .prose ul > li::marker {
+    color: var(--color-primary);
+  }
+  .prose blockquote {
+    border-left-color: var(--color-primary);
   }
 }
 

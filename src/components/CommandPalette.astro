@@ -144,10 +144,12 @@ const actions = [
     try { return JSON.parse(el.textContent); } catch { return []; }
   }
 
-  let allActions: PaletteAction[] = loadActions();
-  let filteredActions = [...allActions];
-  let activeIndex = 0;
-  let previousFocusedElement: HTMLElement | null = null;
+  const state = {
+    allActions: [] as PaletteAction[],
+    filteredActions: [] as PaletteAction[],
+    activeIndex: 0,
+    previousFocusedElement: null as HTMLElement | null,
+  };
 
   function getNodes() {
     const root = document.querySelector(ROOT_SELECTOR);
@@ -181,8 +183,8 @@ const actions = [
     nodes.root.classList.add("hidden");
     nodes.root.dataset.open = "false";
     nodes.root.setAttribute("aria-hidden", "true");
-    if (previousFocusedElement instanceof HTMLElement) previousFocusedElement.focus();
-    previousFocusedElement = null;
+    if (state.previousFocusedElement instanceof HTMLElement) state.previousFocusedElement.focus();
+    state.previousFocusedElement = null;
   }
 
   function executeAction(action: PaletteAction) {
@@ -198,7 +200,7 @@ const actions = [
     if (!nodes) return;
     nodes.results.textContent = "";
 
-    if (filteredActions.length === 0) {
+    if (state.filteredActions.length === 0) {
       const emptyState = document.createElement("li");
       emptyState.className = "rounded-sm px-3 py-4 text-sm text-slate-500 dark:text-slate-400";
       emptyState.textContent = "No commands found.";
@@ -206,17 +208,17 @@ const actions = [
       return;
     }
 
-    filteredActions.forEach((action, index) => {
+    state.filteredActions.forEach((action, index) => {
       const item = document.createElement("li");
       const button = document.createElement("button");
       button.type = "button";
       button.dataset.commandItem = "true";
       button.dataset.commandIndex = String(index);
       button.setAttribute("role", "option");
-      button.setAttribute("aria-selected", index === activeIndex ? "true" : "false");
+      button.setAttribute("aria-selected", index === state.activeIndex ? "true" : "false");
       button.className = [
         "flex w-full items-start justify-between rounded-sm px-3 py-2 text-left transition-colors",
-        index === activeIndex
+        index === state.activeIndex
           ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100"
           : "text-slate-800 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800",
       ].join(" ");
@@ -246,20 +248,20 @@ const actions = [
   function openPalette() {
     const nodes = getNodes();
     if (!nodes) return;
-    previousFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    state.previousFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     nodes.root.classList.remove("hidden");
     nodes.root.dataset.open = "true";
     nodes.root.setAttribute("aria-hidden", "false");
     nodes.input.value = "";
-    filteredActions = [...allActions];
-    activeIndex = 0;
+    state.filteredActions = [...state.allActions];
+    state.activeIndex = 0;
     renderResults();
     requestAnimationFrame(() => nodes.input.focus());
   }
 
   function moveSelection(offset: number) {
-    if (filteredActions.length === 0) return;
-    activeIndex = (activeIndex + offset + filteredActions.length) % filteredActions.length;
+    if (state.filteredActions.length === 0) return;
+    state.activeIndex = (state.activeIndex + offset + state.filteredActions.length) % state.filteredActions.length;
     renderResults();
   }
 
@@ -275,7 +277,7 @@ const actions = [
     if (event.key === "ArrowDown") { event.preventDefault(); moveSelection(1); return; }
     if (event.key === "ArrowUp") { event.preventDefault(); moveSelection(-1); return; }
     if (event.key === "Enter") {
-      const selectedAction = filteredActions[activeIndex];
+      const selectedAction = state.filteredActions[state.activeIndex];
       if (!selectedAction) return;
       event.preventDefault();
       executeAction(selectedAction);
@@ -285,8 +287,8 @@ const actions = [
   function handleInput(event: Event) {
     const target = event.target;
     if (!(target instanceof HTMLInputElement) || !target.matches(INPUT_SELECTOR)) return;
-    filteredActions = allActions.filter((a) => matchesAction(a, target.value));
-    activeIndex = 0;
+    state.filteredActions = state.allActions.filter((a) => matchesAction(a, target.value));
+    state.activeIndex = 0;
     renderResults();
   }
 
@@ -296,22 +298,29 @@ const actions = [
     if (target.closest("[data-command-backdrop]")) { closePalette(); return; }
     const itemButton = target.closest("[data-command-item]");
     if (!(itemButton instanceof HTMLElement)) return;
-    const action = filteredActions[Number(itemButton.dataset.commandIndex)];
+    const action = state.filteredActions[Number(itemButton.dataset.commandIndex)];
     if (action) executeAction(action);
   }
 
-  function bindCommandPalette() {
-    allActions = loadActions();
-    filteredActions = [...allActions];
-    activeIndex = 0;
+  function initState() {
+    state.allActions = loadActions();
+    state.filteredActions = [...state.allActions];
+    state.activeIndex = 0;
     renderResults();
+  }
 
+  function bindEventListeners() {
     if (document.documentElement.dataset[COMMAND_PALETTE_BOUND_KEY] === "true") return;
     document.documentElement.dataset[COMMAND_PALETTE_BOUND_KEY] = "true";
     document.addEventListener("keydown", handleKeydown);
     document.addEventListener("input", handleInput);
     document.addEventListener("click", handleClick);
     window.addEventListener(OPEN_EVENT, openPalette);
+  }
+
+  function bindCommandPalette() {
+    initState();
+    bindEventListeners();
   }
 
   bindCommandPalette();

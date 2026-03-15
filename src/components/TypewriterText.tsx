@@ -5,7 +5,7 @@ import { safeSessionGet, safeSessionSet } from "../utils/session";
 
 const SESSION_KEY = "heroNameTyped";
 
-const TypewriterText = ({ text }: { text: string }) => {
+export default function TypewriterText({ text }: { text: string }) {
   const [displayed, setDisplayed] = useState(text);
   const [done, setDone] = useState(false);
   const [reducedMotion, setReducedMotion] = useState<boolean | null>(null);
@@ -102,6 +102,4 @@ const TypewriterText = ({ text }: { text: string }) => {
       )}
     </h1>
   );
-};
-
-export default TypewriterText;
+}
