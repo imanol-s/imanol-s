@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { safeSessionGet, safeSessionSet } from "../utils/session";
 
 const PHASE_STEP = 0.0006;
 const BASE_FREQ_CENTER = 0.004;
@@ -14,19 +15,14 @@ const SEED_RANGE = 10_000;
 /** Retrieve or generate a session-scoped seed for feTurbulence. */
 function getOrCreateSessionSeed(): number {
   const key = "topo-seed";
-  try {
-    const stored = sessionStorage.getItem(key);
-    if (stored !== null) {
-      const parsed = parseInt(stored, 10);
-      if (!Number.isNaN(parsed)) return parsed;
-    }
-    const seed = Math.floor(Math.random() * SEED_RANGE);
-    sessionStorage.setItem(key, String(seed));
-    return seed;
-  } catch {
-    // sessionStorage unavailable (private mode, quota exceeded, etc.)
-    return Math.floor(Math.random() * SEED_RANGE);
+  const stored = safeSessionGet(key);
+  if (stored !== null) {
+    const parsed = parseInt(stored, 10);
+    if (!Number.isNaN(parsed)) return parsed;
   }
+  const seed = Math.floor(Math.random() * SEED_RANGE);
+  safeSessionSet(key, String(seed));
+  return seed;
 }
 
 /** Animate feTurbulence baseFrequency with rAF, respecting reduced-motion. */

@@ -1,26 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
 import { OVERLAY_CLEAR_MS } from "../constants";
+import { safeSessionGet, safeSessionSet } from "../utils/session";
 
 const SESSION_KEY = "heroNameTyped";
-
-/** Read from sessionStorage, returning null if storage is unavailable. */
-function safeSessionGet(key: string): string | null {
-  try {
-    return sessionStorage.getItem(key);
-  } catch {
-    return null;
-  }
-}
-
-/** Write to sessionStorage, silently ignoring failures. */
-function safeSessionSet(key: string, value: string): void {
-  try {
-    sessionStorage.setItem(key, value);
-  } catch {
-    // storage unavailable (private mode, quota exceeded, etc.)
-  }
-}
 
 const TypewriterText = ({ text }: { text: string }) => {
   const [displayed, setDisplayed] = useState(text);

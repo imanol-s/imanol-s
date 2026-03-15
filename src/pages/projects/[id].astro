@@ -10,21 +10,21 @@ import { PLACEHOLDER_URL } from "../../config";
 
 export async function getStaticPaths() {
   const posts = await getSortedProjects();
-  return posts.map(post => ({
+  return posts.map((post, index) => ({
     params: { id: post.id },
-    props: { post, allProjects: posts },
+    props: {
+      post,
+      projectLabel: `Project ${String(index + 1).padStart(2, '0')}`,
+      prev: index > 0 ? posts[index - 1] : null,
+      next: index < posts.length - 1 ? posts[index + 1] : null,
+    },
   }));
 }
 
-const { post, allProjects } = Astro.props;
+const { post, projectLabel, prev, next } = Astro.props;
 const { title, summary, tags, cover, ogImage, url, startDate, endDate } = post.data;
 
 const { Content } = await render(post);
-
-const currentIndex = allProjects.findIndex(p => p.id === post.id);
-const projectLabel = `Project ${String(currentIndex + 1).padStart(2, '0')}`;
-const prev = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
-const next = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
 
 const hasValidUrl = url && url.trim() !== '' && url !== PLACEHOLDER_URL;
 ---
@@ -144,7 +144,7 @@ const hasValidUrl = url && url.trim() !== '' && url !== PLACEHOLDER_URL;
           Timeline
         </p>
         <p class="font-display text-sm text-slate-700 dark:text-slate-200">
-          {formatDate(startDate)} — {endDate ? formatDate(endDate) : ''}
+          {formatDate(startDate) ?? ''} — {endDate ? (formatDate(endDate) ?? '') : ''}
         </p>
       </div>
     </div>

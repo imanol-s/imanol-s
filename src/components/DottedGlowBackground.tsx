@@ -183,10 +183,10 @@ function useCanvasResize(
     if (!el || !container) return;
     const ctx = el.getContext("2d");
     if (!ctx) return;
-    const dpr = Math.min(Math.max(1, window.devicePixelRatio || 1), 2);
-    resizeCanvas(el, ctx, container, dpr);
+    const getDpr = () => Math.min(Math.max(1, window.devicePixelRatio || 1), 2);
+    resizeCanvas(el, ctx, container, getDpr());
     onResize();
-    const ro = new ResizeObserver(() => { resizeCanvas(el, ctx, container, dpr); onResize(); });
+    const ro = new ResizeObserver(() => { resizeCanvas(el, ctx, container, getDpr()); onResize(); });
     ro.observe(container);
     return () => ro.disconnect();
   }, [canvasRef, containerRef, onResize]);

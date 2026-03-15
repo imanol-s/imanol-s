@@ -1,13 +1,14 @@
 ---
-import {getCollection, render} from "astro:content";
+import {render} from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import BackBtn from "../../components/BackBtn.astro";
 import {Image} from "astro:assets";
 import BackToTop from "../../components/BackToTop.astro";
+import { getSortedPosts } from "../../utils/posts";
 
 
 export async function getStaticPaths() {
-    const posts = await getCollection('posts');
+    const posts = await getSortedPosts();
     return posts.map(post => ({
         params: {id: post.id},
         props: {post},
