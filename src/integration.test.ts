@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { SITE, ME, SOCIALS } from "./config";
 import jobs from "./data/jobs";
 import education from "./data/education";
-import { getTechIconPath } from "./data/techIcons";
+import { getTechIconPath } from "./utils/techIcons";
 
 describe("config-to-page data pipeline", () => {
   it("SITE fields used by Layout.astro are present and valid", () => {

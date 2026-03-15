@@ -1,7 +1,7 @@
 interface Job {
   title: string;
-  startDate: string;
-  endDate?: string;
+  startDate: Date;
+  endDate?: Date;
   company: string;
   location: string;
   description: string;
@@ -12,7 +12,7 @@ interface Job {
 const jobs: Job[] = [
   {
     title: "Associate Data Analyst",
-    startDate: "2026-01-16",
+    startDate: new Date("2026-01-16"),
     company: "Freeman",
     location: "United States",
     description:
@@ -30,8 +30,8 @@ const jobs: Job[] = [
 
   {
     title: "Data Operations Analyst - Part Time",
-    startDate: "2025-08-16",
-    endDate: "2026-01-16",
+    startDate: new Date("2025-08-16"),
+    endDate: new Date("2026-01-16"),
     company: "Freeman",
     location: "United States",
     description:
@@ -47,8 +47,8 @@ const jobs: Job[] = [
   },
   {
     title: "Material Master Data Steward Intern",
-    startDate: "2025-05-01",
-    endDate: "2025-08-31",
+    startDate: new Date("2025-05-01"),
+    endDate: new Date("2025-08-31"),
     company: "Freeman",
     location: "United States",
     description:

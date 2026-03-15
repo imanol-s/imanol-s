@@ -2,6 +2,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render } from "@testing-library/react";
 import SafeTopoBackground from "./SafeTopoBackground";
+import AnimationBoundary from "./AnimationBoundary";
 
 beforeEach(() => {
   const mql = {
@@ -33,5 +34,16 @@ describe("SafeTopoBackground", () => {
     const { container } = render(<SafeTopoBackground />);
     const svg = container.querySelector("svg");
     expect(svg).not.toBeNull();
+  });
+
+  it("catches child render errors and renders nothing (error boundary contract)", () => {
+    const AlwaysThrows = () => { throw new Error("intentional test error"); };
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const { container } = render(
+      <AnimationBoundary>
+        <AlwaysThrows />
+      </AnimationBoundary>,
+    );
+    expect(container.firstChild).toBeNull();
   });
 });

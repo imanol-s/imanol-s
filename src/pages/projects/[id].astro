@@ -2,11 +2,11 @@
 import { render } from "astro:content";
 import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
-import { getTechIconPath } from "../../data/techIcons";
+import { getTechIconPath } from "../../utils/techIcons";
 import { formatDate } from "../../utils/dates";
 import TagPill from "../../components/TagPill.astro";
 import { getSortedProjects } from "../../utils/projects";
-import { PLACEHOLDER_URL } from "../../constants";
+import { PLACEHOLDER_URL } from "../../config";
 
 export async function getStaticPaths() {
   const posts = await getSortedProjects();
@@ -53,7 +53,7 @@ const hasValidUrl = url && url.trim() !== '' && url !== PLACEHOLDER_URL;
     {tags.length > 0 && (
       <div class="flex flex-wrap gap-2 mb-8">
         {tags.map((tag: string) => (
-          <TagPill tag={tag} />
+          <TagPill tag={tag} iconPath={getTechIconPath(tag)} />
         ))}
       </div>
     )}
@@ -144,7 +144,7 @@ const hasValidUrl = url && url.trim() !== '' && url !== PLACEHOLDER_URL;
           Timeline
         </p>
         <p class="font-display text-sm text-slate-700 dark:text-slate-200">
-          {formatDate(startDate)} — {formatDate(endDate)}
+          {formatDate(startDate)} — {endDate ? formatDate(endDate) : ''}
         </p>
       </div>
     </div>

@@ -2,6 +2,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render } from "@testing-library/react";
 import SafeLoadingOverlay from "./SafeLoadingOverlay";
+import AnimationBoundary from "./AnimationBoundary";
 
 beforeEach(() => {
   const mql = {
@@ -49,5 +50,16 @@ describe("SafeLoadingOverlay", () => {
     const { container } = render(<SafeLoadingOverlay />);
     const overlay = container.querySelector("[aria-hidden]");
     expect(overlay).not.toBeNull();
+  });
+
+  it("catches child render errors and renders nothing (error boundary contract)", () => {
+    const AlwaysThrows = () => { throw new Error("intentional test error"); };
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const { container } = render(
+      <AnimationBoundary>
+        <AlwaysThrows />
+      </AnimationBoundary>,
+    );
+    expect(container.firstChild).toBeNull();
   });
 });

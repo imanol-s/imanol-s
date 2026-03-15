@@ -106,3 +106,9 @@ export const SOCIALS: SocialLink[] = [
     show: true,
   },
 ];
+
+/**
+ * Placeholder URL used during development for projects without a live link yet.
+ * Uses RFC 2606 reserved .invalid TLD so it cannot collide with a real URL.
+ */
+export const PLACEHOLDER_URL = "https://placeholder.invalid";
