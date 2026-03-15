@@ -48,7 +48,7 @@ function generateDots(
       const x = i * gap + (j % 2 === 0 ? 0 : gap * 0.5);
       const y = j * gap;
       const phase = Math.random() * Math.PI * 2;
-      const span = Math.max(max - min, 0);
+      const span = max - min;
       const speed = min + Math.random() * span;
       dots.push({ x, y, phase, speed });
     }
@@ -175,7 +175,6 @@ function useVisibilityGate(
 function useCanvasResize(
   canvasRef: React.RefObject<HTMLCanvasElement | null>,
   containerRef: React.RefObject<HTMLDivElement | null>,
-  dpr: number,
   onResize: () => void,
 ) {
   useEffect(() => {
@@ -184,12 +183,13 @@ function useCanvasResize(
     if (!el || !container) return;
     const ctx = el.getContext("2d");
     if (!ctx) return;
+    const dpr = Math.min(Math.max(1, window.devicePixelRatio || 1), 2);
     resizeCanvas(el, ctx, container, dpr);
     onResize();
     const ro = new ResizeObserver(() => { resizeCanvas(el, ctx, container, dpr); onResize(); });
     ro.observe(container);
     return () => ro.disconnect();
-  }, [canvasRef, containerRef, dpr, onResize]);
+  }, [canvasRef, containerRef, onResize]);
 }
 
 function useDotAnimation(
@@ -201,7 +201,6 @@ function useDotAnimation(
 ) {
   const { canvasRef, containerRef, gap, speedMin, speedMax } = config;
   const dotsRef = useRef<Dot[]>([]);
-  const dpr = Math.min(Math.max(1, window.devicePixelRatio || 1), 2);
 
   const drawFn = useCallback(
     (ctx: CanvasRenderingContext2D, dots: Dot[], now: number) =>
@@ -217,7 +216,7 @@ function useDotAnimation(
   }, [containerRef, gap, speedMin, speedMax]);
 
   const isVisibleRef = useVisibilityGate(containerRef);
-  useCanvasResize(canvasRef, containerRef, dpr, regenDots);
+  useCanvasResize(canvasRef, containerRef, regenDots);
 
   useEffect(() => {
     const el = canvasRef.current;
@@ -231,7 +230,7 @@ function useDotAnimation(
       if (stopped) return;
       if (!isVisibleRef.current) { raf = requestAnimationFrame(draw); return; }
       try { drawFn(ctx, dotsRef.current, now); }
-      catch { stopped = true; return; }
+      catch (err) { console.warn("DottedGlowBackground draw error:", err); stopped = true; return; }
       raf = requestAnimationFrame(draw);
     };
 

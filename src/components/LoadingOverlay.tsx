@@ -44,7 +44,6 @@ export default function LoadingOverlay() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const showOnSwap = fadeIn;
     const hideOnLoad = () => {
       // Each navigation swaps in a fresh #loading-overlay from the new page HTML;
       // hide it so it doesn't linger after the React overlay fades out.
@@ -53,10 +52,10 @@ export default function LoadingOverlay() {
       pageLoadTimerRef.current = setTimeout(fadeOut, PAGE_SWAP_DELAY_MS);
     };
 
-    document.addEventListener("astro:before-swap", showOnSwap);
+    document.addEventListener("astro:before-swap", fadeIn);
     document.addEventListener("astro:page-load", hideOnLoad);
     return () => {
-      document.removeEventListener("astro:before-swap", showOnSwap);
+      document.removeEventListener("astro:before-swap", fadeIn);
       document.removeEventListener("astro:page-load", hideOnLoad);
       clearTimeout(fadeTimerRef.current);
       clearTimeout(pageLoadTimerRef.current);

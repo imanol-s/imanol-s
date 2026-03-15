@@ -21,23 +21,21 @@ const {title, description, tags, cover} = post.data;
 const {Content} = await render(post);
 ---
 <Layout title={title} description={description} imageOg={new URL(cover.src.src, Astro.site).href} scrollSmooth={true}>
-    <>
-        <div class="flex justify-center mt-10">
-            <BackBtn/>
-        </div>
-        <div class="flex flex-col gap-6 justify-center items-center">
-            <h1 class="text-3xl font-display font-bold text-center">{title}</h1>
-            <p class="text-sm text-slate-500 dark:text-slate-400">
-                {tags.join(', ')}
-            </p>
-        </div>
-        <div class="cad-border overflow-hidden">
-            <Image transition:name={`${post.id}-image`} class="w-full h-[400px] object-cover" src={cover.src}
-                   alt={cover.alt ?? title} width={1280} height={400} loading="eager" fetchpriority="high" />
-        </div>
-        <article id="article" class="mt-8 prose dark:prose-invert scroll-mt-20">
-            <Content/>
-        </article>
-        <BackToTop />
-    </>
+    <div class="flex justify-center mt-10">
+        <BackBtn/>
+    </div>
+    <div class="flex flex-col gap-6 justify-center items-center">
+        <h1 class="text-3xl font-display font-bold text-center">{title}</h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+            {tags.join(', ')}
+        </p>
+    </div>
+    <div class="cad-border overflow-hidden">
+        <Image transition:name={`${post.id}-image`} class="w-full h-[400px] object-cover" src={cover.src}
+               alt={cover.alt ?? title} width={1280} height={400} loading="eager" fetchpriority="high" />
+    </div>
+    <article id="article" class="mt-8 prose dark:prose-invert scroll-mt-20">
+        <Content/>
+    </article>
+    <BackToTop />
 </Layout>

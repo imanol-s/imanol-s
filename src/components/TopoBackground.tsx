@@ -4,7 +4,7 @@ const PHASE_STEP = 0.0006;
 const BASE_FREQ_CENTER = 0.004;
 const BASE_FREQ_AMPLITUDE = 0.0015;
 const Y_RATE_MULTIPLIER = 0.73;
-export const DISPLACEMENT_SCALE = 380;
+const DISPLACEMENT_SCALE = 380;
 const LINE_SPACING = 24;
 const LINE_START_OFFSET = -20;
 const RESIZE_DEBOUNCE_MS = 150;
@@ -43,18 +43,14 @@ function useTopoAnimation(
     const tick = () => {
       if (reducedMotion) return;
       phase += PHASE_STEP;
-      try {
-        // toFixed(5) is intentional — do NOT reduce precision here.
-        // Per-frame delta is ~0.0000009 (phase step × amplitude).
-        // At toFixed(4) the attribute stays identical for ~111 frames before
-        // jumping, producing visible stutter. 5 decimal places keeps each step
-        // small enough to appear continuous at 60 fps.
-        const bfx = (BASE_FREQ_CENTER + Math.sin(phase) * BASE_FREQ_AMPLITUDE).toFixed(5);
-        const bfy = (BASE_FREQ_CENTER + Math.cos(phase * Y_RATE_MULTIPLIER) * BASE_FREQ_AMPLITUDE).toFixed(5);
-        turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
-      } catch {
-        return;
-      }
+      // toFixed(5) is intentional — do NOT reduce precision here.
+      // Per-frame delta is ~0.0000009 (phase step × amplitude).
+      // At toFixed(4) the attribute stays identical for ~111 frames before
+      // jumping, producing visible stutter. 5 decimal places keeps each step
+      // small enough to appear continuous at 60 fps.
+      const bfx = (BASE_FREQ_CENTER + Math.sin(phase) * BASE_FREQ_AMPLITUDE).toFixed(5);
+      const bfy = (BASE_FREQ_CENTER + Math.cos(phase * Y_RATE_MULTIPLIER) * BASE_FREQ_AMPLITUDE).toFixed(5);
+      turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
       rafId.current = requestAnimationFrame(tick);
     };
 

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render } from "@testing-library/react";
-import TopoBackground, { DISPLACEMENT_SCALE } from "./TopoBackground";
+import TopoBackground from "./TopoBackground";
 
 function mockMatchMedia(matches = false) {
   const mql = {
@@ -50,7 +50,7 @@ describe("TopoBackground", () => {
     const { container } = render(<TopoBackground />);
     const displacement = container.querySelector("feDisplacementMap");
     expect(displacement).not.toBeNull();
-    expect(displacement?.getAttribute("scale")).toBe(String(DISPLACEMENT_SCALE));
+    expect(displacement?.getAttribute("scale")).toBe("380");
   });
 
   it("renders the blueprint grid layer", () => {

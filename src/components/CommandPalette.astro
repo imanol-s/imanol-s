@@ -1,17 +1,14 @@
 ---
 import { getCollection } from "astro:content";
 import { ME } from "../config";
+import { getSortedProjects } from "../utils/projects";
+import { getSortedPosts } from "../utils/posts";
 
 const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 const emailHref = `mailto:${ME.contactInfo.email}?subject=${encodeURIComponent("Portfolio inquiry")}`;
 
-const latestProject = (await getCollection("projects")).sort(
-  (a, b) => b.data.startDate.getTime() - a.data.startDate.getTime()
-)[0];
-
-const latestPost = (await getCollection("posts")).sort(
-  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
-)[0];
+const [latestProject] = await getSortedProjects();
+const [latestPost] = await getSortedPosts();
 
 const actions = [
   {
@@ -138,7 +135,7 @@ const actions = [
     label: string;
     description: string;
     href: string;
-    kind: string;
+    kind: "route" | "external" | "download";
     keywords: string;
   }
 
@@ -174,7 +171,6 @@ const actions = [
   }
 
   function matchesAction(action: PaletteAction, query: string) {
-    if (!query) return true;
     const normalized = query.toLowerCase().trim();
     if (!normalized) return true;
     return [action.label, action.description, action.keywords].join(" ").toLowerCase().includes(normalized);

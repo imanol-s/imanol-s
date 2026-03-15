@@ -1,39 +1,35 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Layout from "../../layouts/Layout.astro";
-import { getCollection } from 'astro:content';
 import PostCard from "../../components/PostCard.astro";
 import { SITE } from '../../config';
+import { getSortedPosts } from '../../utils/posts';
 
-const allPosts = (await getCollection('posts'))
-    .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+const allPosts = await getSortedPosts();
 ---
 
 <Layout title={`${SITE.logoText} | Blog`} description="Blog posts" scrollSmooth={false}>
-    <>
-        <!--Blog Section-->
-        <section class="border-b border-slate-200 dark:border-slate-800 pb-4 mb-8">
-            <div class="mb-4">
-                <h1 class="text-3xl font-display font-bold">Brain dump</h1>
-            </div>
-        </section>
+    <!--Blog Section-->
+    <section class="border-b border-slate-200 dark:border-slate-800 pb-4 mb-8">
+        <div class="mb-4">
+            <h1 class="text-3xl font-display font-bold">Brain dump</h1>
+        </div>
+    </section>
 
-        <section class="flex flex-col gap-8">
-            {allPosts.length > 0 ? (
-                allPosts.map((post: CollectionEntry<'posts'>) => (
-                        <PostCard
-                                id={post.id}
-                                title={post.data.title}
-                                description={post.data.description}
-                                publishDate={post.data.publishDate}
-                                tags={post.data.tags}
-                                cover={post.data.cover}
-                        />
-                ))
-            ) : (
-                    <p class="text-slate-500 font-display text-sm">No posts found.</p>
-            )
-            }
-        </section>
-    </>
+    <section class="flex flex-col gap-8">
+        {allPosts.length > 0 ? (
+            allPosts.map((post: CollectionEntry<'posts'>) => (
+                <PostCard
+                    id={post.id}
+                    title={post.data.title}
+                    description={post.data.description}
+                    publishDate={post.data.publishDate}
+                    tags={post.data.tags}
+                    cover={post.data.cover}
+                />
+            ))
+        ) : (
+            <p class="text-slate-500 font-display text-sm">No posts found.</p>
+        )}
+    </section>
 </Layout>
