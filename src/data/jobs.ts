@@ -1,4 +1,4 @@
-export interface Job {
+interface Job {
   title: string;
   startDate: Date;
   endDate?: Date;

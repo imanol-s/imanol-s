@@ -1,4 +1,4 @@
-export interface Education {
+interface Education {
   title: string;
   endDate?: Date;
   school: string;
