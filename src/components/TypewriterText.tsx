@@ -8,23 +8,21 @@ const SESSION_KEY = "heroNameTyped";
 export default function TypewriterText({ text }: { text: string }) {
   const [displayed, setDisplayed] = useState(text);
   const [done, setDone] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState<boolean | null>(null);
+  // Read once at mount; updated reactively when the OS preference changes.
+  const [reducedMotion, setReducedMotion] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const abortRef = useRef(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const updateReducedMotion = () => setReducedMotion(mediaQuery.matches);
-
-    updateReducedMotion();
     mediaQuery.addEventListener("change", updateReducedMotion);
-
     return () => mediaQuery.removeEventListener("change", updateReducedMotion);
   }, []);
 
   useEffect(() => {
-    if (reducedMotion === null) return;
-
     setDisplayed("");
     setDone(false);
     abortRef.current = false;
@@ -85,7 +83,7 @@ export default function TypewriterText({ text }: { text: string }) {
       </span>
       <span aria-hidden="true" className="absolute inset-0">
         {displayed}
-        {reducedMotion === false ? (
+        {!reducedMotion ? (
           <span className={`typing-caret ${done ? "hidden-caret" : ""}`} />
         ) : null}
       </span>

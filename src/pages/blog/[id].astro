@@ -9,18 +9,21 @@ import { getSortedPosts } from "../../utils/posts";
 
 export async function getStaticPaths() {
     const posts = await getSortedPosts();
+    const siteBase = import.meta.env.SITE ?? "https://imanols.dev";
     return posts.map(post => ({
         params: {id: post.id},
-        props: {post},
+        props: {
+            post,
+            ogImage: new URL(post.data.cover.src.src, siteBase).href,
+        },
     }));
 }
 
-const {post} = Astro.props;
+const {post, ogImage} = Astro.props;
 
 const {title, description, tags, cover} = post.data;
 
 const {Content} = await render(post);
-const ogImage = new URL(cover.src.src, Astro.site).href;
 ---
 <Layout title={title} description={description} imageOg={ogImage} scrollSmooth={true}>
     <div class="flex justify-center mt-10">

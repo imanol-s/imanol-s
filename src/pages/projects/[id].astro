@@ -27,6 +27,7 @@ const { title, summary, tags, cover, ogImage, url, startDate, endDate } = post.d
 const { Content } = await render(post);
 
 const hasValidUrl = url && url.trim() !== '' && url !== PLACEHOLDER_URL;
+const tagIconPairs = tags.map((tag: string) => ({ tag, iconPath: getTechIconPath(tag) }));
 ---
 
 <Layout title={title} description={summary} imageOg={ogImage} scrollSmooth={true}>
@@ -50,10 +51,10 @@ const hasValidUrl = url && url.trim() !== '' && url !== PLACEHOLDER_URL;
       {title}
     </h1>
 
-    {tags.length > 0 && (
+    {tagIconPairs.length > 0 && (
       <div class="flex flex-wrap gap-2 mb-8">
-        {tags.map((tag: string) => (
-          <TagPill tag={tag} iconPath={getTechIconPath(tag)} />
+        {tagIconPairs.map(({ tag, iconPath }) => (
+          <TagPill tag={tag} iconPath={iconPath} />
         ))}
       </div>
     )}
@@ -110,30 +111,27 @@ const hasValidUrl = url && url.trim() !== '' && url !== PLACEHOLDER_URL;
       )}
 
       {/* Stack */}
-      {tags.length > 0 && (
+      {tagIconPairs.length > 0 && (
         <div>
           <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
             Stack
           </p>
           <div class="flex flex-col gap-2">
-            {tags.map((tag: string) => {
-              const iconPath = getTechIconPath(tag);
-              return (
-                <span class="font-display text-sm px-3 py-2 cad-border bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-200 inline-flex items-center gap-2">
-                  {iconPath && (
-                    <img
-                      src={iconPath}
-                      alt={`${tag} icon`}
-                      width="16"
-                      height="16"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  )}
-                  {tag}
-                </span>
-              );
-            })}
+            {tagIconPairs.map(({ tag, iconPath }) => (
+              <span class="font-display text-sm px-3 py-2 cad-border bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-200 inline-flex items-center gap-2">
+                {iconPath && (
+                  <img
+                    src={iconPath}
+                    alt={`${tag} icon`}
+                    width="16"
+                    height="16"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
+                {tag}
+              </span>
+            ))}
           </div>
         </div>
       )}

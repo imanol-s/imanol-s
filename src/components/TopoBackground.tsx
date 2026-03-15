@@ -112,7 +112,7 @@ function useViewportDims() {
  * Terrain shape is randomised once per session via a sessionStorage seed.
  */
 export default function TopoBackground() {
-  const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
+  const turbulenceRef = useRef<SVGFETurbulenceElement | null>(null);
   const dims = useViewportDims();
   const [seed] = useState(resolveSessionSeed);
 

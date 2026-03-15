@@ -100,6 +100,6 @@ stateDiagram-v2
 
 - **Project cards on home page**: `getCollection('projects')` sorted by startDate desc
 - **Project detail**: `getStaticPaths()` generates one page per MDX file in `src/content/projects/`
-- **Experience timeline**: imported from `src/data/Jobs.ts` (first 2 entries) + `src/data/education.ts`
+- **Experience timeline**: imported from `src/data/Jobs.ts` (first 3 entries) + `src/data/education.ts`
 - **Contact/Social**: sourced from `src/config.ts` (`ME.contactInfo`, `SOCIALS`)
 - **Blog**: `getCollection('posts')` sorted by publishDate desc

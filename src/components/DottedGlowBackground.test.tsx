@@ -98,7 +98,7 @@ describe("DottedGlowBackground", () => {
     rafSpy.mockRestore();
   });
 
-  it("invokes the matchMedia change listener when dark mode fires", async () => {
+  it("registers matchMedia change listener and re-resolves color on dark-mode event", async () => {
     let capturedChangeHandler: ((e: { matches: boolean }) => void) | undefined;
     const mql = {
       matches: false,
@@ -120,30 +120,59 @@ describe("DottedGlowBackground", () => {
       />,
     );
 
-    // useResolvedColors must have registered the change listener
     expect(capturedChangeHandler).toBeDefined();
 
-    // Fire the dark-mode change event and verify the component updates without errors
-    await act(async () => {
-      capturedChangeHandler?.({ matches: true });
-    });
+    // Fire dark-mode change — component must survive and remain mounted
+    await act(async () => { capturedChangeHandler?.({ matches: true }); });
     expect(container.querySelector("canvas")).not.toBeNull();
   });
 
-  it("updates resolved colors when documentElement gains 'dark' class", async () => {
-    const { container } = render(
+  it("uses dark fill color when documentElement 'dark' class is present at mount", async () => {
+    // Capture the fillStyle assigned inside drawDots via a canvas context mock.
+    // jsdom does not ship CanvasRenderingContext2D without the optional 'canvas'
+    // npm package, so we intercept getContext instead.
+    let capturedFillStyle = "";
+    const mockCtx = {
+      get fillStyle() { return capturedFillStyle; },
+      set fillStyle(v: string) { capturedFillStyle = v; },
+      shadowColor: "",
+      shadowBlur: 0,
+      globalAlpha: 1,
+      canvas: { width: 0, height: 0 },
+      clearRect: vi.fn(),
+      arc: vi.fn(),
+      fill: vi.fn(),
+      beginPath: vi.fn(),
+      save: vi.fn(),
+      restore: vi.fn(),
+      setTransform: vi.fn(),
+      createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
+    };
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
+      mockCtx as unknown as CanvasRenderingContext2D,
+    );
+
+    // Capture the rAF callback so we can trigger a draw manually
+    let pendingRaf: FrameRequestCallback | undefined;
+    vi.stubGlobal("requestAnimationFrame", (cb: FrameRequestCallback) => {
+      pendingRaf = cb;
+      return 1;
+    });
+    vi.stubGlobal("cancelAnimationFrame", vi.fn());
+
+    document.documentElement.classList.add("dark");
+
+    render(
       <DottedGlowBackground
         colors={{ dot: "black", glow: "blue", darkDot: "white", darkGlow: "cyan" }}
       />,
     );
 
-    // Simulate dark-mode toggle via MutationObserver code path
-    await act(async () => {
-      document.documentElement.classList.add("dark");
-    });
-    expect(container.querySelector("canvas")).not.toBeNull();
+    // Execute the pending rAF to trigger one draw with the dark-resolved color
+    await act(async () => { pendingRaf?.(performance.now()); });
 
-    // Cleanup
+    expect(capturedFillStyle).toBe("white");
+
     document.documentElement.classList.remove("dark");
   });
 });

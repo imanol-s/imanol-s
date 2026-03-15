@@ -10,6 +10,8 @@ export default function LoadingOverlay() {
   const [fading, setFading] = useState(false);
   const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const pageLoadTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  // Read once at mount; same session-scoped value shared by both effects below.
+  const [reducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
   const fadeOut = useCallback(() => {
     setFading(true);
@@ -30,19 +32,18 @@ export default function LoadingOverlay() {
     const staticEl = document.getElementById("loading-overlay");
     if (staticEl) staticEl.style.display = "none";
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
+    if (reducedMotion) {
       setActive(false);
       return;
     }
 
     const timer = setTimeout(fadeOut, OVERLAY_OPAQUE_MS);
     return () => clearTimeout(timer);
-  }, [fadeOut]);
+  }, [fadeOut, reducedMotion]);
 
   // Astro view transitions: show on swap, hide on page-load.
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reducedMotion) return;
 
     const hideOnLoad = () => {
       // Each navigation swaps in a fresh #loading-overlay from the new page HTML;
@@ -60,7 +61,7 @@ export default function LoadingOverlay() {
       clearTimeout(fadeTimerRef.current);
       clearTimeout(pageLoadTimerRef.current);
     };
-  }, [fadeIn, fadeOut]);
+  }, [fadeIn, fadeOut, reducedMotion]);
 
   if (!active) return null;
 
