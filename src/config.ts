@@ -1,5 +1,51 @@
-export const SITE = {
-  website: "https://imanols.dev", // replace this with your deployed domain
+interface SiteConfig {
+  website: string;
+  title: string;
+  description: string;
+  tags: string[];
+  ogImage: string;
+  logo: string;
+  logoText: string;
+  lang: string;
+  favicon: string;
+  repository: string;
+  author: string;
+  profile: string;
+}
+
+interface ContactInfo {
+  email: string;
+  linkedin: string;
+  resumeDoc: string;
+}
+
+interface Language {
+  name: string;
+  level: string;
+}
+
+interface PersonConfig {
+  name: string;
+  profession: string[];
+  profileImage: string;
+  bio: string;
+  location: string;
+  focusAreas: string[];
+  coreLanguages: string[];
+  competencies: string[];
+  languages: Language[];
+  contactInfo: ContactInfo;
+}
+
+interface SocialLink {
+  name: string;
+  url: string;
+  icon: string;
+  show: boolean;
+}
+
+export const SITE: SiteConfig = {
+  website: "https://imanols.dev",
   title: "Imanol Saldana",
   description: "Imanol Saldana — software engineer portfolio featuring projects in data science, robotics, and full-stack development.",
   tags: ["portfolio", "Resume cv", "Astro"],
@@ -17,7 +63,7 @@ const bio =
   "Computer science–trained developer focused on data science, automation, and software. " +
   "I build data-driven tools and workflows that improve reliability, clarity, and decision-making in real-world systems.";
 
-export const ME = {
+export const ME: PersonConfig = {
   name: "Imanol Saldana",
   profession: ["Data Analytics", "Data Science", "Software"],
   profileImage: "Profile-1.png",
@@ -46,7 +92,7 @@ export const ME = {
   },
 };
 
-export const SOCIALS = [
+export const SOCIALS: SocialLink[] = [
   {
     name: "GitHub",
     url: "https://github.com/imanol-s",

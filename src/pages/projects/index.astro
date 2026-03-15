@@ -1,13 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import { getTechIconPath } from '../../data/techIcons';
 import { SITE } from '../../config';
 import TagPill from '../../components/TagPill.astro';
+import { getSortedProjects } from '../../utils/projects';
 
-const allProjects = (await getCollection('projects'))
-  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+const allProjects = await getSortedProjects();
 ---
 
 <Layout title={`${SITE.logoText} | Projects`} description="A list of my projects" scrollSmooth={false}>

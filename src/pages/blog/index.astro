@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 import PostCard from "../../components/PostCard.astro";
 import { SITE } from '../../config';
 
-const allPost = (await getCollection('posts'))
+const allPosts = (await getCollection('posts'))
     .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 ---
 
@@ -19,8 +19,8 @@ const allPost = (await getCollection('posts'))
         </section>
 
         <section class="flex flex-col gap-8">
-            {allPost.length > 0 ? (
-                allPost.map((post: CollectionEntry<'posts'>) => (
+            {allPosts.length > 0 ? (
+                allPosts.map((post: CollectionEntry<'posts'>) => (
                         <PostCard
                                 id={post.id}
                                 title={post.data.title}

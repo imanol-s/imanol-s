@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getTechIconPath } from "../techIcons";
+import { getTechIconPath } from "./techIcons";
 
 describe("getTechIconPath", () => {
   it("returns the correct path for a known icon", () => {

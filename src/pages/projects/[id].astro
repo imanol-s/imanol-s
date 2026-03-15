@@ -1,13 +1,15 @@
 ---
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
 import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import { getTechIconPath } from "../../data/techIcons";
-import { fmtDate } from "../../utils/dates";
+import { formatDate } from "../../utils/dates";
 import TagPill from "../../components/TagPill.astro";
+import { getSortedProjects } from "../../utils/projects";
+import { PLACEHOLDER_URL } from "../../constants";
 
 export async function getStaticPaths() {
-  const posts = await getCollection('projects');
+  const posts = await getSortedProjects();
   return posts.map(post => ({
     params: { id: post.id },
     props: { post },
@@ -19,17 +21,14 @@ const { title, summary, tags, cover, ogImage, url, startDate, endDate } = post.d
 
 const { Content } = await render(post);
 
-// Sorted project list for prev/next + label
-const allProjects = (await getCollection('projects'))
-  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+const allProjects = await getSortedProjects();
 
 const currentIndex = allProjects.findIndex(p => p.id === post.id);
 const projectLabel = `Project ${String(currentIndex + 1).padStart(2, '0')}`;
 const prev = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
 const next = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
 
-// Only show external link if url is real (not placeholder)
-const hasValidUrl = url && url.trim() !== '' && url !== 'https://google.com';
+const hasValidUrl = url && url.trim() !== '' && url !== PLACEHOLDER_URL;
 ---
 
 <Layout title={title} description={summary} imageOg={ogImage} scrollSmooth={true}>
@@ -142,18 +141,14 @@ const hasValidUrl = url && url.trim() !== '' && url !== 'https://google.com';
       )}
 
       {/* Timeline */}
-      {(startDate || endDate) && (
-        <div>
-          <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-3">
-            Timeline
-          </p>
-          <p class="font-display text-sm text-slate-700 dark:text-slate-200">
-            {startDate && fmtDate(startDate)}
-            {startDate && endDate && ' — '}
-            {endDate && fmtDate(endDate)}
-          </p>
-        </div>
-      )}
+      <div>
+        <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-3">
+          Timeline
+        </p>
+        <p class="font-display text-sm text-slate-700 dark:text-slate-200">
+          {formatDate(startDate)} — {formatDate(endDate)}
+        </p>
+      </div>
     </div>
   </div>
 

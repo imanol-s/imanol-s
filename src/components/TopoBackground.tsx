@@ -4,24 +4,28 @@ const PHASE_STEP = 0.0006;
 const BASE_FREQ_CENTER = 0.004;
 const BASE_FREQ_AMPLITUDE = 0.0015;
 const Y_RATE_MULTIPLIER = 0.73;
-const DISPLACEMENT_SCALE = 380;
+export const DISPLACEMENT_SCALE = 380;
 const LINE_SPACING = 24;
 const LINE_START_OFFSET = -20;
 const RESIZE_DEBOUNCE_MS = 150;
 const INITIAL_DIMENSION = 2000;
+const SEED_RANGE = 10_000;
 
 /** Retrieve or generate a session-scoped seed for feTurbulence. */
 function getOrCreateSessionSeed(): number {
   const key = "topo-seed";
   try {
     const stored = sessionStorage.getItem(key);
-    if (stored !== null) return parseInt(stored, 10);
-    const seed = Math.floor(Math.random() * 10000);
+    if (stored !== null) {
+      const parsed = parseInt(stored, 10);
+      if (!Number.isNaN(parsed)) return parsed;
+    }
+    const seed = Math.floor(Math.random() * SEED_RANGE);
     sessionStorage.setItem(key, String(seed));
     return seed;
   } catch {
     // sessionStorage unavailable (private mode, quota exceeded, etc.)
-    return Math.floor(Math.random() * 10000);
+    return Math.floor(Math.random() * SEED_RANGE);
   }
 }
 
@@ -39,14 +43,18 @@ function useTopoAnimation(
     const tick = () => {
       if (reducedMotion) return;
       phase += PHASE_STEP;
-      // toFixed(5) is intentional — do NOT reduce precision here.
-      // Per-frame delta is ~0.0000009 (phase step × amplitude).
-      // At toFixed(4) the attribute stays identical for ~111 frames before
-      // jumping, producing visible stutter. 5 decimal places keeps each step
-      // small enough to appear continuous at 60 fps.
-      const bfx = (BASE_FREQ_CENTER + Math.sin(phase) * BASE_FREQ_AMPLITUDE).toFixed(5);
-      const bfy = (BASE_FREQ_CENTER + Math.cos(phase * Y_RATE_MULTIPLIER) * BASE_FREQ_AMPLITUDE).toFixed(5);
-      turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
+      try {
+        // toFixed(5) is intentional — do NOT reduce precision here.
+        // Per-frame delta is ~0.0000009 (phase step × amplitude).
+        // At toFixed(4) the attribute stays identical for ~111 frames before
+        // jumping, producing visible stutter. 5 decimal places keeps each step
+        // small enough to appear continuous at 60 fps.
+        const bfx = (BASE_FREQ_CENTER + Math.sin(phase) * BASE_FREQ_AMPLITUDE).toFixed(5);
+        const bfy = (BASE_FREQ_CENTER + Math.cos(phase * Y_RATE_MULTIPLIER) * BASE_FREQ_AMPLITUDE).toFixed(5);
+        turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
+      } catch {
+        return;
+      }
       rafId.current = requestAnimationFrame(tick);
     };
 
@@ -71,15 +79,9 @@ function useTopoAnimation(
   }, [turbulenceRef]);
 }
 
-/**
- * Fixed animated topographic background — shared across all pages.
- * Handles its own rAF loop + reduced-motion media query internally.
- * Terrain shape is randomised once per session via a sessionStorage seed.
- */
-export default function TopoBackground() {
-  const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
+/** Track viewport dimensions at 2× resolution with debounced resize. */
+function useViewportDims() {
   const [dims, setDims] = useState({ width: INITIAL_DIMENSION, height: INITIAL_DIMENSION });
-  const [seed] = useState(getOrCreateSessionSeed);
 
   useEffect(() => {
     const updateDims = () => {
@@ -108,6 +110,19 @@ export default function TopoBackground() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  return dims;
+}
+
+/**
+ * Fixed animated topographic background — shared across all pages.
+ * Handles its own rAF loop + reduced-motion media query internally.
+ * Terrain shape is randomised once per session via a sessionStorage seed.
+ */
+export default function TopoBackground() {
+  const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
+  const dims = useViewportDims();
+  const [seed] = useState(getOrCreateSessionSeed);
 
   useTopoAnimation(turbulenceRef);
 

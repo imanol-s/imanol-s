@@ -1,4 +1,4 @@
-interface WorkExperience {
+interface Job {
   title: string;
   startDate: string;
   endDate?: string;
@@ -9,7 +9,7 @@ interface WorkExperience {
   currentJob: boolean;
 }
 
-const workExperience: WorkExperience[] = [
+const jobs: Job[] = [
   {
     title: "Associate Data Analyst",
     startDate: "2026-01-16",
@@ -61,4 +61,4 @@ const workExperience: WorkExperience[] = [
     currentJob: false,
   },
 ];
-export default workExperience;
+export default jobs;

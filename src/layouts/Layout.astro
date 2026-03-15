@@ -4,8 +4,8 @@ import '../styles/globals.css';
 
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-import TopoBackground from "../components/TopoBackground.tsx";
-import LoadingOverlay from "../components/LoadingOverlay.tsx";
+import SafeTopoBackground from "../components/SafeTopoBackground.tsx";
+import SafeLoadingOverlay from "../components/SafeLoadingOverlay.tsx";
 import CommandPalette from "../components/CommandPalette.astro";
 import CommandPaletteHint from "../components/CommandPaletteHint.astro";
 
@@ -73,8 +73,8 @@ const {
 </script>
 
 <div id="loading-overlay" class="fixed inset-0 z-50 bg-[var(--color-background-dark)]" aria-hidden="true"></div>
-<LoadingOverlay client:only="react" />
-<TopoBackground client:only="react" />
+<SafeLoadingOverlay client:only="react" />
+<SafeTopoBackground client:only="react" />
 <CommandPalette />
 <CommandPaletteHint />
 <SiteHeader />

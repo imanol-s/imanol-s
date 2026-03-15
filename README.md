@@ -14,4 +14,15 @@
 
 ---
 
+### Scripts
+
+```bash
+npm run dev      # Start development server
+npm run build    # Type-check and build for production
+npm run preview  # Preview the production build
+npm test         # Run tests with Vitest
+```
+
+---
+
 *"At the end of the day, it's the end of the day"*

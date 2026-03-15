@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type DottedGlowColors = {
   dot?: string;
@@ -21,6 +21,15 @@ type DottedGlowBackgroundProps = {
 };
 
 type Dot = { x: number; y: number; phase: number; speed: number };
+
+const MS_PER_SECOND = 1000;
+
+function detectDarkMode(): boolean {
+  const root = document.documentElement;
+  if (root.classList.contains("dark")) return true;
+  if (root.classList.contains("light")) return false;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
 
 function generateDots(
   width: number,
@@ -61,12 +70,12 @@ function drawDots(
   ctx.save();
   ctx.fillStyle = color;
 
-  const time = now / 1000;
+  const time = now / MS_PER_SECOND;
   for (let i = 0; i < dots.length; i++) {
     const d = dots[i];
-    const mod = (time * d.speed + d.phase) % 2;
-    const lin = mod < 1 ? mod : 2 - mod;
-    const a = 0.25 + 0.55 * lin;
+    const cyclePos = (time * d.speed + d.phase) % 2;
+    const brightness = cyclePos < 1 ? cyclePos : 2 - cyclePos;
+    const a = 0.25 + 0.55 * brightness;
 
     if (a > 0.6) {
       const glow = (a - 0.6) / 0.4;
@@ -85,6 +94,140 @@ function drawDots(
   ctx.restore();
 }
 
+function useResolvedColors(
+  color: string,
+  glowColor: string,
+  darkColor: string | undefined,
+  darkGlowColor: string | undefined,
+) {
+  const [resolvedColor, setResolvedColor] = useState(color);
+  const [resolvedGlowColor, setResolvedGlowColor] = useState(glowColor);
+
+  useEffect(() => {
+    const compute = () => {
+      const isDark = detectDarkMode();
+      setResolvedColor(isDark ? (darkColor ?? color) : color);
+      setResolvedGlowColor(isDark ? (darkGlowColor ?? glowColor) : glowColor);
+    };
+
+    compute();
+
+    const mql = window.matchMedia("(prefers-color-scheme: dark)");
+    mql.addEventListener("change", compute);
+
+    const mo = new MutationObserver(compute);
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class", "style"],
+    });
+
+    return () => {
+      mql.removeEventListener("change", compute);
+      mo.disconnect();
+    };
+  }, [color, darkColor, glowColor, darkGlowColor]);
+
+  return { resolvedColor, resolvedGlowColor };
+}
+
+type AnimationConfig = {
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  gap: number;
+  speedMin: number;
+  speedMax: number;
+};
+
+/** Scale canvas to match container at the device pixel ratio (capped at 2×). */
+function resizeCanvas(
+  el: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  container: HTMLElement,
+  dpr: number,
+) {
+  const { width, height } = container.getBoundingClientRect();
+  el.width = Math.max(1, Math.floor(width * dpr));
+  el.height = Math.max(1, Math.floor(height * dpr));
+  el.style.width = `${Math.floor(width)}px`;
+  el.style.height = `${Math.floor(height)}px`;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function useDotAnimation(
+  config: AnimationConfig,
+  radius: number,
+  opacity: number,
+  color: string,
+  glowColor: string,
+) {
+  const { canvasRef, containerRef, gap, speedMin, speedMax } = config;
+
+  const drawFn = useCallback(
+    (ctx: CanvasRenderingContext2D, dots: Dot[], now: number) =>
+      drawDots(ctx, dots, now, radius, opacity, color, glowColor),
+    [radius, opacity, color, glowColor],
+  );
+
+  useEffect(() => {
+    const el = canvasRef.current;
+    const container = containerRef.current;
+    if (!el || !container) return;
+
+    const ctx = el.getContext("2d");
+    if (!ctx) return;
+
+    let raf = 0;
+    let stopped = false;
+    let isVisible = true;
+    let dots: Dot[] = [];
+
+    const dpr = Math.min(Math.max(1, window.devicePixelRatio || 1), 2);
+
+    const regenDots = () => {
+      const { width, height } = container.getBoundingClientRect();
+      dots = generateDots(width, height, gap, speedMin, speedMax);
+    };
+
+    const ro = new ResizeObserver(() => {
+      resizeCanvas(el, ctx, container, dpr);
+      regenDots();
+    });
+    ro.observe(container);
+    resizeCanvas(el, ctx, container, dpr);
+    regenDots();
+
+    const draw = (now: number) => {
+      if (stopped) return;
+      if (!isVisible) { raf = requestAnimationFrame(draw); return; }
+      try { drawFn(ctx, dots, now); }
+      catch { stopped = true; return; }
+      raf = requestAnimationFrame(draw);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => { isVisible = entries[0]?.isIntersecting ?? true; },
+      { threshold: 0.1 },
+    );
+    observer.observe(container);
+
+    const motionMql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!motionMql.matches) raf = requestAnimationFrame(draw);
+    const onMotionChange = () => {
+      if (motionMql.matches) cancelAnimationFrame(raf);
+      else raf = requestAnimationFrame(draw);
+    };
+    motionMql.addEventListener("change", onMotionChange);
+
+    return () => {
+      stopped = true;
+      cancelAnimationFrame(raf);
+      motionMql.removeEventListener("change", onMotionChange);
+      observer.disconnect();
+      ro.disconnect();
+    };
+  }, [canvasRef, containerRef, gap, speedMin, speedMax, drawFn]);
+}
+
 export default function DottedGlowBackground({
   gap = 12,
   radius = 2,
@@ -99,118 +242,20 @@ export default function DottedGlowBackground({
 }: DottedGlowBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [resolvedColor, setResolvedColor] = useState<string>(color);
-  const [resolvedGlowColor, setResolvedGlowColor] = useState<string>(glowColor);
+  const { resolvedColor, resolvedGlowColor } = useResolvedColors(
+    color,
+    glowColor,
+    darkColor,
+    darkGlowColor,
+  );
 
-  const detectDarkMode = (): boolean => {
-    const root = document.documentElement;
-    if (root.classList.contains("dark")) return true;
-    if (root.classList.contains("light")) return false;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  };
-
-  useEffect(() => {
-    const compute = () => {
-      const isDark = detectDarkMode();
-      setResolvedColor(isDark ? (darkColor ?? color) : color);
-      setResolvedGlowColor(isDark ? (darkGlowColor ?? glowColor) : glowColor);
-    };
-
-    compute();
-
-    const mql = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleMql = () => compute();
-    mql.addEventListener("change", handleMql);
-
-    const mo = new MutationObserver(() => compute());
-    mo.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class", "style"],
-    });
-
-    return () => {
-      mql.removeEventListener("change", handleMql);
-      mo.disconnect();
-    };
-  }, [color, darkColor, glowColor, darkGlowColor]);
-
-  useEffect(() => {
-    const el = canvasRef.current;
-    const container = containerRef.current;
-    if (!el || !container) return;
-
-    const ctx = el.getContext("2d");
-    if (!ctx) return;
-
-    let raf = 0;
-    let stopped = false;
-    let isVisible = true;
-
-    const dpr = Math.min(Math.max(1, window.devicePixelRatio || 1), 2);
-
-    const resize = () => {
-      const { width, height } = container.getBoundingClientRect();
-      el.width = Math.max(1, Math.floor(width * dpr));
-      el.height = Math.max(1, Math.floor(height * dpr));
-      el.style.width = `${Math.floor(width)}px`;
-      el.style.height = `${Math.floor(height)}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-
-    let dots: Dot[] = [];
-
-    const regenDots = () => {
-      const { width, height } = container.getBoundingClientRect();
-      dots = generateDots(width, height, gap, speedMin, speedMax);
-    };
-
-    const ro = new ResizeObserver(() => {
-      resize();
-      regenDots();
-    });
-    ro.observe(container);
-    resize();
-    regenDots();
-
-    const draw = (now: number) => {
-      if (stopped) return;
-      if (!isVisible) {
-        raf = requestAnimationFrame(draw);
-        return;
-      }
-      drawDots(ctx, dots, now, radius, opacity, resolvedColor, resolvedGlowColor);
-      raf = requestAnimationFrame(draw);
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        isVisible = entries[0]?.isIntersecting ?? true;
-      },
-      { threshold: 0.1 },
-    );
-    observer.observe(container);
-
-    const motionMql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!motionMql.matches) {
-      raf = requestAnimationFrame(draw);
-    }
-    const onMotionChange = () => {
-      if (motionMql.matches) {
-        cancelAnimationFrame(raf);
-      } else {
-        raf = requestAnimationFrame(draw);
-      }
-    };
-    motionMql.addEventListener("change", onMotionChange);
-
-    return () => {
-      stopped = true;
-      cancelAnimationFrame(raf);
-      motionMql.removeEventListener("change", onMotionChange);
-      observer.disconnect();
-      ro.disconnect();
-    };
-  }, [gap, radius, resolvedColor, resolvedGlowColor, opacity, speedMin, speedMax]);
+  useDotAnimation(
+    { canvasRef, containerRef, gap, speedMin, speedMax },
+    radius,
+    opacity,
+    resolvedColor,
+    resolvedGlowColor,
+  );
 
   return (
     <div

@@ -1,3 +1,4 @@
+// Utility: resolves technology names to icon paths. Not a data array like sibling modules.
 const TECH_ICON_BASE_PATH = '/icons/catppuccin';
 
 const ICON_MAP: Record<string, string | undefined> = {
@@ -35,6 +36,7 @@ const ICON_MAP: Record<string, string | undefined> = {
 
 const normalizeTechName = (tech: string): string => tech.trim().toLowerCase();
 
+/** Returns the SVG icon path for a technology name, or null if no icon is mapped. */
 export const getTechIconPath = (tech: string): string | null => {
   const normalizedTech = normalizeTechName(tech);
   const mappedIcon = ICON_MAP[normalizedTech];
