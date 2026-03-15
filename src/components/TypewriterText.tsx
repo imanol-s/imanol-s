@@ -1,15 +1,32 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
+import { OVERLAY_CLEAR_MS } from "../constants";
+
 const SESSION_KEY = "heroNameTyped";
 
-// LoadingOverlay: 600ms opaque + 500ms fade = 1100ms; add 100ms buffer
-const OVERLAY_CLEAR_MS = 1200;
+/** Read from sessionStorage, returning null if storage is unavailable. */
+function safeSessionGet(key: string): string | null {
+  try {
+    return sessionStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+/** Write to sessionStorage, silently ignoring failures. */
+function safeSessionSet(key: string, value: string): void {
+  try {
+    sessionStorage.setItem(key, value);
+  } catch {
+    // storage unavailable (private mode, quota exceeded, etc.)
+  }
+}
 
 const TypewriterText = ({ text }: { text: string }) => {
   const [displayed, setDisplayed] = useState(text);
   const [done, setDone] = useState(false);
   const [reducedMotion, setReducedMotion] = useState<boolean | null>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const abortRef = useRef(false);
 
   useEffect(() => {
@@ -29,12 +46,7 @@ const TypewriterText = ({ text }: { text: string }) => {
     setDone(false);
     abortRef.current = false;
 
-    let alreadyPlayed = false;
-    try {
-      alreadyPlayed = sessionStorage.getItem(SESSION_KEY) === "true";
-    } catch {
-      // storage unavailable
-    }
+    const alreadyPlayed = safeSessionGet(SESSION_KEY) === "true";
 
     if (reducedMotion || alreadyPlayed) {
       setDisplayed(text);
@@ -51,7 +63,7 @@ const TypewriterText = ({ text }: { text: string }) => {
       if (index < text.length) {
         timeoutRef.current = setTimeout(type, 35 + Math.random() * 25);
       } else {
-        try { sessionStorage.setItem(SESSION_KEY, "true"); } catch { /* storage unavailable */ }
+        safeSessionSet(SESSION_KEY, "true");
         setDone(true);
       }
     };
@@ -67,7 +79,7 @@ const TypewriterText = ({ text }: { text: string }) => {
   const skip = useCallback(() => {
     abortRef.current = true;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    try { sessionStorage.setItem(SESSION_KEY, "true"); } catch { /* storage unavailable */ }
+    safeSessionSet(SESSION_KEY, "true");
     setDisplayed(text);
     setDone(true);
   }, [text]);
