@@ -66,7 +66,6 @@ function drawDots(
   glowColor: string,
 ) {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  ctx.globalAlpha = opacity;
   ctx.save();
   ctx.fillStyle = color;
 

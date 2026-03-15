@@ -12,8 +12,8 @@ const RESIZE_DEBOUNCE_MS = 150;
 const INITIAL_DIMENSION = 2000;
 const SEED_RANGE = 10_000;
 
-/** Retrieve or generate a session-scoped seed for feTurbulence. */
-function getOrCreateSessionSeed(): number {
+/** Retrieve or initialize a session-scoped seed for feTurbulence. Writes to sessionStorage on first call. */
+function getOrInitSessionSeed(): number {
   const key = "topo-seed";
   const stored = safeSessionGet(key);
   if (stored !== null) {
@@ -114,7 +114,7 @@ function useViewportDims() {
 export default function TopoBackground() {
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const dims = useViewportDims();
-  const [seed] = useState(getOrCreateSessionSeed);
+  const [seed] = useState(getOrInitSessionSeed);
 
   useTopoAnimation(turbulenceRef);
 
