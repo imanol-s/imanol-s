@@ -78,9 +78,9 @@ function drawDots(
     const a = 0.25 + 0.55 * brightness;
 
     if (a > 0.6) {
-      const glow = (a - 0.6) / 0.4;
+      const glowIntensity = (a - 0.6) / 0.4;
       ctx.shadowColor = glowColor;
-      ctx.shadowBlur = 6 * glow;
+      ctx.shadowBlur = 6 * glowIntensity;
     } else {
       ctx.shadowColor = "transparent";
       ctx.shadowBlur = 0;
@@ -153,6 +153,45 @@ function resizeCanvas(
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
+/** Tracks whether containerRef is within the viewport. Returns a ref with the current visibility state. */
+function useVisibilityGate(
+  containerRef: React.RefObject<HTMLDivElement | null>,
+): React.MutableRefObject<boolean> {
+  const isVisibleRef = useRef(true);
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const observer = new IntersectionObserver(
+      (entries) => { isVisibleRef.current = entries[0]?.isIntersecting ?? true; },
+      { threshold: 0.1 },
+    );
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [containerRef]);
+  return isVisibleRef;
+}
+
+/** Installs a ResizeObserver that keeps the canvas sized to its container and calls onResize on each change. */
+function useCanvasResize(
+  canvasRef: React.RefObject<HTMLCanvasElement | null>,
+  containerRef: React.RefObject<HTMLDivElement | null>,
+  dpr: number,
+  onResize: () => void,
+) {
+  useEffect(() => {
+    const el = canvasRef.current;
+    const container = containerRef.current;
+    if (!el || !container) return;
+    const ctx = el.getContext("2d");
+    if (!ctx) return;
+    resizeCanvas(el, ctx, container, dpr);
+    onResize();
+    const ro = new ResizeObserver(() => { resizeCanvas(el, ctx, container, dpr); onResize(); });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, [canvasRef, containerRef, dpr, onResize]);
+}
+
 function useDotAnimation(
   config: AnimationConfig,
   radius: number,
@@ -161,6 +200,8 @@ function useDotAnimation(
   glowColor: string,
 ) {
   const { canvasRef, containerRef, gap, speedMin, speedMax } = config;
+  const dotsRef = useRef<Dot[]>([]);
+  const dpr = Math.min(Math.max(1, window.devicePixelRatio || 1), 2);
 
   const drawFn = useCallback(
     (ctx: CanvasRenderingContext2D, dots: Dot[], now: number) =>
@@ -168,47 +209,31 @@ function useDotAnimation(
     [radius, opacity, color, glowColor],
   );
 
+  const regenDots = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const { width, height } = container.getBoundingClientRect();
+    dotsRef.current = generateDots(width, height, gap, speedMin, speedMax);
+  }, [containerRef, gap, speedMin, speedMax]);
+
+  const isVisibleRef = useVisibilityGate(containerRef);
+  useCanvasResize(canvasRef, containerRef, dpr, regenDots);
+
   useEffect(() => {
     const el = canvasRef.current;
-    const container = containerRef.current;
-    if (!el || !container) return;
-
-    const ctx = el.getContext("2d");
+    const ctx = el?.getContext("2d");
     if (!ctx) return;
 
     let raf = 0;
     let stopped = false;
-    let isVisible = true;
-    let dots: Dot[] = [];
-
-    const dpr = Math.min(Math.max(1, window.devicePixelRatio || 1), 2);
-
-    const regenDots = () => {
-      const { width, height } = container.getBoundingClientRect();
-      dots = generateDots(width, height, gap, speedMin, speedMax);
-    };
-
-    const ro = new ResizeObserver(() => {
-      resizeCanvas(el, ctx, container, dpr);
-      regenDots();
-    });
-    ro.observe(container);
-    resizeCanvas(el, ctx, container, dpr);
-    regenDots();
 
     const draw = (now: number) => {
       if (stopped) return;
-      if (!isVisible) { raf = requestAnimationFrame(draw); return; }
-      try { drawFn(ctx, dots, now); }
+      if (!isVisibleRef.current) { raf = requestAnimationFrame(draw); return; }
+      try { drawFn(ctx, dotsRef.current, now); }
       catch { stopped = true; return; }
       raf = requestAnimationFrame(draw);
     };
-
-    const observer = new IntersectionObserver(
-      (entries) => { isVisible = entries[0]?.isIntersecting ?? true; },
-      { threshold: 0.1 },
-    );
-    observer.observe(container);
 
     const motionMql = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (!motionMql.matches) raf = requestAnimationFrame(draw);
@@ -222,10 +247,8 @@ function useDotAnimation(
       stopped = true;
       cancelAnimationFrame(raf);
       motionMql.removeEventListener("change", onMotionChange);
-      observer.disconnect();
-      ro.disconnect();
     };
-  }, [canvasRef, containerRef, gap, speedMin, speedMax, drawFn]);
+  }, [canvasRef, isVisibleRef, drawFn]);
 }
 
 export default function DottedGlowBackground({

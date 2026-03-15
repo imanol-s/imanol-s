@@ -14,6 +14,14 @@
 
 ---
 
+### Project Overview
+
+This is a personal portfolio and blog built with [Astro](https://astro.build), React, and Tailwind CSS. Content is managed via Astro's content collections (posts and projects), with TypeScript throughout.
+
+See [docs/SITE_STRUCTURE.md](docs/SITE_STRUCTURE.md) for a full breakdown of the architecture, component model, and content pipeline.
+
+---
+
 ### Scripts
 
 ```bash

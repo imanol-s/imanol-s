@@ -20,8 +20,8 @@ describe("formatDate", () => {
     expect(formatDate("2025-12-31")).toBe("DEC 2025");
   });
 
-  it("returns empty string for invalid date", () => {
-    expect(formatDate("not-a-date")).toBe("");
-    expect(formatDate(new Date("garbage"))).toBe("");
+  it("returns null for invalid date", () => {
+    expect(formatDate("not-a-date")).toBeNull();
+    expect(formatDate(new Date("garbage"))).toBeNull();
   });
 });

@@ -12,16 +12,14 @@ export async function getStaticPaths() {
   const posts = await getSortedProjects();
   return posts.map(post => ({
     params: { id: post.id },
-    props: { post },
+    props: { post, allProjects: posts },
   }));
 }
 
-const { post } = Astro.props;
+const { post, allProjects } = Astro.props;
 const { title, summary, tags, cover, ogImage, url, startDate, endDate } = post.data;
 
 const { Content } = await render(post);
-
-const allProjects = await getSortedProjects();
 
 const currentIndex = allProjects.findIndex(p => p.id === post.id);
 const projectLabel = `Project ${String(currentIndex + 1).padStart(2, '0')}`;
