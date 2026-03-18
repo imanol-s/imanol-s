@@ -6,15 +6,46 @@
   id="back-to-top"
   type="button"
   aria-label="Back to top"
-  class="fixed bottom-8 right-8 z-50 flex h-10 w-10 flex-col items-center justify-center gap-0.5 border border-slate-200/20 bg-slate-900/80 backdrop-blur-sm text-slate-500 opacity-0 translate-y-2 pointer-events-none transition-all duration-200 hover:text-white hover:border-slate-200/60 focus-ring"
+  class="fixed bottom-8 right-8 z-50 flex h-10 w-10 flex-col items-center justify-center gap-0.5 border border-slate-200/20 bg-slate-900/80 backdrop-blur-sm text-slate-500 opacity-0 pointer-events-none hover:text-white hover:border-slate-200/60 focus-ring"
+  style="transition: opacity 400ms ease-in-out, width 300ms ease, height 300ms ease, background 300ms ease, border-color 300ms ease, backdrop-filter 300ms ease, gap 300ms ease, padding 300ms ease;"
 >
-  <span class="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-slate-400/50"></span>
-  <span class="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-slate-400/50"></span>
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <span class="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-slate-400/50 transition-opacity duration-300"></span>
+  <span class="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-slate-400/50 transition-opacity duration-300"></span>
+  <svg class="transition-opacity duration-300" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="m18 15-6-6-6 6"/>
   </svg>
-  <span class="text-[7px] uppercase tracking-widest font-display leading-none">TOP</span>
+  <span class="text-[7px] uppercase tracking-widest font-display leading-none transition-opacity duration-300">TOP</span>
 </button>
+
+<style>
+  #back-to-top.collapsed {
+    width: 4px;
+    height: 24px;
+    padding: 0;
+    border-color: white;
+    background: white;
+    backdrop-filter: none;
+    gap: 0;
+  }
+  #back-to-top.collapsed .absolute,
+  #back-to-top.collapsed svg,
+  #back-to-top.collapsed span:not(.absolute) {
+    opacity: 0;
+    pointer-events: none;
+  }
+  #back-to-top.collapsed:hover {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+    border-color: rgba(226, 232, 240, 0.6);
+  }
+  #back-to-top.collapsed:hover .absolute,
+  #back-to-top.collapsed:hover svg,
+  #back-to-top.collapsed:hover span:not(.absolute) {
+    opacity: 1;
+  }
+</style>
 
 <script>
   function initBackToTop() {
@@ -24,18 +55,66 @@
     const btn = document.getElementById("back-to-top");
     if (!btn) return;
 
-    function updateVisibility() {
+    let isVisible = false;
+    let isCollapsed = false;
+
+    function show() {
+      if (isVisible) return;
+      isVisible = true;
+      btn!.classList.remove("opacity-0", "pointer-events-none");
+      btn!.classList.add("opacity-100", "pointer-events-auto");
+    }
+
+    function hide() {
+      if (!isVisible) return;
+      isVisible = false;
+      btn!.classList.add("opacity-0", "pointer-events-none");
+      btn!.classList.remove("opacity-100", "pointer-events-auto");
+    }
+
+    function collapse() {
+      if (isCollapsed) return;
+      isCollapsed = true;
+      btn!.classList.add("collapsed");
+    }
+
+    function expand() {
+      if (!isCollapsed) return;
+      isCollapsed = false;
+      btn!.classList.remove("collapsed");
+    }
+
+    const sidebar = document.getElementById("tech-stack-sidebar");
+
+    function update() {
       if (window.scrollY > 300) {
-        btn!.classList.remove("opacity-0", "translate-y-2", "pointer-events-none");
-        btn!.classList.add("opacity-100", "translate-y-0", "pointer-events-auto");
+        show();
       } else {
-        btn!.classList.add("opacity-0", "translate-y-2", "pointer-events-none");
-        btn!.classList.remove("opacity-100", "translate-y-0", "pointer-events-auto");
+        hide();
+      }
+
+      if (!sidebar || window.innerWidth < 1024) {
+        expand();
+        return;
+      }
+
+      const sidebarRect = sidebar.getBoundingClientRect();
+      const vpHeight = window.innerHeight;
+      const btnTop = vpHeight - 32 - 40;
+      const btnBottom = vpHeight - 32;
+
+      const overlaps = sidebarRect.top < btnBottom && sidebarRect.bottom > btnTop;
+
+      if (overlaps) {
+        collapse();
+      } else {
+        expand();
       }
     }
 
-    window.addEventListener("scroll", updateVisibility, { passive: true });
-    updateVisibility();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+    update();
 
     btn.addEventListener("click", () => {
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -43,10 +122,9 @@
     });
   }
 
-  initBackToTop();
+  setTimeout(initBackToTop, 1200);
   document.addEventListener("astro:after-swap", () => {
-    // Reset flag so the new page re-registers the button
     (window as any).__backToTopBound = false;
-    initBackToTop();
+    setTimeout(initBackToTop, 900);
   });
 </script>

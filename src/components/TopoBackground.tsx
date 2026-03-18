@@ -163,8 +163,6 @@ export default function TopoBackground() {
         </div>
       </div>
 
-      <div className="motion-topography" />
-      <div className="isometric-topography opacity-20 dark:opacity-40" />
     </>
   );
 }
