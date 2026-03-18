@@ -95,6 +95,7 @@
     width: 8px;
     height: 8px;
     border: 1px solid rgba(148, 163, 184, 0.5);
+    z-index: 10;
   }
   @media (prefers-reduced-motion: no-preference) {
     .cad-border::before,
@@ -103,14 +104,14 @@
     }
   }
   .cad-border::before {
-    top: -4px;
-    left: -4px;
+    top: -1px;
+    left: -1px;
     border-right: 0;
     border-bottom: 0;
   }
   .cad-border::after {
-    bottom: -4px;
-    right: -4px;
+    bottom: -1px;
+    right: -1px;
     border-left: 0;
     border-top: 0;
   }
@@ -165,7 +166,8 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     gap: 1rem;
-    padding-bottom: 1rem;
+    padding: 4px 4px 1rem 4px;
+    scroll-padding-inline: 4px;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
   }
