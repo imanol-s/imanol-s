@@ -6,8 +6,7 @@ import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import TopoBackground from "../components/TopoBackground.tsx";
 import LoadingOverlay from "../components/LoadingOverlay.tsx";
-import CommandPalette from "../components/CommandPalette.astro";
-import CommandPaletteHint from "../components/CommandPaletteHint.astro";
+import BackToTop from "../components/BackToTop.astro";
 
 import {SITE} from '@/config';
 
@@ -75,8 +74,7 @@ const {
 <div id="loading-overlay" class="fixed inset-0 z-50 bg-[var(--color-background-dark)]" aria-hidden="true"></div>
 <LoadingOverlay client:only="react" />
 <TopoBackground client:only="react" />
-<CommandPalette />
-<CommandPaletteHint />
+<BackToTop />
 <SiteHeader />
 
 <main id="main-content" class="relative z-10 max-w-7xl mx-auto px-6 py-12">

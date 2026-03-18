@@ -83,6 +83,13 @@ const edu = education[0];
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
             </a>
           )}
+          <a
+            class="w-10 h-10 bg-[var(--color-background-dark)] text-white flex items-center justify-center hover:bg-primary transition-colors focus-ring"
+            href={`mailto:${ME.contactInfo.email}`}
+            aria-label="Email"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </a>
         </div>
       </div>
     </div>
@@ -278,13 +285,6 @@ const edu = education[0];
         <p class="text-xl text-slate-700 dark:text-slate-200 leading-relaxed font-light mb-8">
           {ME.bio}
         </p>
-        <a
-          href={`mailto:${ME.contactInfo.email}`}
-          aria-label="Email"
-          class="inline-flex text-slate-500 hover:text-white transition-colors focus-ring rounded-sm"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-        </a>
       </div>
     </div>
   </section>

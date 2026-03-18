@@ -2,25 +2,51 @@
 
 ---
 
-<div class="flex justify-center mt-10">
-    <button id="back-to-top" class="inline-flex items-center justify-center gap-2 whitespace-nowrap px-4 py-2 cad-border bg-slate-50 dark:bg-slate-900 text-sm font-display text-slate-700 dark:text-slate-200 hover:text-primary transition-colors focus-ring [&_svg]:size-4 [&_svg]:shrink-0">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M13.0001 7.82843V20H11.0001V7.82843L5.63614 13.1924L4.22192 11.7782L12.0001 4L19.7783 11.7782L18.3641 13.1924L13.0001 7.82843Z"></path>
-        </svg>
-        <span>Back to Top</span>
-    </button>
-</div>
+<button
+  id="back-to-top"
+  type="button"
+  aria-label="Back to top"
+  class="fixed bottom-8 right-8 z-50 flex h-10 w-10 flex-col items-center justify-center gap-0.5 border border-slate-200/20 bg-slate-900/80 backdrop-blur-sm text-slate-500 opacity-0 translate-y-2 pointer-events-none transition-all duration-200 hover:text-white hover:border-slate-200/60 focus-ring"
+>
+  <span class="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-slate-400/50"></span>
+  <span class="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-slate-400/50"></span>
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="m18 15-6-6-6 6"/>
+  </svg>
+  <span class="text-[7px] uppercase tracking-widest font-display leading-none">TOP</span>
+</button>
 
-<script is:inline>
-    /** Scrolls the document to the top when
-     * the "Back to Top" button is clicked. */
-    function backToTop() {
-        document.querySelector("#back-to-top")?.addEventListener("click", () => {
-            document.body.scrollTop = 0; // For Safari
-            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-        });
+<script>
+  function initBackToTop() {
+    if ((window as any).__backToTopBound) return;
+    (window as any).__backToTopBound = true;
+
+    const btn = document.getElementById("back-to-top");
+    if (!btn) return;
+
+    function updateVisibility() {
+      if (window.scrollY > 300) {
+        btn!.classList.remove("opacity-0", "translate-y-2", "pointer-events-none");
+        btn!.classList.add("opacity-100", "translate-y-0", "pointer-events-auto");
+      } else {
+        btn!.classList.add("opacity-0", "translate-y-2", "pointer-events-none");
+        btn!.classList.remove("opacity-100", "translate-y-0", "pointer-events-auto");
+      }
     }
 
-    backToTop();
-    document.addEventListener("astro:after-swap", backToTop);
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    updateVisibility();
+
+    btn.addEventListener("click", () => {
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reducedMotion ? "instant" : "smooth" });
+    });
+  }
+
+  initBackToTop();
+  document.addEventListener("astro:after-swap", () => {
+    // Reset flag so the new page re-registers the button
+    (window as any).__backToTopBound = false;
+    initBackToTop();
+  });
 </script>
