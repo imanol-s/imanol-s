@@ -95,9 +95,9 @@ const edu = education[0];
         <h2 class="text-3xl font-display font-bold">PROJECTS</h2>
       </div>
     </div>
-    <div class="horizontal-scroll-snap pb-6">
+    <div id="projects-track" class="horizontal-scroll-snap pb-6">
       {allProjects.map((project) => (
-        <div class="group flex flex-col cad-border bg-slate-50 dark:bg-slate-900 overflow-hidden shadow-sm">
+        <a href={`/projects/${project.id}`} class="group flex flex-col cad-border bg-slate-50 dark:bg-slate-900 overflow-hidden shadow-sm cursor-pointer">
           <div class="relative h-[160px] overflow-hidden border-b border-slate-200 dark:border-slate-800">
             <Image
               src={project.data.cover}
@@ -113,20 +113,21 @@ const edu = education[0];
             <h3 class="text-lg font-display font-bold mb-3">
               {project.data.title}
             </h3>
-            <p class="text-xs text-slate-700 dark:text-slate-200 mb-4 leading-relaxed flex-grow">
+            <p class="text-xs text-slate-700 dark:text-slate-200 leading-relaxed flex-grow">
               {project.data.summary}
             </p>
-            <div class="flex flex-col gap-2 mt-auto">
-              <a
-                href={`/projects/${project.id}`}
-                class="cta-primary w-full"
-              >
-                View Project
-              </a>
-            </div>
           </div>
-        </div>
+        </a>
       ))}
+    </div>
+
+    <div class="flex justify-end gap-2 mt-4">
+      <button id="carousel-prev" class="cad-border px-3 py-1.5 font-display text-xs uppercase tracking-widest text-slate-500 hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed" aria-label="Previous projects">
+        ← PREV
+      </button>
+      <button id="carousel-next" class="cad-border px-3 py-1.5 font-display text-xs uppercase tracking-widest text-slate-500 hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed" aria-label="Next projects">
+        NEXT →
+      </button>
     </div>
 
     <div class="mt-8 text-center">
@@ -144,10 +145,9 @@ const edu = education[0];
   <!-- ═══ EXPERIENCE + TECH SPECS ═══ -->
   <section class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-32 scroll-mt-20" id="experience" aria-label="Professional Experience">
     <div class="lg:col-span-8">
-      <h2 class="text-2xl font-display font-bold mb-8 flex items-center gap-4 uppercase">
-        Professional Experience
-        <span class="h-[1px] flex-grow bg-slate-200 dark:bg-slate-800"></span>
-      </h2>
+      <div class="border-b border-slate-200 dark:border-slate-800 pb-4 mb-8">
+        <h2 class="text-2xl font-display font-bold uppercase">Professional Experience</h2>
+      </div>
       <div class="space-y-12">
         {timelineJobs.map((job, i) => (
           <div class="relative pl-8 border-l border-slate-200 dark:border-slate-800">
@@ -184,10 +184,9 @@ const edu = education[0];
     </div>
 
     <div class="lg:col-span-4">
-      <h2 class="text-2xl font-display font-bold mb-8 flex items-center gap-4 uppercase">
-        Tech Stack
-        <span class="h-[1px] flex-grow bg-slate-200 dark:bg-slate-800"></span>
-      </h2>
+      <div class="border-b border-slate-200 dark:border-slate-800 pb-4 mb-8">
+        <h2 class="text-2xl font-display font-bold uppercase">Tech Stack</h2>
+      </div>
       <div class="space-y-8">
         <!-- Education -->
         {edu && (
@@ -195,7 +194,7 @@ const edu = education[0];
             <h3 class="text-xs uppercase tracking-widest text-slate-500 mb-3 font-bold">
               Education
             </h3>
-            <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 font-display text-sm hover:border-primary hover:bg-white dark:hover:bg-slate-800 transition-colors">
+            <div class="cad-border bg-slate-50 dark:bg-slate-900 p-5 font-display text-sm hover:border-primary hover:bg-white dark:hover:bg-slate-800 transition-colors">
               <div class="text-xs text-primary mb-1 font-bold">
                 {edu.endDate ? fmtDate(edu.endDate) : ''}
               </div>
@@ -218,7 +217,7 @@ const edu = education[0];
             {ME.coreLanguages.map((tech) => {
               const iconPath = getTechIconPath(tech);
               return (
-                <div class="p-3 cad-border bg-slate-50 dark:bg-slate-900 flex items-center gap-2 hover:bg-white dark:hover:bg-slate-800 transition-colors group">
+                <div class="p-3 cad-border bg-slate-50 dark:bg-slate-900 flex items-center gap-2 hover:border-primary hover:bg-white dark:hover:bg-slate-800 transition-colors group">
                   {iconPath && (
                     <img
                       src={iconPath}
@@ -244,7 +243,7 @@ const edu = education[0];
           </h3>
           <ul class="flex flex-col gap-2 font-display">
             {ME.competencies.map((item) => (
-              <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary transition-colors cursor-default">
+              <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary hover:bg-white dark:hover:bg-slate-800 transition-colors cursor-default">
                 <span class="text-sm text-slate-800 dark:text-slate-200 tracking-tight font-medium">{item}</span>
               </li>
             ))}
@@ -256,7 +255,7 @@ const edu = education[0];
           <h3 class="text-xs uppercase tracking-widest text-slate-500 mb-3 font-bold">
             Communication
           </h3>
-          <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 font-display text-sm">
+          <div class="cad-border bg-slate-50 dark:bg-slate-900 p-5 font-display text-sm">
             {ME.languages.map((lang, i) => (
               <div class:list={["flex justify-between items-center", { "mb-2": i < ME.languages.length - 1 }]}>
                 <span class="text-slate-700 dark:text-slate-200">{lang.name.toUpperCase()}</span>
@@ -279,30 +278,87 @@ const edu = education[0];
         <p class="text-xl text-slate-700 dark:text-slate-200 leading-relaxed font-light mb-8">
           {ME.bio}
         </p>
-        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="p-5 cad-border bg-slate-50 dark:bg-slate-900">
-            <dt class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
-              Location
-            </dt>
-            <dd class="font-display text-sm text-slate-800 dark:text-slate-200">
-              {ME.location}
-            </dd>
-          </div>
-          <div class="p-5 cad-border bg-slate-50 dark:bg-slate-900">
-            <dt class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">
-              Contact
-            </dt>
-            <dd>
-              <a
-                href={`mailto:${ME.contactInfo.email}`}
-                class="font-display text-sm text-primary drawing-hover focus-ring rounded-sm"
-              >
-                {ME.contactInfo.email}
-              </a>
-            </dd>
-          </div>
-        </dl>
+        <a
+          href={`mailto:${ME.contactInfo.email}`}
+          aria-label="Email"
+          class="inline-flex text-slate-500 hover:text-white transition-colors focus-ring rounded-sm"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </a>
       </div>
     </div>
   </section>
 </Layout>
+
+<script>
+  function initCarousel() {
+    const track = document.getElementById("projects-track");
+    const prev = document.getElementById("carousel-prev") as HTMLButtonElement | null;
+    const next = document.getElementById("carousel-next") as HTMLButtonElement | null;
+    if (!track || !prev || !next) return;
+
+    const scrollAmount = () => track.clientWidth * 0.85;
+
+    // Arrow state
+    function updateArrows() {
+      if (!track || !prev || !next) return;
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+    }
+
+    prev.addEventListener("click", () => track.scrollBy({ left: -scrollAmount() }));
+    next.addEventListener("click", () => track.scrollBy({ left: scrollAmount() }));
+    track.addEventListener("scroll", updateArrows, { passive: true });
+    new ResizeObserver(updateArrows).observe(track);
+    updateArrows();
+
+    // Mouse drag — only activate after pointer moves beyond threshold
+    let isPointerDown = false;
+    let isDragging = false;
+    let startX = 0;
+    let startScroll = 0;
+    let pointerId = -1;
+
+    track.addEventListener("pointerdown", (e: PointerEvent) => {
+      if (e.button !== 0) return;
+      isPointerDown = true;
+      isDragging = false;
+      startX = e.clientX;
+      startScroll = track.scrollLeft;
+      pointerId = e.pointerId;
+    });
+
+    track.addEventListener("pointermove", (e: PointerEvent) => {
+      if (!isPointerDown) return;
+      const dx = Math.abs(e.clientX - startX);
+      if (!isDragging && dx > 5) {
+        isDragging = true;
+        track.setPointerCapture(pointerId);
+        track.style.cursor = "grabbing";
+        track.style.userSelect = "none";
+      }
+      if (isDragging) {
+        track.scrollLeft = startScroll - (e.clientX - startX);
+      }
+    });
+
+    track.addEventListener("pointerup", () => {
+      if (isDragging) {
+        track.releasePointerCapture(pointerId);
+        track.style.cursor = "";
+        track.style.userSelect = "";
+        // Prevent click on links after drag
+        track.addEventListener("click", (ev) => ev.preventDefault(), { once: true, capture: true });
+      }
+      isPointerDown = false;
+      isDragging = false;
+    });
+  }
+
+  initCarousel();
+
+  if (!(window as unknown as Record<string, boolean>).__carouselListenerRegistered) {
+    (window as unknown as Record<string, boolean>).__carouselListenerRegistered = true;
+    document.addEventListener("astro:after-swap", initCarousel);
+  }
+</script>

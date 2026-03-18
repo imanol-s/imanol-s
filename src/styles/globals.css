@@ -166,16 +166,29 @@
     scroll-snap-type: x mandatory;
     gap: 1rem;
     padding-bottom: 1rem;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .horizontal-scroll-snap::-webkit-scrollbar {
+    display: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .horizontal-scroll-snap {
+      scroll-behavior: smooth;
+    }
   }
   .horizontal-scroll-snap > * {
     scroll-snap-align: start;
-    flex: 0 0 300px;
+    flex: 0 0 min(85vw, 300px);
   }
-  @media (min-width: 768px) {
+  @media (min-width: 640px) {
     .horizontal-scroll-snap > * {
-      flex: 0 0 350px;
+      flex: 0 0 calc(50% - 0.5rem);
+    }
+  }
+  @media (min-width: 1024px) {
+    .horizontal-scroll-snap > * {
+      flex: 0 0 calc(33.333% - 0.667rem);
     }
   }
   .typing-caret {
