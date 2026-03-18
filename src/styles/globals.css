@@ -10,8 +10,6 @@
   --color-accent: #94a3b8;
   --color-background-light: #f8fafc;
   --color-background-dark: #0f172a;
-  --color-grid-blue: rgba(148, 163, 184, 0.05);
-
   --font-display: "JetBrains Mono", monospace;
   --font-body: "Inter", sans-serif;
 
@@ -19,14 +17,6 @@
 }
 
 @layer utilities {
-  .blueprint-grid {
-    background-image:
-      linear-gradient(var(--color-accent) 0.5px, transparent 0.5px),
-      linear-gradient(90deg, var(--color-accent) 0.5px, transparent 0.5px);
-    background-size: 40px 40px;
-    background-color: transparent;
-    opacity: 0.1;
-  }
   .isometric-topography {
     background-image:
       linear-gradient(30deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
@@ -136,17 +126,6 @@
     &:focus-visible {
       outline: none;
       box-shadow: 0 0 0 2px var(--color-primary), 0 0 0 4px var(--color-background-dark);
-    }
-  }
-  .grid-pulse:hover {
-    background-image:
-      linear-gradient(rgba(100, 116, 139, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(100, 116, 139, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .grid-pulse:hover {
-      transition: background-image 0.5s ease;
     }
   }
   .cta-primary {

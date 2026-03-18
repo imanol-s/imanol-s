@@ -105,8 +105,6 @@ export default function TopoBackground() {
 
   return (
     <>
-      <div className="fixed inset-0 pointer-events-none blueprint-grid z-[-1]" />
-
       <div
         className="fixed inset-0 pointer-events-none"
         style={{ zIndex: -2 }}
