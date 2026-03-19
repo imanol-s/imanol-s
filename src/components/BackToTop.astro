@@ -48,10 +48,9 @@
 </style>
 
 <script>
-  function initBackToTop() {
-    if ((window as any).__backToTopBound) return;
-    (window as any).__backToTopBound = true;
+  import { registerOnceAfterSwap } from '../utils/registerOnceAfterSwap';
 
+  registerOnceAfterSwap('back-to-top', () => {
     const btn = document.getElementById("back-to-top");
     if (!btn) return;
 
@@ -120,11 +119,5 @@
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       window.scrollTo({ top: 0, behavior: reducedMotion ? "instant" : "smooth" });
     });
-  }
-
-  setTimeout(initBackToTop, 1200);
-  document.addEventListener("astro:after-swap", () => {
-    (window as any).__backToTopBound = false;
-    setTimeout(initBackToTop, 900);
   });
 </script>
