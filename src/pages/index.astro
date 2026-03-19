@@ -270,13 +270,15 @@ const edu = education[0];
     <div class="flex items-end justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
       <h2 class="text-3xl font-display font-bold">ABOUT</h2>
     </div>
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-      <div class="lg:col-span-8">
-        <p class="text-xl text-slate-700 dark:text-slate-200 leading-relaxed font-light mb-8">
-          {ME.bio}
-        </p>
+    {ME.bio && (
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8">
+          <p class="text-xl text-slate-700 dark:text-slate-200 leading-relaxed font-light mb-8">
+            {ME.bio}
+          </p>
+        </div>
       </div>
-    </div>
+    )}
   </section>
 </Layout>
 
