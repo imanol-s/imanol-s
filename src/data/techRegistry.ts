@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 const TECH_ICON_BASE_PATH = '/icons/catppuccin';
 
 export interface TechEntry {
@@ -65,5 +67,15 @@ export function getTechDisplayName(tech: string): string {
   const entry = lookupTech(tech);
   return entry?.displayName ?? tech;
 }
+
+const validTechIds = new Set<string>(REGISTRY.map((t) => t.id));
+
+export const techTagSchema = z.string().transform((s) => {
+  const normalized = s.trim().toLowerCase();
+  if (!validTechIds.has(normalized)) {
+    throw new Error(`Unknown tech tag "${s}". Valid: ${[...validTechIds].join(', ')}`);
+  }
+  return normalized;
+});
 
 export { REGISTRY as techRegistry };

@@ -1,15 +1,6 @@
 import {defineCollection, reference, z} from 'astro:content';
 import { glob } from 'astro/loaders';
-import { techRegistry } from '../data/techRegistry';
-
-const validTechIds = new Set<string>(techRegistry.map((t) => t.id));
-const techTag = z.string().transform((s) => {
-    const normalized = s.trim().toLowerCase();
-    if (!validTechIds.has(normalized)) {
-        throw new Error(`Unknown tech tag "${s}". Valid: ${[...validTechIds].join(', ')}`);
-    }
-    return normalized;
-});
+import { techTagSchema } from '../data/techRegistry';
 
 const posts = defineCollection({
     loader: glob({ pattern: ['*.md', '*.mdx'], base: 'src/content/posts' }),
@@ -38,7 +29,7 @@ const projects = defineCollection({
         summary: z.string(),
         url: z.string().optional(),
         cover: image(),
-        tags: z.array(techTag),
+        tags: z.array(techTagSchema),
         keywords: z.array(z.string()).optional(),
         ogImage: z.string()
     }),
