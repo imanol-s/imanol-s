@@ -1,0 +1,137 @@
+---
+import { ME } from '../config';
+import workExperience from '../data/Jobs';
+import education from '../data/education';
+import { getTechIconPath } from '../data/techIcons';
+
+function fmtDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).toUpperCase();
+}
+
+const timelineJobs = workExperience.slice(0, 3);
+const edu = education[0];
+---
+
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-32 scroll-mt-20" id="experience" aria-label="Professional Experience">
+  <div class="lg:col-span-8">
+    <div class="border-b border-slate-200 dark:border-slate-800 pb-4 mb-8">
+      <h2 class="text-2xl font-display font-bold uppercase">Professional Experience</h2>
+    </div>
+    <div class="space-y-12">
+      {timelineJobs.map((job, i) => (
+        <div class="relative pl-8 border-l border-slate-200 dark:border-slate-800">
+          {i === 0 ? (
+            <div class="absolute -left-1.5 top-0 w-3 h-3 bg-primary ring-4 ring-[var(--color-background-light)] dark:ring-[var(--color-background-dark)]"></div>
+          ) : (
+            <div class="absolute -left-1.5 top-0 w-3 h-3 border border-primary bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)] ring-4 ring-[var(--color-background-light)] dark:ring-[var(--color-background-dark)]"></div>
+          )}
+          <div class="cad-border bg-slate-50 dark:bg-slate-900 p-5 hover:border-primary hover:bg-white dark:hover:bg-slate-800 transition-colors">
+            <div class="text-xs font-display text-primary mb-1 font-bold">
+              {job.startDate ? fmtDate(job.startDate) : ''} — {job.currentJob ? 'PRESENT' : job.endDate ? fmtDate(job.endDate) : ''}
+            </div>
+            <h3 class="text-xl font-display font-bold text-slate-900 dark:text-white">
+              {job.title}
+            </h3>
+            <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">
+              {job.company} / {job.location}
+            </p>
+            <p class="text-slate-800 dark:text-slate-200 leading-relaxed mb-4">
+              {job.description}
+            </p>
+            {i === 0 && (
+              <ul class="text-sm space-y-2 text-slate-700 dark:text-slate-200 list-disc list-inside marker:text-primary">
+                {job.goals.slice(0, 3).map((goal) => (
+                  <li>{goal}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div id="tech-stack-sidebar" class="lg:col-span-4">
+    <div class="border-b border-slate-200 dark:border-slate-800 pb-4 mb-8">
+      <h2 class="text-2xl font-display font-bold uppercase">Tech Stack</h2>
+    </div>
+    <div class="space-y-8">
+      {edu && (
+        <div>
+          <h3 class="text-xs uppercase tracking-widest text-slate-500 mb-3 font-bold">
+            Education
+          </h3>
+          <div class="cad-border bg-slate-50 dark:bg-slate-900 p-5 font-display text-sm hover:border-primary hover:bg-white dark:hover:bg-slate-800 transition-colors">
+            <div class="text-xs text-primary mb-1 font-bold">
+              {edu.endDate ? fmtDate(edu.endDate) : ''}
+            </div>
+            <div class="font-bold text-slate-900 dark:text-white">
+              {edu.title}
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-xs mt-0.5">
+              {edu.school}
+            </p>
+          </div>
+        </div>
+      )}
+
+      <div>
+        <h3 class="text-xs uppercase tracking-widest text-slate-500 mb-3 font-bold">
+          Core Languages
+        </h3>
+        <div class="grid grid-cols-2 gap-3">
+          {ME.coreLanguages.map((tech) => {
+            const iconPath = getTechIconPath(tech);
+            return (
+              <div class="p-3 cad-border bg-slate-50 dark:bg-slate-900 flex items-center gap-2 hover:border-primary hover:bg-white dark:hover:bg-slate-800 transition-colors group">
+                {iconPath && (
+                  <img
+                    src={iconPath}
+                    alt={`${tech} icon`}
+                    width="16"
+                    height="16"
+                    loading="lazy"
+                    decoding="async"
+                    class="group-hover:scale-110 transition-transform"
+                  />
+                )}
+                <span class="text-sm font-display">{tech}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-xs uppercase tracking-widest text-slate-500 mb-4 font-bold">
+          Competencies
+        </h3>
+        <ul class="flex flex-col gap-2 font-display">
+          {ME.competencies.map((item) => (
+            <li class="group flex items-center justify-between px-3 py-2 bg-slate-50 dark:bg-slate-900 cad-border hover:border-primary hover:bg-white dark:hover:bg-slate-800 transition-colors cursor-default">
+              <span class="text-sm text-slate-800 dark:text-slate-200 tracking-tight font-medium">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="pt-2">
+        <h3 class="text-xs uppercase tracking-widest text-slate-500 mb-3 font-bold">
+          Communication
+        </h3>
+        <div class="cad-border bg-slate-50 dark:bg-slate-900 p-5 font-display text-sm hover:border-primary hover:bg-white dark:hover:bg-slate-800 transition-colors">
+          {ME.languages.map((lang, i) => (
+            <div class:list={["flex justify-between items-center", { "mb-2": i < ME.languages.length - 1 }]}>
+              <span class="text-slate-700 dark:text-slate-200">{lang.name.toUpperCase()}</span>
+              <span class="text-primary font-bold text-xs">{lang.level.toUpperCase()}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
