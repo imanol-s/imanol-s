@@ -4,6 +4,7 @@ import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import { getTechIconPath } from "../../data/techIcons";
 import TagPill from "../../components/TagPill.astro";
+import { formatDate } from "../../utils/formatDate";
 
 export async function getStaticPaths() {
   const posts = await getCollection('projects');
@@ -29,10 +30,6 @@ const next = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 
 
 // Only show external link if url is real (not placeholder)
 const hasValidUrl = url && url.trim() !== '' && url !== 'https://google.com';
-
-function fmtDate(d: Date): string {
-  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
-}
 ---
 
 <Layout title={title} description={summary} imageOg={ogImage} scrollSmooth={true}>
@@ -136,9 +133,9 @@ function fmtDate(d: Date): string {
               Timeline
             </p>
             <p class="font-display text-sm text-slate-700 dark:text-slate-200">
-              {startDate && fmtDate(startDate)}
+              {startDate && formatDate(startDate)}
               {startDate && endDate && ' — '}
-              {endDate && fmtDate(endDate)}
+              {endDate && formatDate(endDate)}
             </p>
           </div>
         )}
