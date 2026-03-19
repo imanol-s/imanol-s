@@ -1,28 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useSessionState } from "../hooks/useSessionState";
 
-/** Retrieve or generate a session-scoped seed for feTurbulence. */
-function getSessionSeed(): number {
-  const key = "topo-seed";
-  const stored = sessionStorage.getItem(key);
-  if (stored !== null) return parseInt(stored, 10);
-  const seed = Math.floor(Math.random() * 10000);
-  sessionStorage.setItem(key, String(seed));
-  return seed;
-}
-
-/**
- * Fixed animated topographic background — shared across all pages.
- * Handles its own rAF loop + reduced-motion media query internally.
- * Terrain shape is randomised once per session via a sessionStorage seed.
- */
 export default function TopoBackground() {
   const reduced = useReducedMotion();
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const rafId = useRef(0);
   const [dims, setDims] = useState({ width: 2000, height: 2000 });
-  // Lazy initializer runs once on mount (client-only, sessionStorage always available).
-  const [seed] = useState(getSessionSeed);
+  const [seed, setSeed] = useSessionState<number | null>("topo-seed", null);
+
+  // Generate seed once per session
+  useEffect(() => {
+    if (seed === null) setSeed(Math.floor(Math.random() * 10000));
+  }, [seed, setSeed]);
 
   useEffect(() => {
     const updateDims = () => {
@@ -112,7 +102,7 @@ export default function TopoBackground() {
                   type="fractalNoise"
                   baseFrequency="0.002"
                   numOctaves={2}
-                  seed={seed}
+                  seed={seed ?? undefined}
                   result="noise"
                 />
                 <feDisplacementMap

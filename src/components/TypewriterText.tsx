@@ -1,30 +1,22 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-
-const SESSION_KEY = "heroNameTyped";
+import { useSessionState } from "../hooks/useSessionState";
 
 // LoadingOverlay: 600ms opaque + 500ms fade = 1100ms; add 100ms buffer
 const OVERLAY_CLEAR_MS = 1200;
 
 const TypewriterText = ({ text }: { text: string }) => {
   const reducedMotion = useReducedMotion();
+  const [alreadyPlayed, setAlreadyPlayed] = useSessionState("heroNameTyped", false);
   const [displayed, setDisplayed] = useState(text);
   const [done, setDone] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef(false);
 
   useEffect(() => {
-
     setDisplayed("");
     setDone(false);
     abortRef.current = false;
-
-    let alreadyPlayed = false;
-    try {
-      alreadyPlayed = sessionStorage.getItem(SESSION_KEY) === "true";
-    } catch {
-      // sessionStorage unavailable (private mode, quota exceeded, etc.)
-    }
 
     if (reducedMotion || alreadyPlayed) {
       setDisplayed(text);
@@ -41,7 +33,7 @@ const TypewriterText = ({ text }: { text: string }) => {
       if (index < text.length) {
         timeoutRef.current = setTimeout(type, 35 + Math.random() * 25);
       } else {
-        try { sessionStorage.setItem(SESSION_KEY, "true"); } catch { /* storage unavailable */ }
+        setAlreadyPlayed(true);
         setDone(true);
       }
     };
@@ -52,15 +44,15 @@ const TypewriterText = ({ text }: { text: string }) => {
       abortRef.current = true;
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [text, reducedMotion]);
+  }, [text, reducedMotion, alreadyPlayed, setAlreadyPlayed]);
 
   const skip = useCallback(() => {
     abortRef.current = true;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    try { sessionStorage.setItem(SESSION_KEY, "true"); } catch { /* storage unavailable */ }
+    setAlreadyPlayed(true);
     setDisplayed(text);
     setDone(true);
-  }, [text]);
+  }, [text, setAlreadyPlayed]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
