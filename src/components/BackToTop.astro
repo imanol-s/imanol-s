@@ -6,6 +6,8 @@
   id="back-to-top"
   type="button"
   aria-label="Back to top"
+  tabindex="-1"
+  aria-hidden="true"
   class="fixed bottom-8 right-8 z-50 flex h-10 w-10 flex-col items-center justify-center gap-0.5 border border-slate-200/20 bg-slate-900/80 backdrop-blur-sm text-slate-500 opacity-0 pointer-events-none hover:text-white hover:border-slate-200/60 focus-ring"
   style="transition: opacity 400ms ease-in-out, width 300ms ease, height 300ms ease, background 300ms ease, border-color 300ms ease, backdrop-filter 300ms ease, gap 300ms ease, padding 300ms ease;"
 >
@@ -50,6 +52,7 @@
 <script>
   import { registerOnceAfterSwap } from '../utils/registerOnceAfterSwap';
   import { prefersReducedMotion } from '../utils/prefersReducedMotion';
+  import { updateBackToTopA11y } from '../utils/backToTopA11y';
 
   registerOnceAfterSwap('back-to-top', () => {
     const btn = document.getElementById("back-to-top");
@@ -63,6 +66,7 @@
       isVisible = true;
       btn!.classList.remove("opacity-0", "pointer-events-none");
       btn!.classList.add("opacity-100", "pointer-events-auto");
+      updateBackToTopA11y(btn!, true);
     }
 
     function hide() {
@@ -70,6 +74,7 @@
       isVisible = false;
       btn!.classList.add("opacity-0", "pointer-events-none");
       btn!.classList.remove("opacity-100", "pointer-events-auto");
+      updateBackToTopA11y(btn!, false);
     }
 
     function collapse() {
