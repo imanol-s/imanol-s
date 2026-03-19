@@ -1,3 +1,5 @@
+import type { TechId } from './data/techRegistry';
+
 export const SITE = {
   website: "https://imanols.dev", // replace this with your deployed domain
   title: "Imanol Saldana",
@@ -21,7 +23,7 @@ export const ME: {
   bio?: string;
   location: string;
   focusAreas: string[];
-  coreLanguages: string[];
+  coreLanguages: TechId[];
   competencies: string[];
   languages: { name: string; level: string }[];
   contactInfo: { email: string; linkedin: string; resumeDoc: string };
@@ -38,7 +40,7 @@ export const ME: {
     "Automation & tooling",
     "Systems & reliability",
   ],
-  coreLanguages: ["Python", "Java", "SQL", "R"],
+  coreLanguages: ["python", "java", "sql", "r"],
   competencies: [
     "Data Governance",
     "Simulation & Robotics",

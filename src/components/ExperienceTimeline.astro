@@ -1,7 +1,7 @@
 ---
 import { ME } from '../config';
 import { workExperience, education } from '../data/career';
-import { getTechIconPath } from '../data/techRegistry';
+import { getTechIconPath, getTechDisplayName } from '../data/techRegistry';
 import { formatDate } from '../utils/formatDate';
 
 const timelineJobs = workExperience.slice(0, 3);
@@ -83,7 +83,7 @@ const edu = education[0];
                 {iconPath && (
                   <img
                     src={iconPath}
-                    alt={`${tech} icon`}
+                    alt={`${getTechDisplayName(tech)} icon`}
                     width="16"
                     height="16"
                     loading="lazy"
@@ -91,7 +91,7 @@ const edu = education[0];
                     class="group-hover:scale-110 transition-transform"
                   />
                 )}
-                <span class="text-sm font-display">{tech}</span>
+                <span class="text-sm font-display">{getTechDisplayName(tech)}</span>
               </div>
             );
           })}

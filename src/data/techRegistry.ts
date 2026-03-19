@@ -11,14 +11,14 @@ const REGISTRY = [
   { id: 'astro', iconPath: `${TECH_ICON_BASE_PATH}/astro.svg` },
   { id: 'database design', iconPath: `${TECH_ICON_BASE_PATH}/database.svg` },
   { id: 'django', iconPath: `${TECH_ICON_BASE_PATH}/django.svg` },
-  { id: 'java', iconPath: `${TECH_ICON_BASE_PATH}/java.svg` },
+  { id: 'java', iconPath: `${TECH_ICON_BASE_PATH}/java.svg`, displayName: 'Java' },
   { id: 'jupyter', iconPath: `${TECH_ICON_BASE_PATH}/jupyter.svg` },
   { id: 'mysql', iconPath: `${TECH_ICON_BASE_PATH}/database.svg` },
-  { id: 'python', iconPath: `${TECH_ICON_BASE_PATH}/python.svg` },
-  { id: 'r', iconPath: `${TECH_ICON_BASE_PATH}/r.svg` },
+  { id: 'python', iconPath: `${TECH_ICON_BASE_PATH}/python.svg`, displayName: 'Python' },
+  { id: 'r', iconPath: `${TECH_ICON_BASE_PATH}/r.svg`, displayName: 'R' },
   { id: 'ruff', iconPath: `${TECH_ICON_BASE_PATH}/ruff.svg` },
-  { id: 'sql', iconPath: `${TECH_ICON_BASE_PATH}/database.svg` },
-  { id: 'sqlalchemy', iconPath: `${TECH_ICON_BASE_PATH}/database.svg` },
+  { id: 'sql', iconPath: `${TECH_ICON_BASE_PATH}/database.svg`, displayName: 'SQL' },
+  { id: 'sqlalchemy', iconPath: `${TECH_ICON_BASE_PATH}/database.svg`, displayName: 'SQLAlchemy' },
   { id: 'tailwind', iconPath: `${TECH_ICON_BASE_PATH}/tailwind.svg` },
   { id: 'typescript', iconPath: `${TECH_ICON_BASE_PATH}/typescript.svg` },
   { id: 'typescript react', iconPath: `${TECH_ICON_BASE_PATH}/typescript-react.svg` },
@@ -37,6 +37,7 @@ const REGISTRY = [
   { id: 'path planning' },
   { id: 'predictive modeling' },
   { id: 'simulation' },
+  { id: 'robotics' },
   { id: 'user research' },
   // Additional tags from frontmatter
   { id: 'ggplot2' },
@@ -58,6 +59,11 @@ export function lookupTech(tech: string): TechEntry | null {
 export function getTechIconPath(tech: string): string | null {
   const entry = lookupTech(tech);
   return entry?.iconPath ?? null;
+}
+
+export function getTechDisplayName(tech: string): string {
+  const entry = lookupTech(tech);
+  return entry?.displayName ?? tech;
 }
 
 export { REGISTRY as techRegistry };
