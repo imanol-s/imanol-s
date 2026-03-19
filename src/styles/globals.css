@@ -229,6 +229,24 @@
 
 }
 
+#loading-overlay {
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
+    var(--color-background-dark) 70%
+  );
+  animation: overlay-pulse 2s ease-in-out infinite;
+}
+@keyframes overlay-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #loading-overlay {
+    animation: none;
+  }
+}
+
 @keyframes topo-drift {
   0% {
     transform: translate(0, 0) rotate(0deg);
