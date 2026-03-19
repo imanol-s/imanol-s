@@ -22,7 +22,7 @@ describe('initBackToTop', () => {
   it('returns a cleanup function', () => {
     const cleanup = initBackToTop();
     expect(typeof cleanup).toBe('function');
-    cleanup();
+    cleanup!();
   });
 
   it('returns undefined (no-op) when button is not found', () => {
