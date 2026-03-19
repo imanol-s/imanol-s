@@ -30,8 +30,9 @@ pnpm-debug.log*
 # vscode setting folder
 .vscode/
 
-# claude files
-.claude/
+# claude files (private)
+.claude/settings.local.json
+.claude/worktrees/
 
 # playwright mcp artifacts
 .playwright-mcp/
