@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { DottedGlowBackground } from "./ui/dotted-glow-background";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { signalOverlayReady, resetOverlayReady } from "../utils/overlayReady";
 
 export default function LoadingOverlay() {
   const reduced = useReducedMotion();
@@ -14,6 +15,7 @@ export default function LoadingOverlay() {
     fadeTimerRef.current = setTimeout(() => {
       setActive(false);
       setFading(false);
+      signalOverlayReady();
     }, 500);
   }, []);
 
@@ -30,6 +32,7 @@ export default function LoadingOverlay() {
 
     if (reduced) {
       setActive(false);
+      signalOverlayReady();
       return;
     }
 
@@ -41,7 +44,10 @@ export default function LoadingOverlay() {
   useEffect(() => {
     if (reduced) return;
 
-    const showOnSwap = () => fadeIn();
+    const showOnSwap = () => {
+      resetOverlayReady();
+      fadeIn();
+    };
     const hideOnLoad = () => {
       // Each navigation swaps in a fresh #loading-overlay from the new page HTML;
       // hide it so it doesn't linger after the React overlay fades out.

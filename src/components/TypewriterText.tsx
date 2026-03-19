@@ -1,12 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useSessionState } from "../hooks/useSessionState";
-
-// LoadingOverlay: 600ms opaque + 500ms fade = 1100ms; add 100ms buffer
-const OVERLAY_CLEAR_MS = 1200;
+import { useOverlayReady } from "../hooks/useOverlayReady";
 
 const TypewriterText = ({ text }: { text: string }) => {
   const reducedMotion = useReducedMotion();
+  const overlayReady = useOverlayReady();
   const [alreadyPlayed, setAlreadyPlayed] = useSessionState("heroNameTyped", false);
   const [displayed, setDisplayed] = useState(text);
   const [done, setDone] = useState(false);
@@ -24,6 +23,8 @@ const TypewriterText = ({ text }: { text: string }) => {
       return;
     }
 
+    if (!overlayReady) return;
+
     let index = 0;
 
     const type = () => {
@@ -38,13 +39,13 @@ const TypewriterText = ({ text }: { text: string }) => {
       }
     };
 
-    timeoutRef.current = setTimeout(type, OVERLAY_CLEAR_MS);
+    type();
 
     return () => {
       abortRef.current = true;
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [text, reducedMotion, alreadyPlayed, setAlreadyPlayed]);
+  }, [text, reducedMotion, alreadyPlayed, setAlreadyPlayed, overlayReady]);
 
   const skip = useCallback(() => {
     abortRef.current = true;
