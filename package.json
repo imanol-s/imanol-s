@@ -16,7 +16,9 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "lint-staged": {
     "*.{astro,ts,tsx}": "astro check"
@@ -42,6 +44,8 @@
   "devDependencies": {
     "@commitlint/cli": "^20.4.3",
     "@commitlint/config-conventional": "^20.4.3",
-    "lint-staged": "^16.3.2"
+    "jsdom": "^29.0.0",
+    "lint-staged": "^16.3.2",
+    "vitest": "^4.1.0"
   }
 }
