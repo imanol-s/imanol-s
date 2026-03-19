@@ -10,6 +10,11 @@
   --color-accent: #94a3b8;
   --color-background-light: #f8fafc;
   --color-background-dark: #0f172a;
+  --color-slate-50: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
   --font-display: "JetBrains Mono", monospace;
   --font-body: "Inter", sans-serif;
 
@@ -19,9 +24,9 @@
 @layer utilities {
   .isometric-topography {
     background-image:
-      linear-gradient(30deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
-      linear-gradient(-30deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
+      linear-gradient(30deg, color-mix(in srgb, var(--color-accent) 8%, transparent) 1px, transparent 1px),
+      linear-gradient(-30deg, color-mix(in srgb, var(--color-accent) 8%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 3%, transparent) 1px, transparent 1px);
     background-size:
       60px 104px,
       60px 104px,
@@ -80,7 +85,7 @@
     width: 100%;
   }
   .cad-border {
-    border: 1px solid rgba(148, 163, 184, 0.2);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 20%, transparent);
     position: relative;
   }
   @media (prefers-reduced-motion: no-preference) {
@@ -94,7 +99,7 @@
     position: absolute;
     width: 8px;
     height: 8px;
-    border: 1px solid rgba(148, 163, 184, 0.5);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 50%, transparent);
     z-index: 10;
   }
   @media (prefers-reduced-motion: no-preference) {
@@ -116,8 +121,8 @@
     border-top: 0;
   }
   .cad-border:hover {
-    border-color: rgba(148, 163, 184, 0.6);
-    box-shadow: 0 0 20px rgba(100, 116, 139, 0.1);
+    border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--color-primary) 10%, transparent);
   }
   .cad-border:hover::before,
   .cad-border:hover::after {
@@ -134,8 +139,8 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    background-color: #f1f5f9;
-    color: #0f172a;
+    background-color: var(--color-slate-50);
+    color: var(--color-background-dark);
     padding: 0.5rem 1rem;
     font-family: var(--font-display);
     font-size: 0.75rem;
@@ -154,8 +159,8 @@
     box-shadow: 0 0 0 2px var(--color-primary), 0 0 0 4px var(--color-background-dark);
   }
   .dark .cta-primary {
-    background-color: #f1f5f9;
-    color: #0f172a;
+    background-color: var(--color-slate-50);
+    color: var(--color-background-dark);
   }
   .dark .cta-primary:hover {
     background-color: var(--color-primary);
@@ -224,33 +229,33 @@
 
   /* ── MDX prose content (project detail pages) ──────────────────────── */
   .project-mdx {
-    color: #334155;
+    color: var(--color-slate-700);
     line-height: 1.8;
     font-size: 1rem;
   }
   .dark .project-mdx {
-    color: #cbd5e1;
+    color: var(--color-slate-300);
   }
   .project-mdx h2 {
     font-family: var(--font-display);
     font-size: 1.25rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    color: #0f172a;
+    color: var(--color-background-dark);
     margin-top: 2.5rem;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--color-slate-200);
   }
   .dark .project-mdx h2 {
     color: white;
-    border-bottom-color: #1e293b;
+    border-bottom-color: var(--color-slate-800);
   }
   .project-mdx h3 {
     font-family: var(--font-display);
     font-size: 1rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--color-background-dark);
     margin-top: 1.75rem;
     margin-bottom: 0.5rem;
   }
@@ -279,11 +284,11 @@
   }
   .project-mdx hr {
     border: none;
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid var(--color-slate-200);
     margin: 2.5rem 0;
   }
   .dark .project-mdx hr {
-    border-top-color: #1e293b;
+    border-top-color: var(--color-slate-800);
   }
   .project-mdx a {
     color: var(--color-primary);
@@ -292,7 +297,7 @@
   }
   .project-mdx strong {
     font-weight: 600;
-    color: #0f172a;
+    color: var(--color-background-dark);
   }
   .dark .project-mdx strong {
     color: white;
@@ -303,22 +308,22 @@
   .project-mdx code {
     font-family: var(--font-display);
     font-size: 0.85em;
-    background: #f1f5f9;
-    color: #1e293b;
+    background: var(--color-slate-50);
+    color: var(--color-slate-800);
     padding: 0.15em 0.4em;
     border-radius: 3px;
   }
   .dark .project-mdx code {
-    background: #1e293b;
-    color: #e2e8f0;
+    background: var(--color-slate-800);
+    color: var(--color-slate-200);
   }
   .project-mdx pre {
-    background: #0f172a;
-    color: #e2e8f0;
+    background: var(--color-background-dark);
+    color: var(--color-slate-200);
     padding: 1.25rem;
     overflow-x: auto;
     margin-bottom: 1.25rem;
-    border: 1px solid #334155;
+    border: 1px solid var(--color-slate-700);
     font-family: var(--font-display);
     font-size: 0.85rem;
     line-height: 1.6;
@@ -327,14 +332,14 @@
     max-width: 100%;
     height: auto;
     margin: 1.5rem 0;
-    border: 1px solid rgba(148, 163, 184, 0.2);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 20%, transparent);
     display: block;
   }
   .project-mdx blockquote {
     border-left: 3px solid var(--color-primary);
     padding-left: 1rem;
     margin: 1.5rem 0;
-    color: #64748b;
+    color: var(--color-primary);
     font-style: italic;
   }
   .dark .project-mdx blockquote {
@@ -360,33 +365,33 @@
 /* ── Blog prose overrides (replaces old theme() references) ──────── */
 @layer utilities {
   .prose {
-    color: #334155;
-    --tw-prose-headings: #334155;
-    --tw-prose-p: #334155;
-    --tw-prose-a: #64748b;
-    --tw-prose-blockquote: #64748b;
-    --tw-prose-figcaption: #64748b;
-    --tw-prose-strong: #334155;
-    --tw-prose-code: #334155;
-    --tw-prose-ol: #334155;
-    --tw-prose-ul: #334155;
-    --tw-prose-li-marker: #64748b;
-    --tw-prose-hr: #64748b;
+    color: var(--color-slate-700);
+    --tw-prose-headings: var(--color-slate-700);
+    --tw-prose-p: var(--color-slate-700);
+    --tw-prose-a: var(--color-primary);
+    --tw-prose-blockquote: var(--color-primary);
+    --tw-prose-figcaption: var(--color-primary);
+    --tw-prose-strong: var(--color-slate-700);
+    --tw-prose-code: var(--color-slate-700);
+    --tw-prose-ol: var(--color-slate-700);
+    --tw-prose-ul: var(--color-slate-700);
+    --tw-prose-li-marker: var(--color-primary);
+    --tw-prose-hr: var(--color-primary);
   }
 
   .dark .prose {
-    color: #e2e8f0;
-    --tw-prose-headings: #f1f5f9;
-    --tw-prose-p: #f1f5f9;
-    --tw-prose-a: #94a3b8;
-    --tw-prose-blockquote: #64748b;
-    --tw-prose-figcaption: #f1f5f9;
-    --tw-prose-strong: #f1f5f9;
-    --tw-prose-code: #f1f5f9;
-    --tw-prose-ol: #f1f5f9;
-    --tw-prose-ul: #f1f5f9;
-    --tw-prose-li-marker: #64748b;
-    --tw-prose-hr: #64748b;
+    color: var(--color-slate-200);
+    --tw-prose-headings: var(--color-slate-50);
+    --tw-prose-p: var(--color-slate-50);
+    --tw-prose-a: var(--color-accent);
+    --tw-prose-blockquote: var(--color-primary);
+    --tw-prose-figcaption: var(--color-slate-50);
+    --tw-prose-strong: var(--color-slate-50);
+    --tw-prose-code: var(--color-slate-50);
+    --tw-prose-ol: var(--color-slate-50);
+    --tw-prose-ul: var(--color-slate-50);
+    --tw-prose-li-marker: var(--color-primary);
+    --tw-prose-hr: var(--color-primary);
   }
 
   .prose img {
