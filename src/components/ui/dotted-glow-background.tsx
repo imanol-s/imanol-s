@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 type DottedGlowBackgroundProps = {
   className?: string;
@@ -37,6 +38,7 @@ export const DottedGlowBackground = ({
   speedMax = 1.3,
   speedScale = 1,
 }: DottedGlowBackgroundProps) => {
+  const reduced = useReducedMotion();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [resolvedColor, setResolvedColor] = useState<string>(color);
@@ -242,23 +244,13 @@ export const DottedGlowBackground = ({
     );
     observer.observe(container);
 
-    const motionMql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!motionMql.matches) {
+    if (!reduced) {
       raf = requestAnimationFrame(draw);
     }
-    const onMotionChange = () => {
-      if (motionMql.matches) {
-        cancelAnimationFrame(raf);
-      } else {
-        raf = requestAnimationFrame(draw);
-      }
-    };
-    motionMql.addEventListener("change", onMotionChange);
 
     return () => {
       stopped = true;
       cancelAnimationFrame(raf);
-      motionMql.removeEventListener("change", onMotionChange);
       observer.disconnect();
       ro.disconnect();
     };
@@ -272,6 +264,7 @@ export const DottedGlowBackground = ({
     speedMin,
     speedMax,
     speedScale,
+    reduced,
   ]);
 
   return (

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 const SESSION_KEY = "heroNameTyped";
 
@@ -6,26 +7,13 @@ const SESSION_KEY = "heroNameTyped";
 const OVERLAY_CLEAR_MS = 1200;
 
 const TypewriterText = ({ text }: { text: string }) => {
+  const reducedMotion = useReducedMotion();
   const [displayed, setDisplayed] = useState(text);
   const [done, setDone] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState<boolean | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updateReducedMotion = () => setReducedMotion(mediaQuery.matches);
-
-    updateReducedMotion();
-    mediaQuery.addEventListener("change", updateReducedMotion);
-
-    return () => mediaQuery.removeEventListener("change", updateReducedMotion);
-  }, []);
-
-  useEffect(() => {
-    if (reducedMotion === null) return;
 
     setDisplayed("");
     setDone(false);
@@ -92,7 +80,7 @@ const TypewriterText = ({ text }: { text: string }) => {
       </span>
       <span aria-hidden="true" className="absolute inset-0">
         {displayed}
-        {reducedMotion === false ? (
+        {!reducedMotion ? (
           <span className={`typing-caret ${done ? "hidden-caret" : ""}`} />
         ) : null}
       </span>

@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { DottedGlowBackground } from "./ui/dotted-glow-background";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export default function LoadingOverlay() {
-  // Start active so the overlay is visible on first React render.
-  // The static #loading-overlay div covers the page before React hydrates;
-  // the mount effect hands off from that div to this animated component.
+  const reduced = useReducedMotion();
   const [active, setActive] = useState(true);
   const [fading, setFading] = useState(false);
   const fadeTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -29,7 +28,6 @@ export default function LoadingOverlay() {
     const staticEl = document.getElementById("loading-overlay");
     if (staticEl) staticEl.style.display = "none";
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       setActive(false);
       return;
@@ -37,11 +35,11 @@ export default function LoadingOverlay() {
 
     const timer = setTimeout(fadeOut, 600);
     return () => clearTimeout(timer);
-  }, [fadeOut]);
+  }, [fadeOut, reduced]);
 
   // Astro view transitions: show on swap, hide on page-load.
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reduced) return;
 
     const showOnSwap = () => fadeIn();
     const hideOnLoad = () => {
@@ -60,7 +58,7 @@ export default function LoadingOverlay() {
       clearTimeout(fadeTimerRef.current);
       clearTimeout(pageLoadTimerRef.current);
     };
-  }, [fadeIn, fadeOut]);
+  }, [fadeIn, fadeOut, reduced]);
 
   if (!active) return null;
 

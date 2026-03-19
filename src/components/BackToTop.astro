@@ -49,6 +49,7 @@
 
 <script>
   import { registerOnceAfterSwap } from '../utils/registerOnceAfterSwap';
+  import { prefersReducedMotion } from '../utils/prefersReducedMotion';
 
   registerOnceAfterSwap('back-to-top', () => {
     const btn = document.getElementById("back-to-top");
@@ -116,8 +117,7 @@
     update();
 
     btn.addEventListener("click", () => {
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      window.scrollTo({ top: 0, behavior: reducedMotion ? "instant" : "smooth" });
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "instant" : "smooth" });
     });
   });
 </script>

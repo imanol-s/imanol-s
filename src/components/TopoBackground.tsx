@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 /** Retrieve or generate a session-scoped seed for feTurbulence. */
 function getSessionSeed(): number {
@@ -16,9 +17,9 @@ function getSessionSeed(): number {
  * Terrain shape is randomised once per session via a sessionStorage seed.
  */
 export default function TopoBackground() {
+  const reduced = useReducedMotion();
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const rafId = useRef(0);
-  const reducedMotion = useRef(false);
   const [dims, setDims] = useState({ width: 2000, height: 2000 });
   // Lazy initializer runs once on mount (client-only, sessionStorage always available).
   const [seed] = useState(getSessionSeed);
@@ -52,51 +53,29 @@ export default function TopoBackground() {
   }, []);
 
   useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    reducedMotion.current = mql.matches;
+    if (reduced) return;
 
     let phase = 0;
 
-    const startLoop = () => {
-      const tick = () => {
-        if (reducedMotion.current) return;
+    const tick = () => {
+      // Continuous flow: oscillate baseFrequency with two independent rates.
+      // Large range (0.0025–0.0055) makes morphing visually prominent.
+      phase += 0.0006;
+      // toFixed(5) is intentional — do NOT reduce precision here.
+      // Per-frame delta is ~0.0000009 (phase step 0.0006 × amplitude 0.0015).
+      // At toFixed(4) the attribute stays identical for ~111 frames before
+      // jumping, producing visible stutter. 5 decimal places keeps each step
+      // (~0.00001) small enough to appear continuous at 60 fps.
+      const bfx = (0.004 + Math.sin(phase) * 0.0015).toFixed(5);
+      const bfy = (0.004 + Math.cos(phase * 0.73) * 0.0015).toFixed(5);
+      turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
 
-        // Continuous flow: oscillate baseFrequency with two independent rates.
-        // Large range (0.0025–0.0055) makes morphing visually prominent.
-        phase += 0.0006;
-        // toFixed(5) is intentional — do NOT reduce precision here.
-        // Per-frame delta is ~0.0000009 (phase step 0.0006 × amplitude 0.0015).
-        // At toFixed(4) the attribute stays identical for ~111 frames before
-        // jumping, producing visible stutter. 5 decimal places keeps each step
-        // (~0.00001) small enough to appear continuous at 60 fps.
-        const bfx = (0.004 + Math.sin(phase) * 0.0015).toFixed(5);
-        const bfy = (0.004 + Math.cos(phase * 0.73) * 0.0015).toFixed(5);
-        turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
-
-        rafId.current = requestAnimationFrame(tick);
-      };
       rafId.current = requestAnimationFrame(tick);
     };
 
-    const stopLoop = () => cancelAnimationFrame(rafId.current);
-
-    if (!reducedMotion.current) startLoop();
-
-    const onChange = (e: MediaQueryListEvent) => {
-      reducedMotion.current = e.matches;
-      if (e.matches) {
-        stopLoop();
-      } else {
-        startLoop();
-      }
-    };
-
-    mql.addEventListener("change", onChange);
-    return () => {
-      mql.removeEventListener("change", onChange);
-      stopLoop();
-    };
-  }, []);
+    rafId.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId.current);
+  }, [reduced]);
 
   const lineYs = Array.from(
     { length: Math.ceil(dims.height / 24) + 3 },
