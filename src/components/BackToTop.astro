@@ -51,7 +51,11 @@
 
 <script>
   import { registerOnceAfterSwap } from '../utils/registerOnceAfterSwap';
-  import { initBackToTop } from '../utils/initBackToTop';
+  import { initBackToTop } from '../utils/backToTop';
 
-  registerOnceAfterSwap('back-to-top', initBackToTop);
+  registerOnceAfterSwap('back-to-top', () => {
+    const btn = document.getElementById('back-to-top');
+    const sidebar = document.getElementById('profile-sidebar');
+    if (btn) initBackToTop(btn, sidebar);
+  });
 </script>

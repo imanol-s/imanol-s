@@ -1,0 +1,95 @@
+---
+description: Safe refactoring patterns for Astro projects
+globs: "**/*.{astro,ts,tsx}"
+alwaysApply: false
+---
+
+# Refactoring Guidelines
+
+## Before Refactoring
+
+1. Ensure `npm run build` passes on current code
+2. Understand the component's responsibilities
+3. Identify dependencies (props, imports, global state)
+
+## Component Extraction
+
+When extracting a reusable component:
+
+### Step 1: Identify the Pattern
+
+Find repeated markup or logic that can be abstracted.
+
+### Step 2: Create New Component
+
+```astro
+---
+// src/components/NewComponent.astro
+interface Props {
+  title: string;
+  items: { name: string; url: string }[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<div class="new-component">
+  <h2>{title}</h2>
+  <ul>
+    {items.map((item) => (
+      <li><a href={item.url}>{item.name}</a></li>
+    ))}
+  </ul>
+</div>
+```
+
+### Step 3: Replace Original Usage
+
+```astro
+// Before
+<div class="new-component">
+  <h2>Projects</h2>
+  <ul>...</ul>
+</div>
+
+// After
+<NewComponent title="Projects" items={projects} />
+```
+
+### Step 4: Verify
+
+Run `npm run build` to ensure types are correct.
+
+## Moving Files
+
+When moving files:
+
+1. Update all import paths that reference the file
+2. Update documentation if file paths are mentioned
+3. Check for path alias usage (`@/`)
+
+## Renaming
+
+When renaming:
+
+1. Use IDE rename feature (F2) for symbols
+2. Update all string references (e.g., component names in templates)
+3. Update docs and comments
+
+## Content Schema Changes
+
+When modifying `src/content/config.ts`:
+
+1. Update the Zod schema
+2. Run `npm run build` to catch validation errors
+3. Update existing content files to match new schema
+4. Update docs if the schema is documented
+
+## Safety Checks
+
+After refactoring:
+
+- [ ] `npm run build` passes with 0 errors
+- [ ] `astro check` reports 0 errors and 0 warnings
+- [ ] Visual spot-check in `npm run preview`
+- [ ] Documentation is updated if needed

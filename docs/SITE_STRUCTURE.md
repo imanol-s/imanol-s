@@ -60,7 +60,7 @@ stateDiagram-v2
 │   └── Project cards         → cover image, title, summary, VIEW PROJECT CTA
 ├── Experience section
 │   ├── Timeline (left)       → data from Jobs.ts (2 jobs) + education.ts
-│   └── Tech Specs (right)    → Core Languages, Competencies, Communication
+│   └── Profile (right)       → Education, Core Languages, Competencies, Communication
 └── About section             → blurb, location tile, contact tile
 
 /projects (projects/index.astro)
@@ -100,6 +100,6 @@ stateDiagram-v2
 
 - **Project cards on home page**: `getCollection('projects')` sorted by startDate desc
 - **Project detail**: `getStaticPaths()` generates one page per MDX file in `src/content/projects/`
-- **Experience timeline**: imported from `src/data/Jobs.ts` (first 2 entries) + `src/data/education.ts`
+- **Experience timeline**: imported from `src/data/career.ts` (work experience + education)
 - **Contact/Social**: sourced from `src/config.ts` (`ME.contactInfo`, `SOCIALS`)
 - **Blog**: `getCollection('posts')` sorted by publishDate desc

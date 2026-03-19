@@ -34,6 +34,32 @@ pnpm-debug.log*
 .claude/settings.local.json
 .claude/worktrees/
 
+# npx skills default directories (unused)
+.adal/
+.agent/
+.augment/
+.codebuddy/
+.commandcode/
+.continue/
+.factory/
+.iflow/
+.junie/
+.kilocode/
+.kiro/
+.kode/
+.mcpjam/
+.mux/
+.neovate/
+.openhands/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.zencoder/
+skills/
+
 # playwright mcp artifacts
 .playwright-mcp/
 
