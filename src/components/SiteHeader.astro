@@ -78,26 +78,7 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 
 <script>
   import { registerOnceAfterSwap } from '../utils/registerOnceAfterSwap';
+  import { initMobileMenu } from '../utils/mobileMenu';
 
-  function setupMobileMenu() {
-    const btn = document.getElementById('mobile-menu-btn');
-    const menu = document.getElementById('mobile-menu');
-    if (!btn || !menu || btn.dataset.bound === 'true') return;
-    btn.dataset.bound = 'true';
-
-    btn.addEventListener('click', () => {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!expanded));
-      menu.classList.toggle('hidden');
-    });
-
-    menu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        menu.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-      });
-    });
-  }
-
-  registerOnceAfterSwap('site-header', setupMobileMenu);
+  registerOnceAfterSwap('site-header', initMobileMenu);
 </script>
