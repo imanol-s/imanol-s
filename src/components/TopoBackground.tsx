@@ -1,6 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useSessionState } from "../hooks/useSessionState";
+
+const TOPO_LINES_STYLE: CSSProperties = {
+  position: 'fixed',
+  inset: '-25%',
+  width: '150%',
+  height: '150%',
+  zIndex: 1,
+  pointerEvents: 'none',
+  willChange: 'transform',
+};
 
 export default function TopoBackground() {
   const reduced = useReducedMotion();
@@ -42,10 +52,13 @@ export default function TopoBackground() {
     };
   }, []);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (reduced) return;
 
     let phase = 0;
+    let driftTime = 0;
 
     const tick = () => {
       // Continuous flow: oscillate baseFrequency with two independent rates.
@@ -59,6 +72,17 @@ export default function TopoBackground() {
       const bfx = (0.004 + Math.sin(phase) * 0.0015).toFixed(5);
       const bfy = (0.004 + Math.cos(phase * 0.73) * 0.0015).toFixed(5);
       turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
+
+      // Container drift (replaces CSS @keyframes topo-drift, 55s cycle)
+      driftTime += 1 / 60; // ~60fps
+      const t = (driftTime % 55) / 55; // 0→1 over 55s
+      const angle = t * Math.PI * 2;
+      const tx = Math.sin(angle) * -5 + Math.sin(angle * 2) * 3;
+      const ty = Math.cos(angle) * -3 + Math.cos(angle * 2) * -2;
+      const rot = Math.sin(angle) * 1.5 - Math.sin(angle * 2) * 1;
+      if (containerRef.current) {
+        containerRef.current.style.transform = `translate(${tx}%, ${ty}%) rotate(${rot}deg)`;
+      }
 
       rafId.current = requestAnimationFrame(tick);
     };
@@ -78,7 +102,7 @@ export default function TopoBackground() {
         className="fixed inset-0 pointer-events-none"
         style={{ zIndex: -2 }}
       >
-        <div className="topo-lines">
+        <div ref={containerRef} style={TOPO_LINES_STYLE}>
           <svg
             viewBox={`0 0 ${dims.width} ${dims.height}`}
             xmlns="http://www.w3.org/2000/svg"
