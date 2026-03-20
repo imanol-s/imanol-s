@@ -21,7 +21,7 @@ npx astro check    # Type-check Astro + TS files
 
 - **Tech tags validated at build time**: `tags` in project frontmatter validates against techRegistry IDs. Unknown tags fail `astro check`. Use `keywords` for free-form topic strings.
 - **View transition guards**: Use `registerOnceAfterSwap(key, callback)` from `src/utils/` for any script that must re-run after Astro view transitions.
-- **Overlay-ready signal**: LoadingOverlay signals via `src/utils/overlayReady.ts`; consumers use `useOverlayReady()` hook instead of hardcoding timing delays.
+- **Site lifecycle state machine**: `src/utils/siteLifecycle.ts` defines a pure `transition(state, action)` function. `useSiteLifecycle()` hook exposes state + dispatch via `useSyncExternalStore`. Overlay plays once per session; return visits skip to `ready` immediately.
 - **Reduced motion**: React components use `useReducedMotion()` hook; Astro components use `prefersReducedMotion()` utility. Never access `matchMedia` directly.
 - **Session state**: React components use `useSessionState(key, default)` hook instead of direct `sessionStorage` access.
 - **Date formatting**: All dates render via `formatDate()` from `src/utils/formatDate.ts`. Format: "Jan 2025" (mixed case, no day).
@@ -43,7 +43,7 @@ Hooks tested with `@testing-library/react` `renderHook` + `act`.
 
 - `src/content/config.ts` post `tags` are NOT validated against techRegistry (only project tags are). Blog post tags are free-form strings.
 - Adding a new tech tag requires updating `techRegistry.ts` first, then referencing it in frontmatter — order matters or build fails.
-- LoadingOverlay must call `resetOverlayReady()` before `fadeIn()` on `astro:before-swap` — if order is inverted, TypewriterText fires too early.
+- LoadingOverlay and TypewriterText are separate Astro islands that share state via a module-level store (`useSiteLifecycle`), not React context.
 
 ## gstack
 

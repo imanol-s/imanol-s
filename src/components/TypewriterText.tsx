@@ -1,30 +1,31 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { useSessionState } from "../hooks/useSessionState";
-import { useOverlayReady } from "../hooks/useOverlayReady";
+import { useSiteLifecycle } from "../hooks/useSiteLifecycle";
 
 const TypewriterText = ({ text }: { text: string }) => {
   const reducedMotion = useReducedMotion();
-  const overlayReady = useOverlayReady();
-  const [alreadyPlayed, setAlreadyPlayed] = useSessionState("heroNameTyped", false);
+  const { state: lifecycle } = useSiteLifecycle();
+  const isReady = lifecycle === 'ready';
   const [displayed, setDisplayed] = useState(text);
   const [done, setDone] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef(false);
+  const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
     setDisplayed("");
     setDone(false);
     abortRef.current = false;
 
-    if (reducedMotion || alreadyPlayed) {
+    // Skip animation: reduced motion, return visit (ready on mount), or already animated this render
+    if (reducedMotion || !isReady || hasAnimatedRef.current) {
       setDisplayed(text);
       setDone(true);
       return;
     }
 
-    if (!overlayReady) return;
-
+    // Wait for overlay to finish (state === 'ready') before animating
+    hasAnimatedRef.current = true;
     let index = 0;
 
     const type = () => {
@@ -34,7 +35,6 @@ const TypewriterText = ({ text }: { text: string }) => {
       if (index < text.length) {
         timeoutRef.current = setTimeout(type, 35 + Math.random() * 25);
       } else {
-        setAlreadyPlayed(true);
         setDone(true);
       }
     };
@@ -45,15 +45,14 @@ const TypewriterText = ({ text }: { text: string }) => {
       abortRef.current = true;
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [text, reducedMotion, alreadyPlayed, setAlreadyPlayed, overlayReady]);
+  }, [text, reducedMotion, isReady]);
 
   const skip = useCallback(() => {
     abortRef.current = true;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setAlreadyPlayed(true);
     setDisplayed(text);
     setDone(true);
-  }, [text, setAlreadyPlayed]);
+  }, [text]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
