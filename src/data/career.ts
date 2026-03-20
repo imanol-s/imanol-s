@@ -80,3 +80,31 @@ export const education: Education[] = [
     description: "",
   },
 ];
+
+// --- Accessors ---
+
+/** Returns the parsed startDate as a Date, or null if not set. */
+export function jobStartDate(job: WorkExperience): Date | null {
+  return job.startDate ? new Date(job.startDate) : null;
+}
+
+/** Returns the parsed endDate as a Date, or null if not set. */
+export function jobEndDate(job: WorkExperience): Date | null {
+  return job.endDate ? new Date(job.endDate) : null;
+}
+
+/** The number of recent jobs shown on the homepage experience timeline. */
+const TIMELINE_JOB_COUNT = 3;
+
+/**
+ * Returns the most recent work experiences for the homepage timeline preview.
+ * The full list is available via `workExperience`.
+ */
+export function timelineJobs(): WorkExperience[] {
+  return workExperience.slice(0, TIMELINE_JOB_COUNT);
+}
+
+/** Returns the primary education entry, or null if none exists. */
+export function primaryEducation(): Education | null {
+  return education[0] ?? null;
+}

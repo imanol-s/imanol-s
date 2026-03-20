@@ -58,22 +58,25 @@ export function lookupTech(tech: string): TechEntry | null {
   return LOOKUP_MAP.get(tech.trim().toLowerCase()) ?? null;
 }
 
-export function getTechIconPath(tech: string): string | null {
-  const entry = lookupTech(tech);
-  return entry?.iconPath ?? null;
+export interface TechView {
+  id: string;
+  displayName: string;
+  iconPath: string | null;
 }
 
-export function getTechDisplayName(tech: string): string {
-  const entry = lookupTech(tech);
-  return entry?.displayName ?? tech;
+export function getTechView(id: string): TechView {
+  const entry = LOOKUP_MAP.get(id.trim().toLowerCase());
+  return {
+    id: entry?.id ?? id,
+    displayName: entry?.displayName ?? id,
+    iconPath: entry?.iconPath ?? null,
+  };
 }
-
-const validTechIds = new Set<string>(REGISTRY.map((t) => t.id));
 
 export const techTagSchema = z.string().transform((s) => {
   const normalized = s.trim().toLowerCase();
-  if (!validTechIds.has(normalized)) {
-    throw new Error(`Unknown tech tag "${s}". Valid: ${[...validTechIds].join(', ')}`);
+  if (!LOOKUP_MAP.has(normalized)) {
+    throw new Error(`Unknown tech tag "${s}". Valid: ${[...LOOKUP_MAP.keys()].join(', ')}`);
   }
   return normalized;
 });

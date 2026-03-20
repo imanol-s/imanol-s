@@ -2,12 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
-import { getTechIconPath } from '../../data/techRegistry';
 import { SITE } from '../../config';
 import TagPill from '../../components/TagPill.astro';
+import { getSortedProjects } from '../../data/projectCollection';
 
-const allProjects = (await getCollection('projects'))
-  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+const allProjects = getSortedProjects(await getCollection('projects'));
 ---
 
 <Layout title={`${SITE.logoText} | Projects`} description="A list of my projects" scrollSmooth={false}>
@@ -38,12 +37,9 @@ const allProjects = (await getCollection('projects'))
         </div>
         <div class="flex flex-col gap-2 flex-1">
           <div class="flex flex-wrap gap-2">
-            {project.data.tags.map((tag) => {
-              const iconPath = getTechIconPath(tag);
-              return (
-                <TagPill tag={tag} iconPath={iconPath} />
-              );
-            })}
+            {project.data.tags.map((tag) => (
+              <TagPill techId={tag} />
+            ))}
           </div>
           <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white">
             {project.data.title}

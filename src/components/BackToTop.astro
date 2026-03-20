@@ -52,10 +52,11 @@
 <script>
   import { registerOnceAfterSwap } from '../utils/registerOnceAfterSwap';
   import { initBackToTop } from '../utils/backToTop';
+  import { BACK_TO_TOP } from '../utils/domContracts';
 
-  registerOnceAfterSwap('back-to-top', () => {
-    const btn = document.getElementById('back-to-top');
-    const sidebar = document.getElementById('profile-sidebar');
+  registerOnceAfterSwap(BACK_TO_TOP.swapKey, () => {
+    const btn = document.getElementById(BACK_TO_TOP.btnId) as HTMLElement | null;
+    const sidebar = document.getElementById(BACK_TO_TOP.sidebarId) as HTMLElement | null;
     if (btn) initBackToTop(btn, sidebar);
   });
 </script>

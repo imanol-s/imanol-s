@@ -51,6 +51,12 @@ const allProjects = (await getCollection('projects'))
 <script>
   import { registerOnceAfterSwap } from '../utils/registerOnceAfterSwap';
   import { initCarousel } from '../utils/carousel';
+  import { CAROUSEL } from '../utils/domContracts';
 
-  registerOnceAfterSwap('carousel', initCarousel);
+  registerOnceAfterSwap(CAROUSEL.swapKey, () => {
+    const track = document.getElementById(CAROUSEL.trackId) as HTMLElement | null;
+    const prev = document.getElementById(CAROUSEL.prevId) as HTMLButtonElement | null;
+    const next = document.getElementById(CAROUSEL.nextId) as HTMLButtonElement | null;
+    if (track && prev && next) initCarousel(track, prev, next);
+  });
 </script>

@@ -48,7 +48,3 @@ export function _resetForTesting() {
   listeners.clear();
 }
 
-// Re-export provider for backward compatibility (no-op wrapper)
-export function SiteLifecycleProvider({ children }: { children: React.ReactNode }) {
-  return children as React.ReactElement;
-}

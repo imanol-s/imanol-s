@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useSessionState } from "../hooks/useSessionState";
+import { computeTopoFrame, buildLineYs } from "../animations/topoMath";
 
 const TOPO_LINES_STYLE: CSSProperties = {
   position: 'fixed',
@@ -61,27 +62,13 @@ export default function TopoBackground() {
     let driftTime = 0;
 
     const tick = () => {
-      // Continuous flow: oscillate baseFrequency with two independent rates.
-      // Large range (0.0025–0.0055) makes morphing visually prominent.
       phase += 0.0006;
-      // toFixed(5) is intentional — do NOT reduce precision here.
-      // Per-frame delta is ~0.0000009 (phase step 0.0006 × amplitude 0.0015).
-      // At toFixed(4) the attribute stays identical for ~111 frames before
-      // jumping, producing visible stutter. 5 decimal places keeps each step
-      // (~0.00001) small enough to appear continuous at 60 fps.
-      const bfx = (0.004 + Math.sin(phase) * 0.0015).toFixed(5);
-      const bfy = (0.004 + Math.cos(phase * 0.73) * 0.0015).toFixed(5);
-      turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
-
-      // Container drift (replaces CSS @keyframes topo-drift, 55s cycle)
       driftTime += 1 / 60; // ~60fps
-      const t = (driftTime % 55) / 55; // 0→1 over 55s
-      const angle = t * Math.PI * 2;
-      const tx = Math.sin(angle) * -5 + Math.sin(angle * 2) * 3;
-      const ty = Math.cos(angle) * -3 + Math.cos(angle * 2) * -2;
-      const rot = Math.sin(angle) * 1.5 - Math.sin(angle * 2) * 1;
+
+      const { bfx, bfy, transform } = computeTopoFrame(phase, driftTime);
+      turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
       if (containerRef.current) {
-        containerRef.current.style.transform = `translate(${tx}%, ${ty}%) rotate(${rot}deg)`;
+        containerRef.current.style.transform = transform;
       }
 
       rafId.current = requestAnimationFrame(tick);
@@ -91,10 +78,7 @@ export default function TopoBackground() {
     return () => cancelAnimationFrame(rafId.current);
   }, [reduced]);
 
-  const lineYs = Array.from(
-    { length: Math.ceil(dims.height / 24) + 3 },
-    (_, i) => -20 + i * 24,
-  );
+  const lineYs = buildLineYs(dims.height, 24);
 
   return (
     <>

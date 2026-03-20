@@ -1,9 +1,7 @@
 import { prefersReducedMotion } from './prefersReducedMotion';
+import { BACK_TO_TOP } from './domContracts';
 
-export function initBackToTop(root: ParentNode = document): (() => void) | undefined {
-  const btn = root.querySelector<HTMLElement>('#back-to-top');
-  if (!btn) return undefined;
-
+export function initBackToTop(btn: HTMLElement, sidebar: HTMLElement | null): () => void {
   const controller = new AbortController();
   const { signal } = controller;
 
@@ -13,45 +11,43 @@ export function initBackToTop(root: ParentNode = document): (() => void) | undef
   function show() {
     if (isVisible) return;
     isVisible = true;
-    btn!.classList.remove('opacity-0', 'pointer-events-none');
-    btn!.classList.add('opacity-100', 'pointer-events-auto');
+    btn.classList.remove(...BACK_TO_TOP.classes.hidden);
+    btn.classList.add(...BACK_TO_TOP.classes.visible);
   }
 
   function hide() {
     if (!isVisible) return;
     isVisible = false;
-    btn!.classList.add('opacity-0', 'pointer-events-none');
-    btn!.classList.remove('opacity-100', 'pointer-events-auto');
+    btn.classList.add(...BACK_TO_TOP.classes.hidden);
+    btn.classList.remove(...BACK_TO_TOP.classes.visible);
   }
 
   function collapse() {
     if (isCollapsed) return;
     isCollapsed = true;
-    btn!.classList.add('collapsed');
+    btn.classList.add(BACK_TO_TOP.classes.collapsed);
   }
 
   function expand() {
     if (!isCollapsed) return;
     isCollapsed = false;
-    btn!.classList.remove('collapsed');
+    btn.classList.remove(BACK_TO_TOP.classes.collapsed);
   }
 
-  const sidebar = root.querySelector<HTMLElement>('#profile-sidebar');
-
   function update() {
-    if (window.scrollY > 300) {
+    if (window.scrollY > BACK_TO_TOP.scrollThreshold) {
       show();
     } else {
       hide();
     }
 
-    if (!sidebar || window.innerWidth < 1024) {
+    if (!sidebar || window.innerWidth < BACK_TO_TOP.collapseMinWidth) {
       expand();
       return;
     }
 
     const sidebarRect = sidebar.getBoundingClientRect();
-    const btnRect = btn!.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
 
     const overlaps = sidebarRect.top < btnRect.bottom && sidebarRect.bottom > btnRect.top;
 

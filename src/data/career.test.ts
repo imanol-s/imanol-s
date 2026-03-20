@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { workExperience, education, type WorkExperience, type Education } from './career';
+import { workExperience, education, jobStartDate, jobEndDate, timelineJobs, primaryEducation, type WorkExperience, type Education } from './career';
 
 // ISO date string: YYYY-MM-DD
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -116,5 +116,78 @@ describe('education', () => {
         expect(typeof entry.currentUni).toBe('boolean');
       }
     }
+  });
+});
+
+describe('career accessors', () => {
+  const jobWithDates: WorkExperience = {
+    title: 'Engineer',
+    startDate: '2024-03-01',
+    endDate: '2024-12-31',
+    company: 'Acme',
+    location: 'TX',
+    description: 'Did things',
+    goals: ['goal 1'],
+    currentJob: false,
+  };
+
+  const jobNoDates: WorkExperience = {
+    title: 'Engineer',
+    company: 'Acme',
+    location: 'TX',
+    description: 'Did things',
+    goals: ['goal 1'],
+    currentJob: true,
+  };
+
+  describe('jobStartDate', () => {
+    it('returns a Date when startDate is set', () => {
+      const result = jobStartDate(jobWithDates);
+      expect(result).toBeInstanceOf(Date);
+      expect(result?.getUTCFullYear()).toBe(2024);
+    });
+
+    it('returns null when startDate is undefined', () => {
+      expect(jobStartDate(jobNoDates)).toBeNull();
+    });
+  });
+
+  describe('jobEndDate', () => {
+    it('returns a Date when endDate is set', () => {
+      const result = jobEndDate(jobWithDates);
+      expect(result).toBeInstanceOf(Date);
+      expect(result?.getUTCFullYear()).toBe(2024);
+    });
+
+    it('returns null when endDate is undefined', () => {
+      expect(jobEndDate(jobNoDates)).toBeNull();
+    });
+  });
+
+  describe('timelineJobs', () => {
+    it('returns at most 3 entries', () => {
+      expect(timelineJobs().length).toBeLessThanOrEqual(3);
+    });
+
+    it('returns the first entries from workExperience', () => {
+      const jobs = timelineJobs();
+      for (let i = 0; i < jobs.length; i++) {
+        expect(jobs[i]).toBe(workExperience[i]);
+      }
+    });
+  });
+
+  describe('primaryEducation', () => {
+    it('returns the first education entry when array is non-empty', () => {
+      if (education.length > 0) {
+        expect(primaryEducation()).toBe(education[0]);
+      }
+    });
+
+    it('returns null or Education — never throws', () => {
+      expect(() => primaryEducation()).not.toThrow();
+      const result = primaryEducation();
+      expect(result === null || typeof result === 'object').toBe(true);
+    });
   });
 });

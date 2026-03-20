@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, type CSSProperties } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { useSiteLifecycle } from "../hooks/useSiteLifecycle";
+import { useReadyGate } from "../hooks/useReadyGate";
 
 const CARET_STYLE: CSSProperties = {
   display: 'inline-block',
@@ -28,8 +28,7 @@ function Caret({ hidden }: { hidden: boolean }) {
 
 const TypewriterText = ({ text }: { text: string }) => {
   const reducedMotion = useReducedMotion();
-  const { state: lifecycle } = useSiteLifecycle();
-  const isReady = lifecycle === 'ready';
+  const isReady = useReadyGate();
   const [displayed, setDisplayed] = useState(text);
   const [done, setDone] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);

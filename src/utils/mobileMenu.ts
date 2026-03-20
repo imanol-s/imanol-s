@@ -1,8 +1,4 @@
-export function initMobileMenu(root: ParentNode = document): (() => void) | undefined {
-  const btn = root.querySelector<HTMLButtonElement>('#mobile-menu-btn');
-  const menu = root.querySelector<HTMLElement>('#mobile-menu');
-  if (!btn || !menu) return undefined;
-
+export function initMobileMenu(btn: HTMLButtonElement, menu: HTMLElement): () => void {
   const controller = new AbortController();
   const { signal } = controller;
 

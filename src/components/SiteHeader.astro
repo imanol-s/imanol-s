@@ -79,6 +79,11 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 <script>
   import { registerOnceAfterSwap } from '../utils/registerOnceAfterSwap';
   import { initMobileMenu } from '../utils/mobileMenu';
+  import { MOBILE_MENU } from '../utils/domContracts';
 
-  registerOnceAfterSwap('site-header', initMobileMenu);
+  registerOnceAfterSwap(MOBILE_MENU.swapKey, () => {
+    const btn = document.getElementById(MOBILE_MENU.btnId) as HTMLButtonElement | null;
+    const menu = document.getElementById(MOBILE_MENU.menuId) as HTMLElement | null;
+    if (btn && menu) initMobileMenu(btn, menu);
+  });
 </script>

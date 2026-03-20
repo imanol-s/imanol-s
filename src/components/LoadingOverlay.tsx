@@ -1,10 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { DottedGlowBackground } from "./ui/dotted-glow-background";
 import { useSiteLifecycle } from "../hooks/useSiteLifecycle";
+import { scheduleOverlay } from "../utils/siteLifecycle";
 
 export default function LoadingOverlay() {
   const { state, dispatch } = useSiteLifecycle();
-  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   // Hide the static HTML fallback on mount
   useEffect(() => {
@@ -13,16 +13,7 @@ export default function LoadingOverlay() {
   }, []);
 
   // Drive state transitions with timers
-  useEffect(() => {
-    if (state === 'loading') {
-      timerRef.current = setTimeout(() => dispatch('PLAY'), 100);
-    } else if (state === 'overlay-playing') {
-      timerRef.current = setTimeout(() => dispatch('FADE'), 500);
-    } else if (state === 'overlay-fading') {
-      timerRef.current = setTimeout(() => dispatch('FINISH'), 500);
-    }
-    return () => clearTimeout(timerRef.current);
-  }, [state, dispatch]);
+  useEffect(() => scheduleOverlay(dispatch, state), [state, dispatch]);
 
   if (state === 'ready') return null;
 

@@ -1,17 +1,18 @@
-export function initCarousel(root: ParentNode = document): (() => void) | undefined {
-  const track = root.querySelector<HTMLElement>('#projects-track');
-  const prev = root.querySelector<HTMLButtonElement>('#carousel-prev');
-  const next = root.querySelector<HTMLButtonElement>('#carousel-next');
-  if (!track || !prev || !next) return undefined;
+import { CAROUSEL } from './domContracts';
 
+export function initCarousel(
+  track: HTMLElement,
+  prev: HTMLButtonElement,
+  next: HTMLButtonElement,
+): () => void {
   const controller = new AbortController();
   const { signal } = controller;
 
-  const scrollAmount = () => track.clientWidth * 0.85;
+  const scrollAmount = () => track.clientWidth * CAROUSEL.scrollRatio;
 
   function updateArrows() {
-    prev!.disabled = track!.scrollLeft <= 1;
-    next!.disabled = track!.scrollLeft + track!.clientWidth >= track!.scrollWidth - 1;
+    prev.disabled = track.scrollLeft <= 1;
+    next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
   }
 
   prev.addEventListener('click', () => track.scrollBy({ left: -scrollAmount() }), { signal });
@@ -41,7 +42,7 @@ export function initCarousel(root: ParentNode = document): (() => void) | undefi
   track.addEventListener('pointermove', (e: PointerEvent) => {
     if (!isPointerDown) return;
     const dx = Math.abs(e.clientX - startX);
-    if (!isDragging && dx > 5) {
+    if (!isDragging && dx > CAROUSEL.dragThresholdPx) {
       isDragging = true;
       track.setPointerCapture(pointerId);
       track.style.cursor = 'grabbing';

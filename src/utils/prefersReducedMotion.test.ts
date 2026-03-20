@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { prefersReducedMotion } from './prefersReducedMotion';
+import { prefersReducedMotion, REDUCED_MOTION_QUERY } from './prefersReducedMotion';
 
 beforeEach(() => {
   Object.defineProperty(window, 'matchMedia', {
@@ -9,6 +9,12 @@ beforeEach(() => {
       matches: false,
       media: query,
     })),
+  });
+});
+
+describe('REDUCED_MOTION_QUERY', () => {
+  it('is the correct media query string', () => {
+    expect(REDUCED_MOTION_QUERY).toBe('(prefers-reduced-motion: reduce)');
   });
 });
 
