@@ -69,6 +69,7 @@ const {
     <meta property="twitter:image" content={imageOg}/>
 
     <title>{title}</title>
+    <noscript><style>#loading-overlay{display:none}</style></noscript>
     <ClientRouter/>
 
     {/* Speculation Rules API — prerender same-origin pages on hover for instant navigation.
@@ -93,7 +94,7 @@ const {
   document.documentElement.classList.add('dark');
 </script>
 
-<div id="loading-overlay" class="fixed inset-0 z-50 bg-[var(--color-background-dark)]" aria-hidden="true"></div>
+<div id="loading-overlay" class="fixed inset-0 z-50 bg-[var(--color-background-dark)] pointer-events-none" aria-hidden="true"></div>
 <LoadingOverlay client:only="react" />
 <TopoBackground client:only="react" />
 <BackToTop />

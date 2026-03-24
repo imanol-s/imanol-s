@@ -95,6 +95,7 @@ export default function TopoBackground() {
       <div
         className="fixed inset-0 pointer-events-none"
         style={{ zIndex: -2 }}
+        aria-hidden="true"
       >
         <div ref={containerRef} style={TOPO_LINES_STYLE}>
           <svg
