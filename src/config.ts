@@ -20,7 +20,6 @@ export const ME: {
   profession: string[];
   profileImage: string;
   aboutMe: string;
-  bio?: string;
   location: string;
   focusAreas: string[];
   coreLanguages: TechId[];

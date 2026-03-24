@@ -27,17 +27,7 @@ export default function LoadingOverlay() {
       style={{ backgroundColor: "var(--color-background-dark)" }}
       aria-hidden="true"
     >
-      <DottedGlowBackground
-        gap={14}
-        radius={1.5}
-        darkColor="var(--color-accent)"
-        darkGlowColor="var(--color-primary)"
-        color="var(--color-accent)"
-        glowColor="var(--color-primary)"
-        opacity={0.8}
-        speedMin={0.3}
-        speedMax={1.0}
-      />
+      <DottedGlowBackground />
     </div>
   );
 }
