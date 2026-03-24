@@ -24,8 +24,8 @@ const allProjects = (await getCollection('projects'))
             fallbackFormat="webp"
             widths={[300, 350]}
             sizes="(min-width: 768px) 350px, 300px"
-            loading="lazy"
-            decoding="async"
+            loading="eager"
+            decoding="sync"
           />
           <div class="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
         </div>

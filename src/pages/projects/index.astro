@@ -34,8 +34,8 @@ const allProjects = getSortedProjects(await getCollection('projects'));
             fallbackFormat="webp"
             widths={[200, 400]}
             sizes="(min-width: 768px) 200px, 100vw"
-            loading="lazy"
-            decoding="async"
+            loading="eager"
+            decoding="sync"
           />
         </div>
         <div class="flex flex-col gap-2 flex-1">
