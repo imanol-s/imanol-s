@@ -94,6 +94,8 @@ export function useDottedGlow({
     let isVisible = true;
     let dots: Dot[] = [];
 
+    // Cap DPR at 2 — 3x displays add ~2.25x fill cost for imperceptible detail
+    // on a diffuse dot-grid animation.
     const dpr = Math.min(Math.max(1, window.devicePixelRatio || 1), 2);
 
     const resize = () => {
@@ -182,6 +184,8 @@ export function useDottedGlow({
       raf = requestAnimationFrame(draw);
     };
 
+    // Pause the RAF loop when the canvas is off-screen to avoid wasting
+    // GPU fill cycles on a non-visible element (common when scrolled past).
     const io = new IntersectionObserver(
       (entries) => {
         isVisible = entries[0]?.isIntersecting ?? true;

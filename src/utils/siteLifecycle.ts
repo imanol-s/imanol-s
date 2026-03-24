@@ -19,7 +19,10 @@ export function getInitialState(): State {
 
 /**
  * Named timing constants for the intro overlay animation.
- * playDelayMs is a render fence — gives the overlay one frame to paint before the animation starts.
+ *
+ * `playDelayMs` (100ms) is a render fence: the overlay must paint its first
+ * frame before the state machine advances, otherwise the transition fires
+ * on a still-invisible element and the user sees nothing.
  */
 export const OVERLAY_TIMINGS = {
   playDelayMs: 100,
@@ -50,6 +53,10 @@ export function scheduleOverlay(
   }
 }
 
+/**
+ * Pure state machine reducer — no side effects. Invalid actions for the
+ * current state are silently ignored (returns the same state).
+ */
 export function transition(state: State, action: Action): State {
   switch (state) {
     case 'loading':

@@ -26,6 +26,15 @@ function Caret({ hidden }: { hidden: boolean }) {
   return <span style={{ ...CARET_STYLE, opacity, transition }} />;
 }
 
+/**
+ * Character-by-character hero text animation with accessibility escape hatches.
+ *
+ * Layout: an invisible full-text span reserves the final dimensions so the
+ * visible animated span doesn't cause layout shift as characters appear.
+ *
+ * Accessibility: an sr-only skip button and Escape key listener let keyboard
+ * and screen-reader users bypass the animation.
+ */
 const TypewriterText = ({ text }: { text: string }) => {
   const reducedMotion = useReducedMotion();
   const isReady = useReadyGate();
@@ -58,6 +67,7 @@ const TypewriterText = ({ text }: { text: string }) => {
       index++;
       setDisplayed(text.slice(0, index));
       if (index < text.length) {
+        // Randomized delay (35-60ms) avoids the mechanical feel of a fixed interval.
         timeoutRef.current = setTimeout(type, 35 + Math.random() * 25);
       } else {
         setDone(true);

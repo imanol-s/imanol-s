@@ -3,10 +3,17 @@ import { DottedGlowBackground } from "./ui/dotted-glow-background";
 import { useSiteLifecycle } from "../hooks/useSiteLifecycle";
 import { scheduleOverlay } from "../utils/siteLifecycle";
 
+/**
+ * Intro overlay that plays a dotted-glow animation once per session.
+ *
+ * A static HTML fallback (`#loading-overlay`) is server-rendered in the Astro
+ * layout to prevent a flash of unstyled content before React hydrates.
+ * On mount, the static element is hidden so React owns the overlay lifecycle.
+ */
 export default function LoadingOverlay() {
   const { state, dispatch } = useSiteLifecycle();
 
-  // Hide the static HTML fallback on mount
+  // Hide the server-rendered fallback so React controls visibility from here.
   useEffect(() => {
     const staticEl = document.getElementById("loading-overlay");
     if (staticEl) staticEl.style.display = "none";

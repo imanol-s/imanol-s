@@ -1,5 +1,8 @@
-// Single source of truth for DOM IDs, CSS class names, numeric thresholds,
-// and registerOnceAfterSwap keys shared between controllers and Astro templates.
+/**
+ * DOM contracts — single source of truth for IDs, class names, thresholds,
+ * and registerOnceAfterSwap keys shared between TypeScript controllers and
+ * Astro templates. Prevents stringly-typed coupling across the two layers.
+ */
 
 export const BACK_TO_TOP = {
   // Defined in BackToTop.astro

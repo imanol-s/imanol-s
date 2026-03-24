@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
 
+/**
+ * Snapshot the current dark-mode state from the DOM.
+ *
+ * Priority: explicit class on <html> (set by the theme toggle script in
+ * <head>) wins over the OS media query, ensuring the user's manual choice
+ * is respected even before React hydrates.
+ */
 function detectDarkMode(): boolean {
   const root = document.documentElement;
   if (root.classList.contains('dark')) return true;

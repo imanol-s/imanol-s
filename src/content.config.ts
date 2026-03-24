@@ -3,6 +3,8 @@ import {z} from 'astro/zod';
 import { glob } from 'astro/loaders';
 import { techTagSchema } from './data/techRegistry';
 
+// Post tags are free-form strings — intentionally NOT validated against
+// techRegistry, unlike project tags below.
 const posts = defineCollection({
     loader: glob({ pattern: ['*.md', '*.mdx'], base: 'src/content/posts' }),
     schema: ({ image }) => z.object({
@@ -21,6 +23,8 @@ const posts = defineCollection({
     }),
 });
 
+// Project tags use techTagSchema: validated against techRegistry at build time.
+// Unknown tags fail `astro check`. Use `keywords` for free-form topic strings.
 const projects = defineCollection({
     loader: glob({ pattern: "**/*.mdx", base: "./src/content/projects" }),
     schema: ({ image }) => z.object({

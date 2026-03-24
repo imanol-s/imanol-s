@@ -3,6 +3,8 @@ import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useSessionState } from "../hooks/useSessionState";
 import { computeTopoFrame, buildLineYs } from "../animations/topoMath";
 
+// Oversized to 150% with -25% inset so the slow CSS rotation never exposes
+// blank corners at the viewport edges.
 const TOPO_LINES_STYLE: CSSProperties = {
   position: 'fixed',
   inset: '-25%',
@@ -32,6 +34,8 @@ export default function TopoBackground() {
       setDims({ width: window.innerWidth * 2, height: window.innerHeight * 2 });
     };
 
+    // Debounce at 150ms — SVG viewBox resize is expensive (triggers filter
+    // recomputation) and resize events fire at 60Hz during window drag.
     let resizeTimeoutId: number | undefined;
 
     const handleResize = () => {
@@ -60,12 +64,16 @@ export default function TopoBackground() {
   useEffect(() => {
     if (reduced) return;
 
+    // Two animation clocks: `phase` drives the feTurbulence baseFrequency
+    // oscillation (very slow), `driftTime` drives the CSS translate/rotate
+    // drift on a 55s cycle. Both are frame-counted rather than wall-clock
+    // so the animation slows gracefully when the tab is throttled.
     let phase = 0;
     let driftTime = 0;
 
     const tick = () => {
       phase += 0.0006;
-      driftTime += 1 / 60; // ~60fps
+      driftTime += 1 / 60;
 
       const { bfx, bfy, transform } = computeTopoFrame(phase, driftTime);
       turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);

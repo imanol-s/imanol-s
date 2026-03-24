@@ -54,6 +54,7 @@ const LOOKUP_MAP = new Map<string, TechEntry>(
   REGISTRY.map((entry) => [entry.id, entry]),
 );
 
+/** Case-insensitive registry lookup. Returns null for unknown tags. */
 export function lookupTech(tech: string): TechEntry | null {
   return LOOKUP_MAP.get(tech.trim().toLowerCase()) ?? null;
 }
@@ -64,6 +65,7 @@ export interface TechView {
   iconPath: string | null;
 }
 
+/** Resolve a tag ID to display properties, falling back to the raw ID string. */
 export function getTechView(id: string): TechView {
   const entry = LOOKUP_MAP.get(id.trim().toLowerCase());
   return {
@@ -73,6 +75,13 @@ export function getTechView(id: string): TechView {
   };
 }
 
+/**
+ * Zod transform that normalizes case and validates against the registry.
+ * Used in project frontmatter schemas — unknown tags fail `astro check`
+ * and the production build, catching typos at build time rather than runtime.
+ *
+ * Note: blog post tags intentionally skip this validation (free-form strings).
+ */
 export const techTagSchema = z.string().transform((s) => {
   const normalized = s.trim().toLowerCase();
   if (!LOOKUP_MAP.has(normalized)) {

@@ -1,6 +1,15 @@
 import { prefersReducedMotion } from './prefersReducedMotion';
 import { BACK_TO_TOP } from './domContracts';
 
+/**
+ * Back-to-top button with sidebar-aware collapse.
+ *
+ * On desktop, the button shrinks to icon-only when it overlaps the profile
+ * sidebar to avoid obscuring content. On mobile (< 1024px) the sidebar is
+ * stacked above, so the button always renders expanded.
+ *
+ * Returns a cleanup function (AbortController) for view-transition teardown.
+ */
 export function initBackToTop(btn: HTMLElement, sidebar: HTMLElement | null): () => void {
   const controller = new AbortController();
   const { signal } = controller;
