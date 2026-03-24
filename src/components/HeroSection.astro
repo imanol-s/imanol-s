@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import TypewriterText from './TypewriterText.tsx';
 import { ME, SOCIALS } from '../config';
 import profileImage from '../assets/Profile-1.png';
@@ -30,12 +30,14 @@ const linkedin = SOCIALS.find(s => s.name === 'LinkedIn');
   <div class="lg:col-span-5 flex justify-center">
     <div class="relative group">
       <div class="absolute -inset-4 border border-dashed border-primary/40 group-hover:scale-105 transition-transform duration-700"></div>
-      <Image
+      <Picture
         src={profileImage}
         alt={`${ME.name} portrait`}
         class="w-64 h-64 grayscale contrast-125 object-cover cad-border brightness-90"
-        width={256}
-        height={256}
+        formats={['avif']}
+        fallbackFormat="webp"
+        widths={[256, 512]}
+        sizes="256px"
         loading="eager"
         fetchpriority="high"
       />

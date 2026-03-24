@@ -10,6 +10,10 @@ import BackToTop from "../components/BackToTop.astro";
 
 import {SITE} from '@/config';
 
+// Resolve hashed font URLs at build time for preloading
+import interLatinUrl from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import jbMonoLatinUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
+
 interface Props {
     title?: string;
     scrollSmooth?: boolean;
@@ -34,10 +38,14 @@ const {
 <!doctype html>
 <html lang={SITE.lang ?? "en"} class={`dark bg-[var(--color-background-dark)]${scrollSmooth ? " scroll-smooth" : ""}`}>
 <head>
-    <meta name="msapplication-TileColor" content="#000000"/>
-    <meta name="viewport" content="width=device-width"/>
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width"/>
+    <meta name="msapplication-TileColor" content="#000000"/>
     <meta name="generator" content={Astro.generator}/>
+
+    {/* Preload critical fonts — eliminates CSS→parse→download waterfall */}
+    <link rel="preload" as="font" type="font/woff2" href={interLatinUrl} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={jbMonoLatinUrl} crossorigin />
 
     <meta name="title" content={title}/>
     <meta name="description" content={description}/>
@@ -62,6 +70,20 @@ const {
 
     <title>{title}</title>
     <ClientRouter/>
+
+    {/* Speculation Rules API — prerender same-origin pages on hover for instant navigation.
+        Chromium-only (Chrome, Edge, Opera); ignored by other browsers.
+        "moderate" eagerness triggers on hover/pointerdown — prerenders the full page
+        so navigations are near-instant (0ms perceived load). */}
+    <script type="speculationrules">
+    {
+      "prerender": [{
+        "source": "document",
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }]
+    }
+    </script>
 </head>
 <body class="min-h-screen bg-transparent font-body text-slate-800 dark:text-slate-200 selection:bg-primary selection:text-white">
 

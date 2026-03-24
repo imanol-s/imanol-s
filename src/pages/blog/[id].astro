@@ -2,7 +2,7 @@
 import {getCollection, render} from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import BackBtn from "../../components/BackBtn.astro";
-import {Image} from "astro:assets";
+import {Picture} from "astro:assets";
 import BackToTop from "../../components/BackToTop.astro";
 
 
@@ -32,8 +32,8 @@ const {Content} = await render(post);
             </p>
         </div>
         <div class="cad-border overflow-hidden">
-            <Image transition:name={`${post.id}-image`} class="w-full h-[400px] object-cover" src={cover.src}
-                   alt={cover.alt ?? title} width={1280} height={400} loading="eager" fetchpriority="high" />
+            <Picture transition:name={`${post.id}-image`} class="w-full h-[400px] object-cover" src={cover.src}
+                   alt={cover.alt ?? title} formats={['avif']} fallbackFormat="webp" widths={[640, 960, 1280]} sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px" loading="eager" fetchpriority="high" />
         </div>
         <article id="article" class="mt-8 prose dark:prose-invert scroll-mt-20">
             <Content/>
