@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'astro/zod';
 
 const TECH_ICON_BASE_PATH = '/icons/catppuccin';
 

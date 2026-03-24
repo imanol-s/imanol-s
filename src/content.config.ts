@@ -1,6 +1,7 @@
-import {defineCollection, reference, z} from 'astro:content';
+import {defineCollection, reference} from 'astro:content';
+import {z} from 'astro/zod';
 import { glob } from 'astro/loaders';
-import { techTagSchema } from '../data/techRegistry';
+import { techTagSchema } from './data/techRegistry';
 
 const posts = defineCollection({
     loader: glob({ pattern: ['*.md', '*.mdx'], base: 'src/content/posts' }),

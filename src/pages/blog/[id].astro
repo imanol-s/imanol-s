@@ -3,7 +3,6 @@ import {getCollection, render} from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import BackBtn from "../../components/BackBtn.astro";
 import {Picture} from "astro:assets";
-import BackToTop from "../../components/BackToTop.astro";
 
 
 export async function getStaticPaths() {
@@ -38,6 +37,5 @@ const {Content} = await render(post);
         <article id="article" class="mt-8 prose dark:prose-invert scroll-mt-20">
             <Content/>
         </article>
-        <BackToTop />
     </>
 </Layout>
