@@ -9,68 +9,29 @@ tags:
   - Predictive Modeling
 startDate: 2024-08-01
 endDate: 2024-12-01
-author: Imanol Saldana
 url: https://github.com/imanol-s/Dallas-Crime-Analysis
 cover: "./images/crime-analysis/crime_analysis_footer.webp"
 ogImage: "./images/crime-analysis/crime_analysis_footer.webp"
 ---
 
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Role](#role)
-3. [Problem](#problem)
-4. [Goal](#goal)
-5. [Solution](#solution)
-
----
-
 ## Overview
 
-Statistical analysis of 50k+ crime/housing records to identify trends. Analyzing the relationship between _arrests_ and _property types_ to determine if a correlation exists between pricing and housing cost.
+This project started as a group analysis in Fall 2024, built around a straightforward hypothesis: that crime rates in Dallas zip codes would correlate meaningfully with housing prices. Two datasets were joined at the zip-code level — Dallas Police Department arrest records (`Police_Arrests.csv`, ~50k incidents with arrest zip codes) and Zillow Dallas housing listings (`Zillow-dallas.csv`, property prices keyed by zip). Cleaning, aggregation, and joins were handled in R with `dplyr`; visualizations used `ggplot2`.
 
-**Data sources:**
-- Dallas Police Department arrests dataset (`Police_Arrests.csv`) — includes arrest zip code per incident
-- Zillow Dallas housing listings (`Zillow-dallas.csv`) — property prices keyed by zip code
+The original analysis produced per-zip arrest counts, average and median property prices, and a merged summary table (`Dallas_Arrests_Property_Summary.csv`). A scatter plot of total arrests vs. average property price per zip showed a visible trend, and a shape map highlighted arrest hotspots across the DFW area.
 
-Findings compiled into a stakeholder report (`DallasArrests.pdf`).
+![DFW arrest hotspot shape map showing per-zip arrest density across Dallas neighborhoods](./images/crime-analysis/crime_analysis_map.webp)
 
----
+## 2026 Remediation
 
-## 👨‍💻 Role
+In March 2026, I circled back to this project with better analytical tools and reperformed the regression analysis. The parsimonious model achieved an R² of 0.854, confirming that education level, listing price, and market pressure explain most of the variance in housing prices. Crime rate ranked 98th out of 141 features in the factor importance analysis — a weak predictor at best.
 
-**Developer (Group Project)**
+This contradicted the original project's implicit assumption that crime would be a dominant factor. The honest finding is that crime has minimal independent explanatory power once socioeconomic and market variables are accounted for. The shape map still has value as a geographic visualization of arrest density, but the causal story the original project was built around does not hold up under a properly specified model.
 
----
+## Role
 
-## ❓ Problem
+Developer (Group Project — Fall 2024), sole analyst on the 2026 remediation.
 
-1. Lack of data-driven understanding of crime's economic impacts
-2. Stakeholders need reliable data for predictive insights
-3. Understanding if the Statistical analysis performed is accurate
-4. Housing data is sparse and often requires payment
+## What I Learned
 
----
-
-## 🎯 Goal
-
-1. Determine safest location to reside in Dallas, Tx.
-2. Empower users to make informed life decisions with intuitive visualizations such as shape maps
-3. Determine arrest hotspots per zip-code
-
----
-
-## ✨ Solution
-
-- Cleaned and preprocessed both datasets for zip-code-level join using `dplyr`
-- Grouped arrests by `Arrest.Zipcode` to produce per-zip arrest counts
-- Computed average and median property prices per zip from Zillow data
-- Merged both datasets on zip code to produce a unified summary table, exported as `Dallas_Arrests_Property_Summary.csv`
-- Visualized total arrests vs. average property price per zip via `ggplot2` scatter plot
-- Identify statistically significant crime/housing price relationships
-- Implement DFW Map with hotspot visualizations automated using R
-- Communicate findings to non-technical stakeholders
-
-![Shapemap](./images/crime-analysis/crime_analysis_map.webp)
-
----
+The original analysis suffered from omitted variable bias — correlating two variables without controlling for confounders that drive both. Revisiting the project two years later with a multivariate approach produced a materially different conclusion. The 2026 remediation is the more defensible analysis; the 2024 version is preserved in the repository as a record of where the work started.

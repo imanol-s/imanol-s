@@ -9,71 +9,31 @@ tags:
   - Data Structures
 startDate: 2024-08-01
 endDate: 2024-12-01
-author: Imanol Saldana
 url: https://github.com/imanol-s/Critical-Task
 cover: "./images/pert-scheduling/Pert_chart_colored.webp"
 ogImage: "./images/pert-scheduling/Pert_chart_colored.webp"
 ---
 
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Role](#role)
-3. [Problem](#problem)
-4. [Goal](#goal)
-5. [Solution](#solution)
-
----
-
 ## Overview
 
-A topological sorting-based solution for project scheduling using directed acyclic graphs (DAGs). Implements PERT/CPM methodologies to calculate:
+A Java implementation of PERT/CPM scheduling built as a class project in Fall 2024. The tool models task dependencies as a directed acyclic graph and computes critical paths in O(V+E) time using topological sorting with forward and backward passes. For more reading: <a href="https://en.wikipedia.org/wiki/Program_evaluation_and_review_technique">PERT</a>
 
-- Earliest start/finish times (forward pass)
-- Latest start/finish times (backward pass)
-- Total float/slack time
+## Role
 
-For more reading: <a href="https://en.wikipedia.org/wiki/Program_evaluation_and_review_technique">PERT</a>
+Lead developer.
 
----
+## Problem
 
-## 👨‍💻 Role
+PERT scheduling by hand is tractable for small networks but becomes error-prone as the number of tasks grows. Manually tracing forward and backward passes through a graph with dozens of dependencies is tedious and mistakes in slack computation cascade — a single wrong earliest-finish value can misidentify the critical path entirely. The motivation was to automate this process and make it reliable regardless of graph size.
 
-**Lead Developer**
+## Implementation
 
----
+The graph is represented as an adjacency list with directed edges encoding task dependencies. A DFS-based topological sort with `onStack[]` cycle tracking validates that the input is a DAG before any scheduling runs — if a cycle is detected, the sort returns `null` and the computation halts rather than producing incorrect output.
 
-## ❓ Problem
+The scheduling itself follows the standard PERT two-pass approach. The forward pass iterates vertices in topological order, computing `ES = max(EF of predecessors)` and `EF = ES + duration` for each task. The backward pass initializes every vertex's `LF` to the project completion time, then processes in reverse topological order: `LF = min(LS of successors)`, `LS = LF - duration`. Slack is computed as `LF − EF` across all vertices using a parallel stream.
 
-1. Task dependencies created non-trivial scheduling constraints
-2. Manual critical path identification proved error-prone for large projects (n > 100 tasks)
-3. Schedule not optimally formatted in relation to time efficiency.
+Zero-slack tasks constitute the critical path. The `numCritical()` method counts critical vertices; `criticalPath()` returns the total project duration as the maximum EF across all vertices. The output for each task includes earliest completion, latest completion, slack, and a critical flag.
 
----
+## Testing
 
-## 🎯 Goal
-
-1. Develop O(V+E) algorithm for critical path identification
-2. Model task dependencies in a DAG with cycle detection
-3. Compute per-task scheduling windows and identify zero-slack critical tasks
-
----
-
-## ✨ Solution
-
-### Graph Representation
-
-- Adjacency list structure with directed edges representing task dependencies
-- DFS-based topological sort with `onStack[]` tracking to detect cycles — returns `null` if the graph is not a valid DAG
-
-### PERT Implementation
-
-- **Forward pass**: iterates vertices in topological order; for each vertex, `ES = max(EF of predecessors)`, `EF = ES + duration`
-- **Backward pass**: initializes all vertices' `LF` to project completion time, then processes in reverse topological order; `LF = min(LS of successors)`, `LS = LF - duration`
-- **Slack**: computed as `LF − EF` across all vertices using a parallel stream
-
-### Critical Path Analysis
-
-- Zero-slack tasks constitute the critical path
-- `numCritical()` counts critical vertices; `criticalPath()` returns the total project duration (max EF across all vertices)
-- Scheduling output per task: EC, LC, slack, and critical flag
+Test cases were built from a combination of course-provided inputs and generated cases using LLMs to produce task networks with known critical paths. This allowed verification that the forward/backward passes and slack computation produced correct results across graphs of varying size and structure.
