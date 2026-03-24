@@ -3,6 +3,11 @@ import { transition, getInitialState, LIFECYCLE_SESSION_KEY, type State, type Ac
 
 type Listener = () => void;
 
+/**
+ * Module-level singleton store shared by LoadingOverlay and TypewriterText.
+ * These are two separate React islands (no shared React context), so the store
+ * lives at module scope and coordinates via useSyncExternalStore subscriptions.
+ */
 let currentState: State | null = null;
 const listeners = new Set<Listener>();
 

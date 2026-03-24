@@ -58,6 +58,8 @@ export function initCarousel(
       track.releasePointerCapture(pointerId);
       track.style.cursor = '';
       track.style.userSelect = '';
+      // Suppress the synthetic click that fires at pointerup after a drag,
+      // which would otherwise follow the link on any card the pointer lands on.
       track.addEventListener('click', (ev) => ev.preventDefault(), { once: true, capture: true });
     }
     isPointerDown = false;

@@ -5,6 +5,12 @@ export type Action = 'PLAY' | 'FADE' | 'FINISH' | 'SKIP';
 
 export const LIFECYCLE_SESSION_KEY = 'site-lifecycle-ready';
 
+/**
+ * Determines the starting lifecycle state before the overlay plays.
+ * Reduced-motion is checked first: users who prefer reduced motion should
+ * never see an animation, even on their first visit. Session storage is
+ * checked second to skip the intro on return navigations within a tab.
+ */
 export function getInitialState(): State {
   if (prefersReducedMotion()) return 'ready';
   if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem(LIFECYCLE_SESSION_KEY)) return 'ready';
@@ -21,6 +27,11 @@ export const OVERLAY_TIMINGS = {
   finishDelayMs: 500,
 } as const;
 
+/**
+ * Drives the overlay state machine forward via timeouts.
+ * Designed to be called from `useEffect`; returns a cleanup function to cancel
+ * the pending timeout when the state changes before the timer fires.
+ */
 export function scheduleOverlay(
   dispatch: (action: Action) => void,
   state: State,

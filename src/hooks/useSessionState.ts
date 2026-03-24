@@ -1,5 +1,10 @@
 import { useState, useCallback } from 'react';
 
+/**
+ * useState backed by sessionStorage for per-tab persistence across page navigations.
+ * Falls back silently to in-memory state when sessionStorage is unavailable
+ * (private browsing mode, storage quota exceeded, or SSR).
+ */
 export function useSessionState<T>(key: string, defaultValue: T): [T, (value: T) => void] {
   const [state, setState] = useState<T>(() => {
     try {

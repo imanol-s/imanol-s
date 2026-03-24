@@ -1,6 +1,9 @@
 import { useSyncExternalStore } from 'react';
 import { REDUCED_MOTION_QUERY } from '../utils/prefersReducedMotion';
 
+// Module-level cache so all subscribers share the same MediaQueryList value.
+// The server snapshot returns false (motion enabled) — a safe default since
+// the browser will correct it immediately on hydration.
 let cachedValue = false;
 
 function subscribe(callback: () => void): () => void {

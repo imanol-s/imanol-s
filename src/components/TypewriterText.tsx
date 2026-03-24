@@ -40,7 +40,9 @@ const TypewriterText = ({ text }: { text: string }) => {
     setDone(false);
     abortRef.current = false;
 
-    // Skip animation: reduced motion, return visit (ready on mount), or already animated this render
+    // Skip animation: reduced motion, return visit (ready immediately on mount),
+    // or already animated — hasAnimatedRef prevents re-triggering when unrelated
+    // state changes cause a re-render after the typewriter has already played.
     if (reducedMotion || !isReady || hasAnimatedRef.current) {
       setDisplayed(text);
       setDone(true);

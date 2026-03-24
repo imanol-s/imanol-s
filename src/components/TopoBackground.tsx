@@ -20,7 +20,9 @@ export default function TopoBackground() {
   const [dims, setDims] = useState({ width: 2000, height: 2000 });
   const [seed, setSeed] = useSessionState<number | null>("topo-seed", null);
 
-  // Generate seed once per session
+  // Seed is stored in sessionStorage so the topography shape stays consistent
+  // across Astro view-transition navigations within the same tab, rather than
+  // regenerating a visually jarring new pattern on every page visit.
   useEffect(() => {
     if (seed === null) setSeed(Math.floor(Math.random() * 10000));
   }, [seed, setSeed]);
