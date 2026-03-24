@@ -3,7 +3,7 @@ import type { TechId } from './data/techRegistry';
 export const SITE = {
   website: "https://imanols.dev", // replace this with your deployed domain
   title: "Imanol Saldana",
-  description: "Imanol Saldana — software engineer portfolio featuring projects in data science, robotics, and full-stack development.",
+  description: "Imanol Saldana — analytical engineer building processes and systems that solve data problems. Projects in data analysis, data science, automation, and software engineering.",
   tags: ["portfolio", "Resume cv", "Astro"],
   ogImage: "/og-image.webp",
   logo: "frog",
@@ -28,16 +28,16 @@ export const ME: {
   contactInfo: { email: string; linkedin: string; resumeDoc: string };
 } = {
   name: "Imanol Saldana",
-  profession: ["Data Analytics", "Data Science", "Software"],
+  profession: ["Analytical Engineer", "Software Developer"],
   profileImage: "Profile-1.png",
   aboutMe:
-    "Computer science–trained developer focused on data science, automation, and software. " +
-    "I build data-driven tools and workflows that improve reliability, clarity, and decision-making in real-world systems.",
+    "Analytical engineer building processes and systems that make enterprise data reliable. " +
+    "From validation workflows to automation pipelines, I solve data problems with code.",
   location: "38.25\u00b0 N, 122.41\u00b0 W",
   focusAreas: [
-    "Data science & analytics",
-    "Automation & tooling",
-    "Systems & reliability",
+    "Data engineering & analytics",
+    "Automation & pipeline development",
+    "Enterprise systems integration",
   ],
   coreLanguages: ["python", "java", "sql", "r"],
   competencies: [
