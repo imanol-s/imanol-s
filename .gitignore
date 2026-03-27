@@ -31,8 +31,18 @@ pnpm-debug.log*
 .vscode/
 
 # claude files (private)
+.claude/settings.json
 .claude/settings.local.json
 .claude/worktrees/
+
+# cursor auto-state
+.cursor/hooks/state/
+
+# firecrawl cache
+.firecrawl/
+
+# session memory plugin
+.remember/
 
 # npx skills default directories (unused)
 .adal/
