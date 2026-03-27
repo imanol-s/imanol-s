@@ -26,7 +26,7 @@ Instructions for AI coding assistants working with this repository.
 - When asked about the best approach, provide a clear recommendation with rationale rather than only listing options
 - When proposing style changes, audit all touch points across the codebase before implementing — show full impact surface
 - Accessibility fixes should include WCAG contrast ratios and visual comparisons (e.g., Paper artboards or side-by-side screenshots)
-- No GitHub Actions CI — linting runs locally via pre-commit hooks; this is intentional and sufficient
+- CI runs on pull requests via `.github/workflows/ci.yml` (npm ci → test → build). Linting also runs locally via pre-commit hooks.
 - React island architecture is frozen; do not add, remove, or convert islands without explicit user approval
 - When making infrastructure or config changes, update AGENTS.md and copilot-instructions.md in the same commit
 - **Never hardcode personal values** (name, bio, email, location, profession, etc.) in templates — always derive from `src/config.ts`
@@ -34,15 +34,15 @@ Instructions for AI coding assistants working with this repository.
 
 ## Learned Workspace Facts
 
-- Astro 5 portfolio site with React 18, Tailwind CSS, TypeScript
+- Astro 6 portfolio site with React 18, Tailwind CSS, TypeScript
 - PRs follow `.github/pull_request_template.md` template
 - Design tokens: `--color-primary: #64748b` (slate gray), slate palette, JetBrains Mono display + Inter body
 - Nav links use `text-primary` base with `hover:text-white` (muted → bright on hover)
 - Card titles stay bright on hover; interactivity signaled via border and image effects
 - Build command: `npm run build` runs `astro check && astro build`; preview on port 4321
-- Netlify pins Node 20 via `NODE_VERSION` in `netlify.toml`
+- Netlify pins Node 22 via `NODE_VERSION` in `netlify.toml`
 - Fonts self-hosted via `@fontsource-variable` (Inter + JetBrains Mono) — no Google Fonts CDN
-- Two React islands only: `TopoBackground.tsx` (`client:only="react"`) and `TypewriterText.tsx` (`client:load`)
+- Three React islands: `TopoBackground.tsx` (`client:only="react"`), `TypewriterText.tsx` (`client:load`), and `LoadingOverlay.tsx` (`client:only="react"`)
 - Project subagents in `.cursor/agents/`: `coding-specialist` (mandatory for code changes), `software-architect`, `performance-optimizer`
 - Experience card descriptions render in full with no truncation
 - `src/config.ts` is the single source of truth for all personal/site data — full field reference in `.github/copilot-instructions.md` under "Site Configuration"

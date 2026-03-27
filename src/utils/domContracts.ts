@@ -1,6 +1,6 @@
 /**
  * DOM contracts — single source of truth for IDs, class names, thresholds,
- * and registerOnceAfterSwap keys shared between TypeScript controllers and
+ * shared between TypeScript controllers and
  * Astro templates. Prevents stringly-typed coupling across the two layers.
  */
 
@@ -9,7 +9,6 @@ export const BACK_TO_TOP = {
   btnId: 'back-to-top',
   // Defined in ExperienceTimeline.astro — cross-component dependency owned by BackToTop.astro
   sidebarId: 'profile-sidebar',
-  swapKey: 'back-to-top',
   scrollThreshold: 300,
   collapseMinWidth: 1024,
   classes: {
@@ -23,7 +22,6 @@ export const CAROUSEL = {
   trackId:        'projects-track',
   prevId:         'carousel-prev',
   nextId:         'carousel-next',
-  swapKey:        'carousel',
   scrollRatio:    0.85,
   dragThresholdPx: 5,
 } as const;
@@ -31,6 +29,5 @@ export const CAROUSEL = {
 export const MOBILE_MENU = {
   btnId:       'mobile-menu-btn',
   menuId:      'mobile-menu',
-  swapKey:     'site-header',
   hiddenClass: 'hidden',
 } as const;

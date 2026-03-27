@@ -72,13 +72,14 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 <script is:inline>document.getElementById('mobile-menu')?.classList.add('hidden');</script>
 
 <script>
-  import { registerOnceAfterSwap } from '../utils/registerOnceAfterSwap';
   import { initMobileMenu } from '../utils/mobileMenu';
   import { MOBILE_MENU } from '../utils/domContracts';
 
-  registerOnceAfterSwap(MOBILE_MENU.swapKey, () => {
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('astro:page-load', () => {
+    cleanup?.();
     const btn = document.getElementById(MOBILE_MENU.btnId) as HTMLButtonElement | null;
     const menu = document.getElementById(MOBILE_MENU.menuId) as HTMLElement | null;
-    if (btn && menu) initMobileMenu(btn, menu);
+    if (btn && menu) cleanup = initMobileMenu(btn, menu);
   });
 </script>

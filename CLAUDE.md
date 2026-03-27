@@ -11,7 +11,7 @@ npx astro check    # Type-check Astro + TS files
 ## Architecture
 
 - Astro-first: default to `.astro` components. React `.tsx` only for client-side interactivity.
-- Three React islands: TopoBackground (`client:only="react"`), TypewriterText (`client:load`), LoadingOverlay (`client:load`). No new islands without explicit approval.
+- Three React islands: TopoBackground (`client:only="react"`), TypewriterText (`client:load`), LoadingOverlay (`client:only="react"`). No new islands without explicit approval.
 - Content collections in `src/content/` with Zod schemas in `src/content/config.ts`.
 - `src/config.ts` — single source of truth for site identity (SITE, ME, SOCIALS).
 - `src/data/techRegistry.ts` — single source of truth for tech tags. All tech rendering flows through this.
@@ -20,7 +20,7 @@ npx astro check    # Type-check Astro + TS files
 ## Key Patterns
 
 - **Tech tags validated at build time**: `tags` in project frontmatter validates against techRegistry IDs. Unknown tags fail `astro check`. Use `keywords` for free-form topic strings.
-- **View transition guards**: Use `registerOnceAfterSwap(key, callback)` from `src/utils/` for any script that must re-run after Astro view transitions.
+- **View transition guards**: Use `document.addEventListener('astro:page-load', handler)` for scripts that must re-run after view transitions. Store cleanup in a module-scoped variable.
 - **Site lifecycle state machine**: `src/utils/siteLifecycle.ts` defines a pure `transition(state, action)` function. `useSiteLifecycle()` hook exposes state + dispatch via `useSyncExternalStore`. Overlay plays once per session; return visits skip to `ready` immediately.
 - **Reduced motion**: React components use `useReducedMotion()` hook; Astro components use `prefersReducedMotion()` utility. Never access `matchMedia` directly.
 - **Session state**: React components use `useSessionState(key, default)` hook instead of direct `sessionStorage` access.

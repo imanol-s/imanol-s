@@ -1,9 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import { Picture } from 'astro:assets';
+import { getSortedProjects } from '@/data/projectCollection';
 
-const allProjects = (await getCollection('projects'))
-  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+const allProjects = getSortedProjects(await getCollection('projects'));
 ---
 
 <section class="mb-32 scroll-mt-20 render-deferred" id="projects" aria-label="Projects">
@@ -52,14 +52,15 @@ const allProjects = (await getCollection('projects'))
 </section>
 
 <script>
-  import { registerOnceAfterSwap } from '../utils/registerOnceAfterSwap';
   import { initCarousel } from '../utils/carousel';
   import { CAROUSEL } from '../utils/domContracts';
 
-  registerOnceAfterSwap(CAROUSEL.swapKey, () => {
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('astro:page-load', () => {
+    cleanup?.();
     const track = document.getElementById(CAROUSEL.trackId) as HTMLElement | null;
     const prev = document.getElementById(CAROUSEL.prevId) as HTMLButtonElement | null;
     const next = document.getElementById(CAROUSEL.nextId) as HTMLButtonElement | null;
-    if (track && prev && next) initCarousel(track, prev, next);
+    if (track && prev && next) cleanup = initCarousel(track, prev, next);
   });
 </script>

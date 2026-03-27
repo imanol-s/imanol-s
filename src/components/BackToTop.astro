@@ -50,13 +50,14 @@
 </style>
 
 <script>
-  import { registerOnceAfterSwap } from '../utils/registerOnceAfterSwap';
   import { initBackToTop } from '../utils/backToTop';
   import { BACK_TO_TOP } from '../utils/domContracts';
 
-  registerOnceAfterSwap(BACK_TO_TOP.swapKey, () => {
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('astro:page-load', () => {
+    cleanup?.();
     const btn = document.getElementById(BACK_TO_TOP.btnId) as HTMLElement | null;
     const sidebar = document.getElementById(BACK_TO_TOP.sidebarId) as HTMLElement | null;
-    if (btn) initBackToTop(btn, sidebar);
+    if (btn) cleanup = initBackToTop(btn, sidebar);
   });
 </script>

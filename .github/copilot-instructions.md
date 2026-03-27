@@ -6,7 +6,7 @@ applyTo: "**/*.{astro,ts,tsx,mjs,css,md,mdx}"
 
 ## Purpose
 
-Review instructions for a personal portfolio site built with Astro 5, React 18, Tailwind CSS 4, and TypeScript. Applies to all source files under `src/`, config files at the root, and content collections.
+Review instructions for a personal portfolio site built with Astro 6, React 18, Tailwind CSS 4, and TypeScript. Applies to all source files under `src/`, config files at the root, and content collections.
 
 ## Instruction Precedence
 
@@ -43,9 +43,10 @@ const { title, description } = Astro.props;
 ## Architecture Rules
 
 - **Astro-first**: Default to `.astro` components. Only use React (`.tsx`) when client-side interactivity is required
-- **Island architecture**: Only two React islands ship JS to the client:
+- **Island architecture**: Only three React islands ship JS to the client:
   - `TopoBackground.tsx` — animated SVG background (`client:only="react"`, skips SSR)
   - `TypewriterText.tsx` — hero name animation (`client:load`, SSR-safe)
+  - `LoadingOverlay.tsx` — session loading overlay (`client:only="react"`, skips SSR)
 - **Content collections**: All blog/project content goes through Astro content collections with Zod schemas in `src/content/config.ts` — do not bypass with raw file reads
 - **Static data**: Typed arrays/objects exported from `src/data/*.ts` for non-content data (jobs, education)
 - **Single layout**: All pages use `src/layouts/Layout.astro` — do not create additional layouts without justification
@@ -108,7 +109,7 @@ Each entry: `{ name, url, icon, show }`. Consumed via `SOCIALS.find(s => s.name 
 - Never commit secrets or API keys; no `.env` files are used in this project
 - External links use `target="_blank"` with `rel="noopener noreferrer"`
 - Security headers are set in `netlify.toml` (`X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, `Content-Security-Policy`)
-- Netlify build environment pins Node 20 via `NODE_VERSION` in `netlify.toml`
+- Netlify build environment pins Node 22 via `NODE_VERSION` in `netlify.toml`
 - Resume PDF is served as a static file from `public/` — do not inline sensitive personal data in source
 
 ### XSS Prevention
@@ -180,9 +181,9 @@ function displayName(name: string) {
 
 ## Testing Guidelines
 
-- No test framework is configured — validate changes via `npm run build` (runs `astro check && astro build`)
-- Type-checking is the primary safety net; ensure `astro check` passes with 0 errors and 0 warnings
-- Preview production builds locally with `npm run preview` before deploying
+- Vitest + jsdom is configured. Run `npm run test` for a single pass or `npm run test:watch` for watch mode
+- Add `// @vitest-environment jsdom` at the top of test files that require browser APIs
+- Type-checking via `astro check` remains the primary safety net; tests supplement it for behavioral coverage
 
 ### Mandatory Post-Edit Validation (Agent Requirement)
 
@@ -196,7 +197,7 @@ function displayName(name: string) {
 
 - Use Astro's `<Image>` component for all images — provides automatic WebP conversion and responsive sizing
 - Set `loading="eager"` and `fetchpriority="high"` only for above-the-fold images; use `loading="lazy"` for everything else
-- Keep client JS minimal: only `TopoBackground.tsx` and `TypewriterText.tsx` hydrate — avoid adding new React islands unless truly interactive
+- Keep client JS minimal: only `TopoBackground.tsx`, `TypewriterText.tsx`, and `LoadingOverlay.tsx` hydrate — avoid adding new React islands unless truly interactive
 - Container: `max-w-7xl mx-auto px-6`
 
 ## Styling
