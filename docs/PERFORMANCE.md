@@ -12,7 +12,7 @@ Three React components hydrate on the client:
 | --- | --- | --- | --- |
 | `TopoBackground.tsx` | `client:only="react"` | ~1.1 KB | Animated SVG contours + parallax |
 | `TypewriterText.tsx` | `client:load` | ~0.7 KB | Hero name character animation |
-| `LoadingOverlay.tsx` | `client:load` | — | Intro animation overlay (once per session) |
+| `LoadingOverlay.tsx` | `client:only="react"` | — | Intro animation overlay (once per session) |
 
 Everything else is server-rendered Astro (zero client JS).
 

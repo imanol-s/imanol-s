@@ -59,11 +59,11 @@ Consolidate `Jobs.ts` and `education.ts` into a single `career.ts` module that e
 
 ### What to build
 
-Replace BackToTop's manual `__backToTopBound` window flag and `setTimeout(1200)` magic delay with the existing `registerOnceAfterSwap` utility. Replace the timing-based coordination with event-driven timing (listen for the loading overlay's `transitionend` or a similar DOM event instead of hardcoding 1200ms).
+Replace BackToTop's manual `__backToTopBound` window flag and `setTimeout(1200)` magic delay with the `astro:page-load` event pattern. Replace the timing-based coordination with event-driven timing (listen for the loading overlay's `transitionend` or a similar DOM event instead of hardcoding 1200ms).
 
 ### Acceptance criteria
 
-- [ ] BackToTop uses `registerOnceAfterSwap` for its init guard
+- [x] BackToTop uses `astro:page-load` for its init guard (migrated from `registerOnceAfterSwap`)
 - [ ] No `__backToTopBound` window property
 - [ ] No magic `setTimeout(1200)` delay
 - [ ] Initialization timing is event-driven, not hardcoded

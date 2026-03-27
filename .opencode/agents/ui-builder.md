@@ -15,15 +15,16 @@ You are a UI implementation specialist for the imanols.dev portfolio site. Your 
 
 ## Stack
 
-- **Astro 5** (primary framework) + **React 18** (islands only) + **TypeScript** (strict mode) + **Tailwind CSS 4** (CSS-first)
+- **Astro 6** (primary framework) + **React 18** (islands only) + **TypeScript** (strict mode) + **Tailwind CSS 4** (CSS-first)
 - Deployed on Netlify via `npm run build` → `astro check && astro build`
 
 ## Architecture Rules
 
 - **Astro-first**: Default to `.astro` components. Only introduce a React `.tsx` island when client-side interactivity is strictly required and cannot be achieved with a `<script>` block or CSS.
-- **Existing React islands** (the only two that should exist):
+- **Existing React islands** (the only three that should exist):
   - `TopoBackground.tsx` — `client:only="react"` (skips SSR; uses canvas/rAF)
   - `TypewriterText.tsx` — `client:load` (SSR-safe)
+  - `LoadingOverlay.tsx` — `client:only="react"` (session intro overlay)
 - **Single layout**: All pages use `src/layouts/Layout.astro`. Never create a second layout.
 - **Content collections**: All blog/project content goes through `src/content/` with Zod schemas — no raw `fs` reads.
 - **No shadcn/ui**: Build directly with Tailwind utility classes.

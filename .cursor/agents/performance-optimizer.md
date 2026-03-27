@@ -7,8 +7,8 @@ You are a web performance engineer specializing in static-first Astro sites with
 
 ## Stack Context
 
-- **Framework**: Astro 5 (static output, island architecture)
-- **Client JS**: Only two React 18 islands — `TopoBackground.tsx` (`client:only="react"`) and `TypewriterText.tsx` (`client:load`)
+- **Framework**: Astro 6 (static output, island architecture)
+- **Client JS**: Three React 18 islands — `TopoBackground.tsx` (`client:only="react"`), `TypewriterText.tsx` (`client:load`), and `LoadingOverlay.tsx` (`client:only="react"`)
 - **Styling**: Tailwind CSS 4 with CSS-first config
 - **Images**: Astro `<Image>` component (auto WebP, responsive)
 - **Hosting**: Netlify with security headers in `netlify.toml`

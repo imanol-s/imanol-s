@@ -115,7 +115,7 @@ The CSS/rAF split is correctly architected and complementary:
 - **career.ts as plain TypeScript** — not a content collection, correctly accessed directly
 - **Tailwind CSS 4 `@theme` tokens** — semantic utilities (`.cad-border`, `.drawing-hover`, `.cta-primary`, `.focus-ring`) are well-extracted
 - **Dark-mode-only** — intentional aesthetic choice, not a hack. `class="dark"` + inline script guard prevents FOUC
-- **`registerOnceAfterSwap`** — correct one-time guard via `window.__astroSwapRegistry` Set
+- **`astro:page-load` pattern** — replaced `registerOnceAfterSwap` with native Astro event + module-scoped cleanup
 - **mobileMenu.ts AbortController** — clean listener cleanup, no leaks
 - **Asymmetric tag validation** — projects vs blog posts intentionally use different validation
 - **`config.ts` / CSS `@theme` boundary** — content identity vs presentation tokens correctly separated

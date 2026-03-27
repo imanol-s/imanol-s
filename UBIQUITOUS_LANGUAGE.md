@@ -50,7 +50,7 @@
 |------|-----------|-----------------|
 | **Overlay-Ready Signal** | The promise-based gate (`overlayReady.ts`) that resolves when the Loading Overlay finishes fading out | Overlay event, load complete |
 | **View Transition** | Astro's client-side page navigation that swaps DOM content and fires `astro:before-swap` / `astro:after-swap` / `astro:page-load` events | SPA navigation, page transition |
-| **Swap Guard** | The `registerOnceAfterSwap(key, callback)` utility ensuring a script runs exactly once per page lifecycle, re-running after each View Transition swap | After-swap hook, transition listener |
+| **Swap Guard** | The `astro:page-load` event pattern with module-scoped cleanup, ensuring a script runs on initial load and re-runs after each View Transition | Page-load hook, transition listener |
 | **Reduced Motion** | The user's OS-level `prefers-reduced-motion` setting, accessed via `useReducedMotion()` (React) or `prefersReducedMotion()` (Astro) | Motion preference, a11y motion |
 | **Session State** | Client-side state persisted in `sessionStorage` via the `useSessionState(key, default)` hook | Session storage, tab state |
 

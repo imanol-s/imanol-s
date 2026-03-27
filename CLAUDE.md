@@ -1,4 +1,4 @@
-# Portfolio — Astro 5 + React 18 + Tailwind CSS 4
+# Portfolio — Astro 6 + React 18 + Tailwind CSS 4
 
 ## Commands
 
