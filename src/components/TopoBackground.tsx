@@ -1,7 +1,13 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useSessionState } from "../hooks/useSessionState";
 import { computeTopoFrame, buildLineYs } from "../animations/topoMath";
+import {
+  sweepOffset,
+  buildSweepStops,
+  SWEEP_DURATION,
+  REDUCED_MOTION_POSITION,
+} from "../animations/lavaSweepMath";
 
 // Oversized to 150% with -25% inset so the slow CSS rotation never exposes
 // blank corners at the viewport edges.
@@ -18,8 +24,12 @@ const TOPO_LINES_STYLE: CSSProperties = {
 export default function TopoBackground() {
   const reduced = useReducedMotion();
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
+  const sweepGradRef = useRef<SVGLinearGradientElement>(null);
   const rafId = useRef(0);
   const [dims, setDims] = useState({ width: 2000, height: 2000 });
+  // Ref synced each render so the RAF loop reads current width without a stale closure.
+  const dimsWidthRef = useRef(dims.width);
+  dimsWidthRef.current = dims.width;
   const [seed, setSeed] = useSessionState<number | null>("topo-seed", null);
 
   // Seed is stored in sessionStorage so the topography shape stays consistent
@@ -70,16 +80,23 @@ export default function TopoBackground() {
     // so the animation slows gracefully when the tab is throttled.
     let phase = 0;
     let driftTime = 0;
+    let sweepTime = 0;
 
     const tick = () => {
       phase += 0.0006;
       driftTime += 1 / 60;
+      sweepTime += 1 / 60;
 
       const { bfx, bfy, transform } = computeTopoFrame(phase, driftTime);
       turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
       if (containerRef.current) {
         containerRef.current.style.transform = transform;
       }
+
+      // Brightness sweep: one setAttribute per frame translates the gradient.
+      // Painted before the displacement filter so the band warps with topography.
+      const offset = sweepOffset(sweepTime, dimsWidthRef.current, SWEEP_DURATION);
+      sweepGradRef.current?.setAttribute("gradientTransform", `translate(${offset}, 0)`);
 
       rafId.current = requestAnimationFrame(tick);
     };
@@ -88,6 +105,7 @@ export default function TopoBackground() {
     return () => cancelAnimationFrame(rafId.current);
   }, [reduced]);
 
+  const sweepStops = useMemo(() => buildSweepStops(), []);
   const lineYs = buildLineYs(dims.height, 24);
 
   return (
@@ -135,12 +153,42 @@ export default function TopoBackground() {
                 {/* Sub-pixel smoothing to remove rasterization jaggedness */}
                 <feGaussianBlur in="displaced" stdDeviation="0.4" />
               </filter>
+              {/*
+               * Gaussian brightness sweep: a linearGradient whose stops encode a
+               * gaussian opacity profile. The RAF loop translates the gradient via
+               * gradientTransform; spreadMethod="repeat" handles seamless wrapping.
+               * Because the gradient is applied as a stroke BEFORE feTurbulence
+               * displacement, the bright band warps organically with the topography.
+               */}
+              <linearGradient
+                ref={sweepGradRef}
+                id="sweep-grad"
+                gradientUnits="userSpaceOnUse"
+                x1={0}
+                y1={0}
+                x2={dims.width}
+                y2={0}
+                spreadMethod="repeat"
+                gradientTransform={
+                  reduced
+                    ? `translate(${REDUCED_MOTION_POSITION * dims.width}, 0)`
+                    : undefined
+                }
+              >
+                {sweepStops.map((s, i) => (
+                  <stop
+                    key={i}
+                    offset={s.offset}
+                    stopColor="var(--color-accent)"
+                    stopOpacity={s.opacity}
+                  />
+                ))}
+              </linearGradient>
             </defs>
             <g
               filter="url(#topo-warp)"
               fill="none"
-              stroke="var(--color-accent)"
-              strokeOpacity="0.40"
+              stroke="url(#sweep-grad)"
               strokeWidth="1.2"
             >
               {lineYs.map((y) => (
