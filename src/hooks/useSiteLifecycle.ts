@@ -19,6 +19,7 @@ function ensureInitialized(): State {
   return currentState;
 }
 
+/** Notifies all registered store listeners of a state change. */
 function notify() {
   listeners.forEach(fn => fn());
 }
@@ -41,21 +42,30 @@ export function dispatch(action: Action) {
   notify();
 }
 
+/**
+ * Adds a listener to the store and returns an unsubscribe function.
+ * Used as the first argument to `useSyncExternalStore`.
+ */
 function subscribe(listener: Listener) {
   listeners.add(listener);
   return () => listeners.delete(listener);
 }
 
+/** Returns the current lifecycle state, lazily initialising the store on first call. */
 function getSnapshot(): State {
   return ensureInitialized();
 }
 
+/**
+ * React hook that exposes the site lifecycle `state` and `dispatch` function.
+ * Shares a module-level singleton store across all islands (no React context needed).
+ */
 export function useSiteLifecycle() {
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
   return { state, dispatch };
 }
 
-// For testing — reset to a known state
+/** Resets the module-level singleton to a blank state. Only for use in tests. */
 export function _resetForTesting() {
   currentState = null;
   listeners.clear();

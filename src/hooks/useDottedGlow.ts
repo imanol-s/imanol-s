@@ -25,6 +25,11 @@ export interface DottedGlowOptions {
   _advanced?: AdvancedDotProps;
 }
 
+/**
+ * Reads a CSS custom property value from `:root` at call-time.
+ * Accepts names with or without the `--` prefix.
+ * Falls back to `varName` itself if the property is unset.
+ */
 function resolveCssVar(varName: string): string {
   const normalized = varName.startsWith('--') ? varName : `--${varName}`;
   const value = getComputedStyle(document.documentElement)
