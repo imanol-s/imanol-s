@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useSessionState } from "../hooks/useSessionState";
 import { computeTopoFrame, buildLineYs } from "../animations/topoMath";
@@ -6,7 +6,7 @@ import {
   sweepOffset,
   buildSweepStops,
   SWEEP_DURATION,
-  REDUCED_MOTION_POSITION,
+  BASE_OPACITY,
 } from "../animations/lavaSweepMath";
 
 // Oversized to 150% with -25% inset so the slow CSS rotation never exposes
@@ -27,9 +27,13 @@ export default function TopoBackground() {
   const sweepGradRef = useRef<SVGLinearGradientElement>(null);
   const rafId = useRef(0);
   const [dims, setDims] = useState({ width: 2000, height: 2000 });
-  // Ref synced each render so the RAF loop reads current width without a stale closure.
+  // Ref synced via layoutEffect so the RAF loop reads current width without
+  // a stale closure. useLayoutEffect (not render body) avoids side-effects
+  // during concurrent render passes.
   const dimsWidthRef = useRef(dims.width);
-  dimsWidthRef.current = dims.width;
+  useLayoutEffect(() => {
+    dimsWidthRef.current = dims.width;
+  }, [dims.width]);
   const [seed, setSeed] = useSessionState<number | null>("topo-seed", null);
 
   // Seed is stored in sessionStorage so the topography shape stays consistent
@@ -160,35 +164,35 @@ export default function TopoBackground() {
                * Because the gradient is applied as a stroke BEFORE feTurbulence
                * displacement, the bright band warps organically with the topography.
                */}
-              <linearGradient
-                ref={sweepGradRef}
-                id="sweep-grad"
-                gradientUnits="userSpaceOnUse"
-                x1={0}
-                y1={0}
-                x2={dims.width}
-                y2={0}
-                spreadMethod="repeat"
-                gradientTransform={
-                  reduced
-                    ? `translate(${REDUCED_MOTION_POSITION * dims.width}, 0)`
-                    : undefined
-                }
-              >
-                {sweepStops.map((s, i) => (
-                  <stop
-                    key={i}
-                    offset={s.offset}
-                    stopColor="var(--color-accent)"
-                    stopOpacity={s.opacity}
-                  />
-                ))}
-              </linearGradient>
+              {!reduced && (
+                <linearGradient
+                  ref={sweepGradRef}
+                  id="sweep-grad"
+                  gradientUnits="userSpaceOnUse"
+                  x1={0}
+                  y1={0}
+                  x2={dims.width}
+                  y2={0}
+                  spreadMethod="repeat"
+                >
+                  {sweepStops.map((s, i) => (
+                    <stop
+                      key={i}
+                      offset={s.offset}
+                      stopColor="var(--color-accent)"
+                      stopOpacity={s.opacity}
+                    />
+                  ))}
+                </linearGradient>
+              )}
             </defs>
+            {/* Reduced motion: flat stroke at baseline opacity (no sweep).
+                Motion enabled: gradient stroke animated via RAF. */}
             <g
               filter="url(#topo-warp)"
               fill="none"
-              stroke="url(#sweep-grad)"
+              stroke={reduced ? "var(--color-accent)" : "url(#sweep-grad)"}
+              strokeOpacity={reduced ? BASE_OPACITY : undefined}
               strokeWidth="1.2"
             >
               {lineYs.map((y) => (
