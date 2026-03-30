@@ -8,6 +8,12 @@ export interface TopoFrame {
  * Compute per-frame topographic animation values given the current phase and
  * drift-time accumulator. Both inputs are plain numbers; returns only strings.
  *
+ * INVARIANT: The CSS drift (tx, ty, rot) must be monotonic — translation
+ * values must only decrease and rotation must only increase over time.
+ * Never use oscillating functions (sin, cos, bounce, ping-pong) for the
+ * drift transform. The topographic background must always move in one
+ * continuous direction. Tests enforce this via the "never reverses" case.
+ *
  * baseFrequency precision: toFixed(5) is intentional. The per-frame delta is
  * ~0.0000009 (phase step 0.0006 × amplitude 0.0015). At toFixed(4) the
  * attribute stays identical for ~111 frames before jumping, producing visible
@@ -18,11 +24,12 @@ export function computeTopoFrame(phase: number, driftTime: number): TopoFrame {
   const bfx = (0.004 + Math.sin(phase) * 0.0015).toFixed(5);
   const bfy = (0.004 + Math.cos(phase * 0.73) * 0.0015).toFixed(5);
 
-  const t = (driftTime % 55) / 55; // 0→1 over 55s cycle
-  const angle = t * Math.PI * 2;
-  const tx = Math.sin(angle) * -5 + Math.sin(angle * 2) * 3;
-  const ty = Math.cos(angle) * -3 + Math.cos(angle * 2) * -2;
-  const rot = Math.sin(angle) * 1.5 - Math.sin(angle * 2) * 1;
+  // Continuous unidirectional drift — never reverses.
+  // Rates tuned so the 25% oversized-container buffer lasts ~45 min
+  // before any edge could theoretically be exposed.
+  const tx = -driftTime * 0.008;
+  const ty = -driftTime * 0.005;
+  const rot = driftTime * 0.02;
 
   const transform = `translate(${tx}%, ${ty}%) rotate(${rot}deg)`;
 
