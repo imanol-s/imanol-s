@@ -32,7 +32,6 @@ pnpm-debug.log*
 
 # claude files (private)
 CLAUDE.local.md
-.claude/settings.json
 .claude/settings.local.json
 .claude/worktrees/
 
@@ -69,7 +68,7 @@ CLAUDE.local.md
 .trae/
 .vibe/
 .zencoder/
-skills/
+/skills/
 
 # playwright mcp artifacts
 .playwright-mcp/
