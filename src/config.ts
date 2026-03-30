@@ -1,7 +1,10 @@
+import type { TechId } from "./data/techRegistry";
+
 export const SITE = {
   website: "https://imanols.dev", // replace this with your deployed domain
-  title: "Imanol 'Oman' Saldana",
-  description: "Imanol's showcase",
+  title: "Imanol Saldana",
+  description:
+    "Imanol Saldana — analytical engineer building processes and systems that solve data problems. Projects in data analysis, data science, automation, and software engineering.",
   tags: ["portfolio", "Resume cv", "Astro"],
   ogImage: "/og-image.webp",
   logo: "frog",
@@ -13,34 +16,46 @@ export const SITE = {
   profile: "https://imanols.dev",
 };
 
-export const ME = {
-  name: "Imanol 'Oman' Saldana",
-  profession: "Software Developer",
+export const ME: {
+  name: string;
+  profession: string[];
+  profileImage: string;
+  aboutMe: string;
+  location: string;
+  focusAreas: string[];
+  coreLanguages: TechId[];
+  competencies: string[];
+  languages: { name: string; level: string }[];
+  contactInfo: { email: string; linkedin: string; resumeDoc: string };
+} = {
+  name: "Imanol Saldana",
+  profession: ["Analytical Engineer", "Software Developer"],
   profileImage: "Profile-1.png",
-  profileFacts: [
-    {
-      value: 4,
-      description: "Years of Evolution",
-    },
-    {
-      value: 5,
-      description: "Projects Engineered",
-    },
-    {
-      value: "\u221e",
-      description: "Growth Horizons",
-    },
+  aboutMe:
+    "Analytical engineer building processes and systems that make enterprise data reliable. " +
+    "From validation workflows to automation pipelines, I solve data problems with code.",
+  location: "38.25\u00b0 N, 122.41\u00b0 W",
+  focusAreas: [
+    "Data engineering & analytics",
+    "Automation & pipeline development",
+    "Enterprise systems integration",
   ],
-  // email, resume, and linkedin url
+  coreLanguages: ["python", "java", "sql", "r"],
+  competencies: [
+    "Data Governance",
+    "Simulation & Robotics",
+    "ERP (SAP S/4HANA)",
+    "Predictive Modeling",
+  ],
+  languages: [
+    { name: "English", level: "Native" },
+    { name: "Spanish", level: "Bilingual" },
+  ],
   contactInfo: {
     email: "Imanol.dev@proton.me",
     linkedin: "https://linkedin.com/in/imanol-saldana",
     resumeDoc: "Saldana.Resume.pdf",
   },
-  aboutMe:
-    "I am a software developer with a passion for Computer Science. I have experience in building data " +
-    "driven solutions and collaborating on teams to solve complex problems. I am a formally educated developer who is very passionate about continous learning through " +
-    "technical rigor and empathetic leadership.",
 };
 
 export const SOCIALS = [

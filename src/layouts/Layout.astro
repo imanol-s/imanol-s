@@ -1,18 +1,22 @@
 ---
 import {ClientRouter} from 'astro:transitions';
-import {cn} from "../lib/utils";
-import '@/styles/globals.css'
+import '@/styles/globals.css';
 
-import Navbar from "../components/Navbar.astro";
-import Footer from "../components/Footer.astro";
-import CommandPalette from "@/components/CommandPalette.astro";
-import CommandPaletteHint from "@/components/CommandPaletteHint.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import TopoBackground from "../components/TopoBackground.tsx";
+import LoadingOverlay from "../components/LoadingOverlay.tsx";
+import BackToTop from "../components/BackToTop.astro";
 
 import {SITE} from '@/config';
 
+// Resolve hashed font URLs at build time for preloading
+import interLatinUrl from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import jbMonoLatinUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
+
 interface Props {
     title?: string;
-    scrollSmooth: boolean;
+    scrollSmooth?: boolean;
     description?: string;
     tags?: string[];
     author?: string;
@@ -25,19 +29,23 @@ const {
     description = SITE.description,
     tags = SITE.tags,
     author = SITE.author,
-    scrollSmooth,
+    scrollSmooth = false,
     canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
     imageOg = SITE.ogImage,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={SITE.lang ?? "en"} class={cn({"scroll-smooth": scrollSmooth})}>
+<html lang={SITE.lang ?? "en"} class={`dark bg-[var(--color-background-dark)]${scrollSmooth ? " scroll-smooth" : ""}`}>
 <head>
-    <meta name="msapplication-TileColor" content="#000000"/>
-    <meta name="viewport" content="width=device-width"/>
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width"/>
+    <meta name="msapplication-TileColor" content="#000000"/>
     <meta name="generator" content={Astro.generator}/>
+
+    {/* Preload critical fonts — eliminates CSS→parse→download waterfall */}
+    <link rel="preload" as="font" type="font/woff2" href={interLatinUrl} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={jbMonoLatinUrl} crossorigin />
 
     <meta name="title" content={title}/>
     <meta name="description" content={description}/>
@@ -47,9 +55,6 @@ const {
     <link rel="icon" href={SITE.favicon}/>
     <link rel="canonical" href={canonicalURL}/>
 
-    <!-- Preconnect to external domains for faster resource loading -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title}/>
@@ -64,25 +69,41 @@ const {
     <meta property="twitter:image" content={imageOg}/>
 
     <title>{title}</title>
+    <noscript><style>#loading-overlay{display:none}</style></noscript>
     <ClientRouter/>
+
+    {/* Speculation Rules API — prerender same-origin pages on hover for instant navigation.
+        Chromium-only (Chrome, Edge, Opera); ignored by other browsers.
+        "moderate" eagerness triggers on hover/pointerdown — prerenders the full page
+        so navigations are near-instant (0ms perceived load). */}
+    <script type="speculationrules">
+    {
+      "prerender": [{
+        "source": "document",
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }]
+    }
+    </script>
 </head>
-<body class="bg-light-theme dark:bg-dark-theme antialiased text-n700 dark:text-light-theme w-full h-screen flex flex-col">
-<Navbar/>
-<main class="container py-24 flex gap-8 flex-col" role="main"  id="top">
+<body class="min-h-screen bg-transparent font-body text-slate-800 dark:text-slate-200 selection:bg-primary selection:text-white">
+
+<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2">Skip to main content</a>
+
+<script is:inline>
+  document.documentElement.classList.add('dark');
+</script>
+
+<div id="loading-overlay" class="fixed inset-0 z-50 bg-[var(--color-background-dark)] pointer-events-none" aria-hidden="true"></div>
+<LoadingOverlay client:only="react" />
+<TopoBackground client:only="react" />
+<BackToTop />
+<SiteHeader />
+
+<main id="main-content" class="relative z-10 max-w-7xl mx-auto px-6 py-12">
     <slot/>
 </main>
-<CommandPalette />
-<CommandPaletteHint />
-<form name="growth-events" data-netlify="true" netlify-honeypot="bot-field" hidden>
-    <input type="hidden" name="form-name" value="growth-events"/>
-    <input type="text" name="event"/>
-    <input type="text" name="path"/>
-    <input type="text" name="content_id"/>
-    <input type="text" name="method"/>
-    <input type="text" name="utm_source"/>
-    <input type="text" name="utm_medium"/>
-    <input type="text" name="timestamp"/>
-</form>
-<Footer/>
+
+<SiteFooter />
 </body>
 </html>

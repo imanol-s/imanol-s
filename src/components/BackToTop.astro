@@ -2,24 +2,62 @@
 
 ---
 
-<div class="flex justify-center mt-10">
-    <button id="back-to-top" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium [&_svg]:size-4 [&_svg]:shrink-0">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M13.0001 7.82843V20H11.0001V7.82843L5.63614 13.1924L4.22192 11.7782L12.0001 4L19.7783 11.7782L18.3641 13.1924L13.0001 7.82843Z"></path>
-        </svg>
-        <span>Back to Top</span>
-    </button>
-</div>
+<button
+  id="back-to-top"
+  type="button"
+  aria-label="Back to top"
+  tabindex="-1"
+  aria-hidden="true"
+  class="fixed bottom-8 right-8 z-50 flex h-10 w-10 flex-col items-center justify-center gap-0.5 border border-slate-200/20 bg-slate-900/80 backdrop-blur-sm text-slate-500 opacity-0 pointer-events-none hover:text-white hover:border-slate-200/60 focus-ring"
+  style="transition: opacity 400ms ease-in-out, width 300ms ease, height 300ms ease, background 300ms ease, border-color 300ms ease, backdrop-filter 300ms ease, gap 300ms ease, padding 300ms ease;"
+>
+  <span class="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-slate-400/50 transition-opacity duration-300"></span>
+  <span class="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-slate-400/50 transition-opacity duration-300"></span>
+  <svg class="transition-opacity duration-300" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="m18 15-6-6-6 6"/>
+  </svg>
+  <span class="text-[7px] uppercase tracking-widest font-display leading-none transition-opacity duration-300">TOP</span>
+</button>
 
-<script is:inline>
-    /** Scrolls the document to the top when
-     * the "Back to Top" button is clicked. */
-    function backToTop() {
-        document.querySelector("#back-to-top")?.addEventListener("click", () => {
-            document.body.scrollTop = 0; // For Safari
-            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-        });
-    }
+<style>
+  #back-to-top.collapsed {
+    width: 4px;
+    height: 24px;
+    padding: 0;
+    border-color: white;
+    background: white;
+    backdrop-filter: none;
+    gap: 0;
+  }
+  #back-to-top.collapsed .absolute,
+  #back-to-top.collapsed svg,
+  #back-to-top.collapsed span:not(.absolute) {
+    opacity: 0;
+    pointer-events: none;
+  }
+  #back-to-top.collapsed:hover {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+    border-color: rgba(226, 232, 240, 0.6);
+  }
+  #back-to-top.collapsed:hover .absolute,
+  #back-to-top.collapsed:hover svg,
+  #back-to-top.collapsed:hover span:not(.absolute) {
+    opacity: 1;
+  }
+</style>
 
-    backToTop();
+<script>
+  import { initBackToTop } from '../utils/backToTop';
+  import { BACK_TO_TOP } from '../utils/domContracts';
+
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('astro:page-load', () => {
+    cleanup?.();
+    const btn = document.getElementById(BACK_TO_TOP.btnId) as HTMLElement | null;
+    const sidebar = document.getElementById(BACK_TO_TOP.sidebarId) as HTMLElement | null;
+    if (btn) cleanup = initBackToTop(btn, sidebar);
+  });
 </script>

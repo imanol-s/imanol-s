@@ -1,0 +1,22 @@
+---
+import { getTechView } from '../data/techRegistry';
+
+interface Props {
+  techId: string;
+}
+const { techId } = Astro.props;
+const { displayName, iconPath } = getTechView(techId);
+---
+<span class="inline-flex items-center gap-1.5 px-2 py-1 bg-slate-800 text-[11px] uppercase tracking-widest text-slate-100 font-display">
+  {iconPath && (
+    <img
+      src={iconPath}
+      alt=""
+      width="16"
+      height="16"
+      loading="lazy"
+      decoding="async"
+    />
+  )}
+  {displayName}
+</span>

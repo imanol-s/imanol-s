@@ -20,6 +20,9 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Windows Zone.Identifier metadata files
+*:Zone.Identifier*
+
 # jetbrains setting folder
 .idea/
 
@@ -27,5 +30,60 @@ pnpm-debug.log*
 # vscode setting folder
 .vscode/
 
-# claude files
-.claude/
+# claude files (private)
+CLAUDE.local.md
+.claude/settings.local.json
+.claude/worktrees/
+
+# cursor auto-state
+.cursor/hooks/state/
+
+# firecrawl cache
+.firecrawl/
+
+# session memory plugin
+.remember/
+
+# npx skills default directories (unused)
+.adal/
+.agent/
+.augment/
+.codebuddy/
+.commandcode/
+.continue/
+.factory/
+.iflow/
+.junie/
+.kilocode/
+.kiro/
+.kode/
+.mcpjam/
+.mux/
+.neovate/
+.openhands/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.zencoder/
+/skills/
+
+# playwright mcp artifacts
+.playwright-mcp/
+
+# temporary preview files
+*.playwright-mcp-*
+
+# terrain preview screenshots
+terrain-previews/
+
+# root-level screenshots and docs
+blog.png
+command-palette-closed.png
+command-palette-open.png
+dark-mode.png
+home.png
+imanol-s-threat-model.md
+.gstack/

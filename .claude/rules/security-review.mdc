@@ -1,0 +1,62 @@
+---
+description: Security checklist before submitting changes
+globs: "**/*.{ts,tsx,astro,mjs}"
+alwaysApply: false
+---
+
+# Security Review Checklist
+
+Before submitting PRs, verify these security requirements:
+
+## XSS Prevention
+
+- [ ] No `innerHTML` with user-controlled data
+- [ ] Using `textContent` for plain text rendering
+- [ ] Using `createElement()` + `textContent` for structured content
+
+```typescript
+// VULNERABLE - never do this
+element.innerHTML = `<span>${userInput}</span>`;
+
+// SAFE
+const span = document.createElement('span');
+span.textContent = userInput;
+element.appendChild(span);
+```
+
+## External Links
+
+- [ ] All external links have `target="_blank"` AND `rel="noopener noreferrer"`
+
+```astro
+<!-- Correct -->
+<a href="https://example.com" target="_blank" rel="noopener noreferrer">Link</a>
+```
+
+## Secrets & Credentials
+
+- [ ] No API keys, tokens, or secrets in code
+- [ ] No `.env` files committed (use `.env.example` for templates)
+- [ ] No hardcoded credentials or passwords
+
+## Dependencies
+
+- [ ] New dependencies are from trusted sources
+- [ ] Checked for known vulnerabilities (`npm audit`)
+
+## Content Collections
+
+- [ ] User-submitted content is sanitized before rendering
+- [ ] Schema validation catches malicious input patterns
+
+## Headers (for deployment)
+
+Verify `netlify.toml` security headers are present:
+
+```toml
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+```

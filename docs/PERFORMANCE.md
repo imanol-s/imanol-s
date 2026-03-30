@@ -1,204 +1,118 @@
 # Performance Optimization Guide
 
-This document outlines performance optimizations implemented in this portfolio site and best practices for maintaining optimal performance.
+Performance optimizations and best practices for the portfolio site.
 
-## Implemented Optimizations
+## Current Architecture
 
-### 1. Image Loading Optimization
-**File**: `src/components/ProfileImage.astro`
+### React Islands (Client-Side JS)
 
-**Change**: Implemented eager loading for image imports
-```typescript
-// ✅ Optimized - Eager loading
-const images = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/assets/*.{jpeg,jpg,png,gif}', 
-  { eager: true }
-);
-```
+Three React components hydrate on the client:
 
-**Benefits**:
-- Images are loaded and processed at build time
-- Reduces runtime overhead
-- Better build-time error detection
-- Faster initial page load
+| Component | Directive | Size (gzip) | Purpose |
+| --- | --- | --- | --- |
+| `TopoBackground.tsx` | `client:only="react"` | ~1.1 KB | Animated SVG contours + parallax |
+| `TypewriterText.tsx` | `client:load` | ~0.7 KB | Hero name character animation |
+| `LoadingOverlay.tsx` | `client:only="react"` | — | Intro animation overlay (once per session) |
 
-### 2. Removed Unused Imports
-**Files**: 
-- `src/components/ProfileActionButton.astro`
-- `src/components/icons/LinkedIn.astro`
+Everything else is server-rendered Astro (zero client JS).
 
-**Changes**: 
-- Removed unused `LinkedIn` component import
-- Removed unused `Icon` import
+### Bundle Sizes (from build output)
 
-**Benefits**:
-- Smaller bundle size
-- Faster build times
-- Reduced dependency graph complexity
+| Asset | Raw | Gzip |
+| --- | --- | --- |
+| `client.js` (React runtime) | 136 KB | 44 KB |
+| `ClientRouter.js` (view transitions) | 15 KB | 5.3 KB |
+| `index.js` (React shared) | 6.8 KB | 2.7 KB |
+| `TopoBackground.js` | 2.3 KB | 1.1 KB |
+| `TypewriterText.js` | 1.2 KB | 0.7 KB |
+| `jsx-runtime.js` | 1.0 KB | 0.6 KB |
 
-### 3. TypeScript Type Safety
-**File**: `src/components/TabsButtons.tsx`
+### Build Stats
 
-**Change**: Replaced `any` type with proper interface
-```typescript
-// ❌ Before
-const TabsButtons = (props: any) => { ... }
+- Build time: ~1.6s total
+- Pages generated: 10 static HTML pages
+- Images: optimized with AVIF + WebP via `<Picture>` component
 
-// ✅ After
-interface TabsButtonsProps {
-    portfolio?: ReactNode;
-    about?: ReactNode;
-}
-const TabsButtons = (props: TabsButtonsProps) => { ... }
-```
-
-**Benefits**:
-- Better type checking at compile time
-- Improved IDE autocomplete
-- Catches potential bugs before runtime
-- Better code documentation
-
-### 4. Eliminated Redundant Object Creation
-**File**: `src/components/PostCard.astro`
-
-**Change**: Removed unnecessary intermediate object
-```typescript
-// ❌ Before - Creates unnecessary object
-const post = {
-    id,
-    data: { title, description, publishDate, tags, cover }
-};
-// Then access as: post.data.title
-
-// ✅ After - Direct prop usage
-const {id, title, description, publishDate, tags, cover} = Astro.props;
-// Access as: title
-```
-
-**Benefits**:
-- Reduced memory allocation
-- Fewer property lookups
-- Cleaner, more maintainable code
-
-## Performance Best Practices
+## Performance Patterns
 
 ### Images
-1. **Use WebP format**: Astro automatically optimizes images to WebP
-2. **Lazy loading**: Use `loading="lazy"` for images below the fold
-3. **Eager loading**: Use `loading="eager"` only for above-the-fold critical images
-4. **Proper dimensions**: Always specify width/height to prevent layout shift
 
-### JavaScript/TypeScript
-1. **Avoid `any` types**: Use proper TypeScript interfaces for type safety
-2. **Remove unused imports**: Regularly audit and remove dead code
-3. **Use const/let appropriately**: Prefer `const` for values that don't change
-4. **Minimize re-renders**: In React components, use proper dependency arrays
+- All images use Astro's `<Picture>` component with `formats={['avif']}` and `fallbackFormat="webp"` for optimal compression
+- Responsive `widths` and `sizes` attributes ensure browsers download the smallest adequate variant
+- Project card images: `widths={[300, 350]}` with `loading="lazy" decoding="async"`
+- Profile image: `widths={[256, 512]}` with `sizes="256px"`
+- Project detail hero: `widths={[640, 960, 1280]}` with responsive `sizes`
+- Blog images use view transitions via `transition:name`
 
-### Astro-Specific
-1. **Static by default**: Astro components are static by default - leverage this
-2. **Selective hydration**: Use `client:load`, `client:idle`, `client:visible` appropriately
-3. **Collection caching**: `getCollection()` results are cached during build
-4. **Partial hydration**: Only hydrate interactive components
+### Fonts
 
-### Asset Management
-1. **SVG icons**: Use inline SVGs for small icons (better than loading separate files)
-2. **Font loading**: Use `font-display: swap` for web fonts
-3. **CSS**: Tailwind's JIT mode only includes used classes
+- Latin-only `@font-face` declarations in `globals.css` replace full `@fontsource-variable` imports — eliminates Cyrillic/Greek/Vietnamese subset downloads
+- `font-display: swap` prevents invisible text during font load
+- `<link rel="preload" as="font" type="font/woff2">` in `<head>` eliminates the CSS→parse→download waterfall for Inter and JetBrains Mono
 
-## Build Performance
+### Navigation
 
-### Current Build Stats (measured from actual build)
-- Build time: ~5-6 seconds total
-  - Type checking: ~400-500ms
-  - Static build: ~2.8-2.9s
-  - Client build: ~770-800ms
-  - Route generation: ~120-130ms
-  - Image optimization: ~1-3ms (cached), ~1-1.1s (fresh)
-- Bundle sizes:
-  - Main JS bundle: 142.16 KB (45.66 KB gzipped)
-  - React components (TabsButtons): 35.39 KB (12.30 KB gzipped)
-  - Client router: 15.12 KB (5.18 KB gzipped)
-  - Client utilities: 1.82 KB (0.91 KB gzipped)
-- Pages generated: 9 static pages
-- Images optimized: 7 images (converted to WebP)
+- **Speculation Rules API** (`<script type="speculationrules">`) prerenders same-origin pages on hover in Chromium, enabling near-instant navigation
 
-### Monitoring
-Run these commands to check performance:
+### Deferred Rendering
+
+- `.render-deferred` utility class applies `content-visibility: auto` to off-screen sections (ExperienceTimeline, ProjectsCarousel), deferring their render cost until they near the viewport
+
+### Build
+
+- Vite `build.target: 'es2022'` drops legacy polyfills for smaller output
+- `assetsInlineLimit: 4096` inlines small assets as data URIs to reduce HTTP requests
+
+### Caching (Netlify)
+
+- AVIF images and hashed `_astro/*.woff2` files served with `Cache-Control: public, max-age=31536000, immutable`
+
+### Layout Shift Prevention
+
+- `TypewriterText`: invisible duplicate `<span>` reserves final dimensions before animation starts
+- All images have explicit `width`/`height` attributes
+- Fonts use `font-display: swap` in CSS `@font-face` declarations
+
+### Reduced Motion
+
+- `TypewriterText`: renders full text instantly, no caret
+- `.topo-lines`: animation disabled via `@media (prefers-reduced-motion: reduce)`
+- `.typing-caret`: hidden entirely under reduced motion
+
+### Background Performance
+
+- `TopoBackground` owns a single `requestAnimationFrame` loop
+- Event listeners use `{ passive: true }` for scroll/mousemove
+- SVG turbulence seed cycles every 2s (not every frame)
+- All background layers use `pointer-events: none`
+
+## Astro-Specific Patterns
+
+- **Static by default**: All pages are statically generated at build time
+- **Selective hydration**: Only `TopoBackground` and `TypewriterText` ship JS to the client
+- **Content collection caching**: `getCollection()` results are cached during build
+- **`client:only="react"`** for TopoBackground: skips SSR entirely (uses `window`/`requestAnimationFrame`)
+- **`client:load`** for TypewriterText: SSR-safe with `typeof window` guard, hydrates immediately
+
+## Monitoring
 
 ```bash
-# Build with timing information
+# Build with timing
 npm run build
 
 # Preview production build
 npm run preview
 
-# Check bundle size
+# Check bundle sizes
 npm run build && du -h dist/_astro/*
+
+# Lighthouse audit
+npx lighthouse https://imanols.dev --view
 ```
 
-## Future Optimization Opportunities
+### Target Metrics
 
-### 1. Code Splitting
-Currently, all React components are bundled together. Consider:
-- Splitting by route
-- Dynamic imports for heavy components
-
-### 2. Image Optimization
-- Consider using multiple image sizes (responsive images)
-- Implement blur-up loading for large images
-- Use AVIF format where supported
-
-### 3. Caching Strategy
-- Implement service worker for offline support
-- Add cache headers for static assets
-- Use Astro's built-in view transitions
-
-### 4. Content Strategy
-- Consider pagination for projects/blog posts if collections grow large
-- Implement search with a lightweight solution
-- Add RSS feed for blog posts
-
-## Performance Monitoring
-
-### Recommended Tools
-1. **Lighthouse**: Check Core Web Vitals
-   ```bash
-   npx lighthouse https://your-site.com --view
-   ```
-
-2. **Bundle Analyzer**: Visualize bundle size
-   ```bash
-   npm install -D rollup-plugin-visualizer
-   ```
-
-3. **Web Vitals**: Monitor real-user metrics
-   - LCP (Largest Contentful Paint): < 2.5s
-   - FID (First Input Delay): < 100ms
-   - CLS (Cumulative Layout Shift): < 0.1
-
-### Key Metrics to Monitor
-- **Time to First Byte (TTFB)**: Should be < 600ms
-- **First Contentful Paint (FCP)**: Should be < 1.8s
-- **Total Blocking Time (TBT)**: Should be < 200ms
-- **Speed Index**: Should be < 3.4s
-
-## Maintenance
-
-### Regular Checks
-1. **Monthly**: Run Lighthouse audit
-2. **Per release**: Check bundle sizes
-3. **Quarterly**: Update dependencies and check for deprecations
-4. **As needed**: Remove unused code and assets
-
-### Dependency Updates
-Keep dependencies up to date for performance improvements and security:
-```bash
-npm outdated
-npm update
-```
-
-## Additional Resources
-- [Astro Performance Guide](https://docs.astro.build/en/guides/performance/)
-- [Web.dev Performance](https://web.dev/performance/)
-- [React Performance](https://react.dev/learn/render-and-commit)
-- [Core Web Vitals](https://web.dev/vitals/)
+- LCP (Largest Contentful Paint): < 2.5s
+- FID (First Input Delay): < 100ms
+- CLS (Cumulative Layout Shift): < 0.1
+- TTFB (Time to First Byte): < 600ms (Netlify CDN)

@@ -6,14 +6,19 @@ applyTo: "**/*.{astro,ts,tsx,mjs,css,md,mdx}"
 
 ## Purpose
 
-Review instructions for a personal portfolio site built with Astro 5, React 18, Tailwind CSS 3, and TypeScript. Applies to all source files under `src/`, config files at the root, and content collections.
+Review instructions for a personal portfolio site built with Astro 6, React 18, Tailwind CSS 4, and TypeScript. Applies to all source files under `src/`, config files at the root, and content collections.
+
+## Instruction Precedence
+
+- This file is the canonical instruction source for coding agents in this repository.
+- If `AGENTS.md` or `CLAUDE.md` conflicts with this file, this file takes precedence.
+- `AGENTS.md` and `CLAUDE.md` should only contain tool-specific deltas and links back to this file.
 
 ## Naming Conventions
 
-- **Astro components**: PascalCase (e.g., `ProfileInfo.astro`, `PostCard.astro`)
-- **React components**: PascalCase `.tsx` files (e.g., `TabsButtons.tsx`)
-- **shadcn/ui components**: lowercase in `src/components/ui/` (e.g., `badge.tsx`, `button.tsx`)
-- **Data files**: PascalCase or camelCase in `src/data/` (e.g., `Jobs.ts`, `hardSkills.ts`)
+- **Astro components**: PascalCase (e.g., `SiteHeader.astro`, `PostCard.astro`)
+- **React components**: PascalCase `.tsx` files (e.g., `TopoBackground.tsx`, `TypewriterText.tsx`)
+- **Data files**: PascalCase or camelCase in `src/data/` (e.g., `Jobs.ts`, `education.ts`)
 - **Content files**: kebab-case for posts and projects (e.g., `crime-analysis.mdx`)
 - **SVG icons**: kebab-case in `src/icons/` (e.g., `github-fill.svg`)
 - **Interfaces**: PascalCase, defined in the file that uses them (not in separate type files)
@@ -24,58 +29,92 @@ Review instructions for a personal portfolio site built with Astro 5, React 18, 
 - TypeScript in strict mode (`astro/tsconfigs/strict`)
 - Prefer `const` for values that don't change; use arrow functions for utility exports
 - Use proper TypeScript interfaces instead of `any` — define props interfaces in each component
-- JSDoc comments on exported utility functions with `@param` and `@return` tags
-- Astro component frontmatter uses section comments to organize imports (e.g., `// component imports`, `// library imports`)
+- No `cn()` utility — use template literals or ternaries for conditional classes
 
 ```typescript
 // Correct: typed interface + destructured props
-interface Job {
+interface Props {
     title: string;
-    company: string;
-    currentJob: boolean;
+    description: string;
 }
-const { jobData } = Astro.props;
-const { title, company, currentJob } = jobData as Job;
-```
-
-```typescript
-// Correct: utility function with JSDoc
-/**
- * Merges multiple class values into a single string.
- * @param {...ClassValue[]} inputs - Class values to merge.
- * @return {string} Merged class names.
- */
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+const { title, description } = Astro.props;
 ```
 
 ## Architecture Rules
 
 - **Astro-first**: Default to `.astro` components. Only use React (`.tsx`) when client-side interactivity is required
-- **Island architecture**: React components hydrate via `client:visible`, `client:idle`, or `client:load` — never hydrate entire pages
+- **Island architecture**: Only three React islands ship JS to the client:
+  - `TopoBackground.tsx` — animated SVG background (`client:only="react"`, skips SSR)
+  - `TypewriterText.tsx` — hero name animation (`client:load`, SSR-safe)
+  - `LoadingOverlay.tsx` — session loading overlay (`client:only="react"`, skips SSR)
 - **Content collections**: All blog/project content goes through Astro content collections with Zod schemas in `src/content/config.ts` — do not bypass with raw file reads
-- **Static data**: Typed arrays/objects exported from `src/data/*.ts` for non-content data (jobs, skills, education)
+- **Static data**: Typed arrays/objects exported from `src/data/*.ts` for non-content data (jobs, education)
 - **Single layout**: All pages use `src/layouts/Layout.astro` — do not create additional layouts without justification
-- **shadcn/ui**: Add new UI primitives via `npx shadcn@latest add <component>`, do not hand-roll components that shadcn provides
+- **No shadcn/ui**: The shadcn stack has been removed. Build components with Tailwind utility classes directly
+
+## Site Configuration (`src/config.ts`)
+
+`src/config.ts` is the **single source of truth** for all personal and site data. Never hardcode personal values (name, bio, email, location, profession, etc.) anywhere in templates or components — always derive them from this file.
+
+**Rule**: When adding or editing a field in `src/config.ts`, update both `AGENTS.md` and `.github/copilot-instructions.md` in the same commit to keep this reference current.
+
+### `SITE` — site-wide metadata
+
+| Field | Value | Used by |
+|---|---|---|
+| `website` | `https://imanols.dev` | Canonical domain reference |
+| `title` | `"Imanol 'Oman' Saldana"` | Layout default title |
+| `description` | Portfolio SEO description | Layout default meta description |
+| `tags` | `["portfolio", "Resume cv", "Astro"]` | Meta keywords |
+| `ogImage` | `/og-image.webp` | Open Graph image |
+| `logo` | `"frog"` | Logo icon name |
+| `logoText` | `"Imanol"` | Nav brand text, page title prefixes |
+| `lang` | `"en"` | `<html lang>` attribute |
+| `favicon` | `/favicon.png` | `<link rel="icon">` |
+| `repository` | GitHub repo URL | Reference only |
+| `author` | `"Imanol Saldana"` | Meta author, copyright line |
+| `profile` | `https://imanols.dev` | Canonical profile URL |
+
+### `ME` — personal content
+
+| Field | Type | Used by |
+|---|---|---|
+| `name` | `string` | TypewriterText, image alt, nav aria-label |
+| `profession` | `string[]` | Hero subtitle (joined with `•`) |
+| `profileImage` | `string` | Filename reference for profile photo |
+| `aboutMe` | `string` | Hero paragraph, Layout description default |
+| `bio` | `string` | About section long-form paragraph |
+| `location` | `string` | About section dl, footer coordinates |
+| `focusAreas` | `string[]` | Hero specialty cards (3 boxes) |
+| `coreLanguages` | `string[]` | Tech Specs — Core Languages grid |
+| `competencies` | `string[]` | Tech Specs — Competencies list |
+| `languages` | `{name, level}[]` | Tech Specs — Communication table |
+| `profileFacts` | `{value, description}[]` | About section stats row |
+| `contactInfo.email` | `string` | Footer, About section, CommandPalette |
+| `contactInfo.linkedin` | `string` | Reference for LinkedIn URL |
+| `contactInfo.resumeDoc` | `string` | Resume PDF filename (served from `public/`) |
+
+### `SOCIALS` — social link entries
+
+Each entry: `{ name, url, icon, show }`. Consumed via `SOCIALS.find(s => s.name === '...')` in `SiteFooter.astro` and `index.astro`. The `icon` field is a legacy string name — inline SVGs are used instead of `<Icon>` calls.
 
 ## Error Handling
 
 - Content collection schemas validate at build time via Zod — ensure all required fields are present in frontmatter
 - The `astro check` command runs before every build (`npm run build`) — all TypeScript errors must be resolved
 - Use optional chaining for fields marked optional in schemas (e.g., `url` in projects)
-- Provide fallback rendering for empty collections (see `projects/index.astro` pattern: `allProjects.length > 0 ? ... : <p>No projects found.</p>`)
 
 ## Security Considerations
 
 - Never commit secrets or API keys; no `.env` files are used in this project
 - External links use `target="_blank"` with `rel="noopener noreferrer"`
-- Security headers are set in `netlify.toml` (`X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`)
+- Security headers are set in `netlify.toml` (`X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, `Content-Security-Policy`)
+- Netlify build environment pins Node 22 via `NODE_VERSION` in `netlify.toml`
 - Resume PDF is served as a static file from `public/` — do not inline sensitive personal data in source
 
 ### XSS Prevention
 
-**Never use `innerHTML` with user-controlled data** — it creates DOM-based XSS vulnerabilities where malicious HTML/JavaScript can be injected.
+**Never use `innerHTML` or Astro's `set:html` directive with user-controlled data** — it creates DOM-based XSS vulnerabilities where malicious HTML/JavaScript can be injected.
 
 ```typescript
 // VULNERABLE: Never do this
@@ -117,29 +156,57 @@ function displayName(name: string) {
 ```
 
 **Guidelines**:
+
 - Use `textContent` or `innerText` for plain text content
 - Use `createElement()` + `textContent` for structured content with user input
 - Only use `innerHTML` with static, trusted content (e.g., hardcoded strings)
 - Never interpolate user input directly into HTML strings
 
+**In Astro components, use `{}` interpolation — never `set:html` with dynamic data**:
+
+```astro
+<!-- ❌ NEVER DO THIS -->
+<div set:html={userInput} />
+
+<!-- ✅ SAFE: Astro automatically escapes expressions -->
+<div>{userInput}</div>
+<p>Welcome, {userName}!</p>
+```
+
+**Exception**: `innerHTML` / `set:html` is acceptable only with:
+
+- Hardcoded, static HTML strings
+- Content sanitized by a trusted library (e.g., DOMPurify)
+- Content from your own Astro content collections that you fully control
+
 ## Testing Guidelines
 
-- No test framework is configured — validate changes via `npm run build` (runs `astro check && astro build`)
-- Type-checking is the primary safety net; ensure `astro check` passes with 0 errors and 0 warnings
-- Preview production builds locally with `npm run preview` before deploying
+- Vitest + jsdom is configured. Run `npm run test` for a single pass or `npm run test:watch` for watch mode
+- Add `// @vitest-environment jsdom` at the top of test files that require browser APIs
+- Type-checking via `astro check` remains the primary safety net; tests supplement it for behavioral coverage
+
+### Mandatory Post-Edit Validation (Agent Requirement)
+
+- After **any file edit**, agents must run `npm run build` before finalizing a response.
+- After a successful build, agents must start preview with `npm run preview -- --port 4321`.
+- Agents must not consider a task complete until both commands have been executed and outcomes reported.
+- If port `4321` is occupied, agents should free the port and retry on `4321` rather than silently switching ports.
+- If build or preview fails, agents must report the exact blocker and either fix it or stop only when genuinely blocked.
 
 ## Performance
 
 - Use Astro's `<Image>` component for all images — provides automatic WebP conversion and responsive sizing
 - Set `loading="eager"` and `fetchpriority="high"` only for above-the-fold images; use `loading="lazy"` for everything else
-- Use `import.meta.glob` with `{ eager: true }` for build-time image loading
-- Keep the container narrow: max `520px` at lg, `620px` at xl — do not override without design intent
-- Minimize client-side JavaScript: only `TabsButtons.tsx` should hydrate; avoid adding new React islands unless truly interactive
+- Keep client JS minimal: only `TopoBackground.tsx`, `TypewriterText.tsx`, and `LoadingOverlay.tsx` hydrate — avoid adding new React islands unless truly interactive
+- Container: `max-w-7xl mx-auto px-6`
 
 ## Styling
 
-- Use project color tokens from `tailwind.config.mjs` — do not use hardcoded hex values
-- Dark mode is `prefers-color-scheme: media` (not class-based) — always provide both light and dark variants
-- Light mode primary: `primary-light` (gold `#FBD144`); dark mode primary: `primary-dark` (olive `#556B2F`)
-- Prose/typography colors are mapped in `src/styles/globals.css` — update both light and dark sections together
-- Use the `cn()` utility from `src/lib/utils.ts` for conditional class merging in React components
+- **Tailwind CSS 4** with CSS-first config in `src/styles/globals.css` — all tokens defined in `@theme {}` block
+- Dark mode is **class-based** via `<html class="dark">` (set by inline script in Layout.astro) — use `dark:` prefix in Tailwind or `.dark` selector in custom CSS
+- Design system: blueprint/topographic theme with slate palette
+- Color tokens: `primary` (#64748b), `accent` (#94a3b8), `background-light` (#f8fafc), `background-dark` (#0f172a)
+- Fonts: JetBrains Mono (`font-display`) for headings/nav/CTAs, Inter (`font-body`) for body text
+- Custom utility classes in globals.css: `cad-border`, `cta-primary`, `drawing-hover`, `focus-ring`, `horizontal-scroll-snap`, `typing-caret`, `project-mdx`, `topo-lines`
+- Blog prose uses `@tailwindcss/typography` `.prose` class with custom color overrides in globals.css
+- Scoped Astro `<style>` blocks cannot use `@apply` with Tailwind classes unless `@reference` is added — prefer plain CSS in scoped styles
