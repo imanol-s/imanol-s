@@ -7,6 +7,8 @@ import SiteFooter from "../components/SiteFooter.astro";
 import TopoBackground from "../components/TopoBackground.tsx";
 import LoadingOverlay from "../components/LoadingOverlay.tsx";
 import BackToTop from "../components/BackToTop.astro";
+import CommandPalette from "../components/CommandPalette.astro";
+import CommandPaletteHint from "../components/CommandPaletteHint.astro";
 
 import {SITE} from '@/config';
 
@@ -98,6 +100,8 @@ const {
 <LoadingOverlay client:only="react" />
 <TopoBackground client:only="react" />
 <BackToTop />
+<CommandPalette />
+<CommandPaletteHint />
 <SiteHeader />
 
 <main id="main-content" class="relative z-10 max-w-7xl mx-auto px-6 py-12">
