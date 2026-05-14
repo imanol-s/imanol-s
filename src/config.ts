@@ -1,5 +1,5 @@
 export const SITE = {
-  website: "https://imanols.dev", // replace this with your deployed domain
+  website: "https://imanols.dev",
   title: "Imanol 'Oman' Saldana",
   description: "Imanol's showcase",
   tags: ["portfolio", "Resume cv", "Astro"],
