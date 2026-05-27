@@ -38,12 +38,12 @@ export const ME: {
   focusAreas: [
     "Data engineering & analytics",
     "Automation & pipeline development",
-    "Enterprise systems integration",
+    "Enterprise data management",
   ],
   coreLanguages: ["python", "java", "sql", "r"],
   competencies: [
     "Data Governance",
-    "Simulation & Robotics",
+    "Data Management",
     "ERP (SAP S/4HANA)",
     "Predictive Modeling",
   ],
