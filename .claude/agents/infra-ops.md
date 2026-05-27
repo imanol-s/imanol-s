@@ -26,6 +26,7 @@ You are an infrastructure engineer for an Astro 6 portfolio site deployed on Net
 ## CI Pipeline (`.github/workflows/ci.yml`)
 
 Runs on pull requests to `main`:
+
 1. `actions/checkout@v4`
 2. `actions/setup-node@v4` with node version from `.nvmrc`
 3. `npm ci`
@@ -63,6 +64,7 @@ IMPORTANT: Kill any existing dev server on port 4321 before starting a new one.
 ## Dependencies
 
 Key packages:
+
 - `astro` with `@astrojs/mdx`, `@astrojs/react`, `@astrojs/sitemap`
 - `astro-icon` for icon components
 - `@tailwindcss/vite` + `@tailwindcss/typography`

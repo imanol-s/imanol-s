@@ -3,9 +3,9 @@
  * Single source of truth for all date rendering across the site.
  */
 export function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
   });
 }

@@ -28,24 +28,24 @@ All content lives in `src/content/` and is validated at build time via `src/cont
 ```yaml
 ---
 title: Post Title Here
-publishDate: 2025-06-15        # z.date() — bare YYYY-MM-DD, NO quotes
+publishDate: 2025-06-15 # z.date() — bare YYYY-MM-DD, NO quotes
 tags:
   - Tag1
   - Tag2
 description: One or two sentence description used in cards and SEO meta.
 cover:
-  src: "./images/<slug>/cover.webp"   # z.image() — relative path from the .md file
-  alt: "Descriptive alt text"          # optional but strongly recommended
+  src: "./images/<slug>/cover.webp" # z.image() — relative path from the .md file
+  alt: "Descriptive alt text" # optional but strongly recommended
 ---
 ```
 
 ### Optional Fields
 
 ```yaml
-author: Imanol Saldana          # string, optional
-updateDate: 2025-07-01          # z.date() — bare date, no quotes
+author: Imanol Saldana # string, optional
+updateDate: 2025-07-01 # z.date() — bare date, no quotes
 relatedPosts:
-  - other-post-slug             # reference to another post by its slug
+  - other-post-slug # reference to another post by its slug
 ```
 
 ### Body
@@ -69,10 +69,10 @@ summary: One or two sentence summary displayed on the project listing card.
 tags:
   - TypeScript
   - React
-startDate: 2024-01-15          # z.date() — bare YYYY-MM-DD, NO quotes
-endDate: 2025-05-30            # z.date() — bare YYYY-MM-DD, NO quotes
-cover: "./images/<slug>/cover.webp"     # bare image() path — NOT an object
-ogImage: "./images/<slug>/og.webp"     # plain z.string() — for Open Graph meta
+startDate: 2024-01-15 # z.date() — bare YYYY-MM-DD, NO quotes
+endDate: 2025-05-30 # z.date() — bare YYYY-MM-DD, NO quotes
+cover: "./images/<slug>/cover.webp" # bare image() path — NOT an object
+ogImage: "./images/<slug>/og.webp" # plain z.string() — for Open Graph meta
 # url: https://github.com/...           # optional — add only if live or published
 ---
 ```
@@ -81,6 +81,7 @@ ogImage: "./images/<slug>/og.webp"     # plain z.string() — for Open Graph met
 
 ```mdx
 ## Table of Contents
+
 1. [Overview](#overview)
 2. [Role](#role)
 3. [Problem](#problem)
@@ -109,34 +110,34 @@ How it was solved, key technical decisions, outcomes.
 
 ## Schema Comparison
 
-| Field | Blog Posts | Project Entries |
-|-------|-----------|-----------------|
-| `title` | required | required |
-| `description` | required | — |
-| `summary` | — | required |
-| `publishDate` | required | — |
-| `startDate` / `endDate` | — | both required |
-| `tags` | required array | required array |
-| `cover` | `{ src: image(), alt?: string }` | bare `image()` string |
-| `ogImage` | — | required `z.string()` |
-| `url` | — | optional `z.string()` |
-| `author` | optional string | — |
-| `updateDate` | optional date | — |
-| `relatedPosts` | optional reference array | — |
+| Field                   | Blog Posts                       | Project Entries       |
+| ----------------------- | -------------------------------- | --------------------- |
+| `title`                 | required                         | required              |
+| `description`           | required                         | —                     |
+| `summary`               | —                                | required              |
+| `publishDate`           | required                         | —                     |
+| `startDate` / `endDate` | —                                | both required         |
+| `tags`                  | required array                   | required array        |
+| `cover`                 | `{ src: image(), alt?: string }` | bare `image()` string |
+| `ogImage`               | —                                | required `z.string()` |
+| `url`                   | —                                | optional `z.string()` |
+| `author`                | optional string                  | —                     |
+| `updateDate`            | optional date                    | —                     |
+| `relatedPosts`          | optional reference array         | —                     |
 
 ---
 
 ## Common Mistakes
 
-| Mistake | Fix |
-|---------|-----|
-| Project `cover: { src: "...", alt: "..." }` | Bare path only: `cover: "./images/..."` |
-| Blog `cover: "./images/..."` (bare) | Object required: `cover: { src: "./images/...", alt: "..." }` |
-| Quoting dates: `publishDate: "2025-01-01"` | Bare date: `publishDate: 2025-01-01` |
-| Project file using `.md` extension | Must be `.mdx` — needed for the two-column layout |
-| Missing `ogImage` on a project | Required field — build fails without it |
-| Image path not relative to the content file | Path must be relative from the `.md`/`.mdx` file location |
-| `relatedPosts` referencing a non-existent slug | Slug must match an existing file in `src/content/posts/` |
+| Mistake                                        | Fix                                                           |
+| ---------------------------------------------- | ------------------------------------------------------------- |
+| Project `cover: { src: "...", alt: "..." }`    | Bare path only: `cover: "./images/..."`                       |
+| Blog `cover: "./images/..."` (bare)            | Object required: `cover: { src: "./images/...", alt: "..." }` |
+| Quoting dates: `publishDate: "2025-01-01"`     | Bare date: `publishDate: 2025-01-01`                          |
+| Project file using `.md` extension             | Must be `.mdx` — needed for the two-column layout             |
+| Missing `ogImage` on a project                 | Required field — build fails without it                       |
+| Image path not relative to the content file    | Path must be relative from the `.md`/`.mdx` file location     |
+| `relatedPosts` referencing a non-existent slug | Slug must match an existing file in `src/content/posts/`      |
 
 ---
 

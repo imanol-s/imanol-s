@@ -13,10 +13,10 @@ You are a data specialist for the imanols.dev portfolio site. Your job is to upd
 
 ## Data Files Overview
 
-| File | Exports | Used by |
-|------|---------|---------|
-| `src/data/Jobs.ts` | `jobs: WorkExperience[]` | Homepage experience timeline |
-| `src/data/education.ts` | `education: Education[]` | Homepage about / education section |
+| File                    | Exports                         | Used by                              |
+| ----------------------- | ------------------------------- | ------------------------------------ |
+| `src/data/Jobs.ts`      | `jobs: WorkExperience[]`        | Homepage experience timeline         |
+| `src/data/education.ts` | `education: Education[]`        | Homepage about / education section   |
 | `src/data/techIcons.ts` | `ICON_MAP`, `getTechIconPath()` | Project cards, component tech stacks |
 
 ---
@@ -27,16 +27,19 @@ You are a data specialist for the imanols.dev portfolio site. Your job is to upd
 interface WorkExperience {
   company: string;
   role: string;
-  startDate: string;     // Human-readable: "June 2023"
-  endDate: string;       // Human-readable: "Present" or "August 2024"
+  startDate: string; // Human-readable: "June 2023"
+  endDate: string; // Human-readable: "Present" or "August 2024"
   description: string[]; // Bullet points rendered in the timeline
-  tags: string[];        // Tech stack tags (matched against ICON_MAP for icons)
+  tags: string[]; // Tech stack tags (matched against ICON_MAP for icons)
 }
 
-export const jobs: WorkExperience[] = [ /* most recent first */ ];
+export const jobs: WorkExperience[] = [
+  /* most recent first */
+];
 ```
 
 **Rules:**
+
 - Entries are rendered in declaration order — put the most recent role first.
 - `description` is an **array of strings** (bullet points), not a single string.
 - `startDate` and `endDate` are human-readable strings — not ISO dates or `Date` objects.
@@ -52,15 +55,18 @@ interface Education {
   institution: string;
   degree: string;
   field: string;
-  startDate: string;     // Human-readable: "August 2021"
-  endDate: string;       // Human-readable: "December 2025"
-  description?: string;  // Optional single string (not an array)
+  startDate: string; // Human-readable: "August 2021"
+  endDate: string; // Human-readable: "December 2025"
+  description?: string; // Optional single string (not an array)
 }
 
-export const education: Education[] = [ /* most recent first */ ];
+export const education: Education[] = [
+  /* most recent first */
+];
 ```
 
 **Rules:**
+
 - `description` here is an optional **single string**, not an array (unlike `WorkExperience`).
 - Dates are human-readable strings.
 
@@ -70,18 +76,19 @@ export const education: Education[] = [ /* most recent first */ ];
 
 ```typescript
 export const ICON_MAP: Record<string, string> = {
-  "TypeScript": "typescript",   // key = tag label, value = Catppuccin icon filename (no extension)
-  "React": "react",
+  TypeScript: "typescript", // key = tag label, value = Catppuccin icon filename (no extension)
+  React: "react",
   // ...
 };
 
 export function getTechIconPath(tag: string): string {
   const iconName = ICON_MAP[tag];
-  return iconName ? `/icons/catppuccin/${iconName}.svg` : '';
+  return iconName ? `/icons/catppuccin/${iconName}.svg` : "";
 }
 ```
 
 **Rules:**
+
 - Icon files live in `public/icons/catppuccin/`. Only add a `ICON_MAP` entry if the corresponding `.svg` file already exists in that directory.
 - The key is the exact tag label string used in content frontmatter and data files.
 - The value is the filename without the `.svg` extension.

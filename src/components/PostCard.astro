@@ -1,6 +1,7 @@
 ---
 import { Picture } from "astro:assets";
 import { Icon } from "astro-icon/components";
+import { formatDate } from "../utils/formatDate";
 
 interface Props {
   id: string;
@@ -22,13 +23,15 @@ const { id, title, description, publishDate, tags, cover } =
   href={`/blog/${id}`}
   class="group flex flex-col md:flex-row md:items-center gap-5 p-5 cad-border bg-slate-50 dark:bg-slate-900 hover:bg-white dark:hover:bg-slate-800 transition-colors"
 >
-  <div class="flex-none w-full md:w-40 h-40 overflow-hidden border border-slate-200 dark:border-slate-800">
+  <div
+    class="flex-none w-full md:w-40 h-40 overflow-hidden border border-slate-200 dark:border-slate-800"
+  >
     <Picture
       transition:name={`${id}-image`}
       src={cover.src}
       alt={cover.alt ?? title}
       class="w-full h-full object-cover"
-      formats={['avif']}
+      formats={["avif"]}
       fallbackFormat="webp"
       widths={[160, 320]}
       sizes="(max-width: 768px) 100vw, 160px"
@@ -44,7 +47,7 @@ const { id, title, description, publishDate, tags, cover } =
           class="text-sm text-slate-500"
           datetime={publishDate.toISOString()}
         >
-          {publishDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
+          {formatDate(publishDate)}
         </time>
       </div>
       <span class="text-slate-500"> &middot; </span>
@@ -52,9 +55,13 @@ const { id, title, description, publishDate, tags, cover } =
         {tags.map((tag) => <span class="text-sm text-slate-500">#{tag}</span>)}
       </div>
     </div>
-    <h3 class="text-xl font-display font-bold text-slate-900 dark:text-white">{title}</h3>
+    <h3 class="text-xl font-display font-bold text-slate-900 dark:text-white">
+      {title}
+    </h3>
     <div class="flex flex-col gap-4">
-      <p class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">{description}</p>
+      <p class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+        {description}
+      </p>
     </div>
   </div>
 </a>

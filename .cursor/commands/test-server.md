@@ -31,11 +31,11 @@ Using the `cursor-ide-browser` MCP tools, inspect every key page. For **each** p
 
 **Pages to visit** (on `http://localhost:4321`):
 
-| Route | What to verify |
-|---|---|
-| `/` | Hero renders, navigation links work, sections visible |
-| `/blog` | Blog listing page loads, post cards render |
-| `/projects` | Project listing page loads, project cards render |
+| Route       | What to verify                                        |
+| ----------- | ----------------------------------------------------- |
+| `/`         | Hero renders, navigation links work, sections visible |
+| `/blog`     | Blog listing page loads, post cards render            |
+| `/projects` | Project listing page loads, project cards render      |
 
 ### 4. Report
 

@@ -2,11 +2,12 @@
 
 ## Commands
 
-npm run dev        # Start dev server
-npm run build      # astro check + astro build
-npm run test       # vitest run
+npm run dev # Start dev server
+npm run build # astro check + astro build
+npm run test # vitest run (unit tests)
 npm run test:watch # vitest (watch mode)
-npx astro check    # Type-check Astro + TS files
+npm run test:e2e # playwright (UI/e2e tests, auto-starts preview server)
+npx astro check # Type-check Astro + TS files
 
 ## Architecture
 
@@ -31,6 +32,7 @@ npx astro check    # Type-check Astro + TS files
 Vitest + jsdom. Add `// @vitest-environment jsdom` directive for tests needing browser APIs.
 Test files live alongside source: `foo.ts` → `foo.test.ts`.
 Hooks tested with `@testing-library/react` `renderHook` + `act`.
+Playwright e2e tests in `e2e/` — run with `npm run test:e2e`. Uses `webServer` config to auto-start `npm run preview`. Use Playwright for all UI-related testing (layout, images, navigation, responsiveness).
 
 ## Code Style
 

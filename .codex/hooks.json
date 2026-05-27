@@ -1,0 +1,29 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; npx prettier --write --ignore-unknown \"$f\"; } 2>/dev/null || true",
+            "timeout": 15,
+            "statusMessage": "Formatting..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/imanol/Documents/Projects/imanol-s/.codex/hooks/prompt-commit.sh'",
+            "timeout": 30,
+            "statusMessage": "Checking for uncommitted changes..."
+          }
+        ]
+      }
+    ]
+  }
+}

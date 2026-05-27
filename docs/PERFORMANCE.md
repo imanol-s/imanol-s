@@ -8,24 +8,24 @@ Performance optimizations and best practices for the portfolio site.
 
 Three React components hydrate on the client:
 
-| Component | Directive | Size (gzip) | Purpose |
-| --- | --- | --- | --- |
-| `TopoBackground.tsx` | `client:only="react"` | ~1.1 KB | Animated SVG contours + parallax |
-| `TypewriterText.tsx` | `client:load` | ~0.7 KB | Hero name character animation |
-| `LoadingOverlay.tsx` | `client:only="react"` | — | Intro animation overlay (once per session) |
+| Component            | Directive             | Size (gzip) | Purpose                                    |
+| -------------------- | --------------------- | ----------- | ------------------------------------------ |
+| `TopoBackground.tsx` | `client:only="react"` | ~1.1 KB     | Animated SVG contours + parallax           |
+| `TypewriterText.tsx` | `client:load`         | ~0.7 KB     | Hero name character animation              |
+| `LoadingOverlay.tsx` | `client:only="react"` | —           | Intro animation overlay (once per session) |
 
 Everything else is server-rendered Astro (zero client JS).
 
 ### Bundle Sizes (from build output)
 
-| Asset | Raw | Gzip |
-| --- | --- | --- |
-| `client.js` (React runtime) | 136 KB | 44 KB |
-| `ClientRouter.js` (view transitions) | 15 KB | 5.3 KB |
-| `index.js` (React shared) | 6.8 KB | 2.7 KB |
-| `TopoBackground.js` | 2.3 KB | 1.1 KB |
-| `TypewriterText.js` | 1.2 KB | 0.7 KB |
-| `jsx-runtime.js` | 1.0 KB | 0.6 KB |
+| Asset                                | Raw    | Gzip   |
+| ------------------------------------ | ------ | ------ |
+| `client.js` (React runtime)          | 136 KB | 44 KB  |
+| `ClientRouter.js` (view transitions) | 15 KB  | 5.3 KB |
+| `index.js` (React shared)            | 6.8 KB | 2.7 KB |
+| `TopoBackground.js`                  | 2.3 KB | 1.1 KB |
+| `TypewriterText.js`                  | 1.2 KB | 0.7 KB |
+| `jsx-runtime.js`                     | 1.0 KB | 0.6 KB |
 
 ### Build Stats
 

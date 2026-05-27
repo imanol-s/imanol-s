@@ -17,7 +17,7 @@ cover:
 
 For most of my life, I identified as an introvert. I preferred quiet environments, deep one-on-one conversations, and often felt drained after extended social interaction. While these traits served me well in academic settings, the transition into a corporate environment challenged me in unexpected ways—which I accepted with open arms.
 
-Introverts who want to speak up often experience a kind of internal tug-of-war: they rehearse what they want to say in their head, wait for the “right” moment to jump in, and sometimes overanalyze how their words might be received. This hesitation can lead to missed opportunities—not because they lack ideas, but because *the friction between thought and expression is real*.
+Introverts who want to speak up often experience a kind of internal tug-of-war: they rehearse what they want to say in their head, wait for the “right” moment to jump in, and sometimes overanalyze how their words might be received. This hesitation can lead to missed opportunities—not because they lack ideas, but because _the friction between thought and expression is real_.
 
 ## The Reality
 
@@ -26,7 +26,6 @@ In the workplace, communication is currency. Meetings, presentations, networking
 > Introversion isn’t a weakness—it’s a trait. But like any trait, it can be adapted to fit the environment you’re in.
 
 As a Computer Science major, I was well aware that technical skills often take center stage in our field—but communication is what amplifies impact. Knowing that many CS students (myself included) don’t naturally gravitate toward public speaking or group discussions only increased my motivation to improve.
-
 
 ## Small Shifts, Big Impact
 

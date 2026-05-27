@@ -1,5 +1,11 @@
-import { useSyncExternalStore } from 'react';
-import { transition, getInitialState, LIFECYCLE_SESSION_KEY, type State, type Action } from '../utils/siteLifecycle';
+import { useSyncExternalStore } from "react";
+import {
+  transition,
+  getInitialState,
+  LIFECYCLE_SESSION_KEY,
+  type State,
+  type Action,
+} from "../utils/siteLifecycle";
 
 type Listener = () => void;
 
@@ -21,7 +27,7 @@ function ensureInitialized(): State {
 
 /** Notifies all registered store listeners of a state change. */
 function notify() {
-  listeners.forEach(fn => fn());
+  listeners.forEach((fn) => fn());
 }
 
 /**
@@ -35,8 +41,10 @@ export function dispatch(action: Action) {
   const state = ensureInitialized();
   const next = transition(state, action);
   if (next === state) return;
-  if (next === 'ready' && state !== 'ready') {
-    try { sessionStorage.setItem(LIFECYCLE_SESSION_KEY, 'true'); } catch {}
+  if (next === "ready" && state !== "ready") {
+    try {
+      sessionStorage.setItem(LIFECYCLE_SESSION_KEY, "true");
+    } catch {}
   }
   currentState = next;
   notify();
@@ -70,4 +78,3 @@ export function _resetForTesting() {
   currentState = null;
   listeners.clear();
 }
-

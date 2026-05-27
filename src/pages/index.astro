@@ -1,12 +1,16 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/HeroSection.astro';
-import ProjectsCarousel from '../components/ProjectsCarousel.astro';
-import ExperienceTimeline from '../components/ExperienceTimeline.astro';
-import { ME, SITE } from '../config';
+import Layout from "../layouts/Layout.astro";
+import HeroSection from "../components/HeroSection.astro";
+import ProjectsCarousel from "../components/ProjectsCarousel.astro";
+import ExperienceTimeline from "../components/ExperienceTimeline.astro";
+import { ME, SITE } from "../config";
 ---
 
-<Layout title={`${SITE.author} | Portfolio`} description={ME.aboutMe} scrollSmooth={true}>
+<Layout
+  title={`${SITE.author} | Portfolio`}
+  description={ME.aboutMe}
+  scrollSmooth={true}
+>
   <HeroSection />
 
   <ProjectsCarousel />

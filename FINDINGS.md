@@ -9,13 +9,13 @@
 
 ## Panel
 
-| Agent | Axis | Stance |
-|---|---|---|
-| **island-advocate** | React island architecture | Defend current 3-island constraint |
-| **perf-skeptic** | Performance & loading strategy | Challenge overlay orchestration cost |
-| **content-analyst** | Content & data architecture | Evaluate content collections + techRegistry |
-| **style-critic** | Styling & design system | Assess Tailwind 4 + dark-mode-only |
-| **nav-explorer** | Navigation & view transitions | Audit ClientRouter + transition patterns |
+| Agent               | Axis                           | Stance                                      |
+| ------------------- | ------------------------------ | ------------------------------------------- |
+| **island-advocate** | React island architecture      | Defend current 3-island constraint          |
+| **perf-skeptic**    | Performance & loading strategy | Challenge overlay orchestration cost        |
+| **content-analyst** | Content & data architecture    | Evaluate content collections + techRegistry |
+| **style-critic**    | Styling & design system        | Assess Tailwind 4 + dark-mode-only          |
+| **nav-explorer**    | Navigation & view transitions  | Audit ClientRouter + transition patterns    |
 
 ---
 
@@ -66,6 +66,7 @@ These items had full agreement across all five agents:
 **Resolved during debate: No.** style-critic initially argued for CSS-only, but retracted after island-advocate demonstrated that the rAF loop (TopoBackground.tsx:50-64) mutates `feTurbulence.baseFrequency` at ~0.00001 delta per frame using `toFixed(5)` precision. CSS `@keyframes` cannot animate SVG filter primitive attributes at this granularity — at lower precision the attribute jumps every ~111 frames causing visible stutter.
 
 The CSS/rAF split is correctly architected and complementary:
+
 - `.topo-lines` CSS keyframe handles position/rotation (GPU-composited, zero main-thread cost)
 - React rAF handles `baseFrequency` mutation (main thread, justified by precision requirements)
 
@@ -77,33 +78,33 @@ The CSS/rAF split is correctly architected and complementary:
 
 ### P0 — Bugs / Consistency Breaks
 
-| # | What | Where | Evidence |
-|---|---|---|---|
-| 1 | Replace `history.back()` with `<a href>` link | `BackBtn.astro:7` | Bypasses ClientRouter, breaks shared-element morph on return |
-| 2 | Replace hardcoded `bg-slate-800` with design token | `TagPill.astro:8` | Only component bypassing `@theme` token system |
+| #   | What                                               | Where             | Evidence                                                     |
+| --- | -------------------------------------------------- | ----------------- | ------------------------------------------------------------ |
+| 1   | Replace `history.back()` with `<a href>` link      | `BackBtn.astro:7` | Bypasses ClientRouter, breaks shared-element morph on return |
+| 2   | Replace hardcoded `bg-slate-800` with design token | `TagPill.astro:8` | Only component bypassing `@theme` token system               |
 
 ### P1 — Performance Wins
 
-| # | What | Where | Evidence |
-|---|---|---|---|
-| 3 | Reduce overlay delay from 600ms to ~200ms | `LoadingOverlay.tsx:39` | 1100ms mandatory blank screen on cold load |
-| 4 | Scope overlay to homepage only | `Layout.astro:74-75` | Content pages block behind overlay with no consumers |
-| 5 | Add `transition:persist` to island wrappers | `Layout.astro:75-76` | Prevents `client:only` island remount on every navigation |
+| #   | What                                        | Where                   | Evidence                                                  |
+| --- | ------------------------------------------- | ----------------------- | --------------------------------------------------------- |
+| 3   | Reduce overlay delay from 600ms to ~200ms   | `LoadingOverlay.tsx:39` | 1100ms mandatory blank screen on cold load                |
+| 4   | Scope overlay to homepage only              | `Layout.astro:74-75`    | Content pages block behind overlay with no consumers      |
+| 5   | Add `transition:persist` to island wrappers | `Layout.astro:75-76`    | Prevents `client:only` island remount on every navigation |
 
 ### P2 — Architecture Simplification (Requires Profiling)
 
-| # | What | Where | Evidence |
-|---|---|---|---|
-| 6 | Try `client:idle` for TopoBackground | `Layout.astro:76` | May eliminate overlay dependency entirely |
-| 7 | Consider throttling or OffscreenCanvas for topo rAF | `TopoBackground.tsx:50-64` | Main-thread SVG filter mutation; CSS-only ruled out (precision required) |
-| 8 | Decouple TypewriterText from overlay signal | `useOverlayReady.ts` | Typewriter gate is aesthetic, not functional |
+| #   | What                                                | Where                      | Evidence                                                                 |
+| --- | --------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------ |
+| 6   | Try `client:idle` for TopoBackground                | `Layout.astro:76`          | May eliminate overlay dependency entirely                                |
+| 7   | Consider throttling or OffscreenCanvas for topo rAF | `TopoBackground.tsx:50-64` | Main-thread SVG filter mutation; CSS-only ruled out (precision required) |
+| 8   | Decouple TypewriterText from overlay signal         | `useOverlayReady.ts`       | Typewriter gate is aesthetic, not functional                             |
 
 ### P3 — Content Modeling
 
-| # | What | Where | Evidence |
-|---|---|---|---|
-| 9 | Rename `goals` to `highlights` or split into `achievements`/`goals` | `career.ts` | Mixed tenses in same array |
-| 10 | Document `resetOverlayReady()` ordering constraint in code | `overlayReady.ts` | Currently only documented in CLAUDE.md |
+| #   | What                                                                | Where             | Evidence                               |
+| --- | ------------------------------------------------------------------- | ----------------- | -------------------------------------- |
+| 9   | Rename `goals` to `highlights` or split into `achievements`/`goals` | `career.ts`       | Mixed tenses in same array             |
+| 10  | Document `resetOverlayReady()` ordering constraint in code          | `overlayReady.ts` | Currently only documented in CLAUDE.md |
 
 ---
 

@@ -1,14 +1,20 @@
-import { useState, useEffect, useCallback, useRef, type CSSProperties } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  type CSSProperties,
+} from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useReadyGate } from "../hooks/useReadyGate";
 
 const CARET_STYLE: CSSProperties = {
-  display: 'inline-block',
-  width: '0.6em',
-  height: '1em',
-  backgroundColor: 'var(--color-primary)',
+  display: "inline-block",
+  width: "0.6em",
+  height: "1em",
+  backgroundColor: "var(--color-primary)",
   marginLeft: 2,
-  verticalAlign: 'text-bottom',
+  verticalAlign: "text-bottom",
 };
 
 function Caret({ hidden }: { hidden: boolean }) {
@@ -16,12 +22,12 @@ function Caret({ hidden }: { hidden: boolean }) {
 
   useEffect(() => {
     if (hidden) return;
-    const id = setInterval(() => setVisible(v => !v), 500);
+    const id = setInterval(() => setVisible((v) => !v), 500);
     return () => clearInterval(id);
   }, [hidden]);
 
   const opacity = hidden ? 0 : visible ? 1 : 0;
-  const transition = hidden ? 'opacity 0.5s ease-out' : undefined;
+  const transition = hidden ? "opacity 0.5s ease-out" : undefined;
 
   return <span style={{ ...CARET_STYLE, opacity, transition }} />;
 }

@@ -29,34 +29,34 @@ You orchestrate the `/feature` workflow for the imanols.dev portfolio site. You 
 
 Initialize and track these at the start of every session:
 
-| Variable | Type | Initial |
-|----------|------|---------|
-| `task_type` | `ui` \| `content` \| `data` | unset |
-| `tsx_touched` | boolean | `false` |
-| `impl_agent` | agent name string | unset |
-| `confirm_rejections` | integer | `0` |
-| `review_loops` | integer | `0` |
-| `typecheck_retries` | integer | `0` |
+| Variable             | Type                        | Initial |
+| -------------------- | --------------------------- | ------- |
+| `task_type`          | `ui` \| `content` \| `data` | unset   |
+| `tsx_touched`        | boolean                     | `false` |
+| `impl_agent`         | agent name string           | unset   |
+| `confirm_rejections` | integer                     | `0`     |
+| `review_loops`       | integer                     | `0`     |
+| `typecheck_retries`  | integer                     | `0`     |
 
 ## Agent Routing Table
 
-| `task_type` | `impl_agent` |
-|-------------|--------------|
-| `ui` | `ui-builder` |
-| `content` | `content-editor` |
-| `data` | `data-manager` |
+| `task_type` | `impl_agent`     |
+| ----------- | ---------------- |
+| `ui`        | `ui-builder`     |
+| `content`   | `content-editor` |
+| `data`      | `data-manager`   |
 
 ## Stage Activation Matrix
 
-| Stage | ui | content | data |
-|-------|----|---------|------|
-| 1–6 | ✓ | ✓ | ✓ |
-| 7 React Audit | ✓ (tsx_touched only) | — | — |
-| 8 Type-check | ✓ | ✓ | ✓ |
-| 9 Build + Preview | ✓ | ✓ | ✓ |
-| 10 Document | ✓ (structure/island changes only) | — | — |
-| 11 Final Audit | ✓ | ✓ | ✓ |
-| 12 Summary | ✓ | ✓ | ✓ |
+| Stage             | ui                                | content | data |
+| ----------------- | --------------------------------- | ------- | ---- |
+| 1–6               | ✓                                 | ✓       | ✓    |
+| 7 React Audit     | ✓ (tsx_touched only)              | —       | —    |
+| 8 Type-check      | ✓                                 | ✓       | ✓    |
+| 9 Build + Preview | ✓                                 | ✓       | ✓    |
+| 10 Document       | ✓ (structure/island changes only) | —       | —    |
+| 11 Final Audit    | ✓                                 | ✓       | ✓    |
+| 12 Summary        | ✓                                 | ✓       | ✓    |
 
 ---
 
@@ -65,6 +65,7 @@ Initialize and track these at the start of every session:
 **Goal**: Classify the request and identify exactly what will change.
 
 **Actions**:
+
 1. Read `.github/copilot-instructions.md`.
 2. If the request involves content, also read `src/content/config.ts`.
 3. Classify as one of:
@@ -86,6 +87,7 @@ Initialize and track these at the start of every session:
 **Goal**: Ground the implementation in existing codebase patterns.
 
 **Actions**:
+
 1. Invoke the `explore` subagent with a targeted query: find 2–3 existing files most similar to what will be built.
 2. Extract from those files:
    - File paths and naming conventions in use
@@ -104,6 +106,7 @@ Initialize and track these at the start of every session:
 **Goal**: Produce a complete, unambiguous implementation spec. No code is written in this stage.
 
 **Actions**:
+
 1. Use the Stage 2 research to identify the naming conventions, interfaces, and utility patterns to reuse.
 2. Determine the exact file structure based on `task_type`:
    - `ui`: component hierarchy, page placement, layout usage
@@ -112,6 +115,7 @@ Initialize and track these at the start of every session:
 3. Produce the spec. It must include every item below that applies:
 
 **Spec must include**:
+
 - **File paths** — exact filenames with correct casing and extension
 - **Interfaces** — TypeScript shape for any new types (no placeholder fields)
 - **Frontmatter template** — fully pre-filled YAML for content tasks (drawn from `src/content/config.ts` schema; no empty fields)
@@ -129,6 +133,7 @@ Do not write file contents or implementation code in this stage. Describe the sh
 **Goal**: Explicit human approval before any file is written.
 
 **Actions**:
+
 1. Present the Stage 3 spec to the user clearly.
 2. Wait for a response.
    - **Approved** (any affirmative): proceed to Stage 5.
@@ -146,6 +151,7 @@ Do not write file contents or implementation code in this stage. Describe the sh
 **Goal**: Write all files per the approved Stage 3 spec.
 
 **Actions**:
+
 1. Invoke `impl_agent` with:
    - The complete Stage 3 spec as a binding contract
    - The patterns from Stage 2 as concrete examples
@@ -163,15 +169,16 @@ Do not write file contents or implementation code in this stage. Describe the sh
 **Goal**: Independent review of the Stage 5 output by a different agent than the one that wrote it.
 
 **Actions**:
+
 1. Invoke `site-reviewer`, scoped strictly to the files written in Stage 5. — This is the **first review** (`review_loops = 0`).
 2. If clean: proceed to Stage 7 immediately.
 3. If violations found:
-    a. Invoke `impl_agent` to fix each violation.
-    b. Increment `review_loops`.
-    c. Re-invoke `site-reviewer` on the same files.
-    d. If clean: proceed to Stage 7.
-    e. If violations still found and `review_loops == 2`: **stop looping** — this means 2 fix attempts have been made; record all unresolved violations, note them in the Stage 12 summary, proceed to Stage 7.
-    f. If violations still found and `review_loops < 2`: return to step 3a.
+   a. Invoke `impl_agent` to fix each violation.
+   b. Increment `review_loops`.
+   c. Re-invoke `site-reviewer` on the same files.
+   d. If clean: proceed to Stage 7.
+   e. If violations still found and `review_loops == 2`: **stop looping** — this means 2 fix attempts have been made; record all unresolved violations, note them in the Stage 12 summary, proceed to Stage 7.
+   f. If violations still found and `review_loops < 2`: return to step 3a.
 
 **Output**: Review result — clean / fixed violations / unresolved violations with file:line references.
 
@@ -186,6 +193,7 @@ Do not write file contents or implementation code in this stage. Describe the sh
 **Goal**: Apply React-specific best practices to any `.tsx` files written in Stage 5.
 
 **Actions**:
+
 1. Invoke `ui-builder` with the following constrained scope:
    - Pass only the `.tsx` files written in Stage 5
    - Instruction: review these files for React best-practice violations, then fix any violations found. Do not refactor or rewrite code outside the violation scope.
@@ -203,6 +211,7 @@ Do not write file contents or implementation code in this stage. Describe the sh
 **Goal**: Confirm zero TypeScript errors before attempting a build.
 
 **Actions**:
+
 1. Run:
    ```
    npx astro check
@@ -225,16 +234,22 @@ Do not write file contents or implementation code in this stage. Describe the sh
 **Goal**: Produce a clean production build and confirm it serves.
 
 **Actions**:
+
 1. Check for an existing process on port 4321:
-    ```
-    lsof -ti:4321
-    ```
-    - If a PID is returned: `kill $(lsof -ti:4321) 2>/dev/null`, then poll until the port is free (recheck every second for up to 5 seconds).
-    - If the port is still occupied after 5 seconds: **HALT** — report the PID and process name. Do not proceed.
+
+   ```
+   lsof -ti:4321
+   ```
+
+   - If a PID is returned: `kill $(lsof -ti:4321) 2>/dev/null`, then poll until the port is free (recheck every second for up to 5 seconds).
+   - If the port is still occupied after 5 seconds: **HALT** — report the PID and process name. Do not proceed.
+
 2. Run:
+
    ```
    npm run build && npm run preview -- --port 4321
    ```
+
    - If the build step fails: **HALT** — output the exact build error. Do not proceed to Stage 10.
    - If the preview step fails: report the error, note it in the Stage 12 summary, proceed to Stage 10.
 
@@ -251,10 +266,11 @@ Do not write file contents or implementation code in this stage. Describe the sh
 **Goal**: Keep project documentation current with structural changes.
 
 **Actions**:
+
 1. Run:
-    ```
-    git diff --name-only HEAD
-    ```
+   ```
+   git diff --name-only HEAD
+   ```
 2. Apply these rules:
    - New `.astro` page or component → update `docs/SITE_STRUCTURE.md`
    - New `.tsx` React island → update `docs/PERFORMANCE.md`
@@ -271,6 +287,7 @@ Do not write file contents or implementation code in this stage. Describe the sh
 **Goal**: Comprehensive quality check across all changed files.
 
 **Actions**:
+
 1. Invoke `site-reviewer` with:
    - Scope: files changed in Stage 5
    - For `task_type == ui`: run all 7 audit categories **plus** apply the `web-design-guidelines` skill (load it from `.agents/skills/web-design-guidelines/SKILL.md` — do not fetch from a remote URL)
@@ -289,22 +306,23 @@ Do not write file contents or implementation code in this stage. Describe the sh
 
 **Output**: A summary table for all 12 stages followed by a clear disposition:
 
-| Stage | Name | Status | Notes |
-|-------|------|--------|-------|
-| 1 | Triage | ✓ | `task_type`, `tsx_touched` |
-| 2 | Research | ✓ | N files referenced |
-| 3 | Design | ✓ | Confirmed after N revision(s) |
-| 4 | Confirm | ✓ | Approved |
-| 5 | Implement | ✓ | N files written |
-| 6 | Review | ✓/⚠ | Clean / N violations fixed / N unresolved |
-| 7 | React Audit | ✓/— | N issues fixed / skipped |
-| 8 | Type-check | ✓ | 0 errors |
-| 9 | Build + Preview | ✓ | http://localhost:4321 |
-| 10 | Document | ✓/— | Updated / skipped |
-| 11 | Final Audit | ✓/⚠ | Pass / Warnings |
-| 12 | Summary | ✓ | |
+| Stage | Name            | Status | Notes                                     |
+| ----- | --------------- | ------ | ----------------------------------------- |
+| 1     | Triage          | ✓      | `task_type`, `tsx_touched`                |
+| 2     | Research        | ✓      | N files referenced                        |
+| 3     | Design          | ✓      | Confirmed after N revision(s)             |
+| 4     | Confirm         | ✓      | Approved                                  |
+| 5     | Implement       | ✓      | N files written                           |
+| 6     | Review          | ✓/⚠    | Clean / N violations fixed / N unresolved |
+| 7     | React Audit     | ✓/—    | N issues fixed / skipped                  |
+| 8     | Type-check      | ✓      | 0 errors                                  |
+| 9     | Build + Preview | ✓      | http://localhost:4321                     |
+| 10    | Document        | ✓/—    | Updated / skipped                         |
+| 11    | Final Audit     | ✓/⚠    | Pass / Warnings                           |
+| 12    | Summary         | ✓      |                                           |
 
 **Disposition rules**:
+
 - Stage 11 has **Fail** items → list them explicitly and recommend fixing before committing.
 - Stage 11 has **Warnings only** → feature is ready to commit.
 - Stage 11 is **clean** → state: "All checks passed. Ready to commit."

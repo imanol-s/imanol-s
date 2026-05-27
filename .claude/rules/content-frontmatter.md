@@ -9,6 +9,7 @@ paths:
 ## Project Frontmatter (`.mdx`)
 
 Required fields:
+
 - `title`: string
 - `startDate`, `endDate`: YAML date (e.g., `2024-01-15`)
 - `summary`: string
@@ -17,6 +18,7 @@ Required fields:
 - `ogImage`: string
 
 Optional:
+
 - `url`: string
 - `keywords`: array of free-form strings (NOT validated)
 
@@ -25,6 +27,7 @@ Images go in `src/content/projects/images/{project-id}/`.
 ## Post Frontmatter (`.md` / `.mdx`)
 
 Required fields:
+
 - `publishDate`: YAML date
 - `title`: string
 - `tags`: array of strings (free-form, NOT validated)
@@ -32,6 +35,7 @@ Required fields:
 - `cover`: object with `src` (image path) and optional `alt`
 
 Optional:
+
 - `author`: string
 - `updateDate`: YAML date
 - `keywords`: array of strings

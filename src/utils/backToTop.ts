@@ -1,5 +1,5 @@
-import { prefersReducedMotion } from './prefersReducedMotion';
-import { BACK_TO_TOP } from './domContracts';
+import { prefersReducedMotion } from "./prefersReducedMotion";
+import { BACK_TO_TOP } from "./domContracts";
 
 /**
  * Back-to-top button with sidebar-aware collapse.
@@ -10,7 +10,10 @@ import { BACK_TO_TOP } from './domContracts';
  *
  * Returns a cleanup function (AbortController) for view-transition teardown.
  */
-export function initBackToTop(btn: HTMLElement, sidebar: HTMLElement | null): () => void {
+export function initBackToTop(
+  btn: HTMLElement,
+  sidebar: HTMLElement | null,
+): () => void {
   const controller = new AbortController();
   const { signal } = controller;
 
@@ -58,7 +61,8 @@ export function initBackToTop(btn: HTMLElement, sidebar: HTMLElement | null): ()
     const sidebarRect = sidebar.getBoundingClientRect();
     const btnRect = btn.getBoundingClientRect();
 
-    const overlaps = sidebarRect.top < btnRect.bottom && sidebarRect.bottom > btnRect.top;
+    const overlaps =
+      sidebarRect.top < btnRect.bottom && sidebarRect.bottom > btnRect.top;
 
     if (overlaps) {
       collapse();
@@ -67,13 +71,20 @@ export function initBackToTop(btn: HTMLElement, sidebar: HTMLElement | null): ()
     }
   }
 
-  window.addEventListener('scroll', update, { passive: true, signal });
-  window.addEventListener('resize', update, { passive: true, signal });
+  window.addEventListener("scroll", update, { passive: true, signal });
+  window.addEventListener("resize", update, { passive: true, signal });
   update();
 
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'instant' : 'smooth' });
-  }, { signal });
+  btn.addEventListener(
+    "click",
+    () => {
+      window.scrollTo({
+        top: 0,
+        behavior: prefersReducedMotion() ? "instant" : "smooth",
+      });
+    },
+    { signal },
+  );
 
   return () => controller.abort();
 }

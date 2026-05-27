@@ -87,3 +87,7 @@ dark-mode.png
 home.png
 imanol-s-threat-model.md
 .gstack/
+
+# playwright artifacts
+test-results/
+playwright-report/

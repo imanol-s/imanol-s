@@ -1,4 +1,7 @@
-import { useDottedGlow, type DottedGlowOptions } from "../../hooks/useDottedGlow";
+import {
+  useDottedGlow,
+  type DottedGlowOptions,
+} from "../../hooks/useDottedGlow";
 
 interface DottedGlowBackgroundProps extends DottedGlowOptions {
   className?: string;
@@ -25,13 +28,18 @@ export const DottedGlowBackground = ({
   glowVar,
   _advanced,
 }: DottedGlowBackgroundProps) => {
-  const canvasRef = useDottedGlow({ gap, radius, opacity, speed, accentVar, glowVar, _advanced });
+  const canvasRef = useDottedGlow({
+    gap,
+    radius,
+    opacity,
+    speed,
+    accentVar,
+    glowVar,
+    _advanced,
+  });
 
   return (
-    <div
-      className={className}
-      style={{ position: "absolute", inset: 0 }}
-    >
+    <div className={className} style={{ position: "absolute", inset: 0 }}>
       <canvas
         ref={canvasRef}
         style={{ display: "block", width: "100%", height: "100%" }}

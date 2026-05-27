@@ -34,8 +34,8 @@ Review instructions for a personal portfolio site built with Astro 6, React 18, 
 ```typescript
 // Correct: typed interface + destructured props
 interface Props {
-    title: string;
-    description: string;
+  title: string;
+  description: string;
 }
 const { title, description } = Astro.props;
 ```
@@ -60,39 +60,39 @@ const { title, description } = Astro.props;
 
 ### `SITE` — site-wide metadata
 
-| Field | Value | Used by |
-|---|---|---|
-| `website` | `https://imanols.dev` | Canonical domain reference |
-| `title` | `"Imanol 'Oman' Saldana"` | Layout default title |
-| `description` | Portfolio SEO description | Layout default meta description |
-| `tags` | `["portfolio", "Resume cv", "Astro"]` | Meta keywords |
-| `ogImage` | `/og-image.webp` | Open Graph image |
-| `logo` | `"frog"` | Logo icon name |
-| `logoText` | `"Imanol"` | Nav brand text, page title prefixes |
-| `lang` | `"en"` | `<html lang>` attribute |
-| `favicon` | `/favicon.png` | `<link rel="icon">` |
-| `repository` | GitHub repo URL | Reference only |
-| `author` | `"Imanol Saldana"` | Meta author, copyright line |
-| `profile` | `https://imanols.dev` | Canonical profile URL |
+| Field         | Value                                 | Used by                             |
+| ------------- | ------------------------------------- | ----------------------------------- |
+| `website`     | `https://imanols.dev`                 | Canonical domain reference          |
+| `title`       | `"Imanol 'Oman' Saldana"`             | Layout default title                |
+| `description` | Portfolio SEO description             | Layout default meta description     |
+| `tags`        | `["portfolio", "Resume cv", "Astro"]` | Meta keywords                       |
+| `ogImage`     | `/og-image.webp`                      | Open Graph image                    |
+| `logo`        | `"frog"`                              | Logo icon name                      |
+| `logoText`    | `"Imanol"`                            | Nav brand text, page title prefixes |
+| `lang`        | `"en"`                                | `<html lang>` attribute             |
+| `favicon`     | `/favicon.png`                        | `<link rel="icon">`                 |
+| `repository`  | GitHub repo URL                       | Reference only                      |
+| `author`      | `"Imanol Saldana"`                    | Meta author, copyright line         |
+| `profile`     | `https://imanols.dev`                 | Canonical profile URL               |
 
 ### `ME` — personal content
 
-| Field | Type | Used by |
-|---|---|---|
-| `name` | `string` | TypewriterText, image alt, nav aria-label |
-| `profession` | `string[]` | Hero subtitle (joined with `•`) |
-| `profileImage` | `string` | Filename reference for profile photo |
-| `aboutMe` | `string` | Hero paragraph, Layout description default |
-| `bio` | `string` | About section long-form paragraph |
-| `location` | `string` | About section dl, footer coordinates |
-| `focusAreas` | `string[]` | Hero specialty cards (3 boxes) |
-| `coreLanguages` | `string[]` | Tech Specs — Core Languages grid |
-| `competencies` | `string[]` | Tech Specs — Competencies list |
-| `languages` | `{name, level}[]` | Tech Specs — Communication table |
-| `profileFacts` | `{value, description}[]` | About section stats row |
-| `contactInfo.email` | `string` | Footer, About section, CommandPalette |
-| `contactInfo.linkedin` | `string` | Reference for LinkedIn URL |
-| `contactInfo.resumeDoc` | `string` | Resume PDF filename (served from `public/`) |
+| Field                   | Type                     | Used by                                     |
+| ----------------------- | ------------------------ | ------------------------------------------- |
+| `name`                  | `string`                 | TypewriterText, image alt, nav aria-label   |
+| `profession`            | `string[]`               | Hero subtitle (joined with `•`)             |
+| `profileImage`          | `string`                 | Filename reference for profile photo        |
+| `aboutMe`               | `string`                 | Hero paragraph, Layout description default  |
+| `bio`                   | `string`                 | About section long-form paragraph           |
+| `location`              | `string`                 | About section dl, footer coordinates        |
+| `focusAreas`            | `string[]`               | Hero specialty cards (3 boxes)              |
+| `coreLanguages`         | `string[]`               | Tech Specs — Core Languages grid            |
+| `competencies`          | `string[]`               | Tech Specs — Competencies list              |
+| `languages`             | `{name, level}[]`        | Tech Specs — Communication table            |
+| `profileFacts`          | `{value, description}[]` | About section stats row                     |
+| `contactInfo.email`     | `string`                 | Footer, About section, CommandPalette       |
+| `contactInfo.linkedin`  | `string`                 | Reference for LinkedIn URL                  |
+| `contactInfo.resumeDoc` | `string`                 | Resume PDF filename (served from `public/`) |
 
 ### `SOCIALS` — social link entries
 
@@ -119,7 +119,7 @@ Each entry: `{ name, url, icon, show }`. Consumed via `SOCIALS.find(s => s.name 
 ```typescript
 // VULNERABLE: Never do this
 function displayName(name: string) {
-  const nameElement = document.getElementById('name-display');
+  const nameElement = document.getElementById("name-display");
   if (nameElement) {
     nameElement.innerHTML = `Showing results for "${name}"`; // XSS risk!
   }
@@ -131,7 +131,7 @@ function displayName(name: string) {
 ```typescript
 // SAFE: Use textContent for user input
 function displayName(name: string) {
-  const nameElement = document.getElementById('name-display');
+  const nameElement = document.getElementById("name-display");
   if (nameElement) {
     nameElement.textContent = `Showing results for "${name}"`; // Safe!
   }
@@ -143,11 +143,11 @@ function displayName(name: string) {
 ```typescript
 // SAFE: Construct DOM nodes programmatically
 function displayName(name: string) {
-  const nameElement = document.getElementById('name-display');
+  const nameElement = document.getElementById("name-display");
   if (nameElement) {
     nameElement.replaceChildren();
     const prefix = document.createTextNode('Showing results for "');
-    const strong = document.createElement('strong');
+    const strong = document.createElement("strong");
     strong.textContent = name; // User input stays as text
     const suffix = document.createTextNode('"');
     nameElement.append(prefix, strong, suffix);
@@ -182,6 +182,7 @@ function displayName(name: string) {
 ## Testing Guidelines
 
 - Vitest + jsdom is configured. Run `npm run test` for a single pass or `npm run test:watch` for watch mode
+- Use `npm run test:e2e` for browser-level validation when page rendering, navigation, or responsive layout changes are involved
 - Add `// @vitest-environment jsdom` at the top of test files that require browser APIs
 - Type-checking via `astro check` remains the primary safety net; tests supplement it for behavioral coverage
 

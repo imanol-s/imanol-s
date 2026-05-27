@@ -45,7 +45,11 @@ export function buildDotGrid(
  * @param timeSec - current time in seconds (DOMHighResTimeStamp / 1000)
  * @param speedScale - global speed multiplier (0 = frozen)
  */
-export function dotAlpha(dot: Dot, timeSec: number, speedScale: number): number {
+export function dotAlpha(
+  dot: Dot,
+  timeSec: number,
+  speedScale: number,
+): number {
   const time = timeSec * Math.max(speedScale, 0);
   const mod = (time * dot.speed + dot.phase) % 2;
   const lin = mod < 1 ? mod : 2 - mod; // triangle wave 0→1→0

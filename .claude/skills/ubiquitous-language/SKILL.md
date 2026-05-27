@@ -27,17 +27,17 @@ Write a `UBIQUITOUS_LANGUAGE.md` file with this structure:
 
 ## Order lifecycle
 
-| Term | Definition | Aliases to avoid |
-|------|-----------|-----------------|
-| **Order** | A customer's request to purchase one or more items | Purchase, transaction |
+| Term        | Definition                                              | Aliases to avoid      |
+| ----------- | ------------------------------------------------------- | --------------------- |
+| **Order**   | A customer's request to purchase one or more items      | Purchase, transaction |
 | **Invoice** | A request for payment sent to a customer after delivery | Bill, payment request |
 
 ## People
 
-| Term | Definition | Aliases to avoid |
-|------|-----------|-----------------|
+| Term         | Definition                                  | Aliases to avoid       |
+| ------------ | ------------------------------------------- | ---------------------- |
 | **Customer** | A person or organization that places orders | Client, buyer, account |
-| **User** | An authentication identity in the system | Login, account |
+| **User**     | An authentication identity in the system    | Login, account         |
 
 ## Relationships
 

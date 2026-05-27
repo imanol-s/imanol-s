@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { useSiteLifecycle } from './useSiteLifecycle';
+import { useEffect, useRef } from "react";
+import { useSiteLifecycle } from "./useSiteLifecycle";
 
 /**
  * Returns true once the site lifecycle has reached 'ready'.
@@ -8,7 +8,7 @@ import { useSiteLifecycle } from './useSiteLifecycle';
  */
 export function useReadyGate(onReady?: () => void): boolean {
   const { state } = useSiteLifecycle();
-  const isReady = state === 'ready';
+  const isReady = state === "ready";
   const firedRef = useRef(false);
 
   useEffect(() => {

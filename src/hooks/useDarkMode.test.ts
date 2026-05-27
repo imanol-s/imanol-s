@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
-import { useDarkMode } from './useDarkMode';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { renderHook, act } from "@testing-library/react";
+import { useDarkMode } from "./useDarkMode";
 
 type MqlHandler = (e: { matches: boolean }) => void;
 
@@ -13,13 +13,15 @@ beforeEach(() => {
   mqlListeners = [];
 
   // Reset html class
-  document.documentElement.className = '';
+  document.documentElement.className = "";
 
-  Object.defineProperty(window, 'matchMedia', {
+  Object.defineProperty(window, "matchMedia", {
     writable: true,
     configurable: true,
     value: vi.fn(() => ({
-      get matches() { return mqlMatches; },
+      get matches() {
+        return mqlMatches;
+      },
       addEventListener: (_: string, handler: MqlHandler) => {
         mqlListeners.push(handler);
       },
@@ -30,32 +32,32 @@ beforeEach(() => {
   });
 });
 
-describe('useDarkMode', () => {
-  it('returns false when no dark signals are active', () => {
+describe("useDarkMode", () => {
+  it("returns false when no dark signals are active", () => {
     const { result } = renderHook(() => useDarkMode());
     expect(result.current).toBe(false);
   });
 
-  it('returns true when matchMedia reports dark on mount', () => {
+  it("returns true when matchMedia reports dark on mount", () => {
     mqlMatches = true;
     const { result } = renderHook(() => useDarkMode());
     expect(result.current).toBe(true);
   });
 
   it('returns true when documentElement has "dark" class on mount', () => {
-    document.documentElement.classList.add('dark');
+    document.documentElement.classList.add("dark");
     const { result } = renderHook(() => useDarkMode());
     expect(result.current).toBe(true);
   });
 
   it('returns false when documentElement has "light" class, overriding matchMedia', () => {
     mqlMatches = true; // OS says dark
-    document.documentElement.classList.add('light'); // explicit override
+    document.documentElement.classList.add("light"); // explicit override
     const { result } = renderHook(() => useDarkMode());
     expect(result.current).toBe(false);
   });
 
-  it('updates reactively when matchMedia fires a change event', () => {
+  it("updates reactively when matchMedia fires a change event", () => {
     mqlMatches = false;
     const { result } = renderHook(() => useDarkMode());
     expect(result.current).toBe(false);
@@ -72,7 +74,7 @@ describe('useDarkMode', () => {
     expect(result.current).toBe(false);
 
     await act(async () => {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add("dark");
       // MutationObserver callbacks are microtask-queued in jsdom
       await Promise.resolve();
     });
@@ -80,18 +82,18 @@ describe('useDarkMode', () => {
   });
 
   it('updates reactively when "dark" class is removed from documentElement', async () => {
-    document.documentElement.classList.add('dark');
+    document.documentElement.classList.add("dark");
     const { result } = renderHook(() => useDarkMode());
     expect(result.current).toBe(true);
 
     await act(async () => {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
       await Promise.resolve();
     });
     expect(result.current).toBe(false);
   });
 
-  it('cleans up observers on unmount', () => {
+  it("cleans up observers on unmount", () => {
     const { unmount } = renderHook(() => useDarkMode());
     unmount();
     // After unmount, no listeners remain registered

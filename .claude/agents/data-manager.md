@@ -30,6 +30,7 @@ Project tags are validated via `techTagSchema` at build time. Post tags are free
 ## Content Schemas (`src/content.config.ts`)
 
 **Projects** (`src/content/projects/*.mdx`):
+
 - `title`: string
 - `startDate`, `endDate`: date
 - `summary`: string
@@ -40,6 +41,7 @@ Project tags are validated via `techTagSchema` at build time. Post tags are free
 - `ogImage`: string
 
 **Posts** (`src/content/posts/*.md` or `.mdx`):
+
 - `author`: string (optional)
 - `publishDate`: date
 - `title`: string
@@ -66,6 +68,7 @@ Project images go in `src/content/projects/images/{project-id}/`.
 ## Site Configuration (`src/config.ts`)
 
 Single source of truth for site identity:
+
 - `SITE` — domain, title, description, tags, logo, favicon, repository
 - `ME` — name, profession, profile image, about, location, focus areas, core languages, competencies, languages, contact
 - `SOCIALS` — GitHub, LinkedIn links with visibility flags

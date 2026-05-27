@@ -32,14 +32,14 @@ You are a UI implementation specialist for the imanols.dev portfolio site. Your 
 
 ## Naming Conventions
 
-| Item | Convention | Example |
-|------|-----------|---------|
-| Astro component | PascalCase `.astro` | `PostCard.astro` |
-| React island | PascalCase `.tsx` | `TypewriterText.tsx` |
-| Data files | PascalCase or camelCase in `src/data/` | `Jobs.ts`, `education.ts` |
-| Content files | kebab-case | `crime-analysis.mdx` |
-| SVG icons | kebab-case in `src/icons/` | `github-fill.svg` |
-| Interfaces | PascalCase, inline in the file | `interface Props {}` |
+| Item            | Convention                             | Example                   |
+| --------------- | -------------------------------------- | ------------------------- |
+| Astro component | PascalCase `.astro`                    | `PostCard.astro`          |
+| React island    | PascalCase `.tsx`                      | `TypewriterText.tsx`      |
+| Data files      | PascalCase or camelCase in `src/data/` | `Jobs.ts`, `education.ts` |
+| Content files   | kebab-case                             | `crime-analysis.mdx`      |
+| SVG icons       | kebab-case in `src/icons/`             | `github-fill.svg`         |
+| Interfaces      | PascalCase, inline in the file         | `interface Props {}`      |
 
 ## TypeScript
 
@@ -63,28 +63,28 @@ The site uses a **blueprint/topographic aesthetic** with a slate palette. It is 
 
 ### Color Tokens (`@theme` in `globals.css`)
 
-| Token | Hex | Use |
-|-------|-----|-----|
-| `primary` | `#64748b` | Accents, hover states, CTAs, timeline dots |
-| `accent` | `#94a3b8` | Secondary borders, grid lines, scrollbar |
-| `background-dark` | `#0f172a` | Page background (always active) |
-| `background-light` | `#f8fafc` | Light-mode fallback only |
+| Token              | Hex       | Use                                        |
+| ------------------ | --------- | ------------------------------------------ |
+| `primary`          | `#64748b` | Accents, hover states, CTAs, timeline dots |
+| `accent`           | `#94a3b8` | Secondary borders, grid lines, scrollbar   |
+| `background-dark`  | `#0f172a` | Page background (always active)            |
+| `background-light` | `#f8fafc` | Light-mode fallback only                   |
 
 ### Text Scale (dark mode)
 
-| Role | Class |
-|------|-------|
-| Strong headings | `text-white` |
-| Body / primary | `text-slate-200` |
+| Role             | Class            |
+| ---------------- | ---------------- |
+| Strong headings  | `text-white`     |
+| Body / primary   | `text-slate-200` |
 | Meta / secondary | `text-slate-400` |
-| Muted / labels | `text-slate-500` |
+| Muted / labels   | `text-slate-500` |
 
 ### Typography
 
-| Role | Class | Font |
-|------|-------|------|
+| Role                | Class          | Font           |
+| ------------------- | -------------- | -------------- |
 | Headings, nav, CTAs | `font-display` | JetBrains Mono |
-| Body text | `font-body` | Inter |
+| Body text           | `font-body`    | Inter          |
 
 ### Layout
 
@@ -102,9 +102,9 @@ Use these instead of re-implementing the same patterns inline.
 ```astro
 // Astro
 <div class:list={["base-class", { "active-class": isActive }]}>
-
-// React/TSX
-<div className={`base-class ${isActive ? "active-class" : ""}`}>
+  // React/TSX
+  <div className={`base-class ${isActive ? "active-class" : ""}`}></div>
+</div>
 ```
 
 No `cn()` utility — it was removed with shadcn.

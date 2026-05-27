@@ -15,7 +15,7 @@ Any script that sets up event listeners, observers, or DOM state MUST use `astro
 
 ```ts
 let cleanup: (() => void) | undefined;
-document.addEventListener('astro:page-load', () => {
+document.addEventListener("astro:page-load", () => {
   cleanup?.();
   // setup code — assign cleanup
   cleanup = initSomething(el);
@@ -23,6 +23,7 @@ document.addEventListener('astro:page-load', () => {
 ```
 
 This guarantees:
+
 - The callback runs on first load and after every view transition
 - Previous cleanup runs before each re-invocation
 - No global registry needed
@@ -30,6 +31,7 @@ This guarantees:
 ## DOM Contracts
 
 Never hardcode DOM IDs, class names, or thresholds. Import from `src/utils/domContracts.ts`:
+
 - `BACK_TO_TOP` — button/sidebar IDs, scroll threshold, CSS classes
 - `CAROUSEL` — track/prev/next IDs, scroll ratio, drag threshold
 - `MOBILE_MENU` — button/menu IDs, hidden class

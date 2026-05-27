@@ -87,12 +87,15 @@ Return findings as a structured Markdown report:
 ## Audit Report: <file path or scope>
 
 ### Pass
+
 - <rule that was satisfied>
 
 ### Fail
+
 - **<rule>**: <what was found> → <recommended fix>
 
 ### Warnings
+
 - **<rule>**: <optional improvement, not a hard violation>
 ```
 

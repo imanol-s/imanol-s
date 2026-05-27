@@ -4,26 +4,39 @@ import { Picture } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import TagPill from "../../components/TagPill.astro";
 import { formatDate } from "../../utils/formatDate";
-import { getSortedProjects, getProjectPageData } from "../../data/projectCollection";
+import {
+  getSortedProjects,
+  getProjectPageData,
+} from "../../data/projectCollection";
 
 export async function getStaticPaths() {
-  const posts = await getCollection('projects');
-  return posts.map(post => ({
+  const sorted = getSortedProjects(await getCollection("projects"));
+  return sorted.map((post) => ({
     params: { id: post.id },
-    props: { post },
+    props: { post, sorted },
   }));
 }
 
-const { post } = Astro.props;
-const { title, summary, tags, cover, ogImage, url, startDate, endDate } = post.data;
+const { post, sorted } = Astro.props;
+const { title, summary, tags, cover, ogImage, url, startDate, endDate } =
+  post.data;
 
 const { Content } = await render(post);
 
-const allProjects = getSortedProjects(await getCollection('projects'));
-const { label: projectLabel, prev, next, hasValidUrl } = getProjectPageData(allProjects, post.id);
+const {
+  label: projectLabel,
+  prev,
+  next,
+  hasValidUrl,
+} = getProjectPageData(sorted, post.id);
 ---
 
-<Layout title={title} description={summary} imageOg={ogImage} scrollSmooth={true}>
+<Layout
+  title={title}
+  description={summary}
+  imageOg={ogImage}
+  scrollSmooth={true}
+>
   <!-- Breadcrumb -->
   <nav aria-label="Breadcrumb" class="mb-10">
     <a
@@ -44,13 +57,15 @@ const { label: projectLabel, prev, next, hasValidUrl } = getProjectPageData(allP
       {title}
     </h1>
 
-    {tags.length > 0 && (
-      <div class="flex flex-wrap gap-2 mb-8">
-        {tags.map((tag: string) => (
-          <TagPill techId={tag} />
-        ))}
-      </div>
-    )}
+    {
+      tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-8">
+          {tags.map((tag: string) => (
+            <TagPill techId={tag} />
+          ))}
+        </div>
+      )
+    }
 
     <!-- Hero image -->
     <div class="cad-border overflow-hidden">
@@ -58,7 +73,7 @@ const { label: projectLabel, prev, next, hasValidUrl } = getProjectPageData(allP
         src={cover}
         alt={title}
         class="w-full h-[280px] md:h-[360px] object-cover grayscale opacity-60"
-        formats={['avif']}
+        formats={["avif"]}
         fallbackFormat="webp"
         widths={[640, 960, 1280]}
         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px"
@@ -73,10 +88,14 @@ const { label: projectLabel, prev, next, hasValidUrl } = getProjectPageData(allP
     <!-- Left col — overview + MDX content -->
     <div class="lg:col-span-8">
       <div class="bg-slate-50 dark:bg-slate-900 p-6 md:p-8">
-        <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
+        <p
+          class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4"
+        >
           Overview
         </p>
-        <p class="text-lg text-slate-700 dark:text-slate-200 leading-relaxed font-light mb-10">
+        <p
+          class="text-lg text-slate-700 dark:text-slate-200 leading-relaxed font-light mb-10"
+        >
           {summary}
         </p>
 
@@ -88,50 +107,58 @@ const { label: projectLabel, prev, next, hasValidUrl } = getProjectPageData(allP
 
     <!-- Right col — links + stack + timeline -->
     <div class="lg:col-span-4">
-      <div class="cad-border bg-slate-50 dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-800">
-        {hasValidUrl && (
-          <div class="p-5">
-            <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
-              Links
-            </p>
-            <div class="flex flex-col gap-3">
-              <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="cta-primary w-full focus-ring"
-              >
-                Repo
-              </a>
+      <div
+        class="cad-border bg-slate-50 dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-800"
+      >
+        {
+          hasValidUrl && (
+            <div class="p-5">
+              <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
+                Links
+              </p>
+              <div class="flex flex-col gap-3">
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="cta-primary w-full focus-ring"
+                >
+                  Repo
+                </a>
+              </div>
             </div>
-          </div>
-        )}
+          )
+        }
 
-        {tags.length > 0 && (
-          <div class="p-5">
-            <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
-              Stack
-            </p>
-            <div class="flex flex-wrap gap-2">
-              {tags.map((tag: string) => (
-                <TagPill techId={tag} />
-              ))}
+        {
+          tags.length > 0 && (
+            <div class="p-5">
+              <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
+                Stack
+              </p>
+              <div class="flex flex-wrap gap-2">
+                {tags.map((tag: string) => (
+                  <TagPill techId={tag} />
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )
+        }
 
-        {(startDate || endDate) && (
-          <div class="p-5">
-            <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
-              Timeline
-            </p>
-            <p class="font-display text-sm text-slate-700 dark:text-slate-200">
-              {startDate && formatDate(startDate)}
-              {startDate && endDate && ' — '}
-              {endDate && formatDate(endDate)}
-            </p>
-          </div>
-        )}
+        {
+          (startDate || endDate) && (
+            <div class="p-5">
+              <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
+                Timeline
+              </p>
+              <p class="font-display text-sm text-slate-700 dark:text-slate-200">
+                {startDate && formatDate(startDate)}
+                {startDate && endDate && " — "}
+                {endDate && formatDate(endDate)}
+              </p>
+            </div>
+          )
+        }
       </div>
     </div>
   </div>
@@ -139,37 +166,41 @@ const { label: projectLabel, prev, next, hasValidUrl } = getProjectPageData(allP
   <!-- Prev / Next Navigation -->
   <div class="mt-16 border-t border-slate-200 dark:border-slate-800 pt-8">
     <div class="flex justify-between items-start gap-8">
-      {prev ? (
-        <a
-          href={`/projects/${prev.id}`}
-          class="group drawing-hover focus-ring rounded-sm flex flex-col gap-1 max-w-xs"
-          aria-label={`Previous project: ${prev.data.title}`}
-        >
-          <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-primary transition-colors">
-            &larr; Prev
-          </span>
-          <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">
-            {prev.data.title}
-          </span>
-        </a>
-      ) : (
-        <div aria-hidden="true"></div>
-      )}
+      {
+        prev ? (
+          <a
+            href={`/projects/${prev.id}`}
+            class="group drawing-hover focus-ring rounded-sm flex flex-col gap-1 max-w-xs"
+            aria-label={`Previous project: ${prev.data.title}`}
+          >
+            <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-primary transition-colors">
+              &larr; Prev
+            </span>
+            <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">
+              {prev.data.title}
+            </span>
+          </a>
+        ) : (
+          <div aria-hidden="true" />
+        )
+      }
 
-      {next ? (
-        <a
-          href={`/projects/${next.id}`}
-          class="group drawing-hover focus-ring rounded-sm flex flex-col gap-1 items-end max-w-xs text-right"
-          aria-label={`Next project: ${next.data.title}`}
-        >
-          <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-primary transition-colors">
-            Next &rarr;
-          </span>
-          <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">
-            {next.data.title}
-          </span>
-        </a>
-      ) : null}
+      {
+        next ? (
+          <a
+            href={`/projects/${next.id}`}
+            class="group drawing-hover focus-ring rounded-sm flex flex-col gap-1 items-end max-w-xs text-right"
+            aria-label={`Next project: ${next.data.title}`}
+          >
+            <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-primary transition-colors">
+              Next &rarr;
+            </span>
+            <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">
+              {next.data.title}
+            </span>
+          </a>
+        ) : null
+      }
     </div>
   </div>
 </Layout>

@@ -1,7 +1,12 @@
-import { useCallback, useEffect, useRef } from 'react';
-import { buildDotGrid, dotAlpha, dotGlow, type Dot } from '../animations/dotMath';
-import { useDarkMode } from './useDarkMode';
-import { useReducedMotion } from './useReducedMotion';
+import { useCallback, useEffect, useRef } from "react";
+import {
+  buildDotGrid,
+  dotAlpha,
+  dotGlow,
+  type Dot,
+} from "../animations/dotMath";
+import { useDarkMode } from "./useDarkMode";
+import { useReducedMotion } from "./useReducedMotion";
 
 /** Advanced escape hatch for power callers. */
 export interface AdvancedDotProps {
@@ -31,7 +36,7 @@ export interface DottedGlowOptions {
  * Falls back to `varName` itself if the property is unset.
  */
 function resolveCssVar(varName: string): string {
-  const normalized = varName.startsWith('--') ? varName : `--${varName}`;
+  const normalized = varName.startsWith("--") ? varName : `--${varName}`;
   const value = getComputedStyle(document.documentElement)
     .getPropertyValue(normalized)
     .trim();
@@ -49,8 +54,8 @@ export function useDottedGlow({
   radius = 2,
   opacity = 0.6,
   speed = 0.5,
-  accentVar = '--color-accent',
-  glowVar = '--color-primary',
+  accentVar = "--color-accent",
+  glowVar = "--color-primary",
   _advanced,
 }: DottedGlowOptions = {}): React.RefCallback<HTMLCanvasElement> {
   // Called for its side-effect: triggers re-render on theme change so
@@ -69,14 +74,30 @@ export function useDottedGlow({
   const glowVarRef = useRef(glowVar);
   const advancedRef = useRef(_advanced);
 
-  useEffect(() => { reducedRef.current = reduced; }, [reduced]);
-  useEffect(() => { gapRef.current = gap; }, [gap]);
-  useEffect(() => { radiusRef.current = radius; }, [radius]);
-  useEffect(() => { opacityRef.current = opacity; }, [opacity]);
-  useEffect(() => { speedRef.current = speed; }, [speed]);
-  useEffect(() => { accentVarRef.current = accentVar; }, [accentVar]);
-  useEffect(() => { glowVarRef.current = glowVar; }, [glowVar]);
-  useEffect(() => { advancedRef.current = _advanced; }, [_advanced]);
+  useEffect(() => {
+    reducedRef.current = reduced;
+  }, [reduced]);
+  useEffect(() => {
+    gapRef.current = gap;
+  }, [gap]);
+  useEffect(() => {
+    radiusRef.current = radius;
+  }, [radius]);
+  useEffect(() => {
+    opacityRef.current = opacity;
+  }, [opacity]);
+  useEffect(() => {
+    speedRef.current = speed;
+  }, [speed]);
+  useEffect(() => {
+    accentVarRef.current = accentVar;
+  }, [accentVar]);
+  useEffect(() => {
+    glowVarRef.current = glowVar;
+  }, [glowVar]);
+  useEffect(() => {
+    advancedRef.current = _advanced;
+  }, [_advanced]);
 
   // Holds the cleanup function returned when we attach to a canvas.
   const cleanupRef = useRef<(() => void) | null>(null);
@@ -91,7 +112,7 @@ export function useDottedGlow({
     const container = canvas.parentElement;
     if (!container) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     let raf = 0;
@@ -151,11 +172,18 @@ export function useDottedGlow({
       if (backgroundOpacity > 0) {
         ctx.globalAlpha = currentOpacity;
         const grad = ctx.createRadialGradient(
-          width * 0.5, height * 0.4, Math.min(width, height) * 0.1,
-          width * 0.5, height * 0.5, Math.max(width, height) * 0.7,
+          width * 0.5,
+          height * 0.4,
+          Math.min(width, height) * 0.1,
+          width * 0.5,
+          height * 0.5,
+          Math.max(width, height) * 0.7,
         );
-        grad.addColorStop(0, 'rgba(0,0,0,0)');
-        grad.addColorStop(1, `rgba(0,0,0,${Math.min(Math.max(backgroundOpacity, 0), 1)})`);
+        grad.addColorStop(0, "rgba(0,0,0,0)");
+        grad.addColorStop(
+          1,
+          `rgba(0,0,0,${Math.min(Math.max(backgroundOpacity, 0), 1)})`,
+        );
         ctx.fillStyle = grad as unknown as CanvasGradient;
         ctx.fillRect(0, 0, width, height);
       }
@@ -174,7 +202,7 @@ export function useDottedGlow({
           ctx.shadowColor = glowColor;
           ctx.shadowBlur = 6 * glow;
         } else {
-          ctx.shadowColor = 'transparent';
+          ctx.shadowColor = "transparent";
           ctx.shadowBlur = 0;
         }
 

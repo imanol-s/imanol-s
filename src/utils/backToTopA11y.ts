@@ -11,10 +11,10 @@
  */
 export function updateBackToTopA11y(btn: HTMLElement, visible: boolean): void {
   if (visible) {
-    btn.setAttribute('tabindex', '0');
-    btn.removeAttribute('aria-hidden');
+    btn.setAttribute("tabindex", "0");
+    btn.removeAttribute("aria-hidden");
   } else {
-    btn.setAttribute('tabindex', '-1');
-    btn.setAttribute('aria-hidden', 'true');
+    btn.setAttribute("tabindex", "-1");
+    btn.setAttribute("aria-hidden", "true");
   }
 }

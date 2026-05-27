@@ -43,7 +43,7 @@ Astro `<ClientRouter/>` enables smooth page transitions. Any script that must re
 
 ```ts
 let cleanup: (() => void) | undefined;
-document.addEventListener('astro:page-load', () => {
+document.addEventListener("astro:page-load", () => {
   cleanup?.();
   const el = document.getElementById(ID) as HTMLElement | null;
   if (el) cleanup = initSomething(el);
@@ -53,6 +53,7 @@ document.addEventListener('astro:page-load', () => {
 ## DOM Contracts
 
 `src/utils/domContracts.ts` is the single source of truth for all DOM IDs, CSS class names, and numeric thresholds. Never hardcode these values — always import from domContracts:
+
 - `BACK_TO_TOP` — button ID, sidebar ID, scroll threshold, collapse breakpoint, CSS classes
 - `CAROUSEL` — track/prev/next IDs, scroll ratio, drag threshold
 - `MOBILE_MENU` — button ID, menu ID, hidden class

@@ -1,5 +1,5 @@
-import { useSyncExternalStore } from 'react';
-import { REDUCED_MOTION_QUERY } from '../utils/prefersReducedMotion';
+import { useSyncExternalStore } from "react";
+import { REDUCED_MOTION_QUERY } from "../utils/prefersReducedMotion";
 
 // Module-level cache so all subscribers share the same MediaQueryList value.
 // The server snapshot returns false (motion enabled) — a safe default since
@@ -12,15 +12,15 @@ let cachedValue = false;
  * always in sync. Returns an unsubscribe function.
  */
 function subscribe(callback: () => void): () => void {
-  if (typeof window === 'undefined') return () => {};
+  if (typeof window === "undefined") return () => {};
   const mql = window.matchMedia(REDUCED_MOTION_QUERY);
   cachedValue = mql.matches;
   const handler = (e: { matches: boolean }) => {
     cachedValue = e.matches;
     callback();
   };
-  mql.addEventListener('change', handler);
-  return () => mql.removeEventListener('change', handler);
+  mql.addEventListener("change", handler);
+  return () => mql.removeEventListener("change", handler);
 }
 
 /** Returns the cached `prefers-reduced-motion` boolean for useSyncExternalStore. */

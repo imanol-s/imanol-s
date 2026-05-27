@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook } from '@testing-library/react';
-import { useDottedGlow } from './useDottedGlow';
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { renderHook } from "@testing-library/react";
+import { useDottedGlow } from "./useDottedGlow";
 
 // ---------------------------------------------------------------------------
 // Browser API stubs
@@ -11,7 +11,7 @@ const rafCallbacks: Array<(t: number) => void> = [];
 
 beforeEach(() => {
   // matchMedia
-  Object.defineProperty(window, 'matchMedia', {
+  Object.defineProperty(window, "matchMedia", {
     writable: true,
     configurable: true,
     value: vi.fn(() => ({
@@ -22,18 +22,21 @@ beforeEach(() => {
   });
 
   // devicePixelRatio
-  Object.defineProperty(window, 'devicePixelRatio', {
+  Object.defineProperty(window, "devicePixelRatio", {
     writable: true,
     configurable: true,
     value: 1,
   });
 
   // requestAnimationFrame — capture but don't run automatically
-  vi.stubGlobal('requestAnimationFrame', vi.fn((cb: (t: number) => void) => {
-    rafCallbacks.push(cb);
-    return rafCallbacks.length;
-  }));
-  vi.stubGlobal('cancelAnimationFrame', vi.fn());
+  vi.stubGlobal(
+    "requestAnimationFrame",
+    vi.fn((cb: (t: number) => void) => {
+      rafCallbacks.push(cb);
+      return rafCallbacks.length;
+    }),
+  );
+  vi.stubGlobal("cancelAnimationFrame", vi.fn());
 
   // ResizeObserver — must be a proper constructor (class/function)
   const ResizeObserverMock = vi.fn(function (this: object) {
@@ -43,7 +46,7 @@ beforeEach(() => {
       disconnect: vi.fn(),
     });
   });
-  vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+  vi.stubGlobal("ResizeObserver", ResizeObserverMock);
 
   // IntersectionObserver — same requirement
   const IntersectionObserverMock = vi.fn(function (this: object) {
@@ -53,7 +56,7 @@ beforeEach(() => {
       disconnect: vi.fn(),
     });
   });
-  vi.stubGlobal('IntersectionObserver', IntersectionObserverMock);
+  vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
 
   // Canvas 2D context
   HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
@@ -66,13 +69,21 @@ beforeEach(() => {
     setTransform: vi.fn(),
     createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
     fillRect: vi.fn(),
-    get fillStyle() { return ''; },
+    get fillStyle() {
+      return "";
+    },
     set fillStyle(_v: unknown) {},
-    get shadowColor() { return ''; },
+    get shadowColor() {
+      return "";
+    },
     set shadowColor(_v: unknown) {},
-    get shadowBlur() { return 0; },
+    get shadowBlur() {
+      return 0;
+    },
     set shadowBlur(_v: number) {},
-    get globalAlpha() { return 1; },
+    get globalAlpha() {
+      return 1;
+    },
     set globalAlpha(_v: number) {},
   })) as unknown as typeof HTMLCanvasElement.prototype.getContext;
 });
@@ -80,7 +91,7 @@ beforeEach(() => {
 afterEach(() => {
   vi.restoreAllMocks();
   rafCallbacks.length = 0;
-  document.documentElement.className = '';
+  document.documentElement.className = "";
 });
 
 // ---------------------------------------------------------------------------
@@ -89,11 +100,11 @@ afterEach(() => {
 
 /** Create a canvas mounted inside a parent div so parentElement is non-null. */
 function makeCanvas(): HTMLCanvasElement {
-  const div = document.createElement('div');
-  Object.defineProperty(div, 'getBoundingClientRect', {
+  const div = document.createElement("div");
+  Object.defineProperty(div, "getBoundingClientRect", {
     value: () => ({ width: 300, height: 200, top: 0, left: 0 }),
   });
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   div.appendChild(canvas);
   document.body.appendChild(div);
   return canvas;
@@ -103,13 +114,13 @@ function makeCanvas(): HTMLCanvasElement {
 // Tests
 // ---------------------------------------------------------------------------
 
-describe('useDottedGlow', () => {
-  it('returns a function (callback ref)', () => {
+describe("useDottedGlow", () => {
+  it("returns a function (callback ref)", () => {
     const { result } = renderHook(() => useDottedGlow());
-    expect(typeof result.current).toBe('function');
+    expect(typeof result.current).toBe("function");
   });
 
-  it('sets up ResizeObserver and IntersectionObserver when a canvas is attached', () => {
+  it("sets up ResizeObserver and IntersectionObserver when a canvas is attached", () => {
     const { result } = renderHook(() => useDottedGlow());
     const canvas = makeCanvas();
 
@@ -123,7 +134,7 @@ describe('useDottedGlow', () => {
     expect(ioInstance.observe).toHaveBeenCalledWith(canvas.parentElement);
   });
 
-  it('schedules an animation frame when a canvas is attached', () => {
+  it("schedules an animation frame when a canvas is attached", () => {
     const { result } = renderHook(() => useDottedGlow());
     const canvas = makeCanvas();
 
@@ -132,7 +143,7 @@ describe('useDottedGlow', () => {
     expect(requestAnimationFrame).toHaveBeenCalled();
   });
 
-  it('disconnects observers and cancels RAF when null is passed (detach)', () => {
+  it("disconnects observers and cancels RAF when null is passed (detach)", () => {
     const { result } = renderHook(() => useDottedGlow());
     const canvas = makeCanvas();
 
@@ -148,7 +159,7 @@ describe('useDottedGlow', () => {
     expect(cancelAnimationFrame).toHaveBeenCalled();
   });
 
-  it('disconnects observers and cancels RAF on unmount', () => {
+  it("disconnects observers and cancels RAF on unmount", () => {
     const { result, unmount } = renderHook(() => useDottedGlow());
     const canvas = makeCanvas();
 
@@ -163,19 +174,19 @@ describe('useDottedGlow', () => {
     expect(cancelAnimationFrame).toHaveBeenCalled();
   });
 
-  it('does nothing when canvas has no parentElement', () => {
+  it("does nothing when canvas has no parentElement", () => {
     const { result } = renderHook(() => useDottedGlow());
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
 
     expect(() => result.current(canvas)).not.toThrow();
     expect(ResizeObserver).not.toHaveBeenCalled();
   });
 
-  it('accepts default options without errors', () => {
+  it("accepts default options without errors", () => {
     expect(() => renderHook(() => useDottedGlow())).not.toThrow();
   });
 
-  it('accepts all options without errors', () => {
+  it("accepts all options without errors", () => {
     expect(() =>
       renderHook(() =>
         useDottedGlow({
@@ -183,15 +194,15 @@ describe('useDottedGlow', () => {
           radius: 3,
           opacity: 0.8,
           speed: 0.7,
-          accentVar: '--color-accent',
-          glowVar: '--color-primary',
+          accentVar: "--color-accent",
+          glowVar: "--color-primary",
           _advanced: { speedScale: 2 },
         }),
       ),
     ).not.toThrow();
   });
 
-  it('re-attaches cleanly when called with a new canvas', () => {
+  it("re-attaches cleanly when called with a new canvas", () => {
     const { result } = renderHook(() => useDottedGlow());
 
     const canvas1 = makeCanvas();
@@ -202,6 +213,8 @@ describe('useDottedGlow', () => {
 
     result.current(canvas2);
     expect(ro1.disconnect).toHaveBeenCalled();
-    expect(vi.mocked(ResizeObserver).mock.results.length).toBeGreaterThanOrEqual(2);
+    expect(
+      vi.mocked(ResizeObserver).mock.results.length,
+    ).toBeGreaterThanOrEqual(2);
   });
 });

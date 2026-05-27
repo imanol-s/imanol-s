@@ -6,13 +6,13 @@ import { computeTopoFrame, buildLineYs } from "../animations/topoMath";
 // Oversized to 150% with -25% inset so the slow CSS rotation never exposes
 // blank corners at the viewport edges.
 const TOPO_LINES_STYLE: CSSProperties = {
-  position: 'fixed',
-  inset: '-25%',
-  width: '150%',
-  height: '150%',
+  position: "fixed",
+  inset: "-25%",
+  width: "150%",
+  height: "150%",
   zIndex: 1,
-  pointerEvents: 'none',
-  willChange: 'transform',
+  pointerEvents: "none",
+  willChange: "transform",
 };
 
 export default function TopoBackground() {
@@ -150,7 +150,6 @@ export default function TopoBackground() {
           </svg>
         </div>
       </div>
-
     </>
   );
 }

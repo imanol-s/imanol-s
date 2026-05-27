@@ -1,4 +1,4 @@
-export const PLACEHOLDER_URL = 'https://google.com';
+export const PLACEHOLDER_URL = "https://google.com";
 
 export interface ProjectEntry {
   id: string;
@@ -21,7 +21,7 @@ export interface ProjectPageData<T extends ProjectEntry> {
 /** Returns a new array sorted by startDate descending (newest first). */
 export function getSortedProjects<T extends ProjectEntry>(projects: T[]): T[] {
   return [...projects].sort(
-    (a, b) => b.data.startDate.getTime() - a.data.startDate.getTime()
+    (a, b) => b.data.startDate.getTime() - a.data.startDate.getTime(),
   );
 }
 
@@ -31,18 +31,18 @@ export function getSortedProjects<T extends ProjectEntry>(projects: T[]): T[] {
  */
 export function getProjectPageData<T extends ProjectEntry>(
   sortedProjects: T[],
-  currentId: string
+  currentId: string,
 ): ProjectPageData<T> {
-  const index = sortedProjects.findIndex(p => p.id === currentId);
+  const index = sortedProjects.findIndex((p) => p.id === currentId);
   const current = sortedProjects[index];
 
-  const label = `Project ${String(index + 1).padStart(2, '0')}`;
+  const label = `Project ${String(index + 1).padStart(2, "0")}`;
   const prev = index > 0 ? sortedProjects[index - 1] : null;
-  const next = index < sortedProjects.length - 1 ? sortedProjects[index + 1] : null;
+  const next =
+    index < sortedProjects.length - 1 ? sortedProjects[index + 1] : null;
 
   const url = current?.data.url;
-  const hasValidUrl =
-    !!url && url.trim() !== '' && url !== PLACEHOLDER_URL;
+  const hasValidUrl = !!url && url.trim() !== "" && url !== PLACEHOLDER_URL;
 
   return { label, prev, next, hasValidUrl };
 }

@@ -1,0 +1,15 @@
+[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1"
+CLAUDE_CODE_NEW_INIT = "true"
+autoMemoryEnabled = "true"
+
+[mcp_servers.codex]
+command = "npx"
+args = [
+    "-y",
+    "codex",
+    "mcp-server",
+]

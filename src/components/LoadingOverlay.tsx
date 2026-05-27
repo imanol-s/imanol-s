@@ -22,9 +22,9 @@ export default function LoadingOverlay() {
   // Drive state transitions with timers
   useEffect(() => scheduleOverlay(dispatch, state), [state, dispatch]);
 
-  if (state === 'ready') return null;
+  if (state === "ready") return null;
 
-  const isFading = state === 'overlay-fading';
+  const isFading = state === "overlay-fading";
 
   return (
     <div
