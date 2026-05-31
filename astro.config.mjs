@@ -5,6 +5,7 @@ import react from "@astrojs/react";
 import icon from "astro-icon";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
+import { satteri } from "@astrojs/markdown-satteri";
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,9 +21,8 @@ export default defineConfig({
     },
   },
   markdown: {
-    shikiConfig: {
-      theme: "plastic",
-      wrap: true,
-    },
+    processor: satteri({
+      features: { directive: true },
+    }),
   },
 });
