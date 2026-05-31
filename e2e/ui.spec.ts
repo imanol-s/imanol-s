@@ -100,7 +100,7 @@ test.describe("Home page sections", () => {
 
   test("projects section visible on home", async ({ page }) => {
     await page.goto("/");
-    await expect(page.locator("text=/projects/i").first()).toBeVisible();
+    await expect(page.locator("#projects")).toBeVisible();
   });
 
   test("experience section visible on home", async ({ page }) => {
