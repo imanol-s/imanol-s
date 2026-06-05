@@ -1,0 +1,75 @@
+---
+description: PR title and description conventions
+globs: "**/*"
+alwaysApply: false
+---
+
+# PR Guidelines
+
+## Commit Message Format
+
+Use conventional commits:
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+```
+
+### Types
+
+| Type | Purpose |
+|------|---------|
+| `feat` | New feature |
+| `fix` | Bug fix |
+| `docs` | Documentation only |
+| `style` | Formatting, no code change |
+| `refactor` | Code change, no feature/fix |
+| `perf` | Performance improvement |
+| `test` | Adding/updating tests |
+| `chore` | Build, config, dependencies |
+
+### Examples
+
+```
+feat(projects): add case study section
+fix(blog): correct date formatting
+docs: update architecture description
+refactor(components): extract shared styles
+chore(deps): upgrade astro to 5.1.0
+```
+
+## PR Title
+
+Same format as commit messages:
+
+```
+feat(blog): add RSS feed support
+```
+
+## PR Description Template
+
+```markdown
+## Summary
+<!-- 1-2 sentences describing the change -->
+
+## Changes
+<!-- Bullet list of key changes -->
+
+- 
+- 
+
+## Testing
+<!-- How to verify the changes work -->
+
+## Checklist
+- [ ] `npm run build` passes
+- [ ] Type-check passes (`astro check`)
+- [ ] Docs updated if needed
+```
+
+## Scope Guidelines
+
+- Keep PRs focused on a single concern
+- Large refactors should be split into smaller PRs
+- New features should include doc updates in the same PR

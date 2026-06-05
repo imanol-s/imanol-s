@@ -53,7 +53,7 @@ This is a static personal portfolio built with Astro 5, deployed to Netlify with
 | **Page Routes**         | File-based routing: `/`, `/blog`, `/projects/[id]` | `src/pages/*.astro`                                               |
 | **Content Collections** | Type-safe MDX/MD content with Zod schemas          | `src/content/config.ts:8-37`                                      |
 | **React Islands**       | Single hydrated component: `TabsButtons.tsx`       | `src/pages/index.astro:16` (`client:visible`)                     |
-| **Inline Scripts**      | Client-side JS for command palette, share, nav     | `CommandPalette.astro:127-396`, `ShareProjectButton.astro:29-144` |
+| **Inline Scripts**      | Client-side JS for share, nav                      | `ShareProjectButton.astro:29-144`                                 |
 | **Netlify Forms**       | Passive event tracking via hidden form             | `Layout.astro:76-85`                                              |
 
 ### Data Flows and Trust Boundaries
@@ -165,7 +165,6 @@ flowchart TD
 | External Project URLs | Click project link    | Browser → External | Missing `noopener noreferrer`  | `projects/[id].astro:40-42`                            |
 | Resume Download       | Click CV button       | Browser → CDN      | Opens new tab without noopener | `ProfileActionButton.astro:34`                         |
 | Netlify Form          | Page load/share event | Browser → Netlify  | Passive tracking, no user data | `Layout.astro:76-85`, `ShareProjectButton.astro:32-54` |
-| Command Palette       | Keyboard shortcut     | Browser only       | Client-side navigation only    | `CommandPalette.astro:127-396`                         |
 
 ---
 
@@ -289,7 +288,7 @@ window.open(resume, "_blank", "noopener,noreferrer");
 
 | Check                            | Status                                                   |
 | -------------------------------- | -------------------------------------------------------- |
-| All entry points covered         | ✅ Pages, external links, forms, command palette         |
+| All entry points covered         | ✅ Pages, external links, forms                          |
 | All trust boundaries represented | ✅ Internet→CDN, Browser→External, Browser→Netlify       |
 | Runtime vs CI/dev separation     | ✅ CI limited to Netlify auto-build; no custom workflows |
 | User clarifications reflected    | ✅ Deployment, CI/CD, data sensitivity confirmed         |
