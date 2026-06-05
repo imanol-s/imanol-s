@@ -60,7 +60,7 @@
     "typescript": "5.9.3"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.4.3",
+    "@commitlint/cli": "21.0.1",
     "@commitlint/config-conventional": "20.4.3",
     "@tailwindcss/typography": "0.5.19",
     "husky": "9.1.7",
