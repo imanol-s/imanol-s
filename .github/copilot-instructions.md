@@ -90,7 +90,7 @@ const { title, description } = Astro.props;
 | `competencies`          | `string[]`               | Tech Specs — Competencies list              |
 | `languages`             | `{name, level}[]`        | Tech Specs — Communication table            |
 | `profileFacts`          | `{value, description}[]` | About section stats row                     |
-| `contactInfo.email`     | `string`                 | Footer, About section, CommandPalette       |
+| `contactInfo.email`     | `string`                 | Footer, About section                       |
 | `contactInfo.linkedin`  | `string`                 | Reference for LinkedIn URL                  |
 | `contactInfo.resumeDoc` | `string`                 | Resume PDF filename (served from `public/`) |
 
