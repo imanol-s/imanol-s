@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 // Collect JS errors across every test
-let pageErrors: string[];
+let pageErrors: string[] = [];
 test.beforeEach(async ({ page }) => {
   pageErrors = [];
   page.on("pageerror", (err) => pageErrors.push(err.message));
