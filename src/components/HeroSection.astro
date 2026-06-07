@@ -1,11 +1,20 @@
 ---
 import { Picture } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import TypewriterText from "./TypewriterText.tsx";
 import { ME, SOCIALS } from "../config";
-import profileImage from "../assets/Profile-1.png";
 
 const github = SOCIALS.find((s) => s.name === "GitHub");
 const linkedin = SOCIALS.find((s) => s.name === "LinkedIn");
+const profileImages = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/*",
+  { eager: true },
+);
+const profileImage = profileImages[`../assets/${ME.profileImage}`]?.default;
+
+if (!profileImage) {
+  throw new Error(`Profile image not found: ${ME.profileImage}`);
+}
 ---
 
 <section

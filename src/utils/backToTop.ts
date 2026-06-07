@@ -1,4 +1,5 @@
 import { prefersReducedMotion } from "./prefersReducedMotion";
+import { updateBackToTopA11y } from "./backToTopA11y";
 import { BACK_TO_TOP } from "./domContracts";
 
 /**
@@ -21,6 +22,7 @@ export function initBackToTop(
   let isCollapsed = false;
 
   function show() {
+    updateBackToTopA11y(btn, true);
     if (isVisible) return;
     isVisible = true;
     btn.classList.remove(...BACK_TO_TOP.classes.hidden);
@@ -28,6 +30,7 @@ export function initBackToTop(
   }
 
   function hide() {
+    updateBackToTopA11y(btn, false);
     if (!isVisible) return;
     isVisible = false;
     btn.classList.add(...BACK_TO_TOP.classes.hidden);

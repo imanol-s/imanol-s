@@ -38,7 +38,7 @@ const projects = defineCollection({
       cover: image(),
       tags: z.array(techTagSchema),
       keywords: z.array(z.string()).optional(),
-      ogImage: z.string(),
+      ogImage: image(),
     }),
 });
 

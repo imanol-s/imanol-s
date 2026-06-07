@@ -5,6 +5,16 @@ export type Action = "PLAY" | "FADE" | "FINISH" | "SKIP";
 
 export const LIFECYCLE_SESSION_KEY = "site-lifecycle-ready";
 
+function hasSessionReadyFlag(): boolean {
+  if (typeof sessionStorage === "undefined") return false;
+
+  try {
+    return sessionStorage.getItem(LIFECYCLE_SESSION_KEY) !== null;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Determines the starting lifecycle state before the overlay plays.
  * Reduced-motion is checked first: users who prefer reduced motion should
@@ -13,11 +23,7 @@ export const LIFECYCLE_SESSION_KEY = "site-lifecycle-ready";
  */
 export function getInitialState(): State {
   if (prefersReducedMotion()) return "ready";
-  if (
-    typeof sessionStorage !== "undefined" &&
-    sessionStorage.getItem(LIFECYCLE_SESSION_KEY)
-  )
-    return "ready";
+  if (hasSessionReadyFlag()) return "ready";
   return "loading";
 }
 

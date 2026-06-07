@@ -116,4 +116,12 @@ describe("getInitialState", () => {
       .mockReturnValue({ matches: true, addEventListener: vi.fn() });
     expect(getInitialState()).toBe("ready");
   });
+
+  it("returns loading when sessionStorage access throws", () => {
+    vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new Error("storage blocked");
+    });
+
+    expect(getInitialState()).toBe("loading");
+  });
 });

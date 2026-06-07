@@ -43,6 +43,8 @@ describe("initBackToTop", () => {
 
     expect(btn.classList.contains("opacity-100")).toBe(true);
     expect(btn.classList.contains("pointer-events-auto")).toBe(true);
+    expect(btn.getAttribute("tabindex")).toBe("0");
+    expect(btn.hasAttribute("aria-hidden")).toBe(false);
   });
 
   it("hides button before scroll threshold", () => {
@@ -55,6 +57,16 @@ describe("initBackToTop", () => {
     window.dispatchEvent(new Event("scroll"));
 
     expect(btn.classList.contains("opacity-0")).toBe(true);
+    expect(btn.getAttribute("tabindex")).toBe("-1");
+    expect(btn.getAttribute("aria-hidden")).toBe("true");
+  });
+
+  it("syncs hidden accessibility state during initialisation", () => {
+    const { btn, sidebar } = createFixture();
+    initBackToTop(btn, sidebar);
+
+    expect(btn.getAttribute("tabindex")).toBe("-1");
+    expect(btn.getAttribute("aria-hidden")).toBe("true");
   });
 
   it("scrolls to top on click", () => {
