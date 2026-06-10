@@ -44,13 +44,15 @@ function Caret({ hidden }: { hidden: boolean }) {
 const TypewriterText = ({ text }: { text: string }) => {
   const reducedMotion = useReducedMotion();
   const isReady = useReadyGate();
-  const [displayed, setDisplayed] = useState(text);
-  const [done, setDone] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+  const [displayed, setDisplayed] = useState("");
+  const [done, setDone] = useState(true);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef(false);
   const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
+    setHydrated(true);
     setDisplayed("");
     setDone(false);
     abortRef.current = false;
@@ -111,11 +113,22 @@ const TypewriterText = ({ text }: { text: string }) => {
       <span aria-hidden="true" className="invisible">
         {text}
       </span>
-      <span aria-hidden="true" className="absolute inset-0">
+      <span
+        aria-hidden="true"
+        className={`absolute inset-0 ${hydrated ? "invisible" : ""}`}
+        data-typewriter-fallback
+      >
+        {text}
+      </span>
+      <span
+        aria-hidden="true"
+        className={`absolute inset-0 ${hydrated ? "" : "invisible"}`}
+        data-typewriter-output
+      >
         {displayed}
         {!reducedMotion ? <Caret hidden={done} /> : null}
       </span>
-      {!done && (
+      {hydrated && !done && (
         <button
           type="button"
           className="sr-only focus:not-sr-only focus:absolute focus:inset-0 focus:z-10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"

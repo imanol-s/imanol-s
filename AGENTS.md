@@ -43,7 +43,7 @@ Instructions for AI coding assistants working with this repository.
 - Browser-level validation is available via `npm run test:e2e` with Playwright against the local preview on port 4321
 - Netlify pins Node 22 via `NODE_VERSION` in `netlify.toml`
 - Fonts self-hosted via `@fontsource-variable` (Inter + JetBrains Mono) — no Google Fonts CDN
-- Three React islands: `TopoBackground.tsx` (`client:only="react"`), `TypewriterText.tsx` (`client:load`), and `LoadingOverlay.tsx` (`client:only="react"`)
+- React islands: `TopoBackground.tsx` (`client:only="react"`, global), `TypewriterText.tsx` (`client:load`, homepage), and `LoadingOverlay.tsx` (`client:only="react"`, homepage)
 - Project subagents in `.cursor/agents/`: `coding-specialist` (mandatory for code changes), `software-architect`, `performance-optimizer`
 - Experience card descriptions render in full with no truncation
 - `src/config.ts` is the single source of truth for all personal/site data — full field reference in `.github/copilot-instructions.md` under "Site Configuration"

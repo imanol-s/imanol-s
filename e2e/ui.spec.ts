@@ -83,6 +83,84 @@ test.describe("Layout", () => {
 });
 
 test.describe("Home page sections", () => {
+  test("renders the hero title fallback without JavaScript", async ({
+    browser,
+  }) => {
+    const context = await browser.newContext({
+      baseURL: "http://localhost:4321",
+      javaScriptEnabled: false,
+    });
+    const page = await context.newPage();
+
+    try {
+      await page.goto("/");
+
+      const hero = page.locator("main h1[aria-label]");
+      await expect(hero).toHaveCount(1);
+      await expect(hero).toBeVisible();
+
+      const heroText = await hero.getAttribute("aria-label");
+      if (!heroText) {
+        throw new Error("Expected hero heading to expose aria-label");
+      }
+
+      const fallback = page.locator("[data-typewriter-fallback]");
+      await expect(fallback).toBeVisible();
+      await expect(fallback).toHaveText(heroText);
+      await expect(page.locator("[data-typewriter-output]")).toBeHidden();
+    } finally {
+      await context.close();
+    }
+  });
+
+  test("plays the homepage-only intro overlay before the hero resolves", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      sessionStorage.removeItem("site-lifecycle-ready");
+    });
+
+    await page.goto("/");
+    await expect(page.locator("#loading-overlay")).toHaveCount(1);
+
+    await expect
+      .poll(() =>
+        page.evaluate(() => sessionStorage.getItem("site-lifecycle-ready")),
+      )
+      .toBe("true");
+    await expect(page.locator('[data-loading-overlay="react"]')).toHaveCount(0);
+
+    const hero = page.locator("main h1[aria-label]");
+    await expect(hero).toHaveCount(1);
+    await expect(hero).toBeVisible();
+
+    const heroText = await hero.getAttribute("aria-label");
+    if (!heroText) {
+      throw new Error("Expected hero heading to expose aria-label");
+    }
+
+    await expect(page.locator("[data-typewriter-output]")).toHaveText(heroText);
+    await expect(
+      page.getByRole("button", { name: "Skip typewriter animation" }),
+    ).toHaveCount(0);
+  });
+
+  test("omits the intro overlay from blog and project routes", async ({
+    page,
+  }) => {
+    for (const path of [
+      "/blog/",
+      "/blog/overcoming-ingrained-introversion/",
+      "/projects/",
+      "/projects/crime-analysis/",
+    ]) {
+      await page.goto(path);
+      await expect(page.locator("#loading-overlay")).toHaveCount(0);
+      await expect(page.locator("[data-loading-overlay]")).toHaveCount(0);
+      await expect(page.locator("h1").first()).toBeVisible();
+    }
+  });
+
   test("profile image loads", async ({ page }) => {
     await page.goto("/");
     await page.waitForLoadState("networkidle");

@@ -47,6 +47,15 @@ describe("scheduleOverlay", () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });
+
+  it("keeps the shortened intro under one second", () => {
+    const totalIntroMs =
+      OVERLAY_TIMINGS.playDelayMs +
+      OVERLAY_TIMINGS.fadeDelayMs +
+      OVERLAY_TIMINGS.finishDelayMs;
+
+    expect(totalIntroMs).toBe(700);
+  });
   afterEach(() => {
     vi.useRealTimers();
   });

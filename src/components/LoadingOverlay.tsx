@@ -6,8 +6,8 @@ import { scheduleOverlay } from "../utils/siteLifecycle";
 /**
  * Intro overlay that plays a dotted-glow animation once per session.
  *
- * A static HTML fallback (`#loading-overlay`) is server-rendered in the Astro
- * layout to prevent a flash of unstyled content before React hydrates.
+ * A static HTML fallback (`#loading-overlay`) is server-rendered by the
+ * homepage to prevent a flash of unstyled content before React hydrates.
  * On mount, the static element is hidden so React owns the overlay lifecycle.
  */
 export default function LoadingOverlay() {
@@ -28,7 +28,8 @@ export default function LoadingOverlay() {
 
   return (
     <div
-      className={`fixed inset-0 z-50 transition-opacity duration-500 ${
+      data-loading-overlay="react"
+      className={`fixed inset-0 z-50 transition-opacity duration-300 ${
         isFading ? "opacity-0" : "opacity-100"
       }`}
       style={{ backgroundColor: "var(--color-background-dark)" }}

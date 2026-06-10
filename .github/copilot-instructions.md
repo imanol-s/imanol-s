@@ -43,10 +43,10 @@ const { title, description } = Astro.props;
 ## Architecture Rules
 
 - **Astro-first**: Default to `.astro` components. Only use React (`.tsx`) when client-side interactivity is required
-- **Island architecture**: Only three React islands ship JS to the client:
-  - `TopoBackground.tsx` — animated SVG background (`client:only="react"`, skips SSR)
-  - `TypewriterText.tsx` — hero name animation (`client:load`, SSR-safe)
-  - `LoadingOverlay.tsx` — session loading overlay (`client:only="react"`, skips SSR)
+- **Island architecture**: Keep React islands tightly scoped:
+  - `TopoBackground.tsx` — global animated SVG background (`client:only="react"`, skips SSR)
+  - `TypewriterText.tsx` — homepage hero name animation (`client:load`, SSR-safe)
+  - `LoadingOverlay.tsx` — homepage-only session loading overlay (`client:only="react"`, skips SSR)
 - **Content collections**: All blog/project content goes through Astro content collections with Zod schemas in `src/content/config.ts` — do not bypass with raw file reads
 - **Static data**: Typed arrays/objects exported from `src/data/*.ts` for non-content data (jobs, education)
 - **Single layout**: All pages use `src/layouts/Layout.astro` — do not create additional layouts without justification
@@ -198,7 +198,7 @@ function displayName(name: string) {
 
 - Use Astro's `<Image>` component for all images — provides automatic WebP conversion and responsive sizing
 - Set `loading="eager"` and `fetchpriority="high"` only for above-the-fold images; use `loading="lazy"` for everything else
-- Keep client JS minimal: only `TopoBackground.tsx`, `TypewriterText.tsx`, and `LoadingOverlay.tsx` hydrate — avoid adding new React islands unless truly interactive
+- Keep client JS minimal: `TopoBackground.tsx` hydrates globally; `TypewriterText.tsx` and `LoadingOverlay.tsx` hydrate only on the homepage — avoid adding new React islands unless truly interactive
 - Container: `max-w-7xl mx-auto px-6`
 
 ## Styling

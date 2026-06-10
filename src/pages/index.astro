@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import LoadingOverlay from "../components/LoadingOverlay.tsx";
 import HeroSection from "../components/HeroSection.astro";
 import ProjectsCarousel from "../components/ProjectsCarousel.astro";
 import ExperienceTimeline from "../components/ExperienceTimeline.astro";
@@ -11,6 +12,24 @@ import { ME, SITE } from "../config";
   description={ME.aboutMe}
   scrollSmooth={true}
 >
+  <Fragment slot="body-start">
+    <noscript
+      ><style>
+        #loading-overlay {
+          display: none;
+        }
+      </style></noscript
+    >
+    <div
+      id="loading-overlay"
+      data-loading-overlay="fallback"
+      class="fixed inset-0 z-50 bg-[var(--color-background-dark)] pointer-events-none"
+      aria-hidden="true"
+    >
+    </div>
+    <LoadingOverlay client:only="react" />
+  </Fragment>
+
   <HeroSection />
 
   <ProjectsCarousel />

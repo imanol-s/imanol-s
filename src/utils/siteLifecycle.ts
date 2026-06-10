@@ -36,8 +36,8 @@ export function getInitialState(): State {
  */
 export const OVERLAY_TIMINGS = {
   playDelayMs: 100,
-  fadeDelayMs: 500,
-  finishDelayMs: 500,
+  fadeDelayMs: 300,
+  finishDelayMs: 300,
 } as const;
 
 /**
