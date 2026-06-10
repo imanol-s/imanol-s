@@ -145,6 +145,35 @@ test.describe("Home page sections", () => {
     ).toHaveCount(0);
   });
 
+  test("keeps the animated hero title on one line at the narrow browser size", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 431, height: 982 });
+    await page.addInitScript(() => {
+      sessionStorage.removeItem("site-lifecycle-ready");
+    });
+
+    await page.goto("/");
+
+    const hero = page.locator("main h1[aria-label]");
+    const heroText = await hero.getAttribute("aria-label");
+    if (!heroText) {
+      throw new Error("Expected hero heading to expose aria-label");
+    }
+
+    await expect(page.locator("[data-typewriter-output]")).toHaveText(heroText);
+
+    const titleMetrics = await hero.evaluate((el) => {
+      const rect = el.getBoundingClientRect();
+      const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
+      return { height: rect.height, lineHeight };
+    });
+
+    expect(titleMetrics.height).toBeLessThanOrEqual(
+      titleMetrics.lineHeight * 1.25,
+    );
+  });
+
   test("omits the intro overlay from blog and project routes", async ({
     page,
   }) => {
