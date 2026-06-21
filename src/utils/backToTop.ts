@@ -1,6 +1,16 @@
 import { prefersReducedMotion } from "./prefersReducedMotion";
 import { BACK_TO_TOP } from "./domContracts";
 
+function updateA11y(btn: HTMLElement, visible: boolean): void {
+  if (visible) {
+    btn.setAttribute("tabindex", "0");
+    btn.removeAttribute("aria-hidden");
+  } else {
+    btn.setAttribute("tabindex", "-1");
+    btn.setAttribute("aria-hidden", "true");
+  }
+}
+
 /**
  * Back-to-top button with sidebar-aware collapse.
  *
@@ -25,6 +35,7 @@ export function initBackToTop(
     isVisible = true;
     btn.classList.remove(...BACK_TO_TOP.classes.hidden);
     btn.classList.add(...BACK_TO_TOP.classes.visible);
+    updateA11y(btn, true);
   }
 
   function hide() {
@@ -32,6 +43,7 @@ export function initBackToTop(
     isVisible = false;
     btn.classList.add(...BACK_TO_TOP.classes.hidden);
     btn.classList.remove(...BACK_TO_TOP.classes.visible);
+    updateA11y(btn, false);
   }
 
   function collapse() {

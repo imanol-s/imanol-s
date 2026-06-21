@@ -1,5 +1,3 @@
-export const PLACEHOLDER_URL = "https://google.com";
-
 export interface ProjectEntry {
   id: string;
   data: {
@@ -14,7 +12,7 @@ export interface ProjectPageData<T extends ProjectEntry> {
   label: string;
   prev: T | null;
   next: T | null;
-  /** false when url is absent, empty, or the dev placeholder */
+  /** false when url is absent or empty */
   hasValidUrl: boolean;
 }
 
@@ -42,7 +40,7 @@ export function getProjectPageData<T extends ProjectEntry>(
     index < sortedProjects.length - 1 ? sortedProjects[index + 1] : null;
 
   const url = current?.data.url;
-  const hasValidUrl = !!url && url.trim() !== "" && url !== PLACEHOLDER_URL;
+  const hasValidUrl = !!url && url.trim() !== "";
 
   return { label, prev, next, hasValidUrl };
 }

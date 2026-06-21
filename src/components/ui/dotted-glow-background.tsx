@@ -26,7 +26,6 @@ export const DottedGlowBackground = ({
   speed,
   accentVar,
   glowVar,
-  _advanced,
 }: DottedGlowBackgroundProps) => {
   const canvasRef = useDottedGlow({
     gap,
@@ -35,7 +34,6 @@ export const DottedGlowBackground = ({
     speed,
     accentVar,
     glowVar,
-    _advanced,
   });
 
   return (

@@ -8,14 +8,6 @@ import {
 import { useDarkMode } from "./useDarkMode";
 import { useReducedMotion } from "./useReducedMotion";
 
-/** Advanced escape hatch for power callers. */
-export interface AdvancedDotProps {
-  speedMin?: number;
-  speedMax?: number;
-  speedScale?: number;
-  backgroundOpacity?: number;
-}
-
 export interface DottedGlowOptions {
   gap?: number;
   radius?: number;
@@ -26,8 +18,6 @@ export interface DottedGlowOptions {
   accentVar?: string;
   /** CSS variable name without var() wrapper, e.g. "--color-primary" */
   glowVar?: string;
-  /** Escape hatch for power callers */
-  _advanced?: AdvancedDotProps;
 }
 
 /**
@@ -56,7 +46,6 @@ export function useDottedGlow({
   speed = 0.5,
   accentVar = "--color-accent",
   glowVar = "--color-primary",
-  _advanced,
 }: DottedGlowOptions = {}): React.RefCallback<HTMLCanvasElement> {
   // Called for its side-effect: triggers re-render on theme change so
   // getComputedStyle in the draw loop reads fresh CSS variable values.
@@ -72,32 +61,16 @@ export function useDottedGlow({
   const speedRef = useRef(speed);
   const accentVarRef = useRef(accentVar);
   const glowVarRef = useRef(glowVar);
-  const advancedRef = useRef(_advanced);
 
   useEffect(() => {
     reducedRef.current = reduced;
-  }, [reduced]);
-  useEffect(() => {
     gapRef.current = gap;
-  }, [gap]);
-  useEffect(() => {
     radiusRef.current = radius;
-  }, [radius]);
-  useEffect(() => {
     opacityRef.current = opacity;
-  }, [opacity]);
-  useEffect(() => {
     speedRef.current = speed;
-  }, [speed]);
-  useEffect(() => {
     accentVarRef.current = accentVar;
-  }, [accentVar]);
-  useEffect(() => {
     glowVarRef.current = glowVar;
-  }, [glowVar]);
-  useEffect(() => {
-    advancedRef.current = _advanced;
-  }, [_advanced]);
+  }, [reduced, gap, radius, opacity, speed, accentVar, glowVar]);
 
   // Holds the cleanup function returned when we attach to a canvas.
   const cleanupRef = useRef<(() => void) | null>(null);
@@ -136,9 +109,8 @@ export function useDottedGlow({
     const regenDots = () => {
       const { width, height } = container.getBoundingClientRect();
       const s = speedRef.current;
-      const adv = advancedRef.current;
-      const speedMin = adv?.speedMin ?? 0.1 + s * 0.4;
-      const speedMax = adv?.speedMax ?? 0.1 + s * 1.8;
+      const speedMin = 0.1 + s * 0.4;
+      const speedMax = 0.1 + s * 1.8;
       dots = buildDotGrid(width, height, gapRef.current, speedMin, speedMax);
     };
 
@@ -161,32 +133,10 @@ export function useDottedGlow({
       const currentRadius = radiusRef.current;
       const accentColor = resolveCssVar(accentVarRef.current);
       const glowColor = resolveCssVar(glowVarRef.current);
-      const adv = advancedRef.current;
-      const speedScale = adv?.speedScale ?? 1;
-      const backgroundOpacity = adv?.backgroundOpacity ?? 0;
 
       const { width, height } = container.getBoundingClientRect();
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      if (backgroundOpacity > 0) {
-        ctx.globalAlpha = currentOpacity;
-        const grad = ctx.createRadialGradient(
-          width * 0.5,
-          height * 0.4,
-          Math.min(width, height) * 0.1,
-          width * 0.5,
-          height * 0.5,
-          Math.max(width, height) * 0.7,
-        );
-        grad.addColorStop(0, "rgba(0,0,0,0)");
-        grad.addColorStop(
-          1,
-          `rgba(0,0,0,${Math.min(Math.max(backgroundOpacity, 0), 1)})`,
-        );
-        ctx.fillStyle = grad as unknown as CanvasGradient;
-        ctx.fillRect(0, 0, width, height);
-      }
 
       ctx.save();
       ctx.fillStyle = accentColor;
@@ -195,7 +145,7 @@ export function useDottedGlow({
 
       for (let i = 0; i < dots.length; i++) {
         const d = dots[i];
-        const a = dotAlpha(d, timeSec, speedScale);
+        const a = dotAlpha(d, timeSec, 1);
         const glow = dotGlow(a);
 
         if (glow > 0) {

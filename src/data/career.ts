@@ -90,15 +90,12 @@ export function jobEndDate(job: WorkExperience): Date | null {
   return job.endDate ? new Date(job.endDate) : null;
 }
 
-/** The number of recent jobs shown on the homepage experience timeline. */
-const TIMELINE_JOB_COUNT = 3;
-
 /**
  * Returns the most recent work experiences for the homepage timeline preview.
  * The full list is available via `workExperience`.
  */
 export function timelineJobs(): WorkExperience[] {
-  return workExperience.slice(0, TIMELINE_JOB_COUNT);
+  return workExperience.slice(0, 3);
 }
 
 /** Returns the primary education entry, or null if none exists. */

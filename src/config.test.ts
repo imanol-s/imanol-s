@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { SITE, ME, SOCIALS } from "./config";
-import { lookupTech } from "./data/techRegistry";
+import { getTechView } from "./data/techRegistry";
 
 // Simple URL validation: must start with http:// or https://
 const URL_RE = /^https?:\/\/.+/;
@@ -131,10 +131,10 @@ describe("ME", () => {
 
   it("every coreLanguage TechId exists in the techRegistry", () => {
     for (const techId of ME.coreLanguages) {
-      const entry = lookupTech(techId);
+      const view = getTechView(techId);
       expect(
-        entry,
-        `TechId "${techId}" not found in techRegistry`,
+        view.iconPath,
+        `TechId "${techId}" has no icon in techRegistry`,
       ).not.toBeNull();
     }
   });

@@ -1,10 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from "vitest";
-import {
-  getSortedProjects,
-  getProjectPageData,
-  PLACEHOLDER_URL,
-} from "./projectCollection";
+import { getSortedProjects, getProjectPageData } from "./projectCollection";
 
 // Minimal shape matching what the functions need
 function makeProject(id: string, startDate: Date, title = id, url?: string) {
@@ -85,23 +81,11 @@ describe("getProjectPageData", () => {
       expect(getProjectPageData(projects, "x").hasValidUrl).toBe(false);
     });
 
-    it("returns false for the placeholder URL", () => {
-      const projects = [makeProject("x", new Date(), "X", PLACEHOLDER_URL)];
-      expect(getProjectPageData(projects, "x").hasValidUrl).toBe(false);
-    });
-
     it("returns true for a real URL", () => {
       const projects = [
         makeProject("x", new Date(), "X", "https://github.com/user/repo"),
       ];
       expect(getProjectPageData(projects, "x").hasValidUrl).toBe(true);
     });
-  });
-});
-
-describe("PLACEHOLDER_URL", () => {
-  it("is a non-empty string", () => {
-    expect(typeof PLACEHOLDER_URL).toBe("string");
-    expect(PLACEHOLDER_URL.length).toBeGreaterThan(0);
   });
 });
