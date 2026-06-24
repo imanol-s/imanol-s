@@ -1,0 +1,60 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_sitefooter_astro",
+      "label": "SiteFooter.astro",
+      "file_type": "code",
+      "source_file": "src/components/SiteFooter.astro",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_sitefooter_github",
+      "label": "github",
+      "file_type": "code",
+      "source_file": "src/components/SiteFooter.astro",
+      "source_location": "L4"
+    },
+    {
+      "id": "components_sitefooter_linkedin",
+      "label": "linkedin",
+      "file_type": "code",
+      "source_file": "src/components/SiteFooter.astro",
+      "source_location": "L5"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config",
+      "label": "../config",
+      "file_type": "code",
+      "source_file": "src/config",
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_sitefooter_astro",
+      "target": "components_sitefooter_github",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/SiteFooter.astro",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_sitefooter_astro",
+      "target": "components_sitefooter_linkedin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/SiteFooter.astro",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_sitefooter_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/SiteFooter.astro"
+    }
+  ],
+  "raw_calls": []
+}

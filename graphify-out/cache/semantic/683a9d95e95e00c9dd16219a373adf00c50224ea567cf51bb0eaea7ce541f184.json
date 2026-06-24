@@ -1,0 +1,59 @@
+{
+  "nodes": [
+    {
+      "id": "async_dependencies_dependency_based_parallelization",
+      "label": "Dependency-Based Parallelization",
+      "file_type": "document",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/async-dependencies.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "async_dependencies_better_all",
+      "label": "better-all library",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/async-dependencies.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "async_dependencies_dependency_based_parallelization",
+      "target": "async_dependencies_better_all",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/async-dependencies.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "async_dependencies_dependency_based_parallelization",
+      "target": "async_parallel_promise_all_independent",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/async-dependencies.md",
+      "source_location": null,
+      "weight": 0.9
+    },
+    {
+      "source": "async_dependencies_dependency_based_parallelization",
+      "target": "concept_async_parallelization",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/async-dependencies.md",
+      "source_location": null,
+      "weight": 0.9
+    }
+  ],
+  "hyperedges": []
+}

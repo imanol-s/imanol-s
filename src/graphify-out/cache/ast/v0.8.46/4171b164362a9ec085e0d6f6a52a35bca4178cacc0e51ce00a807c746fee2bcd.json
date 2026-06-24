@@ -1,0 +1,130 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "label": "ProjectsCarousel.astro",
+      "file_type": "code",
+      "source_file": "components/ProjectsCarousel.astro",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_projectscarousel_allprojects",
+      "label": "allProjects",
+      "file_type": "code",
+      "source_file": "components/ProjectsCarousel.astro",
+      "source_location": "L6"
+    },
+    {
+      "id": "astro_content",
+      "label": "astro:content",
+      "file_type": "code",
+      "source_file": "astro:content",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "astro_assets",
+      "label": "astro:assets",
+      "file_type": "code",
+      "source_file": "astro:assets",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_data_projectcollection",
+      "label": "@/data/projectCollection",
+      "file_type": "code",
+      "source_file": "data/projectCollection",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_carousel",
+      "label": "../utils/carousel",
+      "file_type": "code",
+      "source_file": "utils/carousel",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_domcontracts",
+      "label": "../utils/domContracts",
+      "file_type": "code",
+      "source_file": "utils/domContracts",
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "target": "astro_assets",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ProjectsCarousel.astro",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_data_projectcollection_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ProjectsCarousel.astro",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "target": "data_projectcollection_getsortedprojects",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ProjectsCarousel.astro",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "target": "components_projectscarousel_allprojects",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ProjectsCarousel.astro",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "target": "astro_content",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ProjectsCarousel.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "target": "astro_assets",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ProjectsCarousel.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_data_projectcollection",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ProjectsCarousel.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_carousel",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ProjectsCarousel.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_domcontracts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ProjectsCarousel.astro"
+    }
+  ],
+  "raw_calls": []
+}

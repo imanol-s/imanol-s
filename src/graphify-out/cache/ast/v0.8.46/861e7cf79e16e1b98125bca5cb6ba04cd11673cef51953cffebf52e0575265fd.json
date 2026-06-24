@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_404_astro",
+      "label": "404.astro",
+      "file_type": "code",
+      "source_file": "pages/404.astro",
+      "source_location": "L1"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "label": "../layouts/Layout.astro",
+      "file_type": "code",
+      "source_file": "layouts/Layout.astro",
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_404_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "pages/404.astro"
+    }
+  ],
+  "raw_calls": []
+}

@@ -1,0 +1,81 @@
+{
+  "nodes": [
+    {
+      "id": "rules_js_cache_function_results_function_result_caching",
+      "label": "Cache Repeated Function Calls",
+      "file_type": "document",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/js-cache-function-results.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rules_js_cache_function_results_module_level_map",
+      "label": "Module-Level Map Cache Pattern",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/js-cache-function-results.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rules_js_cache_function_results_memoization",
+      "label": "Memoization",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/js-cache-function-results.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_performance_optimization",
+      "label": "JavaScript Performance Optimization",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/js-cache-function-results.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_js_cache_function_results_function_result_caching",
+      "target": "rules_js_cache_function_results_module_level_map",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/js-cache-function-results.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_js_cache_function_results_function_result_caching",
+      "target": "rules_js_cache_function_results_memoization",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/js-cache-function-results.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_js_cache_function_results_function_result_caching",
+      "target": "concept_performance_optimization",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/js-cache-function-results.md",
+      "source_location": null,
+      "weight": 0.95
+    }
+  ],
+  "hyperedges": []
+}

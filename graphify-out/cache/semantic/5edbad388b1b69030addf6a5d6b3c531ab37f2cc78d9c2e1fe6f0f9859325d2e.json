@@ -1,0 +1,83 @@
+{
+  "nodes": [
+    {
+      "id": "vercel_skill_vrbpskill",
+      "label": "vercel-react-best-practices Skill",
+      "file_type": "document",
+      "source_file": ".agents/skills/vercel-react-best-practices/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "vercel_concept_eliminatewaterfalls",
+      "label": "Eliminating Waterfalls (CRITICAL category)",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "vercel_concept_bundlesize",
+      "label": "Bundle Size Optimization (CRITICAL category)",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "vercel_skill_vrbpskill",
+      "target": "vercel_agents_reactbestpractices",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "waterfall_elimination_pattern_group",
+      "label": "Waterfall Elimination Pattern Group (async-defer-await, async-parallel, async-dependencies, async-api-routes, async-suspense-boundaries)",
+      "nodes": [
+        "rules_async_defer_await",
+        "rules_async_parallel",
+        "rules_async_dependencies",
+        "rules_async_api_routes",
+        "rules_async_suspense_boundaries",
+        "vercel_concept_eliminatewaterfalls"
+      ],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 0.95,
+      "source_file": ".agents/skills/vercel-react-best-practices/SKILL.md"
+    },
+    {
+      "id": "bundle_optimization_pattern_group",
+      "label": "Bundle Size Optimization Pattern Group (barrel-imports, dynamic-imports, defer-third-party, conditional, preload)",
+      "nodes": [
+        "rules_bundle_barrel_imports",
+        "rules_bundle_dynamic_imports",
+        "rules_bundle_defer_third_party",
+        "rules_bundle_conditional",
+        "rules_bundle_preload",
+        "vercel_concept_bundlesize"
+      ],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 0.95,
+      "source_file": ".agents/skills/vercel-react-best-practices/SKILL.md"
+    }
+  ]
+}

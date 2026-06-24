@@ -1,0 +1,31 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_codex_hooks_validate_ui_sh",
+      "label": "validate-ui.sh",
+      "file_type": "code",
+      "source_file": ".codex/hooks/validate-ui.sh",
+      "source_location": "L1",
+      "metadata": { "language": "bash", "kind": "file" }
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_codex_hooks_validate_ui_sh__entry",
+      "label": "validate-ui.sh script",
+      "file_type": "code",
+      "source_file": ".codex/hooks/validate-ui.sh",
+      "source_location": "L1",
+      "metadata": { "language": "bash", "kind": "bash_entrypoint" }
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_codex_hooks_validate_ui_sh",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_codex_hooks_validate_ui_sh__entry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/hooks/validate-ui.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    }
+  ]
+}

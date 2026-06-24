@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "rules_js_length_check_first_length_check_pattern",
+      "label": "Early Length Check for Array Comparisons",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/js-length-check-first.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_js_length_check_first_length_check_pattern",
+      "target": "rules_js_early_exit_js_optimization_category",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/js-length-check-first.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

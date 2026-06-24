@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "async_parallel_promise_all_independent",
+      "label": "Promise.all() for Independent Operations",
+      "file_type": "document",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/async-parallel.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_async_parallelization",
+      "label": "Async Parallelization",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/async-parallel.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "async_parallel_promise_all_independent",
+      "target": "concept_async_parallelization",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/async-parallel.md",
+      "source_location": null,
+      "weight": 0.9
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,0 +1,74 @@
+{
+  "nodes": [
+    {
+      "id": "new_content_skill_newcontent",
+      "label": "new-content Skill",
+      "file_type": "document",
+      "source_file": ".agents/skills/new-content/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "new_content_skill_contentschema",
+      "label": "Content Collection Schema (Zod-validated frontmatter)",
+      "file_type": "concept",
+      "source_file": ".agents/skills/new-content/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "new_content_skill_newcontent",
+      "target": "add_tech_skill_addtech",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/new-content/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "new_content_skill_newcontent",
+      "target": "add_tech_skill_techregistry",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/new-content/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "new_content_skill_newcontent",
+      "target": "new_content_skill_contentschema",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/new-content/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "content_creation_workflow",
+      "label": "Content Creation Workflow (new-content skill, add-tech skill, techRegistry, content schema)",
+      "nodes": [
+        "new_content_skill_newcontent",
+        "add_tech_skill_addtech",
+        "add_tech_skill_techregistry",
+        "new_content_skill_contentschema"
+      ],
+      "relation": "participate_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".agents/skills/new-content/SKILL.md"
+    }
+  ]
+}

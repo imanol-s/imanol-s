@@ -1,0 +1,59 @@
+{
+  "nodes": [
+    {
+      "id": "rules_view_transitions_rule",
+      "label": "View Transitions Rule",
+      "file_type": "document",
+      "source_file": ".claude/rules/view-transitions.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rules_view_transitions_astro_page_load",
+      "label": "astro:page-load Pattern",
+      "file_type": "concept",
+      "source_file": ".claude/rules/view-transitions.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_view_transitions_rule",
+      "target": "rules_view_transitions_astro_page_load",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/rules/view-transitions.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_view_transitions_rule",
+      "target": "agents_ui_engineer_dom_contracts",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/rules/view-transitions.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_view_transitions_rule",
+      "target": "agents_ui_engineer_site_lifecycle_state_machine",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".claude/rules/view-transitions.md",
+      "source_location": null,
+      "weight": 0.85
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "rerender_defer_reads_defer_state_reads",
+      "label": "Defer State Reads to Usage Point",
+      "file_type": "rationale",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-defer-reads.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rerender_defer_reads_searchparams_subscription",
+      "label": "useSearchParams Subscription Avoidance",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-defer-reads.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rerender_defer_reads_defer_state_reads",
+      "target": "rerender_defer_reads_searchparams_subscription",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-defer-reads.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

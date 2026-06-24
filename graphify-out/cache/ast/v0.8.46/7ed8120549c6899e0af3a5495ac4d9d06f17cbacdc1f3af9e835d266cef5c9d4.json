@@ -1,0 +1,31 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_claude_hooks_run_tests_async_sh",
+      "label": "run-tests-async.sh",
+      "file_type": "code",
+      "source_file": ".claude/hooks/run-tests-async.sh",
+      "source_location": "L1",
+      "metadata": { "language": "bash", "kind": "file" }
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_claude_hooks_run_tests_async_sh__entry",
+      "label": "run-tests-async.sh script",
+      "file_type": "code",
+      "source_file": ".claude/hooks/run-tests-async.sh",
+      "source_location": "L1",
+      "metadata": { "language": "bash", "kind": "bash_entrypoint" }
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_claude_hooks_run_tests_async_sh",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_claude_hooks_run_tests_async_sh__entry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/hooks/run-tests-async.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    }
+  ]
+}

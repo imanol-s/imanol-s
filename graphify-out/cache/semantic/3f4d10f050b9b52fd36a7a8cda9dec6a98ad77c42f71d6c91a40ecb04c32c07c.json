@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "coding_specialist_cursor_agent_coding_specialist",
+      "label": "Coding Specialist Cursor Agent",
+      "file_type": "document",
+      "source_file": ".cursor/agents/coding-specialist.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "cursor_agents_group",
+      "label": "Cursor Agent Definitions",
+      "file_type": "concept",
+      "source_file": ".cursor/agents/coding-specialist.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "coding_specialist_cursor_agent_coding_specialist",
+      "target": "cursor_agents_group",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".cursor/agents/coding-specialist.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

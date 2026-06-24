@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "crime_analysis_crime_analysis_footer_mockup",
+      "label": "Crime Analysis App Mockup (DFW Map with Red Pins)",
+      "file_type": "image",
+      "source_file": "src/content/projects/images/crime-analysis/crime_analysis_footer.webp",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "crime_analysis_crime_analysis_footer_mockup",
+      "target": "crime_analysis_crime_analysis_map_heatmap",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/images/crime-analysis/crime_analysis_footer.webp",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

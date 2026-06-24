@@ -1,0 +1,185 @@
+{
+  "nodes": [
+    {
+      "id": "projects_pert_scheduling_project",
+      "label": "Critical Task (PERT Scheduling Tool)",
+      "file_type": "document",
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_pert_scheduling_java",
+      "label": "Java",
+      "file_type": "concept",
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_pert_scheduling_graph_theory",
+      "label": "Graph Theory",
+      "file_type": "concept",
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_pert_scheduling_topological_sort",
+      "label": "Topological Sort",
+      "file_type": "concept",
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_pert_scheduling_complexity_analysis",
+      "label": "Complexity Analysis",
+      "file_type": "concept",
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_pert_scheduling_data_structures",
+      "label": "Data Structures",
+      "file_type": "concept",
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_pert_scheduling_dag",
+      "label": "Directed Acyclic Graph (DAG)",
+      "file_type": "concept",
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_pert_scheduling_critical_path",
+      "label": "Critical Path Analysis",
+      "file_type": "concept",
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "projects_pert_scheduling_project",
+      "target": "projects_pert_scheduling_java",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": "frontmatter tags",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_pert_scheduling_project",
+      "target": "projects_pert_scheduling_graph_theory",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": "frontmatter tags",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_pert_scheduling_project",
+      "target": "projects_pert_scheduling_topological_sort",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": "Implementation section",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_pert_scheduling_project",
+      "target": "projects_pert_scheduling_complexity_analysis",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": "frontmatter tags",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_pert_scheduling_project",
+      "target": "projects_pert_scheduling_data_structures",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": "frontmatter tags",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_pert_scheduling_project",
+      "target": "projects_pert_scheduling_dag",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": "Overview section",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_pert_scheduling_project",
+      "target": "projects_pert_scheduling_critical_path",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": "Overview section",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_pert_scheduling_topological_sort",
+      "target": "projects_pert_scheduling_dag",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": "Implementation section",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_pert_scheduling_critical_path",
+      "target": "projects_pert_scheduling_graph_theory",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "src/content/projects/pert-scheduling.mdx",
+      "source_location": "Implementation section",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

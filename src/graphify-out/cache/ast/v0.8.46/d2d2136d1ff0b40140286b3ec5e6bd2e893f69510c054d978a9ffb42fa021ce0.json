@@ -1,0 +1,76 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_siteheader_astro",
+      "label": "SiteHeader.astro",
+      "file_type": "code",
+      "source_file": "components/SiteHeader.astro",
+      "source_location": "L1"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config",
+      "label": "../config",
+      "file_type": "code",
+      "source_file": "config",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_mobilemenu",
+      "label": "../utils/mobileMenu",
+      "file_type": "code",
+      "source_file": "utils/mobileMenu",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_domcontracts",
+      "label": "../utils/domContracts",
+      "file_type": "code",
+      "source_file": "utils/domContracts",
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_siteheader_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_domcontracts_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/SiteHeader.astro",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_siteheader_astro",
+      "target": "utils_domcontracts_mobile_menu",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/SiteHeader.astro",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_siteheader_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/SiteHeader.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_siteheader_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_mobilemenu",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/SiteHeader.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_siteheader_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_domcontracts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/SiteHeader.astro"
+    }
+  ],
+  "raw_calls": []
+}
