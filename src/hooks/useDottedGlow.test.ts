@@ -196,7 +196,6 @@ describe("useDottedGlow", () => {
           speed: 0.7,
           accentVar: "--color-accent",
           glowVar: "--color-primary",
-          _advanced: { speedScale: 2 },
         }),
       ),
     ).not.toThrow();
