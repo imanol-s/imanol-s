@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { DottedGlowBackground } from "./ui/dotted-glow-background";
+import { useDottedGlow } from "../hooks/useDottedGlow";
 import { useSiteLifecycle } from "../hooks/useSiteLifecycle";
 import { scheduleOverlay } from "../utils/siteLifecycle";
 
@@ -12,6 +12,7 @@ import { scheduleOverlay } from "../utils/siteLifecycle";
  */
 export default function LoadingOverlay() {
   const { state, dispatch } = useSiteLifecycle();
+  const canvasRef = useDottedGlow();
 
   // Hide the server-rendered fallback so React controls visibility from here.
   useEffect(() => {
@@ -34,7 +35,12 @@ export default function LoadingOverlay() {
       style={{ backgroundColor: "var(--color-background-dark)" }}
       aria-hidden="true"
     >
-      <DottedGlowBackground />
+      <div style={{ position: "absolute", inset: 0 }}>
+        <canvas
+          ref={canvasRef}
+          style={{ display: "block", width: "100%", height: "100%" }}
+        />
+      </div>
     </div>
   );
 }

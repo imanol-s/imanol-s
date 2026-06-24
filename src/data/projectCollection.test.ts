@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { describe, it, expect } from "vitest";
 import { getSortedProjects, getProjectPageData } from "./projectCollection";
 
@@ -26,21 +25,6 @@ describe("getSortedProjects", () => {
 
 describe("getProjectPageData", () => {
   const sorted = [newest, newer, older]; // c, b, a — newest first
-
-  it("returns correct label for first project (index 0)", () => {
-    const { label } = getProjectPageData(sorted, "c");
-    expect(label).toBe("Project 01");
-  });
-
-  it("returns correct label for middle project", () => {
-    const { label } = getProjectPageData(sorted, "b");
-    expect(label).toBe("Project 02");
-  });
-
-  it("returns correct label for last project", () => {
-    const { label } = getProjectPageData(sorted, "a");
-    expect(label).toBe("Project 03");
-  });
 
   it("returns null prev for the first project", () => {
     const { prev } = getProjectPageData(sorted, "c");

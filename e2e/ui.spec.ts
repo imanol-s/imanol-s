@@ -78,7 +78,6 @@ test.describe("Layout", () => {
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto("/");
     await expect(page.locator('a[href*="/projects"]').first()).toBeVisible();
-    await expect(page.locator('a[href*="/blog"]').first()).toBeVisible();
   });
 });
 

@@ -13,13 +13,11 @@ export const SITE = {
   favicon: "/favicon.png",
   repository: "https://github.com/imanol-s/oman-portfolio.git",
   author: "Imanol Saldana",
-  profile: "https://imanols.dev",
 };
 
 export const ME: {
   name: string;
   profession: string[];
-  profileImage: string;
   aboutMe: string;
   location: string;
   focusAreas: string[];
@@ -30,7 +28,6 @@ export const ME: {
 } = {
   name: "Imanol Saldana",
   profession: ["Analytical Engineer", "Software Developer"],
-  profileImage: "Profile-1.png",
   aboutMe:
     "Analytical engineer building processes and systems that make enterprise data reliable. " +
     "From validation workflows to automation pipelines, I solve data problems with code.",
@@ -62,13 +59,11 @@ export const SOCIALS = [
   {
     name: "GitHub",
     url: "https://github.com/imanol-s",
-    icon: "github-fill",
     show: true,
   },
   {
     name: "LinkedIn",
     url: "https://linkedin.com/in/imanol-saldana",
-    icon: "linkedin-fill",
     show: true,
   },
 ];

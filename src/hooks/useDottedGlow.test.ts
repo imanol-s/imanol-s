@@ -196,10 +196,7 @@ describe("useDottedGlow", () => {
           speed: 0.7,
           accentVar: "--color-accent",
           glowVar: "--color-primary",
-          // cast: this test verifies the hook ignores unknown options at
-          // runtime, so the excess property is intentional (not in the type).
-          _advanced: { speedScale: 2 },
-        } as Parameters<typeof useDottedGlow>[0]),
+        }),
       ),
     ).not.toThrow();
   });

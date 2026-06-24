@@ -24,10 +24,6 @@ describe("SITE", () => {
     expect(SITE.repository).toMatch(URL_RE);
   });
 
-  it("profile is a valid URL", () => {
-    expect(SITE.profile).toMatch(URL_RE);
-  });
-
   it("has a non-empty author", () => {
     expect(typeof SITE.author).toBe("string");
     expect(SITE.author.length).toBeGreaterThan(0);
@@ -158,13 +154,6 @@ describe("SOCIALS", () => {
       expect(social.url, `${social.name} url is not a valid URL`).toMatch(
         URL_RE,
       );
-    }
-  });
-
-  it("every entry has a non-empty icon string", () => {
-    for (const social of SOCIALS) {
-      expect(typeof social.icon).toBe("string");
-      expect(social.icon.length).toBeGreaterThan(0);
     }
   });
 
