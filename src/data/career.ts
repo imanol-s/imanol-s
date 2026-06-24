@@ -14,8 +14,6 @@ export interface Education {
   endDate?: string;
   school: string;
   location: string;
-  description: string;
-  currentUni?: boolean;
 }
 
 export const workExperience: WorkExperience[] = [
@@ -74,7 +72,6 @@ export const education: Education[] = [
     endDate: "2025-12-18",
     school: "University of Texas at Dallas",
     location: "Texas, United States",
-    description: "",
   },
 ];
 
