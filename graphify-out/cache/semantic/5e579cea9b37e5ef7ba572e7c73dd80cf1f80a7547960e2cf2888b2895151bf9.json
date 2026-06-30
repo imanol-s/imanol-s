@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "id": "rerender_transitions_use_transitions_nonurgent_updates",
+      "label": "Use Transitions for Non-Urgent Updates",
+      "file_type": "document",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-transitions.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "react_starttransition_concept",
+      "label": "React startTransition - non-urgent updates",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-transitions.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rerender_transitions_use_transitions_nonurgent_updates",
+      "target": "react_starttransition_concept",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-transitions.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rerender_transitions_use_transitions_nonurgent_updates",
+      "target": "vercel_react_best_practices_skill_group",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-transitions.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

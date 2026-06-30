@@ -1,0 +1,69 @@
+{
+  "nodes": [
+    {
+      "id": "server_cache_lru_cross_request_lru_caching",
+      "label": "Cross-Request LRU Caching",
+      "file_type": "document",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/server-cache-lru.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "lru_cache_concept",
+      "label": "LRU Cache - cross-request caching strategy",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/server-cache-lru.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "server_cache_lru_cross_request_lru_caching",
+      "target": "lru_cache_concept",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/server-cache-lru.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "server_cache_lru_cross_request_lru_caching",
+      "target": "react_cache_concept",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/server-cache-lru.md",
+      "source_location": null,
+      "weight": 0.9
+    },
+    {
+      "source": "server_cache_lru_cross_request_lru_caching",
+      "target": "vercel_react_best_practices_skill_group",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/server-cache-lru.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "server_cache_lru_cross_request_lru_caching",
+      "target": "server_cache_react_per_request_dedup_react_cache",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/server-cache-lru.md",
+      "source_location": null,
+      "weight": 0.9
+    }
+  ],
+  "hyperedges": []
+}

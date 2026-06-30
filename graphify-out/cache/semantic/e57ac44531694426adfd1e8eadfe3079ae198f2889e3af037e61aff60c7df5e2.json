@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "id": "bug_report_github_issue_template_bug_report",
+      "label": "GitHub Bug Report Issue Template",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "github_issue_templates_group",
+      "label": "GitHub Issue Templates",
+      "file_type": "concept",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "bug_report_github_issue_template_bug_report",
+      "target": "github_issue_templates_group",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.yml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bug_report_github_issue_template_bug_report",
+      "target": "feature_request_github_issue_template_feature_request",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.yml",
+      "source_location": null,
+      "weight": 0.7
+    }
+  ],
+  "hyperedges": []
+}

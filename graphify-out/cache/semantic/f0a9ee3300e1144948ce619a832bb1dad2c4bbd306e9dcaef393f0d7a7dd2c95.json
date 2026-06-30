@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "posts_overcoming_introversion_post",
+      "label": "Blog Post: Overcoming Ingrained Introversion",
+      "file_type": "document",
+      "source_file": "src/content/posts/overcoming-ingrained-introversion.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": "2025-06-06",
+      "author": "Imanol",
+      "contributor": null
+    },
+    {
+      "id": "posts_overcoming_introversion_topic_introversion",
+      "label": "Topic: Career Growth & Introversion Adaptation",
+      "file_type": "concept",
+      "source_file": "src/content/posts/overcoming-ingrained-introversion.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "posts_overcoming_introversion_post",
+      "target": "posts_overcoming_introversion_topic_introversion",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/posts/overcoming-ingrained-introversion.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,0 +1,80 @@
+{
+  "nodes": [
+    {
+      "id": "add_tech_skill_addtech",
+      "label": "add-tech Skill",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-tech/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "add_tech_skill_techregistry",
+      "label": "Tech Registry (src/data/techRegistry.ts)",
+      "file_type": "concept",
+      "source_file": ".agents/skills/add-tech/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "add_tech_skill_registryfirst",
+      "label": "Registry-First Ordering Constraint",
+      "file_type": "rationale",
+      "source_file": ".agents/skills/add-tech/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "add_tech_skill_addtech",
+      "target": "add_tech_skill_techregistry",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/add-tech/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "add_tech_skill_registryfirst",
+      "target": "add_tech_skill_techregistry",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/add-tech/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "add_tech_skill_addtech",
+      "target": "add_tech_skill_registryfirst",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/add-tech/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "add_tech_skill_addtech",
+      "target": "new_content_skill_newcontent",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.65,
+      "source_file": ".agents/skills/add-tech/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

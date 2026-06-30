@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "id": "client_event_listeners_deduplicate_global_event_listeners",
+      "label": "Deduplicate Global Event Listeners",
+      "file_type": "document",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/client-event-listeners.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "client_event_listeners_useswrsubscription",
+      "label": "useSWRSubscription pattern",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/client-event-listeners.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_client_side_performance",
+      "label": "Client-side Performance Patterns",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/client-event-listeners.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "client_event_listeners_deduplicate_global_event_listeners",
+      "target": "client_event_listeners_useswrsubscription",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/client-event-listeners.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "client_event_listeners_deduplicate_global_event_listeners",
+      "target": "concept_client_side_performance",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/client-event-listeners.md",
+      "source_location": null,
+      "weight": 0.9
+    },
+    {
+      "source": "client_event_listeners_useswrsubscription",
+      "target": "client_swr_dedup_swr_automatic_deduplication",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/client-event-listeners.md",
+      "source_location": null,
+      "weight": 0.8
+    }
+  ],
+  "hyperedges": []
+}

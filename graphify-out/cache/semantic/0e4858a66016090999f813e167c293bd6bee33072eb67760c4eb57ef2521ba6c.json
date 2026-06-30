@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "rules_topo_animation_rule",
+      "label": "Topo Animation Rule",
+      "file_type": "document",
+      "source_file": ".claude/rules/topo-animation.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rules_topo_animation_monotonic_drift",
+      "label": "Monotonic Drift Invariant (topoMath)",
+      "file_type": "concept",
+      "source_file": ".claude/rules/topo-animation.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_topo_animation_rule",
+      "target": "rules_topo_animation_monotonic_drift",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/rules/topo-animation.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

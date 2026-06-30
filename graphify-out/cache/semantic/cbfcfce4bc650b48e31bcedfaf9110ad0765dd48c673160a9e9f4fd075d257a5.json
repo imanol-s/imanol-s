@@ -1,0 +1,105 @@
+{
+  "nodes": [
+    {
+      "id": "github_copilot_instructions_canon",
+      "label": "Copilot Instructions \u2014 Canonical Agent Instruction Source",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "github_copilot_instructions_xss_prevention",
+      "label": "XSS Prevention Guidelines",
+      "file_type": "concept",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "github_copilot_instructions_mandatory_validation",
+      "label": "Mandatory Post-Edit Validation (build + preview)",
+      "file_type": "concept",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "github_copilot_instructions_site_config_reference",
+      "label": "Site Configuration Reference (SITE, ME, SOCIALS)",
+      "file_type": "concept",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "github_copilot_instructions_canon",
+      "target": "github_copilot_instructions_xss_prevention",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "github_copilot_instructions_canon",
+      "target": "github_copilot_instructions_mandatory_validation",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "github_copilot_instructions_canon",
+      "target": "github_copilot_instructions_site_config_reference",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "github_copilot_instructions_canon",
+      "target": "agents_md_agent_instructions",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "hyperedge_instruction_sources",
+      "label": "Canonical Instruction Sources (copilot-instructions, AGENTS.md, CLAUDE.md)",
+      "nodes": [
+        "github_copilot_instructions_canon",
+        "agents_md_agent_instructions",
+        "claude_md_project_instructions"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/copilot-instructions.md"
+    }
+  ]
+}

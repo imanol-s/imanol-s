@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "opencode_agents_ui_builder_agent",
+      "label": "UI Builder Agent (opencode)",
+      "file_type": "document",
+      "source_file": ".opencode/agents/ui-builder.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "opencode_agents_ui_builder_design_system",
+      "label": "Blueprint/Topo Design System (color tokens, typography, utilities)",
+      "file_type": "concept",
+      "source_file": ".opencode/agents/ui-builder.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "opencode_agents_ui_builder_agent",
+      "target": "opencode_agents_ui_builder_design_system",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/ui-builder.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

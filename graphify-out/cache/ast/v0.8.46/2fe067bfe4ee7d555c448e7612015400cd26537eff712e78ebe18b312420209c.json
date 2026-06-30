@@ -1,0 +1,31 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_codex_hooks_decision_log_capture_sh",
+      "label": "decision-log-capture.sh",
+      "file_type": "code",
+      "source_file": ".codex/hooks/decision-log-capture.sh",
+      "source_location": "L1",
+      "metadata": { "language": "bash", "kind": "file" }
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_codex_hooks_decision_log_capture_sh__entry",
+      "label": "decision-log-capture.sh script",
+      "file_type": "code",
+      "source_file": ".codex/hooks/decision-log-capture.sh",
+      "source_location": "L1",
+      "metadata": { "language": "bash", "kind": "bash_entrypoint" }
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_codex_hooks_decision_log_capture_sh",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_codex_hooks_decision_log_capture_sh__entry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".codex/hooks/decision-log-capture.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "nodes": [
+    {
+      "id": "catppuccin_file_icon",
+      "label": "Generic File Icon (Catppuccin theme)",
+      "file_type": "image",
+      "source_file": "public/icons/catppuccin/file.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [],
+  "hyperedges": []
+}

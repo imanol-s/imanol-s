@@ -1,0 +1,38 @@
+{
+  "nodes": [
+    {
+      "id": "rerender_simple_expression_in_memo_avoid_usememo_simple_expr",
+      "label": "Do not wrap a simple expression with a primitive result type in useMemo",
+      "file_type": "document",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-simple-expression-in-memo.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rerender_simple_expression_in_memo_avoid_usememo_simple_expr",
+      "target": "react_usememo_concept",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-simple-expression-in-memo.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rerender_simple_expression_in_memo_avoid_usememo_simple_expr",
+      "target": "vercel_react_best_practices_skill_group",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-simple-expression-in-memo.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

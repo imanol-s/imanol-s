@@ -1,0 +1,86 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_postcard_astro",
+      "label": "PostCard.astro",
+      "file_type": "code",
+      "source_file": "components/PostCard.astro",
+      "source_location": "L1"
+    },
+    {
+      "id": "astro_assets",
+      "label": "astro:assets",
+      "file_type": "code",
+      "source_file": "astro:assets",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "components",
+      "label": "astro-icon/components",
+      "file_type": "code",
+      "source_file": "astro-icon/components",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_formatdate",
+      "label": "../utils/formatDate",
+      "file_type": "code",
+      "source_file": "utils/formatDate",
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_postcard_astro",
+      "target": "components",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PostCard.astro",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_postcard_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_formatdate_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PostCard.astro",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_postcard_astro",
+      "target": "utils_formatdate_formatdate",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PostCard.astro",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_postcard_astro",
+      "target": "astro_assets",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PostCard.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_postcard_astro",
+      "target": "components",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PostCard.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_postcard_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_formatdate",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PostCard.astro"
+    }
+  ],
+  "raw_calls": []
+}

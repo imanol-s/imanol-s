@@ -1,0 +1,254 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "label": "Layout.astro",
+      "file_type": "code",
+      "source_file": "src/layouts/Layout.astro",
+      "source_location": "L1"
+    },
+    {
+      "id": "astro_transitions",
+      "label": "astro:transitions",
+      "file_type": "code",
+      "source_file": "astro:transitions",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_styles_globals_css",
+      "label": "@/styles/globals.css",
+      "file_type": "code",
+      "source_file": "src/styles/globals.css",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_siteheader_astro",
+      "label": "../components/SiteHeader.astro",
+      "file_type": "code",
+      "source_file": "src/components/SiteHeader.astro",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_sitefooter_astro",
+      "label": "../components/SiteFooter.astro",
+      "file_type": "code",
+      "source_file": "src/components/SiteFooter.astro",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_topobackground_tsx",
+      "label": "../components/TopoBackground.tsx",
+      "file_type": "code",
+      "source_file": "src/components/TopoBackground.tsx",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_loadingoverlay_tsx",
+      "label": "../components/LoadingOverlay.tsx",
+      "file_type": "code",
+      "source_file": "src/components/LoadingOverlay.tsx",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_backtotop_astro",
+      "label": "../components/BackToTop.astro",
+      "file_type": "code",
+      "source_file": "src/components/BackToTop.astro",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config",
+      "label": "@/config",
+      "file_type": "code",
+      "source_file": "src/config",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "inter_latin_wght_normal_woff2_url",
+      "label": "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url",
+      "file_type": "code",
+      "source_file": "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "jetbrains_mono_latin_wght_normal_woff2_url",
+      "label": "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url",
+      "file_type": "code",
+      "source_file": "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url",
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_styles_globals_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_siteheader_astro",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_sitefooter_astro",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_topobackground_tsx",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_loadingoverlay_tsx",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_backtotop_astro",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "src_config_site",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "inter_latin_wght_normal_woff2_url",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "jetbrains_mono_latin_wght_normal_woff2_url",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "astro_transitions",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_styles_globals_css",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_siteheader_astro",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_sitefooter_astro",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_topobackground_tsx",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_loadingoverlay_tsx",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_backtotop_astro",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "inter_latin_wght_normal_woff2_url",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "target": "jetbrains_mono_latin_wght_normal_woff2_url",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/layouts/Layout.astro"
+    }
+  ],
+  "raw_calls": []
+}

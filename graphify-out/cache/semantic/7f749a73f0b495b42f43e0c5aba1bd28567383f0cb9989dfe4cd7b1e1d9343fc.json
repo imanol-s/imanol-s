@@ -1,0 +1,122 @@
+{
+  "nodes": [
+    {
+      "id": "agents_ui_engineer_agent",
+      "label": "ui-engineer Agent",
+      "file_type": "document",
+      "source_file": ".claude/agents/ui-engineer.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_ui_engineer_react_islands",
+      "label": "React Islands (3 islands)",
+      "file_type": "concept",
+      "source_file": ".claude/agents/ui-engineer.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_ui_engineer_site_lifecycle_state_machine",
+      "label": "Site Lifecycle State Machine",
+      "file_type": "concept",
+      "source_file": ".claude/agents/ui-engineer.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_ui_engineer_dom_contracts",
+      "label": "DOM Contracts (domContracts.ts)",
+      "file_type": "concept",
+      "source_file": ".claude/agents/ui-engineer.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_ui_engineer_validate_ui_hook",
+      "label": "validate-ui.sh Hook",
+      "file_type": "concept",
+      "source_file": ".claude/agents/ui-engineer.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "agents_ui_engineer_agent",
+      "target": "agents_ui_engineer_react_islands",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/ui-engineer.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_ui_engineer_agent",
+      "target": "agents_ui_engineer_site_lifecycle_state_machine",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/ui-engineer.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_ui_engineer_agent",
+      "target": "agents_ui_engineer_dom_contracts",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/ui-engineer.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_ui_engineer_agent",
+      "target": "agents_ui_engineer_validate_ui_hook",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/ui-engineer.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_ui_engineer_agent",
+      "target": "agents_style_engineer_agent",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": ".claude/agents/ui-engineer.md",
+      "source_location": null,
+      "weight": 0.75
+    },
+    {
+      "source": "agents_ui_engineer_site_lifecycle_state_machine",
+      "target": "agents_ui_engineer_react_islands",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/ui-engineer.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "id": "opencode_agents_site_reviewer_agent",
+      "label": "Site Reviewer Agent \u2014 Read-Only Code Auditor (opencode)",
+      "file_type": "document",
+      "source_file": ".opencode/agents/site-reviewer.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "opencode_agents_site_reviewer_audit_checklist",
+      "label": "7-Category Audit Checklist (naming, architecture, TS, security, perf, styling, content schema)",
+      "file_type": "concept",
+      "source_file": ".opencode/agents/site-reviewer.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "opencode_agents_site_reviewer_agent",
+      "target": "github_copilot_instructions_canon",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/site-reviewer.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agents_site_reviewer_agent",
+      "target": "opencode_agents_site_reviewer_audit_checklist",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/site-reviewer.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "id": "server_serialization_minimize_rsc_serialization",
+      "label": "Minimize Serialization at RSC Boundaries",
+      "file_type": "rationale",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/server-serialization.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "server_serialization_rsc_client_boundary",
+      "label": "RSC Server-Client Boundary Serialization",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/server-serialization.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "server_serialization_minimize_rsc_serialization",
+      "target": "server_serialization_rsc_client_boundary",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/server-serialization.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "server_serialization_rsc_client_boundary",
+      "target": "server_parallel_fetching_rsc_sequential_execution",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/server-serialization.md",
+      "source_location": null,
+      "weight": 0.7
+    }
+  ],
+  "hyperedges": []
+}

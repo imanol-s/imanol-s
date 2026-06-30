@@ -1,0 +1,105 @@
+{
+  "nodes": [
+    {
+      "id": "skills_vercel_react_best_practices_skill",
+      "label": "vercel-react-best-practices Skill",
+      "file_type": "document",
+      "source_file": ".claude/skills/vercel-react-best-practices/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "skills_vercel_react_best_practices_eliminate_waterfalls",
+      "label": "Eliminating Waterfalls (CRITICAL)",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "skills_vercel_react_best_practices_bundle_optimization",
+      "label": "Bundle Size Optimization (CRITICAL)",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "skills_vercel_react_best_practices_rerender_optimization",
+      "label": "Re-render Optimization (MEDIUM)",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "skills_vercel_react_best_practices_skill",
+      "target": "skills_vercel_react_best_practices_agents_md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "skills_vercel_react_best_practices_skill",
+      "target": "skills_vercel_react_best_practices_eliminate_waterfalls",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "skills_vercel_react_best_practices_skill",
+      "target": "skills_vercel_react_best_practices_bundle_optimization",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "skills_vercel_react_best_practices_skill",
+      "target": "skills_vercel_react_best_practices_rerender_optimization",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "he_react_performance_patterns",
+      "label": "React Performance Optimization Patterns",
+      "nodes": [
+        "skills_vercel_react_best_practices_eliminate_waterfalls",
+        "skills_vercel_react_best_practices_bundle_optimization",
+        "skills_vercel_react_best_practices_rerender_optimization"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/SKILL.md"
+    }
+  ]
+}

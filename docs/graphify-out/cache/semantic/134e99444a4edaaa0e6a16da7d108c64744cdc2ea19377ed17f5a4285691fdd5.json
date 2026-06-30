@@ -1,0 +1,347 @@
+{
+  "nodes": [
+    {
+      "id": "docs_site_structure_site_navigation",
+      "label": "Site Navigation State Machine",
+      "file_type": "document",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 7",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_home_page",
+      "label": "Home Page (index.astro)",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 56",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_projects_list_page",
+      "label": "Projects List Page (/projects)",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 67",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_project_detail_page",
+      "label": "Project Detail Page (/projects/[id])",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 69",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_blog_list_page",
+      "label": "Blog List Page (/blog)",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 79",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_blog_detail_page",
+      "label": "Blog Detail Page (/blog/[id])",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 80",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_404_page",
+      "label": "404 Not Found Page",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 88",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_layout_astro",
+      "label": "Layout.astro (Shared Wrapper)",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 94",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_siteheader",
+      "label": "SiteHeader.astro",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 95",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_sitefooter",
+      "label": "SiteFooter.astro",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 96",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_data_flow",
+      "label": "Site Data Flow",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 99",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_getcollection_projects",
+      "label": "getCollection('projects') Data Source",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 101",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_career_ts",
+      "label": "src/data/career.ts (Experience Data)",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 103",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_config_ts",
+      "label": "src/config.ts (Contact/Social Source)",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 104",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_site_structure_getcollection_posts",
+      "label": "getCollection('posts') Data Source",
+      "file_type": "concept",
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 105",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "docs_site_structure_layout_astro",
+      "target": "docs_site_structure_siteheader",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 95",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_layout_astro",
+      "target": "docs_site_structure_sitefooter",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 96",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_layout_astro",
+      "target": "docs_performance_topobackground",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 97",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_home_page",
+      "target": "docs_performance_typewritertext",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 57",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_home_page",
+      "target": "docs_site_structure_getcollection_projects",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 101",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_home_page",
+      "target": "docs_site_structure_career_ts",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 103",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_home_page",
+      "target": "docs_site_structure_config_ts",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 104",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_projects_list_page",
+      "target": "docs_site_structure_getcollection_projects",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 101",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_projects_list_page",
+      "target": "docs_site_structure_project_detail_page",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 29",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_blog_list_page",
+      "target": "docs_site_structure_getcollection_posts",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 105",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_blog_list_page",
+      "target": "docs_site_structure_blog_detail_page",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 31",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_data_flow",
+      "target": "docs_site_structure_getcollection_projects",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 101",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_data_flow",
+      "target": "docs_site_structure_career_ts",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 103",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_data_flow",
+      "target": "docs_site_structure_config_ts",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 104",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_site_structure_data_flow",
+      "target": "docs_site_structure_getcollection_posts",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 105",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_performance_topobackground",
+      "target": "docs_site_structure_layout_astro",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "SITE_STRUCTURE.md",
+      "source_location": "line 94",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "site_data_sources_group",
+      "label": "Site Data Sources (Collections + Config)",
+      "nodes": [
+        "docs_site_structure_getcollection_projects",
+        "docs_site_structure_getcollection_posts",
+        "docs_site_structure_career_ts",
+        "docs_site_structure_config_ts"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SITE_STRUCTURE.md"
+    }
+  ]
+}

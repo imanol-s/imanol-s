@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "id": "server_dedup_props_rsc_prop_dedup",
+      "label": "Avoid Duplicate Serialization in RSC Props",
+      "file_type": "rationale",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/server-dedup-props.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "server_dedup_props_rsc_object_reference_dedup",
+      "label": "RSC Object Reference Deduplication",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/server-dedup-props.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "server_dedup_props_rsc_prop_dedup",
+      "target": "server_dedup_props_rsc_object_reference_dedup",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/server-dedup-props.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "server_dedup_props_rsc_prop_dedup",
+      "target": "server_serialization_minimize_rsc_serialization",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/server-dedup-props.md",
+      "source_location": null,
+      "weight": 0.9
+    }
+  ],
+  "hyperedges": []
+}

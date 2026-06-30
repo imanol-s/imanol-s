@@ -1,0 +1,60 @@
+{
+  "nodes": [
+    {
+      "id": "projects_crime_analysis_project",
+      "label": "Project: Dallas Crime Relationship with Housing Prices",
+      "file_type": "document",
+      "source_file": "src/content/projects/crime-analysis.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_crime_analysis_r_analysis",
+      "label": "R Data Analysis (dplyr, ggplot2, regression, Dallas Police + Zillow data)",
+      "file_type": "concept",
+      "source_file": "src/content/projects/crime-analysis.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_crime_analysis_2026_remediation",
+      "label": "2026 Remediation: Multivariate Regression (R\u00b2=0.854, crime ranked 98th/141 features)",
+      "file_type": "concept",
+      "source_file": "src/content/projects/crime-analysis.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "projects_crime_analysis_project",
+      "target": "projects_crime_analysis_r_analysis",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/crime-analysis.mdx",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "projects_crime_analysis_project",
+      "target": "projects_crime_analysis_2026_remediation",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/crime-analysis.mdx",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

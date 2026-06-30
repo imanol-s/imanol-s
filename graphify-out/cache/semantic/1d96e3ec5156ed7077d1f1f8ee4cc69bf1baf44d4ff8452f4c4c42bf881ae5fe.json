@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "id": "rules_rendering_hoist_jsx_hoist_jsx",
+      "label": "Hoist Static JSX Elements",
+      "file_type": "document",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-hoist-jsx.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rules_rendering_hoist_jsx_react_compiler",
+      "label": "React Compiler Auto-Hoisting",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-hoist-jsx.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_rendering_hoist_jsx_hoist_jsx",
+      "target": "rules_rendering_hoist_jsx_react_compiler",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-hoist-jsx.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_rendering_hoist_jsx_hoist_jsx",
+      "target": "concept_react_rendering",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-hoist-jsx.md",
+      "source_location": null,
+      "weight": 0.95
+    }
+  ],
+  "hyperedges": []
+}
