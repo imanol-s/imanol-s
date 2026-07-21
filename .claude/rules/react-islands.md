@@ -2,8 +2,6 @@
 paths:
   - "src/components/*.tsx"
   - "src/hooks/useSiteLifecycle.ts"
-  - "src/hooks/useReadyGate.ts"
-  - "src/utils/siteLifecycle.ts"
 ---
 
 # React Island Rules
@@ -24,4 +22,4 @@ Islands share state via a **module-level store** in `src/hooks/useSiteLifecycle.
 
 - `useReducedMotion()` for any animation — never access `matchMedia` directly
 - `useSessionState(key, default)` for session persistence — never use `sessionStorage` directly
-- `useReadyGate()` to gate behavior on lifecycle readiness
+- `useSiteLifecycle().state === "ready"` to gate behavior on lifecycle readiness

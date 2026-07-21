@@ -1,5 +1,9 @@
 import { prefersReducedMotion } from "./prefersReducedMotion";
-import { BACK_TO_TOP } from "./domContracts";
+
+const SCROLL_THRESHOLD = 300;
+const COLLAPSE_MIN_WIDTH = 1024;
+const VISIBLE_CLASSES = ["opacity-100", "pointer-events-auto"];
+const HIDDEN_CLASSES = ["opacity-0", "pointer-events-none"];
 
 function updateA11y(btn: HTMLElement, visible: boolean): void {
   if (visible) {
@@ -33,39 +37,39 @@ export function initBackToTop(
   function show() {
     if (isVisible) return;
     isVisible = true;
-    btn.classList.remove(...BACK_TO_TOP.classes.hidden);
-    btn.classList.add(...BACK_TO_TOP.classes.visible);
+    btn.classList.remove(...HIDDEN_CLASSES);
+    btn.classList.add(...VISIBLE_CLASSES);
     updateA11y(btn, true);
   }
 
   function hide() {
     if (!isVisible) return;
     isVisible = false;
-    btn.classList.add(...BACK_TO_TOP.classes.hidden);
-    btn.classList.remove(...BACK_TO_TOP.classes.visible);
+    btn.classList.add(...HIDDEN_CLASSES);
+    btn.classList.remove(...VISIBLE_CLASSES);
     updateA11y(btn, false);
   }
 
   function collapse() {
     if (isCollapsed) return;
     isCollapsed = true;
-    btn.classList.add(BACK_TO_TOP.classes.collapsed);
+    btn.classList.add("collapsed");
   }
 
   function expand() {
     if (!isCollapsed) return;
     isCollapsed = false;
-    btn.classList.remove(BACK_TO_TOP.classes.collapsed);
+    btn.classList.remove("collapsed");
   }
 
   function update() {
-    if (window.scrollY > BACK_TO_TOP.scrollThreshold) {
+    if (window.scrollY > SCROLL_THRESHOLD) {
       show();
     } else {
       hide();
     }
 
-    if (!sidebar || window.innerWidth < BACK_TO_TOP.collapseMinWidth) {
+    if (!sidebar || window.innerWidth < COLLAPSE_MIN_WIDTH) {
       expand();
       return;
     }

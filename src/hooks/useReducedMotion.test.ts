@@ -47,6 +47,9 @@ describe("useReducedMotion", () => {
     expect(result.current).toBe(false);
 
     act(() => {
+      // The snapshot re-reads matchMedia, so the mock's state must flip
+      // before the change handler fires (as a real MediaQueryList would).
+      currentMatches = true;
       const handler = listeners.get("(prefers-reduced-motion: reduce)");
       handler?.({ matches: true });
     });
