@@ -182,25 +182,6 @@ describe("useDottedGlow", () => {
     expect(ResizeObserver).not.toHaveBeenCalled();
   });
 
-  it("accepts default options without errors", () => {
-    expect(() => renderHook(() => useDottedGlow())).not.toThrow();
-  });
-
-  it("accepts all options without errors", () => {
-    expect(() =>
-      renderHook(() =>
-        useDottedGlow({
-          gap: 16,
-          radius: 3,
-          opacity: 0.8,
-          speed: 0.7,
-          accentVar: "--color-accent",
-          glowVar: "--color-primary",
-        }),
-      ),
-    ).not.toThrow();
-  });
-
   it("re-attaches cleanly when called with a new canvas", () => {
     const { result } = renderHook(() => useDottedGlow());
 

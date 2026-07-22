@@ -128,17 +128,14 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 
 <script>
   import { initMobileMenu } from "../utils/mobileMenu";
-  import { MOBILE_MENU } from "../utils/domContracts";
 
   let cleanup: (() => void) | undefined;
   document.addEventListener("astro:page-load", () => {
     cleanup?.();
     const btn = document.getElementById(
-      MOBILE_MENU.btnId,
+      "mobile-menu-btn",
     ) as HTMLButtonElement | null;
-    const menu = document.getElementById(
-      MOBILE_MENU.menuId,
-    ) as HTMLElement | null;
+    const menu = document.getElementById("mobile-menu");
     if (btn && menu) cleanup = initMobileMenu(btn, menu);
   });
 </script>

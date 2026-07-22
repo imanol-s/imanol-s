@@ -28,10 +28,6 @@ This guarantees:
 - Previous cleanup runs before each re-invocation
 - No global registry needed
 
-## DOM Contracts
+## DOM IDs
 
-Never hardcode DOM IDs, class names, or thresholds. Import from `src/utils/domContracts.ts`:
-
-- `BACK_TO_TOP` — button/sidebar IDs, scroll threshold, CSS classes
-- `CAROUSEL` — track/prev/next IDs, scroll ratio, drag threshold
-- `MOBILE_MENU` — button/menu IDs, hidden class
+DOM IDs, class names, and thresholds are plain literals owned by each component/util pair (e.g. `#back-to-top` in BackToTop.astro + backToTop.ts). When an ID crosses components, note it with a comment at the lookup site (`#profile-sidebar` is defined in ExperienceTimeline.astro but used by BackToTop.astro).

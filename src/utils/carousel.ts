@@ -1,5 +1,3 @@
-import { CAROUSEL } from "./domContracts";
-
 /**
  * Wire up horizontal carousel: button scrolling, arrow-state sync, and
  * pointer-drag with a dead-zone threshold so taps still register as clicks.
@@ -17,7 +15,7 @@ export function initCarousel(
 
   // Scroll by ~85% of visible width so the next card peeks in, giving
   // the user a visual cue that more content exists.
-  const scrollAmount = () => track.clientWidth * CAROUSEL.scrollRatio;
+  const scrollAmount = () => track.clientWidth * 0.85;
 
   // ±1px tolerance absorbs sub-pixel rounding from fractional scroll positions
   // that would otherwise leave arrows incorrectly enabled at the boundaries.
@@ -68,7 +66,8 @@ export function initCarousel(
     (e: PointerEvent) => {
       if (!isPointerDown) return;
       const dx = Math.abs(e.clientX - startX);
-      if (!isDragging && dx > CAROUSEL.dragThresholdPx) {
+      // 5px dead zone so taps still register as clicks
+      if (!isDragging && dx > 5) {
         isDragging = true;
         track.setPointerCapture(pointerId);
         track.style.cursor = "grabbing";

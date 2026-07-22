@@ -8,27 +8,23 @@ import {
 import { useDarkMode } from "./useDarkMode";
 import { useReducedMotion } from "./useReducedMotion";
 
-export interface DottedGlowOptions {
-  gap?: number;
-  radius?: number;
-  opacity?: number;
-  /** 0–1 normalized speed. Default 0.5 maps to speedMin≈0.3, speedMax≈1.0. */
-  speed?: number;
-  /** CSS variable name without var() wrapper, e.g. "--color-accent" */
-  accentVar?: string;
-  /** CSS variable name without var() wrapper, e.g. "--color-primary" */
-  glowVar?: string;
-}
+// ponytail: options removed — LoadingOverlay is the only caller and never
+// overrode these; reintroduce parameters if a second caller needs different values.
+const GAP = 12;
+const RADIUS = 2;
+const OPACITY = 0.6;
+const SPEED_MIN = 0.3;
+const SPEED_MAX = 1.0;
+const ACCENT_VAR = "--color-accent";
+const GLOW_VAR = "--color-primary";
 
 /**
  * Reads a CSS custom property value from `:root` at call-time.
- * Accepts names with or without the `--` prefix.
  * Falls back to `varName` itself if the property is unset.
  */
 function resolveCssVar(varName: string): string {
-  const normalized = varName.startsWith("--") ? varName : `--${varName}`;
   const value = getComputedStyle(document.documentElement)
-    .getPropertyValue(normalized)
+    .getPropertyValue(varName)
     .trim();
   return value || varName;
 }
@@ -39,38 +35,16 @@ function resolveCssVar(varName: string): string {
  *
  * Returns a callback ref to attach to the <canvas> element.
  */
-export function useDottedGlow({
-  gap = 12,
-  radius = 2,
-  opacity = 0.6,
-  speed = 0.5,
-  accentVar = "--color-accent",
-  glowVar = "--color-primary",
-}: DottedGlowOptions = {}): React.RefCallback<HTMLCanvasElement> {
+export function useDottedGlow(): React.RefCallback<HTMLCanvasElement> {
   // Called for its side-effect: triggers re-render on theme change so
   // getComputedStyle in the draw loop reads fresh CSS variable values.
   useDarkMode();
   const reduced = useReducedMotion();
 
-  // Stable refs so the RAF closure always sees the latest values without
+  // Stable ref so the RAF closure always sees the latest value without
   // needing to re-run the full setup (observers + RAF) on every render.
   const reducedRef = useRef(reduced);
-  const gapRef = useRef(gap);
-  const radiusRef = useRef(radius);
-  const opacityRef = useRef(opacity);
-  const speedRef = useRef(speed);
-  const accentVarRef = useRef(accentVar);
-  const glowVarRef = useRef(glowVar);
-
-  useEffect(() => {
-    reducedRef.current = reduced;
-    gapRef.current = gap;
-    radiusRef.current = radius;
-    opacityRef.current = opacity;
-    speedRef.current = speed;
-    accentVarRef.current = accentVar;
-    glowVarRef.current = glowVar;
-  }, [reduced, gap, radius, opacity, speed, accentVar, glowVar]);
+  reducedRef.current = reduced;
 
   // Holds the cleanup function returned when we attach to a canvas.
   const cleanupRef = useRef<(() => void) | null>(null);
@@ -108,10 +82,7 @@ export function useDottedGlow({
 
     const regenDots = () => {
       const { width, height } = container.getBoundingClientRect();
-      const s = speedRef.current;
-      const speedMin = 0.1 + s * 0.4;
-      const speedMax = 0.1 + s * 1.8;
-      dots = buildDotGrid(width, height, gapRef.current, speedMin, speedMax);
+      dots = buildDotGrid(width, height, GAP, SPEED_MIN, SPEED_MAX);
     };
 
     const ro = new ResizeObserver(() => {
@@ -129,12 +100,8 @@ export function useDottedGlow({
         return;
       }
 
-      const currentOpacity = opacityRef.current;
-      const currentRadius = radiusRef.current;
-      const accentColor = resolveCssVar(accentVarRef.current);
-      const glowColor = resolveCssVar(glowVarRef.current);
-
-      const { width, height } = container.getBoundingClientRect();
+      const accentColor = resolveCssVar(ACCENT_VAR);
+      const glowColor = resolveCssVar(GLOW_VAR);
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -156,9 +123,9 @@ export function useDottedGlow({
           ctx.shadowBlur = 0;
         }
 
-        ctx.globalAlpha = a * currentOpacity;
+        ctx.globalAlpha = a * OPACITY;
         ctx.beginPath();
-        ctx.arc(d.x, d.y, currentRadius, 0, Math.PI * 2);
+        ctx.arc(d.x, d.y, RADIUS, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -185,7 +152,7 @@ export function useDottedGlow({
       io.disconnect();
       ro.disconnect();
     };
-  }, []); // stable — all mutable state is accessed via refs
+  }, []); // stable — mutable state is accessed via refs
 
   // Clean up on unmount
   useEffect(() => {
