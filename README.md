@@ -11,7 +11,7 @@ _Lifelong learner passionate about building scalable software and leading with e
 
 ### 🛠️ Tech Stack
 
-[![My Skills](https://skillicons.dev/icons?i=cpp,github,java,latex,linux,md,mysql,python&theme=dark)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=python,&theme=dark)](https://skillicons.dev)
 
 ---
 
