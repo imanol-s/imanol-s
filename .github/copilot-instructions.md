@@ -6,7 +6,7 @@ applyTo: "**/*.{astro,ts,tsx,mjs,css,md,mdx}"
 
 ## Purpose
 
-Review instructions for a personal portfolio site built with Astro 6, React 18, Tailwind CSS 4, and TypeScript. Applies to all source files under `src/`, config files at the root, and content collections.
+Review instructions for a personal portfolio site built with Astro 7.3, React 19, Tailwind CSS 4, Vite 8, and TypeScript. Applies to all source files under `src/`, config files at the root, and content collections.
 
 ## Instruction Precedence
 

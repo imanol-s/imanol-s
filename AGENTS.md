@@ -34,7 +34,7 @@ Instructions for AI coding assistants working with this repository.
 
 ## Learned Workspace Facts
 
-- Astro 6 portfolio site with React 18, Tailwind CSS, TypeScript
+- Astro 7.3 portfolio site with React 19, Tailwind CSS 4, TypeScript, and Vite 8
 - PRs follow `.github/pull_request_template.md` template
 - Design tokens: `--color-primary: #64748b` (slate gray), slate palette, JetBrains Mono display + Inter body
 - Nav links use `text-primary` base with `hover:text-white` (muted → bright on hover)
