@@ -70,19 +70,16 @@ const allProjects = getSortedProjects(await getCollection("projects"));
 
 <script>
   import { initCarousel } from "../utils/carousel";
-  import { CAROUSEL } from "../utils/domContracts";
 
   let cleanup: (() => void) | undefined;
   document.addEventListener("astro:page-load", () => {
     cleanup?.();
-    const track = document.getElementById(
-      CAROUSEL.trackId,
-    ) as HTMLElement | null;
+    const track = document.getElementById("projects-track");
     const prev = document.getElementById(
-      CAROUSEL.prevId,
+      "carousel-prev",
     ) as HTMLButtonElement | null;
     const next = document.getElementById(
-      CAROUSEL.nextId,
+      "carousel-next",
     ) as HTMLButtonElement | null;
     if (track && prev && next) cleanup = initCarousel(track, prev, next);
   });

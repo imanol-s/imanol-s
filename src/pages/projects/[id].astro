@@ -23,12 +23,7 @@ const { title, summary, tags, cover, ogImage, url, startDate, endDate } =
 
 const { Content } = await render(post);
 
-const {
-  label: projectLabel,
-  prev,
-  next,
-  hasValidUrl,
-} = getProjectPageData(sorted, post.id);
+const { prev, next, hasValidUrl } = getProjectPageData(sorted, post.id);
 ---
 
 <Layout
@@ -49,10 +44,6 @@ const {
 
   <!-- Project Hero -->
   <div class="mb-12">
-    <p class="font-display text-xs text-primary tracking-widest mb-3">
-      {projectLabel}
-    </p>
-
     <h1 class="text-4xl md:text-6xl font-display font-bold leading-tight mb-6">
       {title}
     </h1>

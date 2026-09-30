@@ -6,7 +6,6 @@ export interface TechEntry {
   id: string;
   iconPath?: string;
   displayName?: string;
-  category?: string;
 }
 
 const REGISTRY = [
@@ -73,11 +72,6 @@ const LOOKUP_MAP = new Map<string, TechEntry>(
   REGISTRY.map((entry) => [entry.id, entry]),
 );
 
-/** Case-insensitive registry lookup. Returns null for unknown tags. */
-export function lookupTech(tech: string): TechEntry | null {
-  return LOOKUP_MAP.get(tech.trim().toLowerCase()) ?? null;
-}
-
 export interface TechView {
   id: string;
   displayName: string;
@@ -110,5 +104,3 @@ export const techTagSchema = z.string().transform((s) => {
   }
   return normalized;
 });
-
-export { REGISTRY as techRegistry };

@@ -1,0 +1,48 @@
+{
+  "nodes": [
+    {
+      "id": "async_api_routes_prevent_waterfall_chains",
+      "label": "Prevent Waterfall Chains in API Routes",
+      "file_type": "document",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/async-api-routes.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "async_api_routes_prevent_waterfall_chains",
+      "target": "async_parallel_promise_all_independent",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/async-api-routes.md",
+      "source_location": null,
+      "weight": 0.9
+    },
+    {
+      "source": "async_api_routes_prevent_waterfall_chains",
+      "target": "async_dependencies_dependency_based_parallelization",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/async-api-routes.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "async_api_routes_prevent_waterfall_chains",
+      "target": "concept_async_parallelization",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/async-api-routes.md",
+      "source_location": null,
+      "weight": 0.9
+    }
+  ],
+  "hyperedges": []
+}

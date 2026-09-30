@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "server_cache_react_react_cache_dedup",
+      "label": "Per-Request Deduplication with React.cache()",
+      "file_type": "rationale",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/server-cache-react.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "server_cache_react_react_cache",
+      "label": "React.cache() Deduplication",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/server-cache-react.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "server_cache_react_react_cache_dedup",
+      "target": "server_cache_react_react_cache",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/server-cache-react.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

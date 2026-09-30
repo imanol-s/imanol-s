@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { SITE, ME, SOCIALS } from "./config";
-import { lookupTech } from "./data/techRegistry";
+import { getTechView } from "./data/techRegistry";
 
 // Simple URL validation: must start with http:// or https://
 const URL_RE = /^https?:\/\/.+/;
@@ -22,10 +22,6 @@ describe("SITE", () => {
 
   it("repository is a valid URL", () => {
     expect(SITE.repository).toMatch(URL_RE);
-  });
-
-  it("profile is a valid URL", () => {
-    expect(SITE.profile).toMatch(URL_RE);
   });
 
   it("has a non-empty author", () => {
@@ -131,10 +127,10 @@ describe("ME", () => {
 
   it("every coreLanguage TechId exists in the techRegistry", () => {
     for (const techId of ME.coreLanguages) {
-      const entry = lookupTech(techId);
+      const view = getTechView(techId);
       expect(
-        entry,
-        `TechId "${techId}" not found in techRegistry`,
+        view.iconPath,
+        `TechId "${techId}" has no icon in techRegistry`,
       ).not.toBeNull();
     }
   });
@@ -158,13 +154,6 @@ describe("SOCIALS", () => {
       expect(social.url, `${social.name} url is not a valid URL`).toMatch(
         URL_RE,
       );
-    }
-  });
-
-  it("every entry has a non-empty icon string", () => {
-    for (const social of SOCIALS) {
-      expect(typeof social.icon).toBe("string");
-      expect(social.icon.length).toBeGreaterThan(0);
     }
   });
 

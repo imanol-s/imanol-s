@@ -22,7 +22,7 @@ npx astro check # Type-check Astro + TS files
 
 - **Tech tags validated at build time**: `tags` in project frontmatter validates against techRegistry IDs. Unknown tags fail `astro check`. Use `keywords` for free-form topic strings.
 - **View transition guards**: Use `document.addEventListener('astro:page-load', handler)` for scripts that must re-run after view transitions. Store cleanup in a module-scoped variable.
-- **Site lifecycle state machine**: `src/utils/siteLifecycle.ts` defines a pure `transition(state, action)` function. `useSiteLifecycle()` hook exposes state + dispatch via `useSyncExternalStore`. Overlay plays once per session; return visits skip to `ready` immediately.
+- **Site lifecycle**: `src/hooks/useSiteLifecycle.ts` holds a module-level store; `advance()` walks `loading → overlay-playing → overlay-fading → ready`. `useSiteLifecycle()` exposes state + advance via `useSyncExternalStore`. Overlay plays once per session; return visits skip to `ready` immediately.
 - **Reduced motion**: React components use `useReducedMotion()` hook; Astro components use `prefersReducedMotion()` utility. Never access `matchMedia` directly.
 - **Session state**: React components use `useSessionState(key, default)` hook instead of direct `sessionStorage` access.
 - **Date formatting**: All dates render via `formatDate()` from `src/utils/formatDate.ts`. Format: "Jan 2025" (mixed case, no day).

@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "server_parallel_fetching_parallel_data_fetching_rsc",
+      "label": "Parallel Data Fetching with Component Composition",
+      "file_type": "document",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/server-parallel-fetching.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "server_parallel_fetching_parallel_data_fetching_rsc",
+      "target": "vercel_react_best_practices_skill_group",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/server-parallel-fetching.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

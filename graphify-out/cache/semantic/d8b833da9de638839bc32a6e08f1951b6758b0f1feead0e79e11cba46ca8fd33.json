@@ -1,0 +1,206 @@
+{
+  "nodes": [
+    {
+      "id": "projects_sensori_robotics_project",
+      "label": "Sensori Robotics Capstone",
+      "file_type": "document",
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_sensori_robotics_robotics",
+      "label": "Robotics",
+      "file_type": "concept",
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_sensori_robotics_isaacsim",
+      "label": "Nvidia IsaacSim",
+      "file_type": "concept",
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_sensori_robotics_isaaclab",
+      "label": "Nvidia IsaacLab",
+      "file_type": "concept",
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_sensori_robotics_path_planning",
+      "label": "Path Planning",
+      "file_type": "concept",
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_sensori_robotics_control_systems",
+      "label": "Control Systems",
+      "file_type": "concept",
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_sensori_robotics_simulation",
+      "label": "Simulation",
+      "file_type": "concept",
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_sensori_robotics_ppo",
+      "label": "Proximal Policy Optimization (PPO)",
+      "file_type": "concept",
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projects_sensori_robotics_reinforcement_learning",
+      "label": "Reinforcement Learning",
+      "file_type": "concept",
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "projects_sensori_robotics_project",
+      "target": "projects_sensori_robotics_robotics",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": "frontmatter tags",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_sensori_robotics_project",
+      "target": "projects_sensori_robotics_isaacsim",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": "frontmatter tags",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_sensori_robotics_project",
+      "target": "projects_sensori_robotics_isaaclab",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": "frontmatter tags",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_sensori_robotics_project",
+      "target": "projects_sensori_robotics_path_planning",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": "frontmatter tags",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_sensori_robotics_project",
+      "target": "projects_sensori_robotics_control_systems",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": "frontmatter tags",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_sensori_robotics_project",
+      "target": "projects_sensori_robotics_simulation",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": "frontmatter tags",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_sensori_robotics_project",
+      "target": "projects_sensori_robotics_ppo",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": "Approach section",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_sensori_robotics_project",
+      "target": "projects_sensori_robotics_reinforcement_learning",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": "Approach section",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_sensori_robotics_ppo",
+      "target": "projects_sensori_robotics_reinforcement_learning",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": "Approach section",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_sensori_robotics_isaaclab",
+      "target": "projects_sensori_robotics_isaacsim",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/content/projects/sensori-robotics.mdx",
+      "source_location": "Approach section",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

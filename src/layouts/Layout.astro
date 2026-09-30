@@ -18,22 +18,19 @@ interface Props {
   title?: string;
   scrollSmooth?: boolean;
   description?: string;
-  tags?: string[];
-  author?: string;
   imageOg?: string;
-  canonicalURL?: string;
 }
 
 const {
   title = SITE.title,
   description = SITE.description,
-  tags = SITE.tags,
-  author = SITE.author,
   scrollSmooth = false,
-  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
   imageOg = SITE.ogImage,
 } = Astro.props;
 
+const tags = SITE.tags;
+const author = SITE.author;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 const absoluteOgImage = new URL(imageOg, Astro.site).href;
 ---
 
@@ -45,7 +42,6 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="msapplication-TileColor" content="#000000" />
     <meta name="generator" content={Astro.generator} />
 
     {/* Preload critical fonts — eliminates CSS→parse→download waterfall */}

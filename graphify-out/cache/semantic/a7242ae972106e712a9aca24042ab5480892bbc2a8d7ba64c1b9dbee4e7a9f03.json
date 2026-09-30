@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "icons_link_icon",
+      "label": "Link / Hyperlink Icon",
+      "file_type": "image",
+      "source_file": "src/icons/link.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "icons_link_icon",
+      "target": "icons_arrow_right_up_line_icon",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "src/icons/link.svg",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

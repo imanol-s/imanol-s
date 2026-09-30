@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "icons_java_fill_icon",
+      "label": "Java Fill Icon",
+      "file_type": "image",
+      "source_file": "src/icons/java-fill.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "icons_java_fill_icon",
+      "target": "icons_mongodb_icon",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "src/icons/java-fill.svg",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

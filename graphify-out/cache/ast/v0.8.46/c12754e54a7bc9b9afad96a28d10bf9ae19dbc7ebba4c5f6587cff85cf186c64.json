@@ -1,0 +1,152 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "label": "HeroSection.astro",
+      "file_type": "code",
+      "source_file": "src/components/HeroSection.astro",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_herosection_github",
+      "label": "github",
+      "file_type": "code",
+      "source_file": "src/components/HeroSection.astro",
+      "source_location": "L7"
+    },
+    {
+      "id": "components_herosection_linkedin",
+      "label": "linkedin",
+      "file_type": "code",
+      "source_file": "src/components/HeroSection.astro",
+      "source_location": "L8"
+    },
+    {
+      "id": "astro_assets",
+      "label": "astro:assets",
+      "file_type": "code",
+      "source_file": "astro:assets",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_typewritertext_tsx",
+      "label": "./TypewriterText.tsx",
+      "file_type": "code",
+      "source_file": "src/components/TypewriterText.tsx",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config",
+      "label": "../config",
+      "file_type": "code",
+      "source_file": "src/config",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_assets_profile_1_png",
+      "label": "../assets/Profile-1.png",
+      "file_type": "code",
+      "source_file": "src/assets/Profile-1.png",
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_typewritertext_tsx",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/HeroSection.astro",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/HeroSection.astro",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "target": "src_config_me",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/HeroSection.astro",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "target": "src_config_socials",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/HeroSection.astro",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_assets_profile_1_png",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/HeroSection.astro",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "target": "components_herosection_github",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/HeroSection.astro",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "target": "components_herosection_linkedin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/HeroSection.astro",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "target": "astro_assets",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/HeroSection.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_typewritertext_tsx",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/HeroSection.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/HeroSection.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_assets_profile_1_png",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/HeroSection.astro"
+    }
+  ],
+  "raw_calls": []
+}

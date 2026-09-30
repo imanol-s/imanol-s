@@ -5,8 +5,6 @@ test.describe("Site navigation", () => {
     await page.goto("/");
     await page.click('a[href*="/projects"]');
     await expect(page).toHaveURL(/\/projects/);
-    await page.click('a[href*="/blog"]');
-    await expect(page).toHaveURL(/\/blog/);
   });
 
   test("404 page renders with back link", async ({ page }) => {

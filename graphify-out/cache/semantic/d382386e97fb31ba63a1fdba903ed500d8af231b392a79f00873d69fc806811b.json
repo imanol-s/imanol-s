@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "id": "github_workflows_ci_pipeline",
+      "label": "CI Pipeline Workflow",
+      "file_type": "document",
+      "source_file": ".github/workflows/ci.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "github_workflows_ci_steps",
+      "label": "CI Steps: npm ci \u2192 test \u2192 build \u2192 playwright e2e",
+      "file_type": "concept",
+      "source_file": ".github/workflows/ci.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "github_workflows_ci_pipeline",
+      "target": "github_workflows_ci_steps",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/ci.yml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "github_workflows_ci_pipeline",
+      "target": "github_pull_request_template_pr_template",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".github/workflows/ci.yml",
+      "source_location": null,
+      "weight": 0.85
+    }
+  ],
+  "hyperedges": []
+}

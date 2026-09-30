@@ -1,4 +1,4 @@
-import { defineCollection, reference } from "astro:content";
+import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 import { techTagSchema } from "./data/techRegistry";
@@ -11,9 +11,7 @@ const posts = defineCollection({
     z.object({
       author: z.string().optional(),
       publishDate: z.date(),
-      updateDate: z.date().optional(),
       title: z.string(),
-      relatedPosts: z.array(reference("posts")).optional(),
       tags: z.array(z.string()),
       keywords: z.array(z.string()).optional(),
       description: z.string(),

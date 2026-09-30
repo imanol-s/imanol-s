@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "id": "rerender_move_effect_to_event_interaction_logic_in_handlers",
+      "label": "Put Interaction Logic in Event Handlers",
+      "file_type": "rationale",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-move-effect-to-event.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rerender_move_effect_to_event_avoid_state_effect_pattern",
+      "label": "Avoid State-Effect Pattern for User Actions",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-move-effect-to-event.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rerender_move_effect_to_event_interaction_logic_in_handlers",
+      "target": "rerender_move_effect_to_event_avoid_state_effect_pattern",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-move-effect-to-event.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rerender_move_effect_to_event_interaction_logic_in_handlers",
+      "target": "rerender_derived_state_no_effect_avoid_state_in_effect",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-move-effect-to-event.md",
+      "source_location": null,
+      "weight": 0.8
+    }
+  ],
+  "hyperedges": []
+}

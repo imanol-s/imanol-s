@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { DottedGlowBackground } from "./ui/dotted-glow-background";
-import { useSiteLifecycle } from "../hooks/useSiteLifecycle";
-import { scheduleOverlay } from "../utils/siteLifecycle";
+import { useDottedGlow } from "../hooks/useDottedGlow";
+import { OVERLAY_TIMINGS, useSiteLifecycle } from "../hooks/useSiteLifecycle";
 
 /**
  * Intro overlay that plays a dotted-glow animation once per session.
@@ -11,7 +10,8 @@ import { scheduleOverlay } from "../utils/siteLifecycle";
  * On mount, the static element is hidden so React owns the overlay lifecycle.
  */
 export default function LoadingOverlay() {
-  const { state, dispatch } = useSiteLifecycle();
+  const { state, advance } = useSiteLifecycle();
+  const canvasRef = useDottedGlow();
 
   // Hide the server-rendered fallback so React controls visibility from here.
   useEffect(() => {
@@ -19,8 +19,12 @@ export default function LoadingOverlay() {
     if (staticEl) staticEl.style.display = "none";
   }, []);
 
-  // Drive state transitions with timers
-  useEffect(() => scheduleOverlay(dispatch, state), [state, dispatch]);
+  // Walk the overlay through its phases on a timer.
+  useEffect(() => {
+    if (state === "ready") return;
+    const t = setTimeout(advance, OVERLAY_TIMINGS[state]);
+    return () => clearTimeout(t);
+  }, [state]);
 
   if (state === "ready") return null;
 
@@ -34,7 +38,12 @@ export default function LoadingOverlay() {
       style={{ backgroundColor: "var(--color-background-dark)" }}
       aria-hidden="true"
     >
-      <DottedGlowBackground />
+      <div style={{ position: "absolute", inset: 0 }}>
+        <canvas
+          ref={canvasRef}
+          style={{ display: "block", width: "100%", height: "100%" }}
+        />
+      </div>
     </div>
   );
 }

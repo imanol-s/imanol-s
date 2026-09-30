@@ -1,13 +1,29 @@
 import { useSyncExternalStore } from "react";
-import {
-  transition,
-  getInitialState,
-  LIFECYCLE_SESSION_KEY,
-  type State,
-  type Action,
-} from "../utils/siteLifecycle";
+import { prefersReducedMotion } from "../utils/prefersReducedMotion";
 
-type Listener = () => void;
+export const LIFECYCLE_SESSION_KEY = "site-lifecycle-ready";
+
+/** Overlay phases, in order. `advance()` walks this sequence left to right. */
+const SEQUENCE = [
+  "loading",
+  "overlay-playing",
+  "overlay-fading",
+  "ready",
+] as const;
+export type State = (typeof SEQUENCE)[number];
+
+/**
+ * Delay before advancing out of each non-ready phase.
+ *
+ * `loading` (100ms) is a render fence: the overlay must paint its first frame
+ * before advancing, otherwise the transition fires on a still-invisible
+ * element and the user sees nothing.
+ */
+export const OVERLAY_TIMINGS: Record<Exclude<State, "ready">, number> = {
+  loading: 100,
+  "overlay-playing": 500,
+  "overlay-fading": 500,
+};
 
 /**
  * Module-level singleton store shared by LoadingOverlay and TypewriterText.
@@ -15,62 +31,49 @@ type Listener = () => void;
  * lives at module scope and coordinates via useSyncExternalStore subscriptions.
  */
 let currentState: State | null = null;
-const listeners = new Set<Listener>();
+const listeners = new Set<() => void>();
 
-/** Lazy init — avoids calling getInitialState() during SSR where sessionStorage is unavailable. */
-function ensureInitialized(): State {
-  if (currentState === null) {
-    currentState = getInitialState();
-  }
+/**
+ * Current state, resolved lazily on first read (sessionStorage is unavailable
+ * during SSR). Reduced-motion users never see the animation; return
+ * navigations within a tab skip straight to ready.
+ */
+function getSnapshot(): State {
+  currentState ??=
+    prefersReducedMotion() ||
+    (typeof sessionStorage !== "undefined" &&
+      sessionStorage.getItem(LIFECYCLE_SESSION_KEY))
+      ? "ready"
+      : "loading";
   return currentState;
 }
 
-/** Notifies all registered store listeners of a state change. */
-function notify() {
-  listeners.forEach((fn) => fn());
-}
-
 /**
- * Advance the lifecycle state machine.
- *
- * When transitioning to 'ready', persists the flag to sessionStorage so
- * subsequent page loads in the same tab skip the intro overlay entirely
- * (checked by getInitialState on next navigation).
+ * Advance to the next phase; no-op once ready. On reaching ready, persists a
+ * session flag so subsequent page loads in the same tab skip the intro.
  */
-export function dispatch(action: Action) {
-  const state = ensureInitialized();
-  const next = transition(state, action);
-  if (next === state) return;
-  if (next === "ready" && state !== "ready") {
+export function advance() {
+  const state = getSnapshot();
+  if (state === "ready") return;
+  const next = SEQUENCE[SEQUENCE.indexOf(state) + 1];
+  if (next === "ready") {
     try {
       sessionStorage.setItem(LIFECYCLE_SESSION_KEY, "true");
     } catch {}
   }
   currentState = next;
-  notify();
+  listeners.forEach((fn) => fn());
 }
 
-/**
- * Adds a listener to the store and returns an unsubscribe function.
- * Used as the first argument to `useSyncExternalStore`.
- */
-function subscribe(listener: Listener) {
+function subscribe(listener: () => void) {
   listeners.add(listener);
   return () => listeners.delete(listener);
 }
 
-/** Returns the current lifecycle state, lazily initialising the store on first call. */
-function getSnapshot(): State {
-  return ensureInitialized();
-}
-
-/**
- * React hook that exposes the site lifecycle `state` and `dispatch` function.
- * Shares a module-level singleton store across all islands (no React context needed).
- */
+/** React hook exposing the shared lifecycle `state` and `advance` across islands. */
 export function useSiteLifecycle() {
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
-  return { state, dispatch };
+  return { state, advance };
 }
 
 /** Resets the module-level singleton to a blank state. Only for use in tests. */
