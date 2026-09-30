@@ -2,7 +2,7 @@
   "name": "imanol-portfolio",
   "type": "module",
   "version": "2.0.0",
-  "description": "Imanol Saldana \u2014 personal portfolio",
+  "description": "Imanol Saldana — personal portfolio",
   "license": "MIT",
   "private": true,
   "engines": {
@@ -26,9 +26,9 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
-    "@astrojs/markdown-satteri": "^0.2.1",
-    "@astrojs/mdx": "^6.0.1",
-    "@astrojs/react": "^5.0.1",
+    "@astrojs/markdown-satteri": "^0.4.2",
+    "@astrojs/mdx": "^8.0.2",
+    "@astrojs/react": "^7.0.0",
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/inter": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
@@ -36,12 +36,13 @@
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
-    "astro": "^6.4.2",
+    "astro": "^7.3.5",
     "astro-icon": "^1.2.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwindcss": "^4.0.0",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.2",
+    "vite": "^8.3.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.0.2",
@@ -55,7 +56,6 @@
     "vitest": "^4.1.11"
   },
   "overrides": {
-    "yaml": "2.9.0",
-    "vite": "7.3.3"
+    "yaml": "2.9.0"
   }
 }
