@@ -2,7 +2,7 @@
   "name": "imanol-portfolio",
   "type": "module",
   "version": "2.0.0",
-  "description": "Imanol Saldana — personal portfolio",
+  "description": "Imanol Saldana \u2014 personal portfolio",
   "license": "MIT",
   "private": true,
   "engines": {
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
-    "@astrojs/markdown-satteri": "^0.3.8",
+    "@astrojs/markdown-satteri": "^0.2.1",
     "@astrojs/mdx": "^6.0.1",
     "@astrojs/react": "^5.0.1",
     "@astrojs/sitemap": "^3.7.3",
@@ -44,15 +44,15 @@
     "typescript": "^5.6.3"
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.4.3",
-    "@commitlint/config-conventional": "^20.4.3",
-    "@playwright/test": "^1.58.2",
+    "@commitlint/cli": "^21.0.2",
+    "@commitlint/config-conventional": "^21.0.2",
+    "@playwright/test": "^1.62.1",
     "@testing-library/dom": "^10.4.1",
-    "@testing-library/react": "^16.3.2",
+    "@testing-library/react": "^16.3.3",
     "jsdom": "^29.0.0",
-    "lint-staged": "^16.3.2",
+    "lint-staged": "^17.0.7",
     "prettier-plugin-astro": "^0.14.1",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.11"
   },
   "overrides": {
     "yaml": "2.9.0",
