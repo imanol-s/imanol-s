@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "id": "agents_md_agent_instructions",
+      "label": "AGENTS.md \u2014 AI Coding Assistant Instructions",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_md_learned_preferences",
+      "label": "Learned User Preferences (hover effects, plan mode, minimal edits)",
+      "file_type": "concept",
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_md_workspace_facts",
+      "label": "Learned Workspace Facts (tech stack, build, fonts, Netlify)",
+      "file_type": "concept",
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "agents_md_agent_instructions",
+      "target": "github_copilot_instructions_canon",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_md_agent_instructions",
+      "target": "agents_md_learned_preferences",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_md_agent_instructions",
+      "target": "agents_md_workspace_facts",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

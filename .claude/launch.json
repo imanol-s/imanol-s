@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "astro-dev",
+      "runtimeExecutable": "wsl.exe",
+      "runtimeArgs": ["-e", "bash", "-c", ". $HOME/.nvm/nvm.sh && cd /home/oman/Projects/imanol-s && npm run dev -- --host 0.0.0.0"],
+      "port": 4321
+    },
+    {
+      "name": "astro-preview",
+      "runtimeExecutable": "wsl.exe",
+      "runtimeArgs": ["-e", "bash", "-c", ". $HOME/.nvm/nvm.sh && cd /home/oman/Projects/imanol-s && npm run preview -- --host 0.0.0.0"],
+      "port": 4321
+    }
+  ]
+}

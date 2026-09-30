@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "rules_async_dependencies",
+      "label": "Rule: Dependency-Based Parallelization (better-all)",
+      "file_type": "document",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/async-dependencies.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "vercel_concept_betterall",
+      "label": "better-all Library (Dependency-Based Parallelization)",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/async-dependencies.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_async_dependencies",
+      "target": "vercel_concept_betterall",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/async-dependencies.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

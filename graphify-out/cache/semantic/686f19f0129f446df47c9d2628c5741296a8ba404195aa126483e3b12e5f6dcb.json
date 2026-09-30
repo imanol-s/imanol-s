@@ -1,0 +1,63 @@
+{
+  "nodes": [
+    {
+      "id": "skills_new_content_skill",
+      "label": "new-content Skill",
+      "file_type": "document",
+      "source_file": ".claude/skills/new-content/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "skills_new_content_skill",
+      "target": "agents_data_manager_content_collections",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/new-content/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "skills_new_content_skill",
+      "target": "agents_data_manager_tech_registry",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/new-content/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "skills_new_content_skill",
+      "target": "skills_add_tech_skill",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/new-content/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "he_content_skills_cluster",
+      "label": "Content Creation Skills Cluster",
+      "nodes": [
+        "skills_add_tech_skill",
+        "skills_new_content_skill",
+        "skills_ubiquitous_language_skill",
+        "skills_prd_to_issues_skill"
+      ],
+      "relation": "participate_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".claude/skills/new-content/SKILL.md"
+    }
+  ]
+}

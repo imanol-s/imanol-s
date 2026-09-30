@@ -1,0 +1,181 @@
+{
+  "nodes": [
+    {
+      "id": "plans_architecture_deepening_plan",
+      "label": "Architecture Deepening Plan (7 phases)",
+      "file_type": "document",
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "plans_architecture_deepening_phase1_date_formatter",
+      "label": "Phase 1: Date Formatter Consolidation",
+      "file_type": "concept",
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "plans_architecture_deepening_phase2_career_consolidation",
+      "label": "Phase 2: Career Data Consolidation (Jobs.ts + education.ts \u2192 career.ts)",
+      "file_type": "concept",
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "plans_architecture_deepening_phase4_animation_primitives",
+      "label": "Phase 4: Animation Primitives \u2014 Reduced Motion (useReducedMotion hook)",
+      "file_type": "concept",
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "plans_architecture_deepening_phase5_session_flags",
+      "label": "Phase 5: Animation Primitives \u2014 Session Flags (useSessionState hook)",
+      "file_type": "concept",
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "plans_architecture_deepening_phase6_tech_registry_core",
+      "label": "Phase 6: Tech Registry Core Module (lookupTech, TechId type)",
+      "file_type": "concept",
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "plans_architecture_deepening_phase7_registry_schema",
+      "label": "Phase 7: Tech Registry Schema & Migration (tags/keywords split, Zod validation)",
+      "file_type": "concept",
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "plans_architecture_deepening_plan",
+      "target": "plans_architecture_deepening_phase1_date_formatter",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_architecture_deepening_plan",
+      "target": "plans_architecture_deepening_phase2_career_consolidation",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_architecture_deepening_plan",
+      "target": "plans_architecture_deepening_phase4_animation_primitives",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_architecture_deepening_plan",
+      "target": "plans_architecture_deepening_phase5_session_flags",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_architecture_deepening_plan",
+      "target": "plans_architecture_deepening_phase6_tech_registry_core",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_architecture_deepening_plan",
+      "target": "plans_architecture_deepening_phase7_registry_schema",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_architecture_deepening_phase4_animation_primitives",
+      "target": "claude_md_key_patterns",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "weight": 0.85
+    },
+    {
+      "source": "plans_architecture_deepening_phase5_session_flags",
+      "target": "claude_md_key_patterns",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "plans/architecture-deepening.md",
+      "source_location": null,
+      "weight": 0.85
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "hyperedge_architecture_deepening_phases",
+      "label": "Architecture Deepening Phases (1\u20137)",
+      "nodes": [
+        "plans_architecture_deepening_phase1_date_formatter",
+        "plans_architecture_deepening_phase2_career_consolidation",
+        "plans_architecture_deepening_phase4_animation_primitives",
+        "plans_architecture_deepening_phase5_session_flags",
+        "plans_architecture_deepening_phase6_tech_registry_core",
+        "plans_architecture_deepening_phase7_registry_schema"
+      ],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/architecture-deepening.md"
+    }
+  ]
+}

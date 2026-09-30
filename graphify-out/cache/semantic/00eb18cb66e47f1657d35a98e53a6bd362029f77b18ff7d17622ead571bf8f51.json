@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "id": "rules_rendering_content_visibility_content_visibility",
+      "label": "CSS content-visibility for Long Lists",
+      "file_type": "document",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-content-visibility.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rules_rendering_content_visibility_offscreen_rendering",
+      "label": "Deferred Off-Screen Rendering",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-content-visibility.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_rendering_content_visibility_content_visibility",
+      "target": "rules_rendering_content_visibility_offscreen_rendering",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-content-visibility.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_rendering_content_visibility_content_visibility",
+      "target": "concept_react_rendering",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-content-visibility.md",
+      "source_location": null,
+      "weight": 0.85
+    }
+  ],
+  "hyperedges": []
+}

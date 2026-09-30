@@ -1,0 +1,122 @@
+{
+  "nodes": [
+    {
+      "id": "findings_md_architecture_findings",
+      "label": "FINDINGS.md \u2014 Architecture Debate Findings",
+      "file_type": "document",
+      "source_file": "FINDINGS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "findings_md_unanimous_consensus",
+      "label": "Unanimous Consensus (3-island constraint, techRegistry design, reduced motion guards)",
+      "file_type": "concept",
+      "source_file": "FINDINGS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "findings_md_p0_bugs",
+      "label": "P0 Bugs (BackBtn history.back bypass, TagPill hardcoded bg-slate-800)",
+      "file_type": "concept",
+      "source_file": "FINDINGS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "findings_md_p1_performance",
+      "label": "P1 Performance Wins (overlay delay 600ms\u2192200ms, scope overlay to homepage, transition:persist)",
+      "file_type": "concept",
+      "source_file": "FINDINGS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "findings_md_debated_items",
+      "label": "Debated Items (overlay deletion, TopoBackground rAF vs CSS-only)",
+      "file_type": "concept",
+      "source_file": "FINDINGS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "findings_md_architecture_findings",
+      "target": "findings_md_unanimous_consensus",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "FINDINGS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "findings_md_architecture_findings",
+      "target": "findings_md_p0_bugs",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "FINDINGS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "findings_md_architecture_findings",
+      "target": "findings_md_p1_performance",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "FINDINGS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "findings_md_architecture_findings",
+      "target": "findings_md_debated_items",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "FINDINGS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "findings_md_p1_performance",
+      "target": "docs_performance_perf_guide",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "FINDINGS.md",
+      "source_location": null,
+      "weight": 0.85
+    },
+    {
+      "source": "findings_md_unanimous_consensus",
+      "target": "docs_performance_perf_guide",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "FINDINGS.md",
+      "source_location": null,
+      "weight": 0.75
+    }
+  ],
+  "hyperedges": []
+}

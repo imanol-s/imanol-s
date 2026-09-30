@@ -1,0 +1,17 @@
+{
+  "nodes": [
+    {
+      "id": "pert_scheduling_pert_chart_colored_diagram",
+      "label": "PERT Chart Diagram (Colored, Nodes 10-50)",
+      "file_type": "image",
+      "source_file": "src/content/projects/images/pert-scheduling/Pert_chart_colored.webp",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [],
+  "hyperedges": []
+}

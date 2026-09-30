@@ -22,11 +22,11 @@ flowchart LR
 
 **Netlify DNS is already active for `imanols.dev`.** No delegation steps are needed — the domain is fully managed by Netlify with `NETLIFY` and `NETLIFYv6` record types.
 
-| Name | TTL | Type | Value |
-|------|-----|------|-------|
-| `imanols.dev` | 3600 | NETLIFY | `imanols-dev.netlify.app` |
-| `www.imanols.dev` | 3600 | NETLIFY | `imanols-dev.netlify.app` |
-| `imanols.dev` | 3600 | NETLIFYv6 | `imanols-dev.netlify.app` |
+| Name              | TTL  | Type      | Value                     |
+| ----------------- | ---- | --------- | ------------------------- |
+| `imanols.dev`     | 3600 | NETLIFY   | `imanols-dev.netlify.app` |
+| `www.imanols.dev` | 3600 | NETLIFY   | `imanols-dev.netlify.app` |
+| `imanols.dev`     | 3600 | NETLIFYv6 | `imanols-dev.netlify.app` |
 | `www.imanols.dev` | 3600 | NETLIFYv6 | `imanols-dev.netlify.app` |
 
 Since full DNS delegation is already in place, adding subdomains is straightforward — Netlify auto-creates DNS records and provisions wildcard SSL when you assign a subdomain to a site.

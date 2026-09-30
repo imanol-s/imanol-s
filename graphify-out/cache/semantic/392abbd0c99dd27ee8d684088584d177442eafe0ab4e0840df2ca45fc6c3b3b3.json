@@ -1,0 +1,67 @@
+{
+  "nodes": [
+    {
+      "id": "rules_astro_config_rule",
+      "label": "Astro Config Rule",
+      "file_type": "document",
+      "source_file": ".claude/rules/astro-config.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_astro_config_rule",
+      "target": "agents_infra_ops_astro_config",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/rules/astro-config.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_astro_config_rule",
+      "target": "agents_infra_ops_ci_pipeline",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/rules/astro-config.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_astro_config_rule",
+      "target": "agents_infra_ops_netlify_deployment",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/rules/astro-config.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "he_rules_governing_agents",
+      "label": "Rules Governing Agent Behavior",
+      "nodes": [
+        "rules_astro_config_rule",
+        "rules_content_frontmatter_rule",
+        "rules_globals_css_rule",
+        "rules_react_islands_rule",
+        "rules_site_config_rule",
+        "rules_tech_registry_rule",
+        "rules_topo_animation_rule",
+        "rules_view_transitions_rule"
+      ],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/rules/astro-config.md"
+    }
+  ]
+}

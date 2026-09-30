@@ -1,0 +1,44 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_tagpill_astro",
+      "label": "TagPill.astro",
+      "file_type": "code",
+      "source_file": "src/components/TagPill.astro",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_tagpill_displayname_iconpath",
+      "label": "{ displayName, iconPath }",
+      "file_type": "code",
+      "source_file": "src/components/TagPill.astro",
+      "source_location": "L8"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_data_techregistry",
+      "label": "../data/techRegistry",
+      "file_type": "code",
+      "source_file": "src/data/techRegistry",
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_tagpill_astro",
+      "target": "components_tagpill_displayname_iconpath",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/TagPill.astro",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_tagpill_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_data_techregistry",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/TagPill.astro"
+    }
+  ],
+  "raw_calls": []
+}

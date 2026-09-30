@@ -1,77 +1,39 @@
 ---
 title: Critical Task
-summary: Implementation of Program Evaluation and Review Technique (PERT) for critical path analysis in project networks. Built using Java with O(n) time complexity.
+summary: PERT-based scheduling tool for modeling task dependencies and identifying critical paths in project timelines. Critical path analysis underpins scheduling in construction, manufacturing, and software delivery — this implementation uses topological sorting over a DAG to compute it efficiently.
 tags:
   - Java
   - Graph Theory
-  - Dynamic Programming
+  - Topological Sort
   - Complexity Analysis
   - Data Structures
 startDate: 2024-08-01
 endDate: 2024-12-01
-author: Imanol Saldana
 url: https://github.com/imanol-s/Critical-Task
 cover: "./images/pert-scheduling/Pert_chart_colored.webp"
 ogImage: "./images/pert-scheduling/Pert_chart_colored.webp"
 ---
 
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Role](#role)
-3. [Problem](#problem)
-4. [Goal](#goal)
-5. [Solution](#solution)
-
----
-
 ## Overview
 
-A topological sorting-based solution for project scheduling using directed acyclic graphs (DAGs). Implements PERT/CPM methodologies to calculate:
+A Java implementation of PERT/CPM scheduling built as a class project in Fall 2024. The tool models task dependencies as a directed acyclic graph and computes critical paths in O(V+E) time using topological sorting with forward and backward passes. For more reading: <a href="https://en.wikipedia.org/wiki/Program_evaluation_and_review_technique">PERT</a>
 
-- Earliest start/finish times (forward pass)
-- Latest start/finish times (backward pass)
-- Total float/slack time
+## Role
 
-For more reading: <a href="https://en.wikipedia.org/wiki/Program_evaluation_and_review_technique">PERT</a>
+Lead developer.
 
----
+## Problem
 
-## 👨‍💻 Role
+PERT scheduling by hand is tractable for small networks but becomes error-prone as the number of tasks grows. Manually tracing forward and backward passes through a graph with dozens of dependencies is tedious and mistakes in slack computation cascade — a single wrong earliest-finish value can misidentify the critical path entirely. The motivation was to automate this process and make it reliable regardless of graph size.
 
-**Lead Developer**
+## Implementation
 
----
+The graph is represented as an adjacency list with directed edges encoding task dependencies. A DFS-based topological sort with `onStack[]` cycle tracking validates that the input is a DAG before any scheduling runs — if a cycle is detected, the sort returns `null` and the computation halts rather than producing incorrect output.
 
-## ❓ Problem
+The scheduling itself follows the standard PERT two-pass approach. The forward pass iterates vertices in topological order, computing `ES = max(EF of predecessors)` and `EF = ES + duration` for each task. The backward pass initializes every vertex's `LF` to the project completion time, then processes in reverse topological order: `LF = min(LS of successors)`, `LS = LF - duration`. Slack is computed as `LF − EF` across all vertices using a parallel stream.
 
-1. Task dependencies created non-trivial scheduling constraints
-2. Manual critical path identification proved error-prone for large projects (n > 100 tasks)
-3. Schedule not optimally formatted in relation to time effeciency.
+Zero-slack tasks constitute the critical path. The `numCritical()` method counts critical vertices; `criticalPath()` returns the total project duration as the maximum EF across all vertices. The output for each task includes earliest completion, latest completion, slack, and a critical flag.
 
----
+## Testing
 
-## 🎯 Goal
-
-1. Develop O(n) algorithm for critical path identification
-2. Model both AND/OR task dependencies
-3. Achieve 95% accuracy vs. ground truth schedules
-
----
-
-## ✨ Solution
-
-### Graph Representation
-
-- Designed adjacency list structure with edge weights for task durations
-- Implemented topological sort using Kahn's algorithm (indegree counting)
-
-### PERT Implementation
-
-- Calculated expected time for stochastic tasks
-- Performed forward/backward passes with memoization for O(n) efficiency
-
-### Critical Path Analysis
-
-- Identified zero-slack tasks constituting critical path
-- Determine optimal task to perform
+Test cases were built from a combination of course-provided inputs and generated cases using LLMs to produce task networks with known critical paths. This allowed verification that the forward/backward passes and slack computation produced correct results across graphs of varying size and structure.

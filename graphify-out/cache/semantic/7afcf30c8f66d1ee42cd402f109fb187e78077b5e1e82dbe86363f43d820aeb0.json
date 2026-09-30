@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "rules_rendering_conditional_render_conditional_render_pattern",
+      "label": "Use Explicit Conditional Rendering",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rendering-conditional-render.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_rendering_conditional_render_conditional_render_pattern",
+      "target": "rules_rendering_activity_react_rendering_category",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rendering-conditional-render.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,0 +1,102 @@
+{
+  "nodes": [
+    {
+      "id": "agents_infra_ops_agent",
+      "label": "infra-ops Agent",
+      "file_type": "document",
+      "source_file": ".claude/agents/infra-ops.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_infra_ops_astro_config",
+      "label": "Astro Configuration (astro.config.mjs)",
+      "file_type": "concept",
+      "source_file": ".claude/agents/infra-ops.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_infra_ops_ci_pipeline",
+      "label": "CI Pipeline (.github/workflows/ci.yml)",
+      "file_type": "concept",
+      "source_file": ".claude/agents/infra-ops.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_infra_ops_netlify_deployment",
+      "label": "Netlify Deployment",
+      "file_type": "concept",
+      "source_file": ".claude/agents/infra-ops.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_infra_ops_validate_infra_hook",
+      "label": "validate-infra.sh Hook",
+      "file_type": "concept",
+      "source_file": ".claude/agents/infra-ops.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "agents_infra_ops_agent",
+      "target": "agents_infra_ops_astro_config",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/infra-ops.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_infra_ops_agent",
+      "target": "agents_infra_ops_ci_pipeline",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/infra-ops.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_infra_ops_agent",
+      "target": "agents_infra_ops_netlify_deployment",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/infra-ops.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_infra_ops_agent",
+      "target": "agents_infra_ops_validate_infra_hook",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/infra-ops.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

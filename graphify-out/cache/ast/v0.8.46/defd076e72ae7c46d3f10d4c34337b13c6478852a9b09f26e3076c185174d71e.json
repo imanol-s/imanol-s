@@ -1,0 +1,144 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_index_astro",
+      "label": "index.astro",
+      "file_type": "code",
+      "source_file": "src/pages/index.astro",
+      "source_location": "L1"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "label": "../layouts/Layout.astro",
+      "file_type": "code",
+      "source_file": "src/layouts/Layout.astro",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "label": "../components/HeroSection.astro",
+      "file_type": "code",
+      "source_file": "src/components/HeroSection.astro",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "label": "../components/ProjectsCarousel.astro",
+      "file_type": "code",
+      "source_file": "src/components/ProjectsCarousel.astro",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_experiencetimeline_astro",
+      "label": "../components/ExperienceTimeline.astro",
+      "file_type": "code",
+      "source_file": "src/components/ExperienceTimeline.astro",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config",
+      "label": "../config",
+      "file_type": "code",
+      "source_file": "src/config",
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_index_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/index.astro",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_index_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/index.astro",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_index_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_experiencetimeline_astro",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/index.astro",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_index_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/index.astro",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_index_astro",
+      "target": "src_config_me",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/index.astro",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_index_astro",
+      "target": "src_config_site",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/index.astro",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_index_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_layouts_layout_astro",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/index.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_index_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_herosection_astro",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/index.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_index_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_projectscarousel_astro",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/index.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_index_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_experiencetimeline_astro",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/index.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_pages_index_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_config",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/index.astro"
+    }
+  ],
+  "raw_calls": []
+}

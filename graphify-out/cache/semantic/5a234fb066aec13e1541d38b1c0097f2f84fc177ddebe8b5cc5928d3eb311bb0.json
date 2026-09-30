@@ -1,0 +1,38 @@
+{
+  "nodes": [
+    {
+      "id": "icons_github_fill_icon",
+      "label": "GitHub Fill Icon",
+      "file_type": "image",
+      "source_file": "src/icons/github-fill.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "icons_github_fill_icon",
+      "target": "icons_linkedin_fill_icon",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "src/icons/github-fill.svg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "icons_github_fill_icon",
+      "target": "icons_instagram_fill_icon",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "src/icons/github-fill.svg",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

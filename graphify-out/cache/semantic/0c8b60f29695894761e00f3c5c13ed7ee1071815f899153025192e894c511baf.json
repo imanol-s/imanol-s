@@ -1,0 +1,38 @@
+{
+  "nodes": [
+    {
+      "id": "rules_rerender_functional_setstate_functional_setstate_pattern",
+      "label": "Use Functional setState Updates",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-functional-setstate.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_rerender_functional_setstate_functional_setstate_pattern",
+      "target": "rules_rerender_defer_reads_react_rerender_category",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-functional-setstate.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_rerender_functional_setstate_functional_setstate_pattern",
+      "target": "rules_rerender_lazy_state_init_lazy_state_init_pattern",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-functional-setstate.md",
+      "source_location": null,
+      "weight": 0.75
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,0 +1,86 @@
+---
+description: TypeScript strict mode best practices
+globs: "**/*.{ts,tsx,astro}"
+alwaysApply: true
+---
+
+# TypeScript Best Practices
+
+## Strict Mode Rules
+
+This project uses TypeScript strict mode. Follow these guidelines:
+
+### No `any`
+
+Never use `any`. Use proper types or `unknown` with type guards.
+
+```typescript
+// Wrong
+function process(data: any) { ... }
+
+// Correct
+function process(data: unknown) {
+  if (typeof data === 'string') { ... }
+}
+```
+
+### Define Interfaces Inline
+
+Define interfaces in the file that uses them, not in separate type files.
+
+```typescript
+// In component file
+interface Props {
+  title: string;
+  items: string[];
+}
+```
+
+### Props Destructuring
+
+Always destructure props with proper typing:
+
+```typescript
+// Astro
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+const { post } = Astro.props;
+
+// React
+interface Props {
+  active: boolean;
+  onClick: () => void;
+}
+export default function Button({ active, onClick }: Props) { ... }
+```
+
+### Return Types
+
+Add explicit return types for exported functions:
+
+```typescript
+export function formatDate(date: Date): string {
+  return date.toLocaleDateString();
+}
+```
+
+### Nullish Coalescing
+
+Prefer `??` over `||` for fallbacks when `0` or `''` are valid values:
+
+```typescript
+// Correct - preserves 0 and ''
+const count = input ?? 1;
+
+// Wrong - treats 0 as falsy
+const count = input || 1;
+```
+
+### Optional Chaining
+
+Use optional chaining for potentially undefined values:
+
+```typescript
+const url = project.frontmatter.url;
+```

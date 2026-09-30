@@ -1,17 +1,17 @@
-### 👋 Hi, I'm Imanol (ee-mah-NOHL)  
-  *Lifelong learner passionate about building scalable software and leading with empathy.*
+### Hi, I'm Imanol (ee-mah-NOHL)
 
-- 🎓 **B.S. in Computer Science**  
-- 💼 **Working in Data Operations** @ Freeman  
-- 💡 I thrive on continuous learning, technical rigor, and collaborative problem-solving  
-- 🌐 [Portfolio](https://imanols.dev) | [LinkedIn](https://www.linkedin.com/in/imanol-saldana) 
+_Lifelong learner passionate about building scalable software and leading with empathy._
 
----
-
-### 🛠️ Tech Stack
-
-[![My Skills](https://skillicons.dev/icons?i=cpp,github,java,latex,linux,md,mysql,python&theme=dark)](https://skillicons.dev)
+-  **B.S. in Computer Science**
+-  **Working in Data Operations** @ Freeman
+-  [Portfolio](https://imanols.dev) | [LinkedIn](https://www.linkedin.com/in/imanol-saldana)
 
 ---
 
-*"At the end of the day, it's the end of the day"*
+### Tech Stack
+
+[![My Skills](https://skillicons.dev/icons?i=python,&theme=dark)](https://skillicons.dev)
+
+---
+
+_"At the end of the day, it's the end of the day"_
