@@ -25,21 +25,21 @@ test.describe("Site navigation", () => {
           .evaluate((header) => header.getBoundingClientRect().top),
       )
       .toBe(16);
-    await expect(page.locator("[data-scroll-frog]")).toBeHidden();
+    await expect(page.locator(".site-header")).not.toHaveAttribute("data-header-docked", "");
     await page.locator('.site-header .md\\:flex a[href="/projects"]').click();
     await expect(page).toHaveURL(/\/projects/);
   });
 
-  test("floating header compacts, hides on descent and returns on ascent", async ({ page }) => {
+  test("floating header compacts, docks on descent and returns on ascent", async ({ page }) => {
     await page.goto("/");
     const header = page.locator(".site-header");
     await page.evaluate(() => window.scrollTo({ top: 50, behavior: "instant" }));
     await expect(header).toHaveAttribute("data-header-compact", "");
-    await expect(header).not.toHaveAttribute("data-header-hidden", "");
+    await expect(header).not.toHaveAttribute("data-header-docked", "");
     await page.evaluate(() => window.scrollTo({ top: 250, behavior: "instant" }));
-    await expect(header).toHaveAttribute("data-header-hidden", "");
+    await expect(header).toHaveAttribute("data-header-docked", "");
     await page.evaluate(() => window.scrollTo({ top: 210, behavior: "instant" }));
-    await expect(header).not.toHaveAttribute("data-header-hidden", "");
+    await expect(header).not.toHaveAttribute("data-header-docked", "");
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
     await expect(header).not.toHaveAttribute("data-header-compact", "");
   });
@@ -51,12 +51,12 @@ test.describe("Site navigation", () => {
     await button.click();
     await expect(button).toHaveAttribute("aria-expanded", "true");
     await page.evaluate(() => window.scrollTo({ top: 250, behavior: "instant" }));
-    await expect(page.locator(".site-header")).not.toHaveAttribute("data-header-hidden", "");
+    await expect(page.locator(".site-header")).not.toHaveAttribute("data-header-docked", "");
     await button.click();
     await expect(button).toHaveAttribute("aria-expanded", "false");
     await page.evaluate(() => window.scrollTo({ top: 400, behavior: "instant" }));
-    await expect(page.locator(".site-header")).toHaveAttribute("data-header-hidden", "");
-    await expect.poll(() => page.locator(".site-header").evaluate(header => header.getBoundingClientRect().bottom)).toBeLessThan(0);
+    await expect(page.locator(".site-header")).toHaveAttribute("data-header-docked", "");
+    await expect.poll(() => page.locator(".site-header").evaluate(header => header.getBoundingClientRect().width)).toBe(56);
   });
 
   test("404 page renders with back link", async ({ page }) => {

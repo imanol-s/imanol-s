@@ -8,6 +8,16 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 <header
   class="site-header"
 >
+  <span class="header-frog" aria-hidden="true">
+      <Icon
+        name={SITE.logo}
+        class="brand-frog"
+        data-brand-frog
+        aria-hidden="true"
+      />
+  </span>
+  <button id="header-dock-btn" class="header-dock-btn focus-ring" aria-label="Open navigation" aria-expanded="false" aria-controls="header-navigation" hidden></button>
+  <div id="header-navigation">
   <nav
     class="site-nav flex items-center justify-between"
     aria-label="Site navigation"
@@ -17,12 +27,6 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
       class="site-brand flex items-center space-x-2 font-body font-semibold text-lg tracking-tighter focus-ring rounded-sm"
       aria-label={`Home — ${ME.name}`}
     >
-      <Icon
-        name={SITE.logo}
-        class="brand-frog"
-        data-brand-frog
-        aria-hidden="true"
-      />
       <span>{SITE.logoText.toUpperCase()}</span>
     </a>
 
@@ -125,17 +129,8 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
       </a>
     </div>
   </div>
+  </div>
 </header>
-<div
-  id="scroll-frog"
-  data-scroll-frog
-  class="scroll-frog"
-  aria-hidden="true"
-  hidden
->
-  <Icon name={SITE.logo} />
-</div>
-
 <script is:inline>
   document.getElementById("mobile-menu")?.classList.add("hidden");
 </script>
@@ -143,29 +138,21 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 <script>
   import { initMobileMenu } from "../utils/mobileMenu";
   import { initHeaderScroll } from "../utils/headerScroll";
-  import { initFrogScroll } from "../utils/frogScroll";
 
   let cleanup: (() => void) | undefined;
   document.addEventListener("astro:before-swap", () => cleanup?.());
   document.addEventListener("astro:page-load", () => {
     cleanup?.();
     const header = document.querySelector<HTMLElement>(".site-header");
-    const logo = header?.querySelector<SVGElement>(".brand-frog");
-    const frog = document.getElementById("scroll-frog");
     const btn = document.getElementById(
       "mobile-menu-btn",
     ) as HTMLButtonElement | null;
     const menu = document.getElementById("mobile-menu");
     const disposeMenu = btn && menu ? initMobileMenu(btn, menu) : undefined;
-    const disposeFrog =
-      header && logo && frog
-        ? initFrogScroll({ header, logo, frog, menuButton: btn })
-        : undefined;
     const disposeHeader = header ? initHeaderScroll(header, btn) : undefined;
     cleanup = () => {
       disposeHeader?.();
       disposeMenu?.();
-      disposeFrog?.();
     };
   });
 </script>
