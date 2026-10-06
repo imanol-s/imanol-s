@@ -6,45 +6,39 @@ let callbacks: FrameRequestCallback[];
 let reduced: boolean;
 let motion: EventTarget;
 let dispose: (() => void) | undefined;
+let now: number;
 
-function flush() {
+function advance(milliseconds: number) {
+  now += milliseconds;
   const pending = callbacks.splice(0);
-  pending.forEach((callback) => callback(0));
-}
-
-function scrollTo(y: number) {
-  Object.defineProperty(window, "scrollY", { value: y, configurable: true });
-  window.dispatchEvent(new Event("scroll"));
-  flush();
+  pending.forEach((callback) => callback(now));
 }
 
 function fixture() {
   const header = document.createElement("header");
   const logo = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   const frog = document.createElement("div");
-  const menuButton = document.createElement("button");
-  header.append(logo, menuButton);
+  header.append(logo);
   document.body.append(header, frog);
-  logo.getBoundingClientRect = () => ({ left: 24, top: 22 }) as DOMRect;
-  header.getBoundingClientRect = () => ({ top: 0 }) as DOMRect;
-  dispose = initFrogScroll({ header, logo, frog, menuButton });
-  return { header, logo, frog, menuButton };
+  logo.getBoundingClientRect = () => ({ left: 24, top: 42, width: 28 }) as DOMRect;
+  dispose = initFrogScroll({ header, logo, frog, menuButton: null });
+  const setHidden = (hidden: boolean) => header.dispatchEvent(new CustomEvent("portfolio:header-hide", { detail: { hidden } }));
+  return { logo, frog, setHidden };
 }
 
 beforeEach(() => {
   callbacks = [];
+  now = 0;
   reduced = false;
   motion = new EventTarget();
   Object.defineProperty(motion, "matches", { get: () => reduced });
   vi.stubGlobal("matchMedia", () => motion);
+  vi.spyOn(performance, "now").mockImplementation(() => now);
   vi.spyOn(window, "requestAnimationFrame").mockImplementation((callback) => {
     callbacks.push(callback);
     return callbacks.length;
   });
-  vi.spyOn(window, "cancelAnimationFrame").mockImplementation(() => {
-    callbacks = [];
-  });
-  Object.defineProperty(window, "scrollY", { value: 0, configurable: true });
+  vi.spyOn(window, "cancelAnimationFrame").mockImplementation(() => { callbacks = []; });
 });
 
 afterEach(() => {
@@ -55,58 +49,60 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("scrolling brand frog", () => {
-  it("takes over only during travel and restores the brand on return", () => {
-    const { logo, frog } = fixture();
-    expect(frog.hidden).toBe(true);
-    scrollTo(150);
+describe("hopping brand frog", () => {
+  it("continues three hops after scroll input stops and restores the logo", () => {
+    const { logo, frog, setHidden } = fixture();
+    setHidden(true);
     expect(frog.hidden).toBe(false);
     expect(logo.style.opacity).toBe("0");
-    const outward = frog.style.transform;
-    scrollTo(450);
-    expect(frog.style.transform).not.toBe(outward);
-    scrollTo(150);
-    expect(frog.style.transform).toBe(outward);
-    scrollTo(700);
-    expect(frog.hidden).toBe(true);
-    scrollTo(-10);
+    const launch = frog.style.transform;
+    advance(300);
+    expect(frog.style.transform).not.toBe(launch);
+    expect(frog.style.transform).toContain("scale(");
+    const airborne = frog.style.transform;
+    advance(300);
+    expect(frog.style.transform).not.toBe(airborne);
+    advance(1200);
     expect(frog.hidden).toBe(true);
     expect(logo.style.opacity).toBe("");
+    expect(callbacks).toHaveLength(0);
   });
 
-  it("keeps the frog still when reduced motion is enabled, including changes", () => {
-    const { logo, frog } = fixture();
-    scrollTo(200);
+  it("cancels on header return and can launch again", () => {
+    const { frog, logo, setHidden } = fixture();
+    setHidden(true);
+    advance(250);
+    setHidden(false);
+    expect(frog.hidden).toBe(true);
+    expect(logo.style.opacity).toBe("");
+    expect(callbacks).toHaveLength(0);
+    setHidden(true);
+    expect(frog.hidden).toBe(false);
+  });
+
+  it("honors reduced motion, including changes during flight", () => {
+    const { frog, logo, setHidden } = fixture();
+    reduced = true;
+    setHidden(true);
+    expect(frog.hidden).toBe(true);
+    reduced = false;
+    setHidden(true);
+    expect(frog.hidden).toBe(false);
     reduced = true;
     motion.dispatchEvent(new Event("change"));
-    flush();
-    expect(frog.hidden).toBe(true);
-    expect(logo.style.opacity).toBe("");
-    scrollTo(300);
-    expect(frog.hidden).toBe(true);
-  });
-
-  it("leaves an expanded menu's brand visible", () => {
-    const { header, menuButton, logo, frog } = fixture();
-    menuButton.setAttribute("aria-expanded", "true");
-    header.dispatchEvent(new Event("click"));
-    scrollTo(100);
     expect(frog.hidden).toBe(true);
     expect(logo.style.opacity).toBe("");
   });
 
-  it("coalesces scroll events and stops pending work when disposed", () => {
-    const { frog, logo } = fixture();
-    window.dispatchEvent(new Event("scroll"));
-    window.dispatchEvent(new Event("scroll"));
-    expect(callbacks).toHaveLength(1);
+  it("cancels pending frames and listeners on disposal", () => {
+    const { frog, setHidden } = fixture();
+    setHidden(true);
     dispose?.();
     dispose = undefined;
-    flush();
-    scrollTo(200);
+    setHidden(true);
+    advance(100);
     expect(frog.hidden).toBe(true);
     expect(frog.style.transform).toBe("");
-    expect(logo.style.opacity).toBe("");
     expect(callbacks).toHaveLength(0);
   });
 });

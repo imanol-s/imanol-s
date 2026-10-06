@@ -6,10 +6,10 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 ---
 
 <header
-  class="site-header relative z-50 border-b border-slate-200 dark:border-slate-800 bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)]"
+  class="site-header"
 >
   <nav
-    class="site-nav max-w-7xl mx-auto px-6 h-16 flex items-center justify-between"
+    class="site-nav flex items-center justify-between"
     aria-label="Site navigation"
   >
     <a
@@ -35,7 +35,7 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
         PROJECTS
       </a>
       <a
-        class="cta-primary focus-ring"
+        class="header-resume focus-ring"
         href={resumeHref}
         target="_blank"
         rel="noopener noreferrer"
@@ -91,7 +91,7 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
   <!-- Mobile menu -->
   <div
     id="mobile-menu"
-    class="md:hidden border-t border-slate-200 dark:border-slate-800 bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)]"
+    class="md:hidden header-menu"
   >
     <div class="flex flex-col px-6 py-4 space-y-4 font-display text-sm">
       <a
@@ -99,7 +99,7 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
         href="/projects">PROJECTS</a
       >
       <a
-        class="cta-primary focus-ring w-fit"
+        class="header-resume focus-ring w-fit"
         href={resumeHref}
         target="_blank"
         rel="noopener noreferrer"
@@ -142,6 +142,7 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 
 <script>
   import { initMobileMenu } from "../utils/mobileMenu";
+  import { initHeaderScroll } from "../utils/headerScroll";
   import { initFrogScroll } from "../utils/frogScroll";
 
   let cleanup: (() => void) | undefined;
@@ -160,7 +161,9 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
       header && logo && frog
         ? initFrogScroll({ header, logo, frog, menuButton: btn })
         : undefined;
+    const disposeHeader = header ? initHeaderScroll(header, btn) : undefined;
     cleanup = () => {
+      disposeHeader?.();
       disposeMenu?.();
       disposeFrog?.();
     };
