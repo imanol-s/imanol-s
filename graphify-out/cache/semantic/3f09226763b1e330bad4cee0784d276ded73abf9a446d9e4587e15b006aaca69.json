@@ -1,0 +1,80 @@
+{
+  "nodes": [
+    {
+      "id": "improve_arch_skill_improvearch",
+      "label": "improve-codebase-architecture Skill",
+      "file_type": "document",
+      "source_file": ".agents/skills/improve-codebase-architecture/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "improve_arch_skill_deepmodule",
+      "label": "Deep Module Concept (Ousterhout)",
+      "file_type": "concept",
+      "source_file": ".agents/skills/improve-codebase-architecture/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "improve_arch_skill_paralleldesign",
+      "label": "Parallel Interface Design (3+ Sub-agents)",
+      "file_type": "concept",
+      "source_file": ".agents/skills/improve-codebase-architecture/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "improve_arch_skill_improvearch",
+      "target": "improve_arch_reference_depcategories",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/improve-codebase-architecture/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "improve_arch_skill_improvearch",
+      "target": "improve_arch_reference_issuetemplate",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/improve-codebase-architecture/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "improve_arch_skill_improvearch",
+      "target": "improve_arch_skill_deepmodule",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/improve-codebase-architecture/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "improve_arch_skill_improvearch",
+      "target": "improve_arch_skill_paralleldesign",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/improve-codebase-architecture/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

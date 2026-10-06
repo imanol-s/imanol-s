@@ -69,17 +69,13 @@
 
 <script>
   import { initBackToTop } from "../utils/backToTop";
-  import { BACK_TO_TOP } from "../utils/domContracts";
 
   let cleanup: (() => void) | undefined;
   document.addEventListener("astro:page-load", () => {
     cleanup?.();
-    const btn = document.getElementById(
-      BACK_TO_TOP.btnId,
-    ) as HTMLElement | null;
-    const sidebar = document.getElementById(
-      BACK_TO_TOP.sidebarId,
-    ) as HTMLElement | null;
+    const btn = document.getElementById("back-to-top");
+    // #profile-sidebar is defined in ExperienceTimeline.astro
+    const sidebar = document.getElementById("profile-sidebar");
     if (btn) cleanup = initBackToTop(btn, sidebar);
   });
 </script>

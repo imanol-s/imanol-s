@@ -6,7 +6,7 @@ import {
   type CSSProperties,
 } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { useReadyGate } from "../hooks/useReadyGate";
+import { useSiteLifecycle } from "../hooks/useSiteLifecycle";
 
 const CARET_STYLE: CSSProperties = {
   display: "inline-block",
@@ -43,16 +43,14 @@ function Caret({ hidden }: { hidden: boolean }) {
  */
 const TypewriterText = ({ text }: { text: string }) => {
   const reducedMotion = useReducedMotion();
-  const isReady = useReadyGate();
-  const [hydrated, setHydrated] = useState(false);
-  const [displayed, setDisplayed] = useState("");
-  const [done, setDone] = useState(true);
+  const isReady = useSiteLifecycle().state === "ready";
+  const [displayed, setDisplayed] = useState(text);
+  const [done, setDone] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef(false);
   const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
-    setHydrated(true);
     setDisplayed("");
     setDone(false);
     abortRef.current = false;
@@ -107,28 +105,17 @@ const TypewriterText = ({ text }: { text: string }) => {
 
   return (
     <h1
-      className="relative text-3xl min-[380px]:text-4xl sm:text-5xl md:text-7xl font-display font-bold mb-4 leading-tight"
+      className="hero-title relative font-body font-semibold"
       aria-label={text}
     >
       <span aria-hidden="true" className="invisible">
         {text}
       </span>
-      <span
-        aria-hidden="true"
-        className={`absolute inset-0 ${hydrated ? "invisible" : ""}`}
-        data-typewriter-fallback
-      >
-        {text}
-      </span>
-      <span
-        aria-hidden="true"
-        className={`absolute inset-0 ${hydrated ? "" : "invisible"}`}
-        data-typewriter-output
-      >
+      <span aria-hidden="true" className="absolute inset-0">
         {displayed}
         {!reducedMotion ? <Caret hidden={done} /> : null}
       </span>
-      {hydrated && !done && (
+      {!done && (
         <button
           type="button"
           className="sr-only focus:not-sr-only focus:absolute focus:inset-0 focus:z-10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"

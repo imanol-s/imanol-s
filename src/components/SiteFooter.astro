@@ -6,9 +6,24 @@ const linkedin = SOCIALS.find((s) => s.name === "LinkedIn");
 const email = ME.contactInfo.email;
 ---
 
-<footer class="border-t border-slate-200 dark:border-slate-800">
-  <div class="max-w-7xl mx-auto px-6 pt-10 pb-20 text-center">
-    <div class="flex justify-center items-center gap-5">
+<footer class="site-footer border-t border-slate-200 dark:border-slate-800">
+  <a
+    class="footer-signature max-w-7xl mx-auto px-6 focus-ring"
+    href={`mailto:${email}`}
+    aria-label={`Email ${SITE.author}`}
+  >
+    {SITE.author}<span aria-hidden="true"
+      ><svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+      ></span
+    >
+  </a>
+  <div class="footer-inner max-w-7xl mx-auto px-6 pt-10 pb-20">
+    <div class="footer-socials flex items-center gap-5">
       {
         github && (
           <a
@@ -71,15 +86,15 @@ const email = ME.contactInfo.email;
         >
       </a>
     </div>
-    <div class="mt-4">
+    <div class="footer-meta">
       <p
-        class="text-[10px] uppercase tracking-widest text-slate-500 font-display font-medium"
+        class="text-xs uppercase tracking-widest text-slate-500 font-display font-medium"
       >
         &copy; {new Date().getFullYear()}
         {SITE.author} &middot; Portfolio
       </p>
       <p
-        class="mt-1 text-[10px] uppercase tracking-widest text-slate-600 font-display font-medium"
+        class="mt-1 text-xs uppercase tracking-widest text-slate-500 font-display font-medium"
       >
         {ME.location}
       </p>

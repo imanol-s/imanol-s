@@ -1,0 +1,292 @@
+{
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/content/posts/overcoming-ingrained-introversion.md": {
+    "size": 3719,
+    "mtime_ns": 1782270090897821584,
+    "hash": "059a960e88a3df27b2321f58e8b43ef9a9e84c51ab21ceb699559d1e6cd4b16b"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/content/projects/crime-analysis.mdx": {
+    "size": 2802,
+    "mtime_ns": 1782270090901972519,
+    "hash": "ea77a869cdf0b269a2458008d59aed54f7cf972c00680152f86fe6b23b6fcaad"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/content/projects/library-management.mdx": {
+    "size": 2919,
+    "mtime_ns": 1782270090926878123,
+    "hash": "1fbe10a385c14f2880f48bf26a2ff437f3fc0dea8674aeaf7cfd025bf54a0e19"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/content/projects/pert-scheduling.mdx": {
+    "size": 2900,
+    "mtime_ns": 1782270090931029056,
+    "hash": "c6ee0e79d7412bc8cfa04a94575dad925069adbe9fc37015538cbe1d5c626f20"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/content/projects/sensori-robotics.mdx": {
+    "size": 2723,
+    "mtime_ns": 1782270090935179990,
+    "hash": "092e1354c20af6d06259101d5df255470ea3e5d9d32bfa0e820ffa8ff6c68faf"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/assets/Profile-1.png": {
+    "size": 21017,
+    "mtime_ns": 1782268951672422565,
+    "hash": "3470a79889a622a156f96027a9e08e624599353f9fdbd96b0469a3e8fdcbee8d"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/content/posts/images/under_construction/introversion.webp": {
+    "size": 20896,
+    "mtime_ns": 1782268951736419694,
+    "hash": "2e47861ece55f36c214118629a2e87fe5fb66f966105ddcf395ce34a6afc3f99"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/content/posts/images/under_construction/under-construction.webp": {
+    "size": 129968,
+    "mtime_ns": 1782268951744419335,
+    "hash": "2ee1df4f888e57998de70affd4a078f13d3eee44d8ff25d0355bacd489f93be7"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/content/projects/images/crime-analysis/crime_analysis_footer.webp": {
+    "size": 114746,
+    "mtime_ns": 1782268951760418617,
+    "hash": "74f84a110ee7abfec254464a5a073cb24bcff52261dac73a56348446930e0c2a"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/content/projects/images/crime-analysis/crime_analysis_map.webp": {
+    "size": 20406,
+    "mtime_ns": 1782268951764418438,
+    "hash": "a298ea2fd2a53a7d301f1c6db710c696e15285c0cdb1d7956d2774256ef9166d"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/content/projects/images/library-management/library.webp": {
+    "size": 87634,
+    "mtime_ns": 1782268951768418257,
+    "hash": "3aeb29224dbc63cb484812c06c5672c81b63ef36733dda51e1f7d983b90d0563"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/content/projects/images/pert-scheduling/Pert_chart_colored.webp": {
+    "size": 22774,
+    "mtime_ns": 1782268951776417899,
+    "hash": "067d6b5c94996b2d1da2a217c64fcac873acaeb57a62a4981c3d79daa629cf1a"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/content/projects/images/sensori-robotics/cover.webp": {
+    "size": 62296,
+    "mtime_ns": 1782268951780417720,
+    "hash": "300398a92fff7baec331eebda2b8b972e2792e4aac1055e776f0097ebdd33a4d"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/Astro_light.svg": {
+    "size": 974,
+    "mtime_ns": 1782268951856414310,
+    "hash": "ed9edb96677543dccdb409a4ea3ad54bd002f8c03d82f7bf5a4a0556691133bf"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/arrow-right-up-line.svg": {
+    "size": 200,
+    "mtime_ns": 1782268951860414130,
+    "hash": "eed76e1854864adf9e4654e5599b8960a4622bcd663bd6d36cded6b0e3b0a092"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/astro_dark.svg": {
+    "size": 986,
+    "mtime_ns": 1782268951860414130,
+    "hash": "588090634cc3bec072030a5fb499def89dc5c17302793135c115394e3e41cd5a"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/frog.svg": {
+    "size": 858,
+    "mtime_ns": 1782268951864413952,
+    "hash": "cca1fb33d00e004603f37ebf3a3125cba30cd4ce8510f8bd806cf4bee57ad0a2"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/github-fill.svg": {
+    "size": 1199,
+    "mtime_ns": 1782268951864413952,
+    "hash": "17f40c2b76e30e0c27e400c22b487ed47058217d21fb01b11bc7d88846b5c832"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/group-fill.svg": {
+    "size": 566,
+    "mtime_ns": 1782268951868413771,
+    "hash": "a68e4eabb38658d5306a6d03e40ff1958f33b77adee00fea5a61bb9060b2595d"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/instagram-fill.svg": {
+    "size": 2520,
+    "mtime_ns": 1782268951868413771,
+    "hash": "817e88aa49ac8886de936d5059b125dd7f4d0e4f75a21bab561b53eb5a9d95b4"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/java-fill.svg": {
+    "size": 4809,
+    "mtime_ns": 1782268951872413591,
+    "hash": "7a0778b1e372cc04b662e2ea65b0e9d45d5ea14b3b04d5acd34f6b7921edee97"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/link.svg": {
+    "size": 789,
+    "mtime_ns": 1782268951876413412,
+    "hash": "1c95497888a548fd36bd8d419aceab099e8cdb67cd5ff6a5acd7d607d534008b"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/linkedin-fill.svg": {
+    "size": 1666,
+    "mtime_ns": 1782268951876413412,
+    "hash": "b6f48d3d168eed0f43574145a3dfc7e91d15e9be26a35321ad92e8b91ec5b794"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/logo.svg": {
+    "size": 613,
+    "mtime_ns": 1782268951880413233,
+    "hash": "122262e0e8ff7ecaad85259478fd813c0023a4809c84c93ab63afc7ddfa8d202"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/message-2-fill.svg": {
+    "size": 271,
+    "mtime_ns": 1782268951880413233,
+    "hash": "b0ce42d34b1840c946004bc4c1b8e0d2cceb99751042415d2c3b7a7aa65a7712"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/mongodb.svg": {
+    "size": 598,
+    "mtime_ns": 1782268951884413054,
+    "hash": "5a0f7acdcdc04f1f55e4e8d5ed9519296e238a1543b2eec7377d80cf0ea62e3f"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/mysql.svg": {
+    "size": 6583,
+    "mtime_ns": 1782268951884413054,
+    "hash": "c3d9b687d336ee8abd3e788073872e4ea46dfe04cd6b315c3956b74801f2acfe"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/nextjs_icon_dark.svg": {
+    "size": 1103,
+    "mtime_ns": 1782268951888412873,
+    "hash": "97abe48fb3c78182ed4384d2e43895911b376f129749da99ee442f6b9c3b1855"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/nodejs.svg": {
+    "size": 2492,
+    "mtime_ns": 1782268951888412873,
+    "hash": "7785fd647e6536fe6de54b2c401e6946578e06cd12f7ec42b3fbad370bd7c74f"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/plant-fill.svg": {
+    "size": 510,
+    "mtime_ns": 1782268951892412694,
+    "hash": "2c23b764696a8698dba078ab6c68496cfe6c6eec225cdf3d0224a1c961721cbf"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/python-fill.svg": {
+    "size": 2231,
+    "mtime_ns": 1782268951892412694,
+    "hash": "8a3a6f718a9c24776e75d70a2415aff958fb92b87ca51366fc5969c93f55f6cd"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/react.svg": {
+    "size": 3995,
+    "mtime_ns": 1782268951896412515,
+    "hash": "ec94b8fb98c3f968232ab72207c94354b6421b6f8a128a6a31de059e02e38305"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/sap-fill.svg": {
+    "size": 1309,
+    "mtime_ns": 1782268951900412336,
+    "hash": "edd306c626572d938755e8cb54d4bda9ae44b4045e9c553ae08e65c1a70dea48"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/tiktok-fill.svg": {
+    "size": 433,
+    "mtime_ns": 1782268951904412157,
+    "hash": "2f6cfbdb1a4c1bf6e0816ba6d591a65de136baeb5c1d10fa56bd85b325bf627f"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/time-fill.svg": {
+    "size": 241,
+    "mtime_ns": 1782268951904412157,
+    "hash": "ab2238c07252f166e9d376427e4a0965f58df9ae9779a776b40c86193fce5f7b"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/time-line.svg": {
+    "size": 354,
+    "mtime_ns": 1782268951908411976,
+    "hash": "ae5f6a0bfb4d0358746da8f760718227ed206f5cbc584b6a59b512642f2b515e"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/tools-fill.svg": {
+    "size": 794,
+    "mtime_ns": 1782268951908411976,
+    "hash": "88585a436b690572993794eaa1470651d13f3005d17079066282fb279f5853e5"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/twitter-x-fill.svg": {
+    "size": 342,
+    "mtime_ns": 1782268951912411797,
+    "hash": "494f1125b11538a0fa27aca97eab888f141f7864a051b861b53597ba25cc4021"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/typescript.svg": {
+    "size": 1744,
+    "mtime_ns": 1782268951912411797,
+    "hash": "5757447c2730329dfa46cbb193994cea24b7c80fda644ca462f02687ecaa35a5"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/umbrella-fill.svg": {
+    "size": 1173,
+    "mtime_ns": 1782268951916411618,
+    "hash": "df88a3bbd5aeb78bbf91afa96d2d89cb411242aeeb74dc0327f49d8f3f135a8c"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/umbrella.svg": {
+    "size": 31701,
+    "mtime_ns": 1782268951920411438,
+    "hash": "d069dcb135c946968f2a2e49a2ad133d8fe8f012730d8a6ac3cc06704a99b580"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/icons/youtube-fill.svg": {
+    "size": 1053,
+    "mtime_ns": 1782268951920411438,
+    "hash": "7c5f1fbd5a59ac1e7aeb64a96facdba3920ccb963c07bc004c45db0a1fbd2ada"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/components/BackBtn.astro": {
+    "size": 749,
+    "mtime_ns": 1782270090711029559,
+    "hash": "3276807b6c7e9601ade860aded90b1742549b0f9cdff1d56cffa0136c7e47ed1"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/components/BackToTop.astro": {
+    "size": 2471,
+    "mtime_ns": 1782270090731784229,
+    "hash": "c13ff6b5083d5c499fb4e731e6bff714cc2ec83c2a70edd26b5624767e932d33"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/components/ExperienceTimeline.astro": {
+    "size": 6516,
+    "mtime_ns": 1782270090773293568,
+    "hash": "68137cdf45ab01b12ad90c6c1261e43f49fc11659f6fb6e5ba843623398034df"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/components/HeroSection.astro": {
+    "size": 4854,
+    "mtime_ns": 1782270090789897304,
+    "hash": "ceffdf9a4dd492921192cdb1d59960256b3dedb245f31c10fdedb22b1a6817b5"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/components/PostCard.astro": {
+    "size": 1872,
+    "mtime_ns": 1782270090806501039,
+    "hash": "838cce8f926a3e6a6d0b5457637f2d5a5dea9032511550c0ed16ffbe855232be"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/components/ProjectsCarousel.astro": {
+    "size": 3122,
+    "mtime_ns": 1782270090818953841,
+    "hash": "4171b164362a9ec085e0d6f6a52a35bca4178cacc0e51ce00a807c746fee2bcd"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/components/SiteFooter.astro": {
+    "size": 3635,
+    "mtime_ns": 1782270090831406643,
+    "hash": "269e10b8994bf89e51ad9480e877552964390a4175c209c6c72db782e6e3ecea"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/components/SiteHeader.astro": {
+    "size": 4125,
+    "mtime_ns": 1782270090843859444,
+    "hash": "d2d2136d1ff0b40140286b3ec5e6bd2e893f69510c054d978a9ffb42fa021ce0"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/components/TagPill.astro": {
+    "size": 528,
+    "mtime_ns": 1782270090848010378,
+    "hash": "a084400e385f849e7f435957e07bee5022f6c2f7380b30fa9f791022642a9e20"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/layouts/Layout.astro": {
+    "size": 4578,
+    "mtime_ns": 1782270091084613610,
+    "hash": "a699648d2313fd6d3e50a6613539def7ab7c23c94ba5e7625a4b013d6444e481"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/pages/404.astro": {
+    "size": 513,
+    "mtime_ns": 1782270091092915477,
+    "hash": "861e7cf79e16e1b98125bca5cb6ba04cd11673cef51953cffebf52e0575265fd"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/pages/blog/[id].astro": {
+    "size": 1481,
+    "mtime_ns": 1782270091113670147,
+    "hash": "6ca997e106f1525c6b02b8c0567367c94515c55828d48299fcf30da3671582ed"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/pages/blog/index.astro": {
+    "size": 1140,
+    "mtime_ns": 1782270091121972014,
+    "hash": "ebfdd474e4730bccfb3ede077c5f9513021587747b7330f1fcbf08487d754c31"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/pages/index.astro": {
+    "size": 470,
+    "mtime_ns": 1782270091130273882,
+    "hash": "bbf09a6b7f7d5dd58fc8c33ef34d50e44de4e261d7bc14dacac6b08a27b44027"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/pages/projects/[id].astro": {
+    "size": 6089,
+    "mtime_ns": 1782270091159330419,
+    "hash": "b9279c8f0a53c766c2262c2a3321b1bc698d550b0f282b7b12f7a9d090cf6389"
+  },
+  "/home/oman/Projects/imanol-s/.claude/worktrees/mystifying-sanderson-d8c457/src/pages/projects/index.astro": {
+    "size": 2343,
+    "mtime_ns": 1782270091171783221,
+    "hash": "fba72281db6b80c06af06d2eb40ee68179fb81e414026902476f67df2f4df963"
+  }
+}

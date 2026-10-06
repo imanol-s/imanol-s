@@ -1,0 +1,42 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_backtotop_astro",
+      "label": "BackToTop.astro",
+      "file_type": "code",
+      "source_file": "components/BackToTop.astro",
+      "source_location": "L1"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_backtotop",
+      "label": "../utils/backToTop",
+      "file_type": "code",
+      "source_file": "utils/backToTop",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_domcontracts",
+      "label": "../utils/domContracts",
+      "file_type": "code",
+      "source_file": "utils/domContracts",
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_backtotop_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_backtotop",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/BackToTop.astro"
+    },
+    {
+      "source": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_backtotop_astro",
+      "target": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_utils_domcontracts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components/BackToTop.astro"
+    }
+  ],
+  "raw_calls": []
+}

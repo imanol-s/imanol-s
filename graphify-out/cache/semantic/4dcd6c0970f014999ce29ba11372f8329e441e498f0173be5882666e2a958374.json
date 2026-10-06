@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "rules_js_combine_iterations_combine_iterations",
+      "label": "Combine Multiple Array Iterations",
+      "file_type": "document",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/js-combine-iterations.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_js_combine_iterations_combine_iterations",
+      "target": "concept_performance_optimization",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/js-combine-iterations.md",
+      "source_location": null,
+      "weight": 0.95
+    }
+  ],
+  "hyperedges": []
+}

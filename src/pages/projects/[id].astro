@@ -23,18 +23,13 @@ const { title, summary, tags, cover, ogImage, url, startDate, endDate } =
 
 const { Content } = await render(post);
 
-const {
-  label: projectLabel,
-  prev,
-  next,
-  hasValidUrl,
-} = getProjectPageData(sorted, post.id);
+const { prev, next, hasValidUrl } = getProjectPageData(sorted, post.id);
 ---
 
 <Layout
   title={title}
   description={summary}
-  imageOg={ogImage.src}
+  imageOg={ogImage}
   scrollSmooth={true}
 >
   <!-- Breadcrumb -->
@@ -49,12 +44,14 @@ const {
 
   <!-- Project Hero -->
   <div class="mb-12">
-    <p class="font-display text-xs text-primary tracking-widest mb-3">
-      {projectLabel}
-    </p>
-
-    <h1 class="text-4xl md:text-6xl font-display font-bold leading-tight mb-6">
-      {title}
+    <h1 class="detail-title font-body font-semibold mb-6">
+      <span class="section-index" aria-hidden="true"
+        >{
+          String(
+            sorted.findIndex((project) => project.id === post.id) + 1,
+          ).padStart(2, "0")
+        } /</span
+      >{title}
     </h1>
 
     {
@@ -72,7 +69,7 @@ const {
       <Picture
         src={cover}
         alt={title}
-        class="w-full h-[280px] md:h-[360px] object-cover grayscale opacity-60"
+        class="detail-cover w-full object-cover"
         formats={["avif"]}
         fallbackFormat="webp"
         widths={[640, 960, 1280]}
@@ -87,7 +84,7 @@ const {
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mt-12">
     <!-- Left col — overview + MDX content -->
     <div class="lg:col-span-8">
-      <div class="bg-slate-50 dark:bg-slate-900 p-6 md:p-8">
+      <div class="project-body">
         <p
           class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4"
         >
@@ -108,7 +105,7 @@ const {
     <!-- Right col — links + stack + timeline -->
     <div class="lg:col-span-4">
       <div
-        class="cad-border bg-slate-50 dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-800"
+        class="project-sidebar cad-border divide-y divide-slate-200 dark:divide-slate-800"
       >
         {
           hasValidUrl && (
@@ -173,10 +170,10 @@ const {
             class="group drawing-hover focus-ring rounded-sm flex flex-col gap-1 max-w-xs"
             aria-label={`Previous project: ${prev.data.title}`}
           >
-            <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-primary transition-colors">
+            <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors">
               &larr; Prev
             </span>
-            <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">
+            <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-white transition-colors">
               {prev.data.title}
             </span>
           </a>
@@ -192,10 +189,10 @@ const {
             class="group drawing-hover focus-ring rounded-sm flex flex-col gap-1 items-end max-w-xs text-right"
             aria-label={`Next project: ${next.data.title}`}
           >
-            <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-primary transition-colors">
+            <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors">
               Next &rarr;
             </span>
-            <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">
+            <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-white transition-colors">
               {next.data.title}
             </span>
           </a>

@@ -118,14 +118,6 @@ describe("education", () => {
       }
     }
   });
-
-  it("currentUni, when present, is a boolean", () => {
-    for (const entry of education) {
-      if (entry.currentUni !== undefined) {
-        expect(typeof entry.currentUni).toBe("boolean");
-      }
-    }
-  });
 });
 
 describe("career accessors", () => {

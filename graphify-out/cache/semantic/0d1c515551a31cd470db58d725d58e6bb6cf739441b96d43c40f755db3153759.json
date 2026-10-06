@@ -1,0 +1,81 @@
+{
+  "nodes": [
+    {
+      "id": "verify_skill_verify",
+      "label": "verify Skill - CI Verification Pipeline",
+      "file_type": "document",
+      "source_file": ".agents/skills/verify/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "verify_skill_unit_tests",
+      "label": "Unit Tests (npm run test)",
+      "file_type": "concept",
+      "source_file": ".agents/skills/verify/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "verify_skill_e2e_tests",
+      "label": "E2E Tests (npm run test:e2e)",
+      "file_type": "concept",
+      "source_file": ".agents/skills/verify/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "verify_skill_astro_build",
+      "label": "Astro Build (npm run build)",
+      "file_type": "concept",
+      "source_file": ".agents/skills/verify/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "verify_skill_verify",
+      "target": "verify_skill_unit_tests",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/verify/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "verify_skill_verify",
+      "target": "verify_skill_e2e_tests",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/verify/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "verify_skill_verify",
+      "target": "verify_skill_astro_build",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/verify/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

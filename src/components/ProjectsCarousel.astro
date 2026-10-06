@@ -7,7 +7,7 @@ const allProjects = getSortedProjects(await getCollection("projects"));
 ---
 
 <section
-  class="mb-32 scroll-mt-20 render-deferred"
+  class="projects-section scroll-mt-20 render-deferred"
   id="projects"
   aria-label="Projects"
 >
@@ -15,33 +15,50 @@ const allProjects = getSortedProjects(await getCollection("projects"));
     class="flex items-end justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4"
   >
     <div>
-      <h2 class="text-3xl font-display font-bold">PROJECTS</h2>
+      <h2 class="section-title font-body font-semibold">
+        <span class="section-index" aria-hidden="true">01 /</span>PROJECTS
+      </h2>
     </div>
   </div>
   <div id="projects-track" class="horizontal-scroll-snap">
     {
-      allProjects.map((project) => (
+      allProjects.map((project, i) => (
         <a
           href={`/projects/${project.id}`}
-          class="group flex flex-col cad-border bg-slate-50 dark:bg-slate-900 shadow-sm cursor-pointer hover:border-primary hover:bg-white dark:hover:bg-slate-800 transition-colors"
+          class="project-card group flex flex-col focus-ring"
         >
-          <div class="relative h-[160px] overflow-hidden border-b border-slate-200 dark:border-slate-800">
+          <div class="project-image relative overflow-hidden">
             <Picture
               src={project.data.cover}
               alt={project.data.title}
-              class="absolute inset-0 w-full h-full object-cover grayscale opacity-60 group-hover:scale-105 transition-transform duration-1000"
+              class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
               formats={["avif"]}
               fallbackFormat="webp"
-              widths={[300, 350]}
-              sizes="(min-width: 768px) 350px, 300px"
+              widths={[360, 640, 960]}
+              sizes="(min-width: 1024px) 600px, (min-width: 768px) 440px, 85vw"
             />
-            <div class="absolute inset-0 bg-primary/10 mix-blend-multiply" />
           </div>
-          <div class="p-5 flex flex-col flex-grow">
-            <h3 class="text-lg font-display font-bold mb-3">
+          <div class="project-copy flex flex-col">
+            <div class="exhibit-index" aria-hidden="true">
+              <>
+                <span>{String(i + 1).padStart(2, "0")}</span>
+                <span class="exhibit-arrow">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 19 19 5M5 5h14v14" />
+                  </svg>
+                </span>
+              </>
+            </div>
+            <h3 class="text-xl font-body font-semibold mb-3">
               {project.data.title}
             </h3>
-            <p class="text-xs text-slate-700 dark:text-slate-200 leading-relaxed flex-grow">
+            <p class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
               {project.data.summary}
             </p>
           </div>
@@ -53,14 +70,14 @@ const allProjects = getSortedProjects(await getCollection("projects"));
   <div class="flex justify-end gap-2 mt-4">
     <button
       id="carousel-prev"
-      class="cad-border px-3 py-1.5 font-display text-xs uppercase tracking-widest text-slate-500 hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+      class="carousel-control cad-border px-3 py-1.5 font-display text-xs uppercase tracking-widest text-slate-500 hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
       aria-label="Previous projects"
     >
       ← PREV
     </button>
     <button
       id="carousel-next"
-      class="cad-border px-3 py-1.5 font-display text-xs uppercase tracking-widest text-slate-500 hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+      class="carousel-control cad-border px-3 py-1.5 font-display text-xs uppercase tracking-widest text-slate-500 hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
       aria-label="Next projects"
     >
       NEXT →
@@ -70,19 +87,16 @@ const allProjects = getSortedProjects(await getCollection("projects"));
 
 <script>
   import { initCarousel } from "../utils/carousel";
-  import { CAROUSEL } from "../utils/domContracts";
 
   let cleanup: (() => void) | undefined;
   document.addEventListener("astro:page-load", () => {
     cleanup?.();
-    const track = document.getElementById(
-      CAROUSEL.trackId,
-    ) as HTMLElement | null;
+    const track = document.getElementById("projects-track");
     const prev = document.getElementById(
-      CAROUSEL.prevId,
+      "carousel-prev",
     ) as HTMLButtonElement | null;
     const next = document.getElementById(
-      CAROUSEL.nextId,
+      "carousel-next",
     ) as HTMLButtonElement | null;
     if (track && prev && next) cleanup = initCarousel(track, prev, next);
   });

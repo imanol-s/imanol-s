@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "opencode_agents_data_manager_agent",
+      "label": "Data Manager Agent (opencode)",
+      "file_type": "document",
+      "source_file": ".opencode/agents/data-manager.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "opencode_agents_data_manager_data_files",
+      "label": "Data Files Overview (Jobs.ts, education.ts, techIcons.ts)",
+      "file_type": "concept",
+      "source_file": ".opencode/agents/data-manager.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "opencode_agents_data_manager_agent",
+      "target": "opencode_agents_data_manager_data_files",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/data-manager.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

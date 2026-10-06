@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "rerender_functional_setstate_functional_updates",
+      "label": "Functional setState Updates",
+      "file_type": "rationale",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-functional-setstate.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rerender_functional_setstate_stale_closure_prevention",
+      "label": "Stale Closure Prevention",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-functional-setstate.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rerender_functional_setstate_functional_updates",
+      "target": "rerender_functional_setstate_stale_closure_prevention",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-functional-setstate.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "id": "rules_client_passive_event_listeners_passive_event_listeners",
+      "label": "Passive Event Listeners for Scrolling Performance",
+      "file_type": "document",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/client-passive-event-listeners.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rules_client_passive_event_listeners_scroll_performance",
+      "label": "Scroll Performance Optimization",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/client-passive-event-listeners.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rules_client_passive_event_listeners_preventdefault",
+      "label": "preventDefault Browser Behavior",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/client-passive-event-listeners.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_client_passive_event_listeners_passive_event_listeners",
+      "target": "rules_client_passive_event_listeners_scroll_performance",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/client-passive-event-listeners.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_client_passive_event_listeners_passive_event_listeners",
+      "target": "rules_client_passive_event_listeners_preventdefault",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/client-passive-event-listeners.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_client_passive_event_listeners_passive_event_listeners",
+      "target": "concept_performance_optimization",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/client-passive-event-listeners.md",
+      "source_location": null,
+      "weight": 0.95
+    }
+  ],
+  "hyperedges": []
+}

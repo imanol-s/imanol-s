@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "icons_umbrella_fill_umbrella",
+      "label": "Umbrella Filled Icon",
+      "file_type": "image",
+      "source_file": "src/icons/umbrella-fill.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "icons_umbrella_fill_umbrella",
+      "target": "icons_umbrella_umbrella",
+      "relation": "semantically_similar_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/icons/umbrella-fill.svg",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

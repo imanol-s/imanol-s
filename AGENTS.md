@@ -34,7 +34,7 @@ Instructions for AI coding assistants working with this repository.
 
 ## Learned Workspace Facts
 
-- Astro 6 portfolio site with React 18, Tailwind CSS, TypeScript
+- Astro 7.3 portfolio site with React 19, Tailwind CSS 4, TypeScript, and Vite 8
 - PRs follow `.github/pull_request_template.md` template
 - Design tokens: `--color-primary: #64748b` (slate gray), slate palette, JetBrains Mono display + Inter body
 - Nav links use `text-primary` base with `hover:text-white` (muted → bright on hover)
@@ -43,7 +43,7 @@ Instructions for AI coding assistants working with this repository.
 - Browser-level validation is available via `npm run test:e2e` with Playwright against the local preview on port 4321
 - Netlify pins Node 22 via `NODE_VERSION` in `netlify.toml`
 - Fonts self-hosted via `@fontsource-variable` (Inter + JetBrains Mono) — no Google Fonts CDN
-- React islands: `TopoBackground.tsx` (`client:only="react"`, global), `TypewriterText.tsx` (`client:load`, homepage), and `LoadingOverlay.tsx` (`client:only="react"`, homepage)
+- Three React islands: `TopoBackground.tsx` (`client:only="react"`), `TypewriterText.tsx` (`client:load`), and `LoadingOverlay.tsx` (`client:only="react"`)
 - Project subagents in `.cursor/agents/`: `coding-specialist` (mandatory for code changes), `software-architect`, `performance-optimizer`
 - Experience card descriptions render in full with no truncation
 - `src/config.ts` is the single source of truth for all personal/site data — full field reference in `.github/copilot-instructions.md` under "Site Configuration"

@@ -1,0 +1,60 @@
+{
+  "nodes": [
+    {
+      "id": "advanced_event_handler_refs_store_event_handlers_in_refs",
+      "label": "Store Event Handlers in Refs",
+      "file_type": "document",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/advanced-event-handler-refs.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "advanced_event_handler_refs_useeffectevent",
+      "label": "useEffectEvent (stable subscription pattern)",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/advanced-event-handler-refs.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_react_performance_optimization",
+      "label": "React Performance Optimization",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/advanced-event-handler-refs.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "advanced_event_handler_refs_store_event_handlers_in_refs",
+      "target": "advanced_event_handler_refs_useeffectevent",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/advanced-event-handler-refs.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "advanced_event_handler_refs_store_event_handlers_in_refs",
+      "target": "concept_react_performance_optimization",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/advanced-event-handler-refs.md",
+      "source_location": null,
+      "weight": 0.9
+    }
+  ],
+  "hyperedges": []
+}

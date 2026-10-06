@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import TopoBackground from "../components/TopoBackground.tsx";
+import LoadingOverlay from "../components/LoadingOverlay.tsx";
 import BackToTop from "../components/BackToTop.astro";
 
 import { SITE } from "@/config";
@@ -17,22 +18,19 @@ interface Props {
   title?: string;
   scrollSmooth?: boolean;
   description?: string;
-  tags?: string[];
-  author?: string;
   imageOg?: string;
-  canonicalURL?: string;
 }
 
 const {
   title = SITE.title,
   description = SITE.description,
-  tags = SITE.tags,
-  author = SITE.author,
   scrollSmooth = false,
-  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
   imageOg = SITE.ogImage,
 } = Astro.props;
 
+const tags = SITE.tags;
+const author = SITE.author;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 const absoluteOgImage = new URL(imageOg, Astro.site).href;
 ---
 
@@ -44,7 +42,6 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="msapplication-TileColor" content="#000000" />
     <meta name="generator" content={Astro.generator} />
 
     {/* Preload critical fonts — eliminates CSS→parse→download waterfall */}
@@ -85,6 +82,13 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
     <meta property="twitter:image" content={absoluteOgImage} />
 
     <title>{title}</title>
+    <noscript
+      ><style>
+        #loading-overlay {
+          display: none;
+        }
+      </style></noscript
+    >
     <ClientRouter />
 
     {
@@ -118,12 +122,21 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
       document.documentElement.classList.add("dark");
     </script>
 
-    <slot name="body-start" />
+    <div
+      id="loading-overlay"
+      class="fixed inset-0 z-50 bg-[var(--color-background-dark)] pointer-events-none"
+      aria-hidden="true"
+    >
+    </div>
+    <LoadingOverlay client:only="react" />
     <TopoBackground client:only="react" />
     <BackToTop />
     <SiteHeader />
 
-    <main id="main-content" class="relative z-10 max-w-7xl mx-auto px-6 py-12">
+    <main
+      id="main-content"
+      class="site-main relative z-10 max-w-7xl mx-auto px-6 py-12"
+    >
       <slot />
     </main>
 

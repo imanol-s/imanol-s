@@ -28,14 +28,13 @@ There are exactly 3 React islands. Do NOT create new islands without explicit us
 
 Islands coordinate via a **module-level store** in `src/hooks/useSiteLifecycle.ts` using `useSyncExternalStore`. They do NOT use React context.
 
-## State Machine
+## Site Lifecycle
 
-The site lifecycle state machine in `src/utils/siteLifecycle.ts` has 4 states:
+`src/hooks/useSiteLifecycle.ts` holds a module-level store with 4 phases:
 `loading` -> `overlay-playing` -> `overlay-fading` -> `ready`
 
-- `getInitialState()` checks reduced-motion first, then sessionStorage
-- `OVERLAY_TIMINGS` controls animation delays
-- `scheduleOverlay(dispatch, state)` drives the machine forward via timeouts
+- Initial state checks reduced-motion first, then sessionStorage (return visits skip to ready)
+- `advance()` moves to the next phase; `OVERLAY_TIMINGS` controls the delays (driven by a timeout effect in LoadingOverlay)
 
 ## View Transitions
 
@@ -50,13 +49,9 @@ document.addEventListener("astro:page-load", () => {
 });
 ```
 
-## DOM Contracts
+## DOM IDs
 
-`src/utils/domContracts.ts` is the single source of truth for all DOM IDs, CSS class names, and numeric thresholds. Never hardcode these values — always import from domContracts:
-
-- `BACK_TO_TOP` — button ID, sidebar ID, scroll threshold, collapse breakpoint, CSS classes
-- `CAROUSEL` — track/prev/next IDs, scroll ratio, drag threshold
-- `MOBILE_MENU` — button ID, menu ID, hidden class
+DOM IDs, class names, and thresholds are plain literals owned by each component/util pair. When an ID crosses components (e.g. `#profile-sidebar` defined in ExperienceTimeline.astro, used by BackToTop.astro), note it with a comment at the lookup site.
 
 ## Required Utilities
 

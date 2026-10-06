@@ -1,0 +1,146 @@
+{
+  "nodes": [
+    {
+      "id": "opencode_agents_orchestrator_agent",
+      "label": "Feature Workflow Orchestrator Agent (opencode)",
+      "file_type": "document",
+      "source_file": ".opencode/agents/orchestrator.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "opencode_agents_orchestrator_12stage_pipeline",
+      "label": "12-Stage Feature Pipeline (Triage\u2192Summary)",
+      "file_type": "concept",
+      "source_file": ".opencode/agents/orchestrator.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "opencode_agents_orchestrator_agent_routing",
+      "label": "Agent Routing Table (ui\u2192ui-builder, content\u2192content-editor, data\u2192data-manager)",
+      "file_type": "concept",
+      "source_file": ".opencode/agents/orchestrator.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "opencode_agents_orchestrator_agent",
+      "target": "opencode_agents_content_editor_agent",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agents_orchestrator_agent",
+      "target": "opencode_agents_data_manager_agent",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agents_orchestrator_agent",
+      "target": "opencode_agents_site_reviewer_agent",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agents_orchestrator_agent",
+      "target": "opencode_agents_ui_builder_agent",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agents_orchestrator_agent",
+      "target": "opencode_agents_orchestrator_12stage_pipeline",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agents_orchestrator_agent",
+      "target": "opencode_agents_orchestrator_agent_routing",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agents_orchestrator_agent",
+      "target": "github_copilot_instructions_canon",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agents_orchestrator_agent",
+      "target": "opencode_agents_orchestrator_12stage_pipeline",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agents_orchestrator_12stage_pipeline",
+      "target": "github_copilot_instructions_mandatory_validation",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".opencode/agents/orchestrator.md",
+      "source_location": null,
+      "weight": 0.85
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "hyperedge_opencode_agent_system",
+      "label": "OpenCode Agent System (orchestrator + 4 specialist agents)",
+      "nodes": [
+        "opencode_agents_orchestrator_agent",
+        "opencode_agents_content_editor_agent",
+        "opencode_agents_data_manager_agent",
+        "opencode_agents_site_reviewer_agent",
+        "opencode_agents_ui_builder_agent"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/orchestrator.md"
+    }
+  ]
+}

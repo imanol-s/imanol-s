@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "skills_vercel_react_best_practices_readme",
+      "label": "vercel-react-best-practices README",
+      "file_type": "document",
+      "source_file": ".claude/skills/vercel-react-best-practices/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "skills_vercel_react_best_practices_readme",
+      "target": "skills_vercel_react_best_practices_agents_md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/README.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

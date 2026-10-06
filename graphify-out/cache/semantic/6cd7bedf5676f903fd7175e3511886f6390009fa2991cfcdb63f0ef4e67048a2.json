@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "rerender_lazy_state_init_lazy_state_initialization",
+      "label": "Lazy State Initialization",
+      "file_type": "rationale",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-lazy-state-init.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rerender_lazy_state_init_expensive_initial_values",
+      "label": "Expensive Initial Values in useState",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-lazy-state-init.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rerender_lazy_state_init_lazy_state_initialization",
+      "target": "rerender_lazy_state_init_expensive_initial_values",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rerender-lazy-state-init.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

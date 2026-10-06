@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "opencode_agents_content_editor_agent",
+      "label": "Content Editor Agent (opencode)",
+      "file_type": "document",
+      "source_file": ".opencode/agents/content-editor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "opencode_agents_content_editor_schema_comparison",
+      "label": "Content Schema Comparison (Blog vs Project frontmatter)",
+      "file_type": "concept",
+      "source_file": ".opencode/agents/content-editor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "opencode_agents_content_editor_agent",
+      "target": "opencode_agents_content_editor_schema_comparison",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agents/content-editor.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

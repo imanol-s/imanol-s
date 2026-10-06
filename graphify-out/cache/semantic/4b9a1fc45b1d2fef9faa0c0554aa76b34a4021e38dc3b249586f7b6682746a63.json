@@ -1,0 +1,60 @@
+{
+  "nodes": [
+    {
+      "id": "rules_rendering_activity_activity_component",
+      "label": "Activity Component for Show/Hide",
+      "file_type": "document",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-activity.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rules_rendering_activity_react_activity",
+      "label": "React Activity API",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-activity.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_react_rendering",
+      "label": "React Rendering Optimization",
+      "file_type": "concept",
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-activity.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_rendering_activity_activity_component",
+      "target": "rules_rendering_activity_react_activity",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-activity.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_rendering_activity_activity_component",
+      "target": "concept_react_rendering",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".agents/skills/vercel-react-best-practices/rules/rendering-activity.md",
+      "source_location": null,
+      "weight": 0.95
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "docs_netlify_subdomains_subdomain_infra",
+      "label": "Netlify Subdomain Infrastructure Guide",
+      "file_type": "document",
+      "source_file": "docs/NETLIFY_SUBDOMAINS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_netlify_subdomains_dns_config",
+      "label": "Current DNS Config (imanols.dev \u2014 Netlify DNS active)",
+      "file_type": "concept",
+      "source_file": "docs/NETLIFY_SUBDOMAINS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "docs_netlify_subdomains_subdomain_infra",
+      "target": "docs_netlify_subdomains_dns_config",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/NETLIFY_SUBDOMAINS.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

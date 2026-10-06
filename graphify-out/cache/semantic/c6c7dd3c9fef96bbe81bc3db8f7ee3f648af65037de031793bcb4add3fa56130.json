@@ -1,0 +1,38 @@
+{
+  "nodes": [
+    {
+      "id": "rules_rerender_derived_state_no_effect_derived_state_no_effect_pattern",
+      "label": "Calculate Derived State During Rendering",
+      "file_type": "concept",
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-derived-state-no-effect.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_rerender_derived_state_no_effect_derived_state_no_effect_pattern",
+      "target": "rules_rerender_defer_reads_react_rerender_category",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-derived-state-no-effect.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_rerender_derived_state_no_effect_derived_state_no_effect_pattern",
+      "target": "rules_rerender_derived_state_derived_state_pattern",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/skills/vercel-react-best-practices/rules/rerender-derived-state-no-effect.md",
+      "source_location": null,
+      "weight": 0.95
+    }
+  ],
+  "hyperedges": []
+}

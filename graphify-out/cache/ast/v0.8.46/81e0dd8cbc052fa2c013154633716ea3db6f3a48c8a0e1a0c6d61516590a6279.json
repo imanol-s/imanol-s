@@ -1,0 +1,13 @@
+{
+  "nodes": [
+    {
+      "id": "home_oman_projects_imanol_s_claude_worktrees_mystifying_sanderson_d8c457_src_components_backbtn_astro",
+      "label": "BackBtn.astro",
+      "file_type": "code",
+      "source_file": "src/components/BackBtn.astro",
+      "source_location": "L1"
+    }
+  ],
+  "edges": [],
+  "raw_calls": []
+}

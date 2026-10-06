@@ -1,0 +1,159 @@
+{
+  "nodes": [
+    {
+      "id": "ubiquitous_language_md_domain_glossary",
+      "label": "UBIQUITOUS_LANGUAGE.md \u2014 Domain Glossary",
+      "file_type": "document",
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "ubiquitous_language_md_content_terms",
+      "label": "Content Terms (Post, Project, Tag, Keyword, Cover)",
+      "file_type": "concept",
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "ubiquitous_language_md_tech_data_terms",
+      "label": "Tech & Data Terms (Tech Registry, Tech Entry, Tech ID, Tag Pill, Career Data)",
+      "file_type": "concept",
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "ubiquitous_language_md_ui_component_terms",
+      "label": "UI Component Terms (Island, Loading Overlay, Topo Background, Typewriter Text, Hero Section)",
+      "file_type": "concept",
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "ubiquitous_language_md_lifecycle_terms",
+      "label": "Lifecycle Terms (Overlay-Ready Signal, View Transition, Swap Guard, Reduced Motion, Session State)",
+      "file_type": "concept",
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "ubiquitous_language_md_site_identity_terms",
+      "label": "Site Identity Terms (SITE, ME, Focus Area, Competency, Core Language)",
+      "file_type": "concept",
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "ubiquitous_language_md_domain_glossary",
+      "target": "ubiquitous_language_md_content_terms",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ubiquitous_language_md_domain_glossary",
+      "target": "ubiquitous_language_md_tech_data_terms",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ubiquitous_language_md_domain_glossary",
+      "target": "ubiquitous_language_md_ui_component_terms",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ubiquitous_language_md_domain_glossary",
+      "target": "ubiquitous_language_md_lifecycle_terms",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ubiquitous_language_md_domain_glossary",
+      "target": "ubiquitous_language_md_site_identity_terms",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ubiquitous_language_md_tech_data_terms",
+      "target": "plans_architecture_deepening_phase6_tech_registry_core",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "weight": 0.85
+    },
+    {
+      "source": "ubiquitous_language_md_lifecycle_terms",
+      "target": "claude_md_key_patterns",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "UBIQUITOUS_LANGUAGE.md",
+      "source_location": null,
+      "weight": 0.85
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "hyperedge_domain_glossary_concepts",
+      "label": "Domain Glossary Core Concept Groups",
+      "nodes": [
+        "ubiquitous_language_md_content_terms",
+        "ubiquitous_language_md_tech_data_terms",
+        "ubiquitous_language_md_ui_component_terms",
+        "ubiquitous_language_md_lifecycle_terms",
+        "ubiquitous_language_md_site_identity_terms"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "UBIQUITOUS_LANGUAGE.md"
+    }
+  ]
+}
