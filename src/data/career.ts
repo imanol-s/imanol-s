@@ -23,8 +23,14 @@ export const workExperience: WorkExperience[] = [
     company: "Freeman",
     location: "United States",
     description:
-      "Building on my experience in SAP automation, data governance, and project delivery.",
-    goals: [],
+      "Own SAP data governance and connect business needs with technical delivery, from data setup and change requests to automation and reporting.",
+    goals: [
+      "Own SAP data governance from request intake through change execution and validation.",
+      "Lead the setup of new data, including standardized workflows.",
+      "Use my technical background to connect developers, business users, and enterprise teams.",
+      "Manage project requirements and backlogs for automation, features, enhancements, and bug reports.",
+      "Work with business users across the enterprise to identify process problems, gather requirements, investigate root causes, and deliver solutions through automation, data reporting, and improvements to request workflows.",
+    ],
     currentJob: true,
   },
   {
