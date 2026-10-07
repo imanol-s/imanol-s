@@ -1,7 +1,10 @@
-import { expect, it } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { netlifyImage } from "./netlifyImage";
 
+afterEach(() => vi.unstubAllEnvs());
+
 it("encodes source URLs and preserves dimensions across responsive CDN widths", () => {
+  vi.stubEnv("NETLIFY", "true");
   const image = {
     src: "/_astro/a cover.webp",
     width: 1600,
@@ -27,6 +30,7 @@ it("encodes source URLs and preserves dimensions across responsive CDN widths", 
 });
 
 it("preserves SVGs without an unsupported raster transform", () => {
+  vi.stubEnv("NETLIFY", "true");
   expect(
     netlifyImage({
       src: "/_astro/portrait.svg",
@@ -41,3 +45,23 @@ it("preserves SVGs without an unsupported raster transform", () => {
     height: 300,
   });
 });
+
+it.each([undefined, "false"])(
+  "preserves raster sources when NETLIFY is %s",
+  (netlify) => {
+    vi.stubEnv("NETLIFY", netlify);
+    expect(
+      netlifyImage({
+        src: "/_astro/cover.webp",
+        width: 1600,
+        height: 900,
+        format: "webp",
+      }),
+    ).toEqual({
+      src: "/_astro/cover.webp",
+      srcset: undefined,
+      width: 1600,
+      height: 900,
+    });
+  },
+);

@@ -1,14 +1,14 @@
 import type { ImageMetadata } from "astro";
 
 export const netlifyImage = (image: ImageMetadata) => {
+  const useCdn = process.env.NETLIFY === "true" && image.format !== "svg";
   const url = (width: number) =>
     `/.netlify/images?url=${encodeURIComponent(image.src)}&w=${width}&fm=avif&q=80`;
   return {
-    src: image.format === "svg" ? image.src : url(800),
-    srcset:
-      image.format === "svg"
-        ? undefined
-        : [400, 800, 1200].map((width) => `${url(width)} ${width}w`).join(", "),
+    src: useCdn ? url(800) : image.src,
+    srcset: useCdn
+      ? [400, 800, 1200].map((width) => `${url(width)} ${width}w`).join(", ")
+      : undefined,
     width: image.width,
     height: image.height,
   };
