@@ -11,12 +11,14 @@ Instructions for AI coding assistants working with this repository.
 
 - Prefer concise, direct responses.
 - For high-level questions, answer directly first; only explore code if needed.
+- Delegate substantive portfolio writing and editorial reviews to `portfolio_writer`, defined in [`.codex/agents/portfolio-writer.toml`](.codex/agents/portfolio-writer.toml). The parent agent applies drafts and owns validation and Git operations.
 - If asked to use parallel agents, spawn sub-agents via the Task tool.
 - **Always work on the `ui-migration` branch.** Cloud agent sessions default to creating a new branch; immediately switch to `ui-migration` at session start (`git checkout ui-migration`) and push all commits directly to it. Never leave work on a session-scoped branch.
 
 ## Learned User Preferences
 
 - Avoid em dashes in visitor-facing copy, accessible labels, and metadata.
+- Leave career bullets unchanged unless the user explicitly requests edits to those bullets; general site-copy requests do not authorize rewriting them.
 - Hover effects should enhance/brighten elements, never dim text
 - Use Plan mode before implementing multi-step or multi-file changes
 - Prefer minimal, focused edits over broad rewrites

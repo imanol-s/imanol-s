@@ -53,6 +53,12 @@ const { title, description } = Astro.props;
 - **Single layout**: All pages use `src/layouts/Layout.astro` — do not create additional layouts without justification
 - **No shadcn/ui**: The shadcn stack has been removed. Build components with Tailwind utility classes directly
 
+## Portfolio Writing Agent
+
+- Delegate substantive visitor-facing writing and editorial reviews to `portfolio_writer`, defined in [`.codex/agents/portfolio-writer.toml`](../.codex/agents/portfolio-writer.toml). This agent drafts and reviews project summaries, case studies, homepage copy, and blog prose; the parent agent applies changes and owns validation and Git operations.
+- Follow the five editorial criteria in its definition: clear problem/contribution/outcome, easy scanning, grounded voice, preserved facts and metrics, and plain language without em dashes.
+- Career bullets in `src/data/career.ts` remain unchanged unless the user explicitly requests edits to those bullets. General requests to improve site copy do not authorize rewriting them.
+
 ## Site Configuration (`src/config.ts`)
 
 `src/config.ts` is the **single source of truth** for all personal and site data. Never hardcode personal values (name, bio, email, location, profession, etc.) anywhere in templates or components — always derive them from this file.
