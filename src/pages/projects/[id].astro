@@ -32,7 +32,6 @@ const artworkAlt =
         : post.id === "crime-analysis"
           ? "Watercolor illustration of houses on a map beside a magnifying glass over a bar chart"
           : "Watercolor illustration of books, an open book, and a library card catalog";
-const artworkLabel = "Project concept illustration";
 ---
 
 <Layout
@@ -102,15 +101,6 @@ const artworkLabel = "Project concept illustration";
         fetchpriority="high"
       />
     </div>
-    {
-      post.id !== "automaton" && (
-        <figcaption class="font-display">
-          {artworkLabel}
-          <span aria-hidden="true"> / </span>
-          <span>{title}</span>
-        </figcaption>
-      )
-    }
   </figure>
 
   <div class="project-body">
@@ -212,15 +202,6 @@ const artworkLabel = "Project concept illustration";
     object-fit: cover;
     object-position: center;
   }
-  .project-figure figcaption {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0.8rem 1.25rem;
-    border-top: 1px solid #e2e8f0;
-    color: #475569;
-    font-size: 0.65rem;
-  }
   .project-body {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 17rem;
@@ -256,15 +237,6 @@ const artworkLabel = "Project concept illustration";
     height: auto;
     margin: 0;
     border-radius: 4px;
-  }
-  .project-story :global(.analysis-figure figcaption) {
-    margin-top: 0.75rem;
-    color: #475569;
-    font-size: 0.75rem;
-    line-height: 1.7;
-  }
-  :global(.dark) .project-story :global(.analysis-figure figcaption) {
-    color: #cbd5e1;
   }
   .project-stack {
     padding: 1.5rem;
@@ -315,11 +287,9 @@ const artworkLabel = "Project concept illustration";
     align-items: flex-end;
   }
   :global(.dark) .project-summary,
-  :global(.dark) .project-hero-meta,
-  :global(.dark) .project-figure figcaption {
+  :global(.dark) .project-hero-meta {
     color: #cbd5e1;
   }
-  :global(.dark) .project-figure figcaption,
   :global(.dark) .project-pagination {
     border-color: #334155;
   }

@@ -30,16 +30,12 @@ The result was a table of arrest counts and average and median property prices, 
 <figure class="analysis-figure" style={`max-width: ${arrestMap.width}px`}>
   <img
     {...netlifyImage(arrestMap)}
-    alt="Map of recorded arrest counts by ZIP code across the Dallas area"
+    alt="Map from the original 2024 Dallas analysis showing recorded arrest counts by ZIP code, not population-adjusted crime rates"
     class="analysis-map"
     sizes={`(min-width: 640px) ${arrestMap.width}px, calc(100vw - 48px)`}
     loading="lazy"
     decoding="async"
   />
-  <figcaption>
-    Original 2024 analysis: recorded arrest counts by ZIP code. Counts are not
-    population-adjusted crime rates.
-  </figcaption>
 </figure>
 
 ## Revisiting the assumption
