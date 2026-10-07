@@ -1,6 +1,6 @@
 ---
 title: Critical Task
-summary: Built a Java scheduler that turns task dependencies into critical paths in O(V+E) time. Validates cycles before calculating completion times and slack.
+summary: I built a Java scheduler to find the tasks that determine a project's completion time. It calculates task timing and allowable delays, and rejects circular dependencies before scheduling.
 tags:
   - Java
   - Graph Theory
@@ -14,13 +14,15 @@ cover: "../../assets/projects/task-scheduling.webp"
 ogImage: "../../assets/projects/task-scheduling.webp"
 ---
 
-## My contribution
-
-I was lead developer on this Fall 2024 class project: a Java implementation of PERT/CPM scheduling that models task dependencies as a directed acyclic graph.
-
 ## The problem
 
 Scheduling by hand becomes error-prone as dependencies grow. One incorrect completion time can change the slack calculation and misidentify the critical path.
+
+## My contribution
+
+As lead developer on this Fall 2024 class project, I built a Java scheduler that identifies the tasks that determine the project's completion time. It also calculates slack: how long each task can be delayed without delaying the project.
+
+The tool implements PERT/CPM scheduling, representing tasks and dependencies as a directed acyclic graph.
 
 ## The implementation
 
@@ -28,15 +30,19 @@ The graph uses adjacency lists. A DFS-based topological sort tracks active nodes
 
 A forward pass computes earliest start and finish times. A backward pass computes latest start and finish times. Together, the passes identify slack and the zero-slack tasks that determine the project duration, in O(V+E) time.
 
+Here, V is the number of tasks and E is the number of dependencies. The calculation scales with those counts rather than checking every possible path.
+
 The output includes each task's earliest completion, latest completion, slack, and critical status.
 
 ## How I checked it
 
 I used course-provided inputs and generated task networks with known critical paths to check the calculations across different graph sizes and dependency structures.
 
-## What this work shows
+## The result and lesson
 
-Turning graph theory into a practical tool, choosing a representation with clear complexity, and validating assumptions before computing results.
+The scheduler produces a timing breakdown for every task and identifies the critical path. Detecting cycles first keeps an impossible dependency structure from producing a misleading schedule.
+
+The lesson was to check the assumptions behind a calculation before trusting its output. Graph theory provided the method; validation made the result useful.
 
 The watercolor cover illustrates task dependencies conceptually; it is not application output.
 

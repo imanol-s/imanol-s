@@ -1,6 +1,6 @@
 ---
 title: Sensori Robotics
-summary: Built simulation environments and PPO training loops for a capstone navigation system. Focused on reward shaping, continuous control, and learning through iteration.
+summary: Robot navigation needs repeated testing before physical deployment. I built simulated environments and training loops for a capstone team so we could run repeated navigation trials.
 tags:
   - Robotics
   - Nvidia IsaacLab
@@ -14,15 +14,17 @@ cover: "../../assets/projects/robotics.webp"
 ogImage: "../../assets/projects/robotics.webp"
 ---
 
-## My contribution
-
-On the Fall 2025 senior capstone team at UT Dallas, I focused on the reinforcement-learning training loops and simulation environments for a mobile robot's navigation policy.
-
-I ported real-world environments into NVIDIA IsaacSim and helped define the IsaacLab training setup: observation and action spaces, reward shaping, and episode management.
-
 ## The problem
 
 Training on physical hardware makes every failed trajectory costly. Resets take time, and obstacle avoidance needs many interactions. Simulation gave the team a way to iterate before physical deployment.
+
+## My contribution
+
+On the Fall 2025 senior capstone team at UT Dallas, I built simulation environments and reinforcement-learning training loops for a mobile robot's navigation policy.
+
+I recreated real-world environments in NVIDIA IsaacSim and helped define the IsaacLab training setup: what the robot observes, which actions it can take, how actions are rewarded, and when a trial ends.
+
+The deliverable was a simulation and training setup for running repeated navigation trials.
 
 ## The approach
 
@@ -30,9 +32,9 @@ The team used Proximal Policy Optimization (PPO) for continuous control. IsaacSi
 
 The work also considered how continuous policy outputs would map to motor commands on the robot. That hardware-software boundary made eventual deployment validation an important next step.
 
-## What this work shows
+## What I learned
 
-Working across unfamiliar tools, building a training environment, and connecting software decisions to physical constraints. Reward design and environment setup were central to the navigation work, alongside the choice of algorithm.
+Building the environment meant learning unfamiliar tools and deciding what the robot should observe and be rewarded for. Those choices were central to the navigation work, alongside the training algorithm. The work also made clear why a policy trained in simulation still needs validation on physical hardware.
 
 ## Availability
 

@@ -1,6 +1,6 @@
 ---
 title: Library Management System
-summary: Led a Python and SQL library system for a 10k+ record catalog. A normalized schema keeps book, author, and circulation data consistent.
+summary: Managing a 10k+ record catalog meant keeping books and loans in sync. I led development of a Python and SQL library system for checkout, returns, and circulation history.
 tags:
   - Python
   - SQL
@@ -12,6 +12,10 @@ endDate: 2025-05-01
 cover: "../../assets/projects/library.webp"
 ogImage: "../../assets/projects/library.webp"
 ---
+
+## The problem
+
+A library needs to track its catalog and loans together. Repeating author details in each book record makes updates harder to keep consistent, while circulation records need to reflect which books are available.
 
 ## My contribution
 
@@ -31,6 +35,8 @@ The Django interface gives librarians a way to manage circulation without direct
 
 UML diagrams document the relationships so the team can understand and extend the design.
 
-## What this work shows
+## The result and lesson
 
-Relational modeling, application development, and attention to data consistency. The useful outcome is a schema that supports everyday workflows without duplicating the information those workflows depend on.
+The system supports catalog management, checkout, returns, and circulation history through a Django interface. Author details can be updated in one place, and checkout records availability and the loan together.
+
+The practical lesson was to design around the librarian's workflow as well as the relationships between records. A schema decision becomes useful when it makes an everyday action easier to carry out correctly.
