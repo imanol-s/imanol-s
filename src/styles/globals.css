@@ -323,6 +323,7 @@ pre code {
     line-height: 1.3;
     letter-spacing: -0.055em;
     color: #f1f5f9;
+    text-wrap: balance;
   }
   .section-intro {
     color: #b4c1d2;
