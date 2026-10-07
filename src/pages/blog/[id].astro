@@ -2,7 +2,7 @@
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import BackBtn from "../../components/BackBtn.astro";
-import { Picture } from "astro:assets";
+import { netlifyImage } from "@/utils/netlifyImage";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -24,6 +24,8 @@ const { Content } = await render(post);
   description={description}
   imageOg={new URL(cover.src.src, Astro.site).href}
   scrollSmooth={true}
+  heroImage={cover.src}
+  heroSizes="(min-width: 1280px) 1232px, calc(100vw - 48px)"
 >
   <div class="flex justify-center mt-10">
     <BackBtn />
@@ -35,15 +37,12 @@ const { Content } = await render(post);
     </p>
   </div>
   <div class="cad-border overflow-hidden">
-    <Picture
+    <img
       transition:name={`${post.id}-image`}
       class="w-full h-[400px] object-cover"
-      src={cover.src}
+      {...netlifyImage(cover.src)}
       alt={cover.alt ?? title}
-      formats={["avif"]}
-      fallbackFormat="webp"
-      widths={[640, 960, 1280]}
-      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px"
+      sizes="(min-width: 1280px) 1232px, calc(100vw - 48px)"
       loading="eager"
       fetchpriority="high"
     />

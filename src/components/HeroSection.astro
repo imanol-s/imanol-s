@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { netlifyImage } from "@/utils/netlifyImage";
 import TypewriterText from "./TypewriterText.tsx";
 import { ME, SOCIALS } from "../config";
 import { timelineJobs, primaryEducation } from "../data/career";
@@ -36,9 +36,8 @@ const education = primaryEducation();
     </div>
     <div class="portrait-column">
       <div class="portrait-illustration">
-        <Image
-          src={portraitLineart}
-          format="svg"
+        <img
+          {...netlifyImage(portraitLineart)}
           alt={`${ME.name} illustrated portrait`}
           class="portrait-image"
           loading="eager"

@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
-import { Image, Picture } from "astro:assets";
+import { netlifyImage } from "@/utils/netlifyImage";
 import Layout from "../../layouts/Layout.astro";
 import TagPill from "../../components/TagPill.astro";
 import { SITE } from "../../config";
@@ -37,6 +37,8 @@ const artworkLabel =
   description={summary}
   imageOg={cover.format === "svg" ? SITE.ogImage : cover.src}
   scrollSmooth={true}
+  heroImage={cover}
+  heroSizes="(min-width: 1280px) 1232px, calc(100vw - 48px)"
 >
   <nav aria-label="Breadcrumb" class="mb-10">
     <a
@@ -74,34 +76,16 @@ const artworkLabel =
 
   <figure class={`project-figure project-${post.id} cad-border`}>
     <div class="project-artwork">
-      {
-        cover.format === "svg" ? (
-          <Image
-            src={cover}
-            format="svg"
-            alt=""
-            class="project-cover"
-            loading="eager"
-            fetchpriority="high"
-          />
-        ) : (
-          <Picture
-            src={cover}
-            alt={
-              post.id === "crime-analysis"
-                ? "Map of recorded arrest counts by ZIP code in the Dallas area"
-                : ""
-            }
-            class="project-cover"
-            formats={["avif"]}
-            fallbackFormat="webp"
-            widths={[480, 800, 1280]}
-            sizes="(min-width: 1280px) 1152px, 92vw"
-            loading="eager"
-            fetchpriority="high"
-          />
-        )
-      }
+      <img
+        {...netlifyImage(cover)}
+        alt={post.id === "crime-analysis"
+          ? "Map of recorded arrest counts by ZIP code in the Dallas area"
+          : ""}
+        class="project-cover"
+        sizes="(min-width: 1280px) 1232px, calc(100vw - 48px)"
+        loading="eager"
+        fetchpriority="high"
+      />
     </div>
     <figcaption class="font-display">
       {artworkLabel}<span aria-hidden="true"> / </span><span>{title}</span>

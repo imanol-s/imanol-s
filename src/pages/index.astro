@@ -5,12 +5,14 @@ import ProjectsCarousel from "../components/ProjectsCarousel.astro";
 import ApproachSection from "../components/ApproachSection.astro";
 import ExperienceTimeline from "../components/ExperienceTimeline.astro";
 import { ME, SITE } from "../config";
+import portraitLineart from "../assets/portrait-lineart.svg";
 ---
 
 <Layout
   title={`${SITE.author} | Portfolio`}
   description={ME.aboutMe}
   scrollSmooth={true}
+  heroImage={portraitLineart}
 >
   <HeroSection />
 

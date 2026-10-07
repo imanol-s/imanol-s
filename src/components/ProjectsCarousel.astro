@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { Image, Picture } from "astro:assets";
+import { netlifyImage } from "@/utils/netlifyImage";
 import { getSortedProjects } from "@/data/projectCollection";
 import { getTechView } from "@/data/techRegistry";
 
@@ -49,28 +49,14 @@ const ProjectHeading = showHeading ? "h3" : "h2";
           aria-label={`Read about ${project.data.title}`}
         >
           <div class="project-artwork">
-            {project.data.cover.format === "svg" ? (
-              <Image
-                src={project.data.cover}
-                format="svg"
-                alt=""
-                class="project-cover"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : (
-              <Picture
-                src={project.data.cover}
-                alt=""
-                class="project-cover"
-                formats={["avif"]}
-                fallbackFormat="webp"
-                widths={[320, 480, 640, 800]}
-                sizes="(min-width: 1280px) 560px, (min-width: 768px) 45vw, 90vw"
-                loading="lazy"
-                decoding="async"
-              />
-            )}
+            <img
+              {...netlifyImage(project.data.cover)}
+              alt=""
+              class="project-cover"
+              sizes="(min-width: 1280px) 560px, (min-width: 768px) 45vw, 90vw"
+              loading="lazy"
+              decoding="async"
+            />
             <span class="project-number font-display" aria-hidden="true">
               {String(index + 1).padStart(2, "0")}
             </span>

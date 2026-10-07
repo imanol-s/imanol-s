@@ -1,5 +1,5 @@
 ---
-import { Picture } from "astro:assets";
+import { netlifyImage } from "@/utils/netlifyImage";
 import { Icon } from "astro-icon/components";
 import { formatDate } from "../utils/formatDate";
 
@@ -26,14 +26,11 @@ const { id, title, description, publishDate, tags, cover } =
   <div
     class="flex-none w-full md:w-40 h-40 overflow-hidden border border-slate-200 dark:border-slate-800"
   >
-    <Picture
+    <img
       transition:name={`${id}-image`}
-      src={cover.src}
+      {...netlifyImage(cover.src)}
       alt={cover.alt ?? title}
       class="w-full h-full object-cover"
-      formats={["avif"]}
-      fallbackFormat="webp"
-      widths={[160, 320]}
       sizes="(max-width: 768px) 100vw, 160px"
       loading="lazy"
       decoding="async"
