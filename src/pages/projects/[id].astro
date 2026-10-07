@@ -102,9 +102,15 @@ const artworkLabel = "Project concept illustration";
         fetchpriority="high"
       />
     </div>
-    <figcaption class="font-display">
-      {artworkLabel}<span aria-hidden="true"> / </span><span>{title}</span>
-    </figcaption>
+    {
+      post.id !== "automaton" && (
+        <figcaption class="font-display">
+          {artworkLabel}
+          <span aria-hidden="true"> / </span>
+          <span>{title}</span>
+        </figcaption>
+      )
+    }
   </figure>
 
   <div class="project-body">
