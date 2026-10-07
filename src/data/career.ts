@@ -105,12 +105,9 @@ export function jobEndDate(job: WorkExperience): Date | null {
   return job.endDate ? new Date(job.endDate) : null;
 }
 
-/**
- * Returns the most recent work experiences for the homepage timeline preview.
- * The full list is available via `workExperience`.
- */
+/** Returns the full work history in display order for the homepage timeline. */
 export function timelineJobs(): WorkExperience[] {
-  return workExperience.slice(0, 3);
+  return workExperience.slice();
 }
 
 /** Returns the primary education entry, or null if none exists. */

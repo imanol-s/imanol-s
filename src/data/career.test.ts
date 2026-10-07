@@ -165,8 +165,8 @@ describe("career accessors", () => {
   });
 
   describe("timelineJobs", () => {
-    it("returns at most 3 entries", () => {
-      expect(timelineJobs().length).toBeLessThanOrEqual(3);
+    it("returns every work experience", () => {
+      expect(timelineJobs().length).toBe(workExperience.length);
     });
 
     it("returns the first entries from workExperience", () => {

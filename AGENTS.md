@@ -46,7 +46,7 @@ Instructions for AI coding assistants working with this repository.
 - Raster content images use Netlify Image CDN with AVIF quality 80 and responsive widths 400/800/1200; SVG artwork stays vector. Hashed `/_astro/` assets and their Image CDN variants cache immutably for one year; HTML uses CDN stale-while-revalidate, and unversioned images revalidate.
 - Three React islands: `TopoBackground.tsx` (`client:only="react"`), `TypewriterText.tsx` (`client:load`), and `LoadingOverlay.tsx` (`client:only="react"`)
 - Project subagents in `.cursor/agents/`: `coding-specialist` (mandatory for code changes), `software-architect`, `performance-optimizer`
-- Experience card descriptions render in full with no truncation
+- Work history shows every role, with full descriptions and supplied highlights; do not impose role-count caps.
 - `src/config.ts` is the single source of truth for all personal/site data — full field reference in `.github/copilot-instructions.md` under "Site Configuration"
 - Paper MCP is used for design prototyping; designs live in a Paper file with separate pages per section (Home, Projects, Blog)
 - Tag pills appear in `projects/index.astro` (listing) and `projects/[id].astro` (hero + stack sidebar) — stack sidebar uses a different, already-accessible style
