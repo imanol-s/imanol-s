@@ -44,7 +44,10 @@ const education = primaryEducation();
           fetchpriority="high"
         />
       </div>
-      <p class="portrait-note">{ME.portraitNote}</p>
+      <p class="portrait-note font-display">
+        {ME.portraitNote}<span class="iteration-dots" aria-hidden="true"
+          >...</span>
+      </p>
       <div class="hero-socials">
         {
           SOCIALS.filter((social) => social.show).map((social) => (
@@ -196,9 +199,37 @@ const education = primaryEducation();
     margin: 0.9rem auto 0;
     text-align: center;
     color: #a9bacd;
-    font-family: var(--font-body);
-    font-size: 0.8rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
     line-height: 1.65;
+  }
+  .iteration-dots {
+    display: inline-block;
+    width: 3ch;
+    white-space: nowrap;
+    clip-path: inset(0 100% 0 0);
+    animation: iteration-dots 1.4s steps(1, end) infinite;
+  }
+  @keyframes iteration-dots {
+    0% {
+      clip-path: inset(0 100% 0 0);
+    }
+    25% {
+      clip-path: inset(0 66.6667% 0 0);
+    }
+    50% {
+      clip-path: inset(0 33.3333% 0 0);
+    }
+    75%,
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .iteration-dots {
+      animation: none;
+      clip-path: none;
+    }
   }
   .hero-socials {
     display: flex;

@@ -32,6 +32,7 @@ export default function LoadingOverlay() {
 
   return (
     <div
+      data-loading-overlay={state}
       className={`fixed inset-0 z-50 transition-opacity duration-500 ${
         isFading ? "opacity-0" : "opacity-100"
       }`}

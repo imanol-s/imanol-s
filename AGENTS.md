@@ -50,6 +50,7 @@ Instructions for AI coding assistants working with this repository.
 - Three React islands: `TopoBackground.tsx` (`client:only="react"`), `TypewriterText.tsx` (`client:load`), and `LoadingOverlay.tsx` (`client:only="react"`)
 - Project subagents in `.cursor/agents/`: `coding-specialist` (mandatory for code changes), `software-architect`, `performance-optimizer`
 - Work history shows every role, with full descriptions and supplied highlights; do not impose role-count caps.
+- Blog routes, navigation, and legacy redirects are removed. Posts and their content schema remain archived; do not expose them as public pages.
 - `src/config.ts` is the single source of truth for all personal/site data — full field reference in `.github/copilot-instructions.md` under "Site Configuration"
 - Paper MCP is used for design prototyping; designs live in a Paper file with separate pages per section (Home, Projects, Blog)
 - Tag pills appear in `projects/index.astro` (listing) and `projects/[id].astro` (hero + stack sidebar) — stack sidebar uses a different, already-accessible style
@@ -57,7 +58,7 @@ Instructions for AI coding assistants working with this repository.
 ## Homepage content configuration
 
 - `ME.headline: string[]` supplies the hero value statement.
-- `ME.portraitNote: string` supplies the illustrated portrait caption.
+- `ME.portraitNote: string` supplies the animated portrait status caption; CSS reveals decorative dots, with static dots for reduced motion.
 - `ME.workingStyle: string` introduces the approach section.
 - `ME.approach: { title: string; description: string }[]` supplies the working approach cards.
 - `ME.contactNote: string` supplies the footer invitation.
@@ -68,4 +69,6 @@ Instructions for AI coding assistants working with this repository.
 - Project dates are optional when unconfirmed. Dated projects sort newest first, with stable ID ordering for ties; undated projects follow in stable ID order, and their pages omit unavailable dates.
 - Automaton charts and architecture diagrams use server-rendered Astro HTML/CSS, with visible data and descriptions. Measurements are operation-specific, retain approximation qualifiers, and omit business identifiers. No chart runtime or React island is added.
 - Hero portrait uses `src/assets/portrait-lineart.svg`, a transparent vector trace of the original illustration, with an unframed treatment and compact mobile presentation.
-- Header navigation contracts toward a fixed frog anchor on downward scroll and expands on upward scroll or activation. `src/utils/headerScroll.ts` measures the header width, protects keyboard/menu interaction, and cleans up on Astro navigation; reduced motion disables transitions and the landing gesture.
+- Header navigation contracts toward a fixed frog anchor on downward scroll and expands on upward scroll or activation. `src/utils/headerScroll.ts` measures the header width, protects keyboard/menu interaction, and cleans up on Astro navigation; labels reveal after expansion, and reduced motion disables transitions.
+
+- Intro name reveal starts while the overlay fades and never clears already-visible text. Returning visits, late hydration, reduced motion, Escape, and no-JS preserve the full name. The existing topography island persists across Astro navigation to retain its animation phase; Back to Top keeps a stable 48px outlined target.

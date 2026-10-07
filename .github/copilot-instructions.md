@@ -16,7 +16,7 @@ Review instructions for a personal portfolio site built with Astro 7.3, React 19
 
 ## Naming Conventions
 
-- **Astro components**: PascalCase (e.g., `SiteHeader.astro`, `PostCard.astro`)
+- **Astro components**: PascalCase (e.g., `SiteHeader.astro`, `SiteFooter.astro`)
 - **React components**: PascalCase `.tsx` files (e.g., `TopoBackground.tsx`, `TypewriterText.tsx`)
 - **Data files**: PascalCase or camelCase in `src/data/` (e.g., `Jobs.ts`, `education.ts`)
 - **Content files**: kebab-case for posts and projects (e.g., `crime-analysis.mdx`)
@@ -49,6 +49,7 @@ const { title, description } = Astro.props;
   - `TypewriterText.tsx` — hero name animation (`client:load`, SSR-safe)
   - `LoadingOverlay.tsx` — session loading overlay (`client:only="react"`, skips SSR)
 - **Content collections**: All blog/project content goes through Astro content collections with Zod schemas in `src/content/config.ts` — do not bypass with raw file reads
+- Blog routes, navigation, and legacy redirects are removed. Posts and their content schema remain archived; do not expose them as public pages.
 - Project `startDate` and `endDate` are optional when unconfirmed. Never invent dates: omit unavailable date text, sort dated projects newest first, use stable ID ordering for ties, and place undated projects last in stable ID order.
 - Project charts and architecture diagrams use server-rendered Astro HTML/CSS with visible data and descriptions. Keep measurement scope and approximation qualifiers explicit; omit business identifiers rather than hiding them in the DOM. Do not add a chart runtime or React island.
 - **Static data**: Typed arrays/objects exported from `src/data/*.ts` for non-content data (jobs, education)
@@ -92,7 +93,7 @@ const { title, description } = Astro.props;
 | `profession`            | `string[]`               | Hero profession line                         |
 | `aboutMe`               | `string`                 | Hero introduction, homepage meta description |
 | `headline`              | `string[]`               | Hero two-line value statement                |
-| `portraitNote`          | `string`                 | Portrait caption                             |
+| `portraitNote`          | `string`                 | Animated portrait status caption (CSS dots)  |
 | `workingStyle`          | `string`                 | Approach section introduction                |
 | `approach`              | `{title, description}[]` | Three working approach cards                 |
 | `contactNote`           | `string`                 | Footer contact invitation                    |
@@ -211,6 +212,7 @@ function displayName(name: string) {
 - Hashed `/_astro/` assets and their Image CDN variants cache immutably for one year. HTML uses `Netlify-CDN-Cache-Control: public, max-age=0, stale-while-revalidate=86400`; unversioned images revalidate to avoid stale replacements.
 - Set `loading="eager"` and `fetchpriority="high"` only for above-the-fold images; use `loading="lazy"` for everything else
 - Keep client JS minimal: only `TopoBackground.tsx`, `TypewriterText.tsx`, and `LoadingOverlay.tsx` hydrate — avoid adding new React islands unless truly interactive
+- Intro name reveal starts while the overlay fades and never clears already-visible text. Returning visits, late hydration, reduced motion, Escape, and no-JS preserve the full name. The existing topography island persists across Astro navigation to retain its animation phase; Back to Top keeps a stable 48px outlined target.
 - Container: `max-w-7xl mx-auto px-6`
 
 ## Styling
@@ -221,5 +223,5 @@ function displayName(name: string) {
 - Color tokens: `primary` (#64748b), `accent` (#94a3b8), `background-light` (#f8fafc), `background-dark` (#0f172a)
 - Fonts: JetBrains Mono (`font-display`) for headings/nav/CTAs, Inter (`font-body`) for body text
 - Custom utility classes in globals.css: `cad-border`, `cta-primary`, `drawing-hover`, `focus-ring`, `horizontal-scroll-snap`, `typing-caret`, `project-mdx`, `topo-lines`
-- Blog prose uses `@tailwindcss/typography` `.prose` class with custom color overrides in globals.css
+- Project prose uses `@tailwindcss/typography` `.prose` class with custom color overrides in globals.css
 - Scoped Astro `<style>` blocks cannot use `@apply` with Tailwind classes unless `@reference` is added — prefer plain CSS in scoped styles

@@ -8,8 +8,8 @@
   aria-label="Back to top"
   tabindex="-1"
   aria-hidden="true"
-  class="fixed bottom-8 right-8 z-50 flex h-10 w-10 flex-col items-center justify-center gap-0.5 border border-slate-200/20 bg-slate-900/80 backdrop-blur-sm text-slate-400 opacity-0 pointer-events-none hover:text-white hover:border-slate-200/60 focus-ring"
-  style="transition: opacity 400ms ease-in-out, width 300ms ease, height 300ms ease, background 300ms ease, border-color 300ms ease, backdrop-filter 300ms ease, gap 300ms ease, padding 300ms ease;"
+  class="fixed bottom-8 right-8 z-50 flex h-12 w-12 flex-col items-center justify-center gap-0.5 border border-slate-400/70 bg-slate-900 backdrop-blur-sm text-slate-400 opacity-0 pointer-events-none hover:text-white hover:border-slate-200/60 focus-ring"
+  style="transition: opacity 200ms ease, color 200ms ease, border-color 200ms ease;"
 >
   <span
     class="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-slate-400/50 transition-opacity duration-300"
@@ -32,50 +32,19 @@
     <path d="m18 15-6-6-6 6"></path>
   </svg>
   <span
-    class="text-[7px] uppercase tracking-widest font-display leading-none transition-opacity duration-300"
+    class="text-[9px] uppercase tracking-widest font-display leading-none transition-opacity duration-300"
     >TOP</span
   >
 </button>
-
-<style>
-  #back-to-top.collapsed:not(:hover):not(:focus-visible) {
-    width: 4px;
-    height: 24px;
-    padding: 0;
-    border-color: white;
-    background: white;
-    backdrop-filter: none;
-    gap: 0;
-  }
-  #back-to-top.collapsed:not(:hover):not(:focus-visible) .absolute,
-  #back-to-top.collapsed:not(:hover):not(:focus-visible) svg,
-  #back-to-top.collapsed:not(:hover):not(:focus-visible) span:not(.absolute) {
-    opacity: 0;
-    pointer-events: none;
-  }
-  #back-to-top.collapsed:hover {
-    width: 2.5rem;
-    height: 2.5rem;
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(8px);
-    border-color: rgba(226, 232, 240, 0.6);
-  }
-  #back-to-top.collapsed:hover .absolute,
-  #back-to-top.collapsed:hover svg,
-  #back-to-top.collapsed:hover span:not(.absolute) {
-    opacity: 1;
-  }
-</style>
 
 <script>
   import { initBackToTop } from "../utils/backToTop";
 
   let cleanup: (() => void) | undefined;
+  document.addEventListener("astro:before-swap", () => cleanup?.());
   document.addEventListener("astro:page-load", () => {
     cleanup?.();
     const btn = document.getElementById("back-to-top");
-    // #profile-sidebar is defined in ExperienceTimeline.astro
-    const sidebar = document.getElementById("profile-sidebar");
-    if (btn) cleanup = initBackToTop(btn, sidebar);
+    if (btn) cleanup = initBackToTop(btn);
   });
 </script>

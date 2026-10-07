@@ -10,7 +10,10 @@ export function initMobileMenu(
     btn.setAttribute("aria-expanded", String(open));
     btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     menu.classList.toggle("hidden", !open);
+    menu.inert = !open;
   };
+
+  setOpen(isOpen());
 
   btn.addEventListener("click", () => setOpen(!isOpen()), { signal });
   menu.querySelectorAll("a").forEach((link) => {

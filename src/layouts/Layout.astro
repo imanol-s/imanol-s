@@ -148,7 +148,7 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
     >
     </div>
     <LoadingOverlay client:only="react" />
-    <TopoBackground client:only="react" />
+    <TopoBackground client:only="react" transition:persist="topo-background" />
     <BackToTop />
     <SiteHeader />
 

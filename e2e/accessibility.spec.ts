@@ -4,14 +4,10 @@ import { readdirSync } from "node:fs";
 const routes = [
   "/",
   "/projects/",
-  "/blog/",
   "/404/",
   ...readdirSync("src/content/projects")
     .filter((file) => file.endsWith(".mdx"))
     .map((file) => `/projects/${file.replace(/\.mdx$/, "")}/`),
-  ...readdirSync("src/content/posts")
-    .filter((file) => /\.mdx?$/.test(file))
-    .map((file) => `/blog/${file.replace(/\.mdx?$/, "")}/`),
 ];
 
 test.use({ contextOptions: { reducedMotion: "reduce" } });

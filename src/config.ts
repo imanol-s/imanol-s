@@ -36,7 +36,7 @@ export const ME: {
   aboutMe:
     "I build tools and workflows that make enterprise data easier to trust. My work connects data analysis, automation, and software development to the people who use them.",
   headline: ["Making data reliable.", "Making work simpler."],
-  portraitNote: "Always learning. Usually building.",
+  portraitNote: "Iterating",
   workingStyle:
     "I ask questions, learn the context, and work toward a useful first version. When the problem changes, I adapt and keep improving what I build.",
   approach: [

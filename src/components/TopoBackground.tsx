@@ -97,7 +97,7 @@ export default function TopoBackground() {
         style={{ zIndex: -2 }}
         aria-hidden="true"
       >
-        <div ref={containerRef} style={TOPO_LINES_STYLE}>
+        <div data-topo-background ref={containerRef} style={TOPO_LINES_STYLE}>
           <svg
             viewBox={`0 0 ${dims.width} ${dims.height}`}
             xmlns="http://www.w3.org/2000/svg"

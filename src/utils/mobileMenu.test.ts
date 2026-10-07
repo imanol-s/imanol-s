@@ -73,12 +73,15 @@ describe("initMobileMenu", () => {
     const { btn, menu } = createFixture();
 
     initMobileMenu(btn, menu);
+    expect(menu.inert).toBe(true);
 
     btn.click();
+    expect(menu.inert).toBe(false);
     expect(menu.classList.contains("hidden")).toBe(false);
     expect(btn.getAttribute("aria-expanded")).toBe("true");
 
     btn.click();
+    expect(menu.inert).toBe(true);
     expect(menu.classList.contains("hidden")).toBe(true);
     expect(btn.getAttribute("aria-expanded")).toBe("false");
   });
@@ -88,8 +91,10 @@ describe("initMobileMenu", () => {
     const link = menu.querySelector<HTMLAnchorElement>("a")!;
 
     initMobileMenu(btn, menu);
+    expect(menu.inert).toBe(true);
 
     btn.click();
+    expect(menu.inert).toBe(false);
     expect(menu.classList.contains("hidden")).toBe(false);
 
     link.click();
@@ -104,6 +109,7 @@ describe("initMobileMenu", () => {
     cleanup();
 
     btn.click();
+    expect(menu.inert).toBe(true);
     expect(menu.classList.contains("hidden")).toBe(true);
     expect(btn.getAttribute("aria-expanded")).toBe("false");
   });
