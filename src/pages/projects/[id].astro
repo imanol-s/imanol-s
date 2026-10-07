@@ -1,8 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
-import { Picture } from "astro:assets";
+import { Image, Picture } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import TagPill from "../../components/TagPill.astro";
+import { SITE } from "../../config";
 import { formatDate } from "../../utils/formatDate";
 import {
   getSortedProjects,
@@ -18,186 +19,360 @@ export async function getStaticPaths() {
 }
 
 const { post, sorted } = Astro.props;
-const { title, summary, tags, cover, ogImage, url, startDate, endDate } =
-  post.data;
-
+const { title, summary, tags, cover, url, startDate, endDate } = post.data;
 const { Content } = await render(post);
-
 const { prev, next, hasValidUrl } = getProjectPageData(sorted, post.id);
+const artworkLabel =
+  post.id === "sensori-robotics"
+    ? "Navigation interface artwork"
+    : post.id === "pert-scheduling"
+      ? "Dependency concept"
+      : post.id === "crime-analysis"
+        ? "Arrest counts by ZIP code / 2024 analysis"
+        : "Project illustration";
 ---
 
 <Layout
   title={title}
   description={summary}
-  imageOg={ogImage}
+  imageOg={cover.format === "svg" ? SITE.ogImage : cover.src}
   scrollSmooth={true}
 >
-  <!-- Breadcrumb -->
   <nav aria-label="Breadcrumb" class="mb-10">
     <a
       href="/projects"
-      class="drawing-hover focus-ring rounded-sm inline-flex items-center gap-2 font-display text-xs uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
+      class="text-link focus-ring font-display inline-flex items-center gap-2 text-xs"
     >
-      &larr; Projects
+      <span aria-hidden="true">←</span> All projects
     </a>
   </nav>
 
-  <!-- Project Hero -->
-  <div class="mb-12">
-    <h1 class="detail-title font-body font-semibold mb-6">
-      <span class="section-index" aria-hidden="true"
-        >{
-          String(
-            sorted.findIndex((project) => project.id === post.id) + 1,
-          ).padStart(2, "0")
-        } /</span
-      >{title}
-    </h1>
-
-    {
-      tags.length > 0 && (
-        <div class="flex flex-wrap gap-2 mb-8">
-          {tags.map((tag: string) => (
-            <TagPill techId={tag} />
-          ))}
-        </div>
-      )
-    }
-
-    <!-- Hero image -->
-    <div class="cad-border overflow-hidden">
-      <Picture
-        src={cover}
-        alt={title}
-        class="detail-cover w-full object-cover"
-        formats={["avif"]}
-        fallbackFormat="webp"
-        widths={[640, 960, 1280]}
-        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px"
-        loading="eager"
-        fetchpriority="high"
-      />
-    </div>
-  </div>
-
-  <!-- 2-Column Body -->
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mt-12">
-    <!-- Left col — overview + MDX content -->
-    <div class="lg:col-span-8">
-      <div class="project-body">
-        <p
-          class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4"
-        >
-          Overview
-        </p>
-        <p
-          class="text-lg text-slate-700 dark:text-slate-200 leading-relaxed font-light mb-10"
-        >
-          {summary}
-        </p>
-
-        <div class="prose dark:prose-invert max-w-none">
-          <Content />
-        </div>
-      </div>
-    </div>
-
-    <!-- Right col — links + stack + timeline -->
-    <div class="lg:col-span-4">
-      <div
-        class="project-sidebar cad-border divide-y divide-slate-200 dark:divide-slate-800"
-      >
-        {
-          hasValidUrl && (
-            <div class="p-5">
-              <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
-                Links
-              </p>
-              <div class="flex flex-col gap-3">
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="cta-primary w-full focus-ring"
-                >
-                  Repo
-                </a>
-              </div>
-            </div>
-          )
-        }
-
-        {
-          tags.length > 0 && (
-            <div class="p-5">
-              <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
-                Stack
-              </p>
-              <div class="flex flex-wrap gap-2">
-                {tags.map((tag: string) => (
-                  <TagPill techId={tag} />
-                ))}
-              </div>
-            </div>
-          )
-        }
-
-        {
-          (startDate || endDate) && (
-            <div class="p-5">
-              <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
-                Timeline
-              </p>
-              <p class="font-display text-sm text-slate-700 dark:text-slate-200">
-                {startDate && formatDate(startDate)}
-                {startDate && endDate && " — "}
-                {endDate && formatDate(endDate)}
-              </p>
-            </div>
-          )
-        }
-      </div>
-    </div>
-  </div>
-
-  <!-- Prev / Next Navigation -->
-  <div class="mt-16 border-t border-slate-200 dark:border-slate-800 pt-8">
-    <div class="flex justify-between items-start gap-8">
+  <header class="project-header">
+    <p class="section-kicker">Project notebook / {startDate.getFullYear()}</p>
+    <h1 class="font-display">{title}</h1>
+    <p class="project-summary">{summary}</p>
+    <div class="project-hero-meta font-display">
+      <span>{formatDate(startDate)} — {formatDate(endDate)}</span>
       {
-        prev ? (
+        hasValidUrl && (
           <a
-            href={`/projects/${prev.id}`}
-            class="group drawing-hover focus-ring rounded-sm flex flex-col gap-1 max-w-xs"
-            aria-label={`Previous project: ${prev.data.title}`}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-link focus-ring"
           >
-            <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors">
-              &larr; Prev
-            </span>
-            <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-white transition-colors">
-              {prev.data.title}
-            </span>
+            View repository{" "}
+            <>
+              <span aria-hidden="true">↗</span>
+              <span class="sr-only"> (opens in a new tab)</span>
+            </>
           </a>
-        ) : (
-          <div aria-hidden="true" />
         )
       }
+    </div>
+  </header>
 
+  <figure class={`project-figure project-${post.id} cad-border`}>
+    <div class="project-artwork">
       {
-        next ? (
-          <a
-            href={`/projects/${next.id}`}
-            class="group drawing-hover focus-ring rounded-sm flex flex-col gap-1 items-end max-w-xs text-right"
-            aria-label={`Next project: ${next.data.title}`}
-          >
-            <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors">
-              Next &rarr;
-            </span>
-            <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-white transition-colors">
-              {next.data.title}
-            </span>
-          </a>
-        ) : null
+        cover.format === "svg" ? (
+          <Image
+            src={cover}
+            format="svg"
+            alt=""
+            class="project-cover"
+            loading="eager"
+            fetchpriority="high"
+          />
+        ) : (
+          <Picture
+            src={cover}
+            alt={
+              post.id === "crime-analysis"
+                ? "Map of recorded arrest counts by ZIP code in the Dallas area"
+                : ""
+            }
+            class="project-cover"
+            formats={["avif"]}
+            fallbackFormat="webp"
+            widths={[480, 800, 1280]}
+            sizes="(min-width: 1280px) 1152px, 92vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+        )
       }
     </div>
+    <figcaption class="font-display">
+      {artworkLabel}<span aria-hidden="true"> / </span><span>{title}</span>
+    </figcaption>
+  </figure>
+
+  <div class="project-body">
+    <article class="project-story prose dark:prose-invert max-w-none">
+      <Content />
+    </article>
+    <aside class="project-sidebar" aria-label="Project details">
+      <div class="project-stack cad-border">
+        <p class="section-kicker">Tools &amp; techniques</p>
+        <div class="flex flex-wrap gap-2">
+          {tags.map((tag: string) => <TagPill techId={tag} />)}
+        </div>
+      </div>
+      <a href="/projects" class="project-back text-link focus-ring font-display"
+        >Browse more work <span aria-hidden="true">↗</span></a
+      >
+    </aside>
   </div>
+
+  <nav class="project-pagination" aria-label="More projects">
+    {
+      prev ? (
+        <a
+          href={`/projects/${prev.id}`}
+          class="project-pagination-link focus-ring"
+          aria-label={`Previous project: ${prev.data.title}`}
+        >
+          <span class="font-display">← Previous project</span>
+          <strong class="font-display">{prev.data.title}</strong>
+        </a>
+      ) : (
+        <div aria-hidden="true" />
+      )
+    }
+    {
+      next && (
+        <a
+          href={`/projects/${next.id}`}
+          class="project-pagination-link project-next focus-ring"
+          aria-label={`Next project: ${next.data.title}`}
+        >
+          <span class="font-display">Next project →</span>
+          <strong class="font-display">{next.data.title}</strong>
+        </a>
+      )
+    }
+  </nav>
 </Layout>
+
+<style>
+  .project-header {
+    max-width: 58rem;
+    margin-bottom: 2.5rem;
+  }
+  .project-header .section-kicker {
+    margin-bottom: 1rem;
+  }
+  .project-header h1 {
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.055em;
+    margin-bottom: 1.25rem;
+  }
+  .project-summary {
+    max-width: 65ch;
+    color: #475569;
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+  .project-hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    color: #475569;
+  }
+  .project-hero-meta a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .project-figure {
+    overflow: hidden;
+    border-radius: 4px;
+  }
+  .project-artwork {
+    height: 23rem;
+    background: #f6f9fc;
+  }
+  .project-artwork :global(picture) {
+    display: block;
+    height: 100%;
+  }
+  .project-artwork :global(.project-cover) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .project-sensori-robotics .project-artwork {
+    background: #0f172a;
+    height: clamp(23rem, 45vw, 35rem);
+  }
+  .project-sensori-robotics .project-artwork :global(.project-cover) {
+    object-fit: cover;
+    object-position: center 20%;
+  }
+  .project-crime-analysis .project-artwork {
+    background: #172638;
+    padding: 1.5rem;
+  }
+  .project-pert-scheduling .project-artwork {
+    background: #0f172a;
+  }
+  .project-figure figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.8rem 1.25rem;
+    border-top: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.65rem;
+  }
+  .project-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 17rem;
+    gap: 4rem;
+    margin-top: 3.5rem;
+    align-items: start;
+  }
+  .project-story {
+    font-size: 1rem;
+    line-height: 1.9;
+  }
+  .project-story :global(h2:first-child) {
+    margin-top: 0;
+  }
+  .project-story :global(h2) {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .project-story :global(p) {
+    max-width: 68ch;
+  }
+  .project-stack {
+    padding: 1.5rem;
+    border-radius: 4px;
+    background: #fff;
+  }
+  .project-stack .section-kicker {
+    font-size: 0.65rem;
+    margin-bottom: 1.25rem;
+  }
+  .project-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    font-size: 0.7rem;
+  }
+  .project-pagination {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+  }
+  .project-pagination-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 20rem;
+    color: #334155;
+  }
+  .project-pagination-link span {
+    font-size: 0.65rem;
+    color: #475569;
+  }
+  .project-pagination-link strong {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    font-weight: 500;
+  }
+  .project-pagination-link:hover,
+  .project-pagination-link:hover span {
+    color: #0f172a;
+  }
+  .project-next {
+    text-align: right;
+    align-items: flex-end;
+  }
+  :global(.dark) .project-summary,
+  :global(.dark) .project-hero-meta,
+  :global(.dark) .project-figure figcaption {
+    color: #cbd5e1;
+  }
+  :global(.dark) .project-figure figcaption,
+  :global(.dark) .project-pagination {
+    border-color: #334155;
+  }
+  :global(.dark) .project-stack {
+    background: #111c2e;
+  }
+  :global(.dark) .project-pagination-link {
+    color: #e2e8f0;
+  }
+  :global(.dark) .project-pagination-link span {
+    color: #cbd5e1;
+  }
+  :global(.dark) .project-pagination-link:hover,
+  :global(.dark) .project-pagination-link:hover span {
+    color: #fff;
+  }
+  @media (min-width: 1024px) {
+    .project-sidebar {
+      position: sticky;
+      top: 7rem;
+    }
+  }
+  @media (max-width: 1023px) {
+    .project-body {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .project-sidebar {
+      grid-row: 1;
+    }
+    .project-stack {
+      padding: 1.25rem;
+    }
+    .project-artwork {
+      height: 19rem;
+    }
+    .project-back {
+      display: none;
+    }
+  }
+  @media (max-width: 639px) {
+    .project-header .section-kicker {
+      margin-bottom: 1rem;
+    }
+    .project-header h1 {
+      letter-spacing: -0.04em;
+    }
+    .project-summary {
+      font-size: 1rem;
+    }
+    .project-artwork {
+      height: 15rem;
+    }
+
+    .project-body {
+      margin-top: 2rem;
+    }
+    .project-pagination {
+      gap: 1.25rem;
+    }
+    .project-pagination-link strong {
+      font-size: 0.75rem;
+    }
+  }
+</style>

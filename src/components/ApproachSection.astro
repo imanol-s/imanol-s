@@ -1,0 +1,142 @@
+---
+import { ME } from "../config";
+---
+
+<section
+  id="approach"
+  class="approach-section scroll-mt-28"
+  aria-labelledby="approach-heading"
+>
+  <div class="approach-intro">
+    <div>
+      <p class="section-kicker">03 / Approach</p><h2
+        id="approach-heading"
+        class="section-heading"
+      >
+        Curious by default.<br />Practical by design.
+      </h2>
+    </div>
+    <p class="section-intro">{ME.workingStyle}</p>
+  </div>
+  <div class="approach-grid">
+    {
+      ME.approach.map((step, i) => (
+        <article class="approach-card cad-border">
+          <>
+            <div class="approach-card-top">
+              <span class="step-number">0{i + 1}</span>
+              <svg
+                width="48"
+                height="48"
+                viewBox="0 0 48 48"
+                fill="none"
+                aria-hidden="true"
+              >
+                {i === 0 ? (
+                  <>
+                    <circle cx="20" cy="20" r="10" stroke="currentColor" />
+                    <circle
+                      cx="20"
+                      cy="20"
+                      r="4"
+                      stroke="currentColor"
+                      opacity=".5"
+                    />
+                    <path
+                      d="M27 27L39 39M20 5V9M5 20H9"
+                      stroke="currentColor"
+                    />
+                  </>
+                ) : i === 1 ? (
+                  <>
+                    <path
+                      d="M8 14L24 6L40 14L24 22Z M8 14V32L24 41L40 32V14 M24 22V41"
+                      stroke="currentColor"
+                    />
+                    <path
+                      d="M16 10L32 18V28"
+                      stroke="currentColor"
+                      opacity=".5"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <path
+                      d="M35 14A15 15 0 1 0 39 27M35 6V15H26"
+                      stroke="currentColor"
+                    />
+                    <path d="M17 24L23 30L34 18" stroke="currentColor" />
+                  </>
+                )}
+              </svg>
+            </div>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .approach-section {
+    margin-bottom: 5rem;
+  }
+  .approach-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 2rem;
+  }
+  .section-heading {
+    margin-top: 1rem;
+  }
+  .approach-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .approach-card {
+    border-radius: 4px;
+    padding: 1.75rem;
+    background: #111c2e;
+  }
+  .approach-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #b6e5d3;
+    margin-bottom: 1.7rem;
+  }
+  .step-number {
+    color: #94a3b8;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+  }
+  .approach-card h3 {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.035em;
+  }
+  .approach-card p {
+    color: #b4c1d2;
+    font-size: 0.875rem;
+    line-height: 1.85;
+  }
+  @media (max-width: 767px) {
+    .approach-intro {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+    .approach-grid {
+      grid-template-columns: 1fr;
+    }
+    .approach-card-top {
+      margin-bottom: 1rem;
+    }
+  }
+</style>

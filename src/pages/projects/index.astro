@@ -1,84 +1,29 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getCollection } from "astro:content";
-import { Picture } from "astro:assets";
 import { SITE } from "../../config";
-import TagPill from "../../components/TagPill.astro";
-import { getSortedProjects } from "../../data/projectCollection";
-
-const allProjects = getSortedProjects(await getCollection("projects"));
+import ProjectsCarousel from "../../components/ProjectsCarousel.astro";
 ---
 
 <Layout
   title={`${SITE.logoText} | Projects`}
-  description="A list of my projects"
+  description="Selected work in robotics, databases, algorithms, and data analysis. The problem, the contribution, and what each project taught me."
 >
-  <section
-    class="page-heading border-b border-slate-200 dark:border-slate-800 pb-4 mb-8"
-  >
-    <h1 class="page-title font-body font-semibold mb-2">
-      <span class="section-index" aria-hidden="true">01 /</span>PROJECTS
-    </h1>
-    <p class="text-slate-500 font-display text-sm">
-      {allProjects.length} projects
+  <header class="mb-12 max-w-3xl">
+    <p class="section-kicker">Project notebook</p>
+    <h1 class="section-heading">The work behind the skills.</h1>
+    <p class="section-intro">
+      From a navigation policy to a normalized database: a closer look at the
+      problems, the decisions, and the lessons along the way.
     </p>
-  </section>
-
-  <section class="flex flex-col gap-8">
-    {
-      allProjects.length === 0 && (
-        <p class="text-slate-500 font-display text-sm">No projects found.</p>
-      )
-    }
-    {
-      allProjects.map((project, i) => (
-        <a
-          href={`/projects/${project.id}`}
-          class="project-list-card group flex flex-col md:flex-row md:items-center gap-8 focus-ring"
-          aria-label={`View project "${project.data.title}"`}
-        >
-          <div class="project-list-image flex-none overflow-hidden">
-            <Picture
-              src={project.data.cover}
-              alt={`Cover for ${project.data.title}`}
-              class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700"
-              formats={["avif"]}
-              fallbackFormat="webp"
-              widths={[360, 720]}
-              sizes="(min-width: 768px) 360px, 100vw"
-            />
-          </div>
-          <div class="flex flex-col gap-2 flex-1">
-            <div class="exhibit-index" aria-hidden="true">
-              <>
-                <span>{String(i + 1).padStart(2, "0")}</span>
-                <span class="exhibit-arrow">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    aria-hidden="true"
-                  >
-                    <path d="M5 19 19 5M5 5h14v14" />
-                  </svg>
-                </span>
-              </>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              {project.data.tags.map((tag) => (
-                <TagPill techId={tag} />
-              ))}
-            </div>
-            <h2 class="font-body font-semibold text-2xl text-slate-900 dark:text-white">
-              {project.data.title}
-            </h2>
-            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-              {project.data.summary}
-            </p>
-          </div>
-        </a>
-      ))
-    }
-  </section>
+  </header>
+  <ProjectsCarousel showHeading={false} />
 </Layout>
+
+<style>
+  header .section-kicker {
+    margin-bottom: 1rem;
+  }
+  header .section-intro {
+    margin-top: 0.8rem;
+  }
+</style>

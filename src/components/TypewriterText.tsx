@@ -105,7 +105,7 @@ const TypewriterText = ({ text }: { text: string }) => {
 
   return (
     <h1
-      className="hero-title relative font-body font-semibold"
+      className="relative text-5xl md:text-7xl font-display font-bold mb-4 leading-tight"
       aria-label={text}
     >
       <span aria-hidden="true" className="invisible">

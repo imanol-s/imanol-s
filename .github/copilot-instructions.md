@@ -77,22 +77,24 @@ const { title, description } = Astro.props;
 
 ### `ME` — personal content
 
-| Field                   | Type                     | Used by                                     |
-| ----------------------- | ------------------------ | ------------------------------------------- |
-| `name`                  | `string`                 | TypewriterText, image alt, nav aria-label   |
-| `profession`            | `string[]`               | Hero subtitle (joined with `•`)             |
-| `profileImage`          | `string`                 | Filename reference for profile photo        |
-| `aboutMe`               | `string`                 | Hero paragraph, Layout description default  |
-| `bio`                   | `string`                 | About section long-form paragraph           |
-| `location`              | `string`                 | About section dl, footer coordinates        |
-| `focusAreas`            | `string[]`               | Hero specialty cards (3 boxes)              |
-| `coreLanguages`         | `string[]`               | Tech Specs — Core Languages grid            |
-| `competencies`          | `string[]`               | Tech Specs — Competencies list              |
-| `languages`             | `{name, level}[]`        | Tech Specs — Communication table            |
-| `profileFacts`          | `{value, description}[]` | About section stats row                     |
-| `contactInfo.email`     | `string`                 | Footer, About section                       |
-| `contactInfo.linkedin`  | `string`                 | Reference for LinkedIn URL                  |
-| `contactInfo.resumeDoc` | `string`                 | Resume PDF filename (served from `public/`) |
+| Field                   | Type                     | Used by                                      |
+| ----------------------- | ------------------------ | -------------------------------------------- |
+| `name`                  | `string`                 | TypewriterText, portrait alt, nav aria-label |
+| `profession`            | `string[]`               | Hero profession line                         |
+| `aboutMe`               | `string`                 | Hero introduction, homepage meta description |
+| `headline`              | `string[]`               | Hero two-line value statement                |
+| `portraitNote`          | `string`                 | Portrait caption                             |
+| `workingStyle`          | `string`                 | Approach section introduction                |
+| `approach`              | `{title, description}[]` | Three working approach cards                 |
+| `contactNote`           | `string`                 | Footer contact invitation                    |
+| `location`              | `string`                 | Geographic reference                         |
+| `focusAreas`            | `string[]`               | Hero context strip                           |
+| `coreLanguages`         | `TechId[]`               | Profile toolkit language grid                |
+| `competencies`          | `string[]`               | Profile areas of practice                    |
+| `languages`             | `{name, level}[]`        | Profile communication rows                   |
+| `contactInfo.email`     | `string`                 | Hero/footer email links                      |
+| `contactInfo.linkedin`  | `string`                 | Reference for LinkedIn URL                   |
+| `contactInfo.resumeDoc` | `string`                 | Header, hero, profile, footer résumé links   |
 
 ### `SOCIALS` — social link entries
 

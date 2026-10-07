@@ -1,6 +1,6 @@
 ---
 title: Library Management System
-summary: Relational database system designed around normalization constraints — modeled many-to-many relationships across a structured catalog and built circulation tracking on a properly normalized schema.
+summary: Led a Python and SQL library system for a 10k+ record catalog. A normalized schema keeps book, author, and circulation data consistent.
 tags:
   - Python
   - SQL
@@ -13,24 +13,28 @@ cover: "./images/library-management/library.webp"
 ogImage: "./images/library-management/library.webp"
 ---
 
-Illustration by <a href="https://unsplash.com/@momostudioofficial?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">MOMO Studio</a> on <a href="https://unsplash.com/illustrations/a-person-chooses-a-book-from-a-bookshelf-ZrqXzXI4new?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+## My contribution
 
-## Overview
+As lead developer, I built a database-backed library system with Python, SQLAlchemy, MySQL, and a Django frontend. The system supports a 10k+ record catalog, check-in and checkout, and circulation history.
 
-A database-backed library management system built with Python, SQLAlchemy, MySQL, and a Django web frontend. The system handles catalog management for 10k+ records, automated check-in/checkout workflows, and circulation tracking. I was lead developer on the project.
+## The modeling decision
 
-## Problem
+Books and authors have a many-to-many relationship. Putting a list of authors inside each book record would make updates fragile and querying difficult.
 
-The core modeling challenge was the book-author relationship. A book can have zero, one, or many authors, and an author can appear across many books. Storing authors directly on the book record — as a comma-separated field or repeated columns — violates third normal form and creates update anomalies: changing an author's name means touching every book row they appear on. Publisher data had the same problem — publisher name, city, and contact info repeated across every book from that publisher.
+I normalized the schema to third normal form: separate Books, Authors, and Publishers tables, with a BookAuthors junction table. Circulation records link members and books with timestamps.
 
-## Schema Design
+That means an author's details can change in one place. Finding every book by that author becomes a join rather than a string search.
 
-The schema was normalized to 3NF. The key tables were Books, Authors, and Publishers, with a BookAuthors junction table resolving the many-to-many relationship between books and authors. Each book held a foreign key to Publishers, eliminating the repeated publisher data. Circulation was tracked through separate tables for checkout history, linking members to books with timestamps.
+## From schema to workflow
 
-This structure meant that updating a publisher's city was a single-row operation that reflected everywhere instantly, and querying "all books by author X" was a straightforward join through the junction table rather than a string search.
+The Django interface gives librarians a way to manage circulation without direct database access. SQLAlchemy maps the schema to Python objects. Checkout updates availability and creates a circulation record within one transaction.
 
-## Solution
+UML diagrams document the relationships so the team can understand and extend the design.
 
-The Django web frontend gave librarians a GUI for check-in/checkout without direct database access. SQLAlchemy handled the ORM layer, mapping the normalized schema to Python objects. The check-in/checkout workflow automated availability tracking — when a book was checked out, its status updated and a circulation record was created in one transaction.
+## What this work shows
 
-Normalization reduced redundancy in the publisher and author data substantially compared to the denormalized starting point (estimated ~65% reduction in duplicate publisher entries based on the catalog composition). UML diagrams documented the schema and relationships for team alignment and future development.
+Relational modeling, application development, and attention to data consistency. The useful outcome is a schema that supports everyday workflows without duplicating the information those workflows depend on.
+
+---
+
+Cover illustration by [MOMO Studio](https://unsplash.com/@momostudioofficial) on [Unsplash](https://unsplash.com/illustrations/a-person-chooses-a-book-from-a-bookshelf-ZrqXzXI4new).

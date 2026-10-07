@@ -93,7 +93,7 @@ export default function TopoBackground() {
   return (
     <>
       <div
-        className="topo-background fixed inset-0 pointer-events-none"
+        className="fixed inset-0 pointer-events-none"
         style={{ zIndex: -2 }}
         aria-hidden="true"
       >
@@ -140,7 +140,7 @@ export default function TopoBackground() {
               filter="url(#topo-warp)"
               fill="none"
               stroke="var(--color-accent)"
-              strokeOpacity="0.08"
+              strokeOpacity="0.10"
               strokeWidth="1.2"
             >
               {lineYs.map((y) => (

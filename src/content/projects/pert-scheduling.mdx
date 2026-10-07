@@ -1,6 +1,6 @@
 ---
 title: Critical Task
-summary: PERT-based scheduling tool for modeling task dependencies and identifying critical paths in project timelines. Critical path analysis underpins scheduling in construction, manufacturing, and software delivery — this implementation uses topological sorting over a DAG to compute it efficiently.
+summary: Built a Java scheduler that turns task dependencies into critical paths in O(V+E) time. Validates cycles before calculating completion times and slack.
 tags:
   - Java
   - Graph Theory
@@ -10,30 +10,34 @@ tags:
 startDate: 2024-08-01
 endDate: 2024-12-01
 url: https://github.com/imanol-s/Critical-Task
-cover: "./images/pert-scheduling/Pert_chart_colored.webp"
-ogImage: "./images/pert-scheduling/Pert_chart_colored.webp"
+cover: "../../assets/task-dependencies.svg"
+ogImage: "../../assets/task-dependencies.svg"
 ---
 
-## Overview
+## My contribution
 
-A Java implementation of PERT/CPM scheduling built as a class project in Fall 2024. The tool models task dependencies as a directed acyclic graph and computes critical paths in O(V+E) time using topological sorting with forward and backward passes. For more reading: <a href="https://en.wikipedia.org/wiki/Program_evaluation_and_review_technique">PERT</a>
+I was lead developer on this Fall 2024 class project: a Java implementation of PERT/CPM scheduling that models task dependencies as a directed acyclic graph.
 
-## Role
+## The problem
 
-Lead developer.
+Scheduling by hand becomes error-prone as dependencies grow. One incorrect completion time can change the slack calculation and misidentify the critical path.
 
-## Problem
+## The implementation
 
-PERT scheduling by hand is tractable for small networks but becomes error-prone as the number of tasks grows. Manually tracing forward and backward passes through a graph with dozens of dependencies is tedious and mistakes in slack computation cascade — a single wrong earliest-finish value can misidentify the critical path entirely. The motivation was to automate this process and make it reliable regardless of graph size.
+The graph uses adjacency lists. A DFS-based topological sort tracks active nodes to detect cycles before scheduling begins. Invalid cyclic input stops the calculation.
 
-## Implementation
+A forward pass computes earliest start and finish times. A backward pass computes latest start and finish times. Together, the passes identify slack and the zero-slack tasks that determine the project duration, in O(V+E) time.
 
-The graph is represented as an adjacency list with directed edges encoding task dependencies. A DFS-based topological sort with `onStack[]` cycle tracking validates that the input is a DAG before any scheduling runs — if a cycle is detected, the sort returns `null` and the computation halts rather than producing incorrect output.
+The output includes each task's earliest completion, latest completion, slack, and critical status.
 
-The scheduling itself follows the standard PERT two-pass approach. The forward pass iterates vertices in topological order, computing `ES = max(EF of predecessors)` and `EF = ES + duration` for each task. The backward pass initializes every vertex's `LF` to the project completion time, then processes in reverse topological order: `LF = min(LS of successors)`, `LS = LF - duration`. Slack is computed as `LF − EF` across all vertices using a parallel stream.
+## How I checked it
 
-Zero-slack tasks constitute the critical path. The `numCritical()` method counts critical vertices; `criticalPath()` returns the total project duration as the maximum EF across all vertices. The output for each task includes earliest completion, latest completion, slack, and a critical flag.
+I used course-provided inputs and generated task networks with known critical paths to check the calculations across different graph sizes and dependency structures.
 
-## Testing
+## What this work shows
 
-Test cases were built from a combination of course-provided inputs and generated cases using LLMs to produce task networks with known critical paths. This allowed verification that the forward/backward passes and slack computation produced correct results across graphs of varying size and structure.
+Turning graph theory into a practical tool, choosing a representation with clear complexity, and validating assumptions before computing results.
+
+The cover is an original dependency concept illustration.
+
+Further reading: [Program evaluation and review technique (PERT)](https://en.wikipedia.org/wiki/Program_evaluation_and_review_technique).

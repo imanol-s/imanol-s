@@ -1,6 +1,6 @@
 ---
 title: Sensori Robotics
-summary: Senior capstone project developing PPO-based autonomous navigation in Nvidia IsaacSim for a mobile robotics platform.
+summary: Built simulation environments and PPO training loops for a capstone navigation system. Focus — reward shaping, continuous control, and learning through iteration.
 tags:
   - Robotics
   - Nvidia IsaacLab
@@ -14,25 +14,25 @@ cover: "./images/sensori-robotics/cover.webp"
 ogImage: "./images/sensori-robotics/cover.webp"
 ---
 
-## Overview
+## My contribution
 
-Senior capstone project at The University of Texas at Dallas (Fall 2025). The project developed an autonomous navigation system for a mobile robotics platform, using reinforcement learning for path planning and Nvidia IsaacSim/IsaacLab as the simulation environment.
+On the Fall 2025 senior capstone team at UT Dallas, I focused on the reinforcement-learning training loops and simulation environments for a mobile robot's navigation policy.
 
-## Role
+I ported real-world environments into NVIDIA IsaacSim and helped define the IsaacLab training setup: observation and action spaces, reward shaping, and episode management.
 
-Developer on the capstone team, focused on the reinforcement-learning training loops and environment creation — porting real-world environments into Nvidia IsaacSim and defining the IsaacLab training setup (observation and action spaces, reward shaping) used to train the PPO navigation policy.
+## The problem
 
-## Problem
+Training on physical hardware makes every failed trajectory costly. Resets take time, and obstacle avoidance needs many interactions. Simulation gave the team a way to iterate before physical deployment.
 
-Training a navigation policy on physical hardware is slow and expensive — every failed trajectory risks damaging the robot or its environment, and resetting between episodes takes real time. Dynamic obstacles compound this because the agent needs thousands of interactions to learn reactive avoidance behavior, which is impractical to collect in the real world. The project needed a way to iterate on the navigation policy rapidly without physical deployment.
+## The approach
 
-## Approach
+The team used Proximal Policy Optimization (PPO) for continuous control. IsaacSim provided the physics environment; IsaacLab organized training and parallel episodes on GPU.
 
-The navigation policy was trained using Proximal Policy Optimization (PPO), a reinforcement learning algorithm suited for continuous control tasks. PPO was chosen over alternatives like SAC or DQN because it offers stable training with monotonic improvement guarantees, which mattered given the limited capstone timeline — an unstable training process would have been difficult to debug within a single semester.
+The work also considered how continuous policy outputs would map to motor commands on the robot. That hardware-software boundary made eventual deployment validation an important next step.
 
-Real-world environments were ported into Nvidia IsaacSim, which provided a physics-accurate simulation for the robot to train in. IsaacLab sat on top of IsaacSim as the framework for defining the RL training loop — observation space, action space, reward shaping, and episode management. This allowed the team to run thousands of training episodes in parallel on GPU, compressing what would have been weeks of physical testing into hours of simulation time.
+## What this work shows
 
-Control systems principles were applied at the hardware-software boundary to translate the learned policy's continuous action outputs into motor commands compatible with the physical robot platform, bridging the sim-to-real gap for eventual deployment validation.
+Working across unfamiliar tools, building a training environment, and connecting software decisions to physical constraints. Reward design and environment setup were central to the navigation work, alongside the choice of algorithm.
 
 ## Availability
 

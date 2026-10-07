@@ -49,3 +49,17 @@ Instructions for AI coding assistants working with this repository.
 - `src/config.ts` is the single source of truth for all personal/site data — full field reference in `.github/copilot-instructions.md` under "Site Configuration"
 - Paper MCP is used for design prototyping; designs live in a Paper file with separate pages per section (Home, Projects, Blog)
 - Tag pills appear in `projects/index.astro` (listing) and `projects/[id].astro` (hero + stack sidebar) — stack sidebar uses a different, already-accessible style
+
+## Homepage content configuration
+
+- `ME.headline: string[]` supplies the hero value statement.
+- `ME.portraitNote: string` supplies the illustrated portrait caption.
+- `ME.workingStyle: string` introduces the approach section.
+- `ME.approach: { title: string; description: string }[]` supplies the working approach cards.
+- `ME.contactNote: string` supplies the footer invitation.
+- `ME.aboutMe` is the concise hero introduction and homepage meta description.
+- `ME.focusAreas` supplies the hero context strip. Career and education context continues to use `src/data/career.ts`.
+- Homepage project cards show all projects in a responsive grid; `ProjectsCarousel.astro` is also reused by the projects listing.
+- Sensori Robotics uses its existing navigation interface artwork with a full-bleed crop. `src/assets/task-dependencies.svg` explains graph dependencies and does not represent an application screenshot.
+- Hero portrait uses `src/assets/portrait-lineart.svg`, a transparent vector trace of the original illustration, with an unframed treatment and compact mobile presentation.
+- Header navigation contracts toward a fixed frog anchor on downward scroll and expands on upward scroll or activation. `src/utils/headerScroll.ts` measures the header width, protects keyboard/menu interaction, and cleans up on Astro navigation; reduced motion disables transitions and the landing gesture.
