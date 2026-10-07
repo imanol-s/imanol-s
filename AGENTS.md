@@ -61,6 +61,6 @@ Instructions for AI coding assistants working with this repository.
 - `ME.aboutMe` is the concise hero introduction and homepage meta description.
 - `ME.focusAreas` supplies the hero context strip. Career and education context continues to use `src/data/career.ts`.
 - Homepage project cards show all projects in a responsive grid; `ProjectsCarousel.astro` is also reused by the projects listing.
-- Sensori Robotics uses its existing navigation interface artwork with a full-bleed crop. `src/assets/task-dependencies.svg` explains graph dependencies and does not represent an application screenshot.
+- Project covers use original watercolor concept illustrations from `src/assets/projects/` in consistent 2:1 full-bleed media regions. The original Dallas arrest-count map remains uncropped in the case-study body; cover illustrations do not represent screenshots or measured results.
 - Hero portrait uses `src/assets/portrait-lineart.svg`, a transparent vector trace of the original illustration, with an unframed treatment and compact mobile presentation.
 - Header navigation contracts toward a fixed frog anchor on downward scroll and expands on upward scroll or activation. `src/utils/headerScroll.ts` measures the header width, protects keyboard/menu interaction, and cleans up on Astro navigation; reduced motion disables transitions and the landing gesture.

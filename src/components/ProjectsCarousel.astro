@@ -128,36 +128,19 @@ const ProjectHeading = showHeading ? "h3" : "h2";
   }
   .project-artwork {
     position: relative;
-    height: 15rem;
+    aspect-ratio: 2 / 1;
     overflow: hidden;
     background: #e8edf5;
     border-bottom: 1px solid #e2e8f0;
   }
-  .project-artwork :global(picture) {
-    display: block;
-    height: 100%;
-  }
   .project-artwork :global(.project-cover) {
+    position: absolute;
+    inset: 0;
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-  }
-  .project-sensori-robotics .project-artwork {
-    background: #0f172a;
-  }
-  .project-sensori-robotics .project-artwork :global(.project-cover) {
     object-fit: cover;
-    object-position: center 20%;
-  }
-  .project-library-management .project-artwork {
-    background: #f6f9fc;
-  }
-  .project-crime-analysis .project-artwork {
-    background: #172638;
-    padding: 1.25rem;
-  }
-  .project-pert-scheduling .project-artwork {
-    background: #0f172a;
+    object-position: center;
   }
 
   .project-number,
@@ -281,9 +264,6 @@ const ProjectHeading = showHeading ? "h3" : "h2";
     }
     .project-grid {
       grid-template-columns: 1fr;
-    }
-    .project-artwork {
-      height: 14rem;
     }
     .project-copy {
       padding: 1.25rem;

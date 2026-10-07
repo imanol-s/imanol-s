@@ -24,20 +24,13 @@ const { Content } = await render(post);
 const { prev, next, hasValidUrl } = getProjectPageData(sorted, post.id);
 const artworkAlt =
   post.id === "sensori-robotics"
-    ? "Mobile navigation interface artwork with location search, scheduled rooms, and campus destinations"
+    ? "Watercolor illustration of a wheeled robot following a route around block obstacles"
     : post.id === "pert-scheduling"
-      ? "Directed task dependency graph showing parallel paths from start to finish"
+      ? "Watercolor illustration of task cards connected by branching dependency arrows and a completion check mark"
       : post.id === "crime-analysis"
-        ? "Map of recorded arrest counts by ZIP code in the Dallas area"
-        : "Illustration of a person selecting a book from a library shelf";
-const artworkLabel =
-  post.id === "sensori-robotics"
-    ? "Navigation interface artwork"
-    : post.id === "pert-scheduling"
-      ? "Dependency concept"
-      : post.id === "crime-analysis"
-        ? "Arrest counts by ZIP code / 2024 analysis"
-        : "Project illustration";
+        ? "Watercolor illustration of houses on a map beside a magnifying glass over a bar chart"
+        : "Watercolor illustration of books, an open book, and a library card catalog";
+const artworkLabel = "Project concept illustration";
 ---
 
 <Layout
@@ -183,33 +176,19 @@ const artworkLabel =
     border-radius: 4px;
   }
   .project-artwork {
-    height: 23rem;
+    position: relative;
+    aspect-ratio: 2 / 1;
+    overflow: hidden;
     background: #f6f9fc;
   }
-  .project-artwork :global(picture) {
-    display: block;
-    height: 100%;
-  }
   .project-artwork :global(.project-cover) {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-  }
-  .project-sensori-robotics .project-artwork {
-    background: #0f172a;
-    height: clamp(23rem, 45vw, 35rem);
-  }
-  .project-sensori-robotics .project-artwork :global(.project-cover) {
     object-fit: cover;
-    object-position: center 20%;
-  }
-  .project-crime-analysis .project-artwork {
-    background: #172638;
-    padding: 1.5rem;
-  }
-  .project-pert-scheduling .project-artwork {
-    background: #0f172a;
+    object-position: center;
   }
   .project-figure figcaption {
     display: flex;
@@ -244,6 +223,26 @@ const artworkLabel =
   }
   .project-story :global(p) {
     max-width: 68ch;
+  }
+  .project-story :global(.analysis-figure) {
+    width: 100%;
+    margin: 2rem 0;
+  }
+  .project-story :global(.analysis-map) {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    border-radius: 4px;
+  }
+  .project-story :global(.analysis-figure figcaption) {
+    margin-top: 0.75rem;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.7;
+  }
+  :global(.dark) .project-story :global(.analysis-figure figcaption) {
+    color: #cbd5e1;
   }
   .project-stack {
     padding: 1.5rem;
@@ -332,9 +331,6 @@ const artworkLabel =
     .project-stack {
       padding: 1.25rem;
     }
-    .project-artwork {
-      height: 19rem;
-    }
     .project-back {
       display: none;
     }
@@ -348,9 +344,6 @@ const artworkLabel =
     }
     .project-summary {
       font-size: 1rem;
-    }
-    .project-artwork {
-      height: 15rem;
     }
 
     .project-body {

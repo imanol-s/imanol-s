@@ -10,9 +10,12 @@ tags:
 startDate: 2024-08-01
 endDate: 2024-12-01
 url: https://github.com/imanol-s/Dallas-Crime-Analysis
-cover: "./images/crime-analysis/crime_analysis_map.webp"
-ogImage: "./images/crime-analysis/crime_analysis_map.webp"
+cover: "../../assets/projects/housing-analysis.webp"
+ogImage: "../../assets/projects/housing-analysis.webp"
 ---
+
+import arrestMap from "./images/crime-analysis/crime_analysis_map.webp";
+import { netlifyImage } from "@/utils/netlifyImage";
 
 ## My contribution
 
@@ -22,7 +25,22 @@ I worked on the original group analysis in Fall 2024 and returned as the sole an
 
 We joined Dallas Police Department arrest records (roughly 50k incidents) and Zillow housing listings at the zip-code level. In R, `dplyr` handled cleaning and aggregation; `ggplot2` handled visualization.
 
-The result was a table of arrest counts and average and median property prices, plus a scatter plot and an arrest-density map.
+The result was a table of arrest counts and average and median property prices, plus a scatter plot and a map of recorded arrest counts.
+
+<figure class="analysis-figure" style={`max-width: ${arrestMap.width}px`}>
+  <img
+    {...netlifyImage(arrestMap)}
+    alt="Map of recorded arrest counts by ZIP code across the Dallas area"
+    class="analysis-map"
+    sizes={`(min-width: 640px) ${arrestMap.width}px, calc(100vw - 48px)`}
+    loading="lazy"
+    decoding="async"
+  />
+  <figcaption>
+    Original 2024 analysis: recorded arrest counts by ZIP code. Counts are not
+    population-adjusted crime rates.
+  </figcaption>
+</figure>
 
 ## Revisiting the assumption
 
@@ -34,4 +52,4 @@ Within that analysis, crime offered limited independent explanatory power. The o
 
 A plausible story needs more than a correlation. The initial approach omitted variables that could affect both crime and housing prices. Revisiting the work changed the conclusion — and made the limitations clearer.
 
-The repository preserves the 2024 work alongside the 2026 remediation so the progression remains visible. The cover map is part of the original analysis. It shows recorded arrest counts, not population-adjusted crime rates.
+The repository preserves the 2024 work alongside the 2026 remediation so the progression remains visible.
