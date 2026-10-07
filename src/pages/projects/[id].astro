@@ -22,6 +22,14 @@ const { post, sorted } = Astro.props;
 const { title, summary, tags, cover, url, startDate, endDate } = post.data;
 const { Content } = await render(post);
 const { prev, next, hasValidUrl } = getProjectPageData(sorted, post.id);
+const artworkAlt =
+  post.id === "sensori-robotics"
+    ? "Mobile navigation interface artwork with location search, scheduled rooms, and campus destinations"
+    : post.id === "pert-scheduling"
+      ? "Directed task dependency graph showing parallel paths from start to finish"
+      : post.id === "crime-analysis"
+        ? "Map of recorded arrest counts by ZIP code in the Dallas area"
+        : "Illustration of a person selecting a book from a library shelf";
 const artworkLabel =
   post.id === "sensori-robotics"
     ? "Navigation interface artwork"
@@ -78,9 +86,7 @@ const artworkLabel =
     <div class="project-artwork">
       <img
         {...netlifyImage(cover)}
-        alt={post.id === "crime-analysis"
-          ? "Map of recorded arrest counts by ZIP code in the Dallas area"
-          : ""}
+        alt={artworkAlt}
         class="project-cover"
         sizes="(min-width: 1280px) 1232px, calc(100vw - 48px)"
         loading="eager"
@@ -115,7 +121,6 @@ const artworkLabel =
         <a
           href={`/projects/${prev.id}`}
           class="project-pagination-link focus-ring"
-          aria-label={`Previous project: ${prev.data.title}`}
         >
           <span class="font-display">← Previous project</span>
           <strong class="font-display">{prev.data.title}</strong>
@@ -129,7 +134,6 @@ const artworkLabel =
         <a
           href={`/projects/${next.id}`}
           class="project-pagination-link project-next focus-ring"
-          aria-label={`Next project: ${next.data.title}`}
         >
           <span class="font-display">Next project →</span>
           <strong class="font-display">{next.data.title}</strong>

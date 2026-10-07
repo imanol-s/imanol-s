@@ -8,7 +8,7 @@
   aria-label="Back to top"
   tabindex="-1"
   aria-hidden="true"
-  class="fixed bottom-8 right-8 z-50 flex h-10 w-10 flex-col items-center justify-center gap-0.5 border border-slate-200/20 bg-slate-900/80 backdrop-blur-sm text-slate-500 opacity-0 pointer-events-none hover:text-white hover:border-slate-200/60 focus-ring"
+  class="fixed bottom-8 right-8 z-50 flex h-10 w-10 flex-col items-center justify-center gap-0.5 border border-slate-200/20 bg-slate-900/80 backdrop-blur-sm text-slate-400 opacity-0 pointer-events-none hover:text-white hover:border-slate-200/60 focus-ring"
   style="transition: opacity 400ms ease-in-out, width 300ms ease, height 300ms ease, background 300ms ease, border-color 300ms ease, backdrop-filter 300ms ease, gap 300ms ease, padding 300ms ease;"
 >
   <span
@@ -38,7 +38,7 @@
 </button>
 
 <style>
-  #back-to-top.collapsed {
+  #back-to-top.collapsed:not(:hover):not(:focus-visible) {
     width: 4px;
     height: 24px;
     padding: 0;
@@ -47,9 +47,9 @@
     backdrop-filter: none;
     gap: 0;
   }
-  #back-to-top.collapsed .absolute,
-  #back-to-top.collapsed svg,
-  #back-to-top.collapsed span:not(.absolute) {
+  #back-to-top.collapsed:not(:hover):not(:focus-visible) .absolute,
+  #back-to-top.collapsed:not(:hover):not(:focus-visible) svg,
+  #back-to-top.collapsed:not(:hover):not(:focus-visible) span:not(.absolute) {
     opacity: 0;
     pointer-events: none;
   }

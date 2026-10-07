@@ -39,22 +39,32 @@ const { id, title, description, publishDate, tags, cover } =
   <div class="flex min-w-0 flex-col gap-2">
     <div class="flex flex-wrap items-center gap-1.5">
       <div class="flex items-center gap-1">
-        <Icon name="time-line" class="w-4 h-4 text-slate-500" />
+        <Icon
+          name="time-line"
+          aria-hidden="true"
+          class="w-4 h-4 text-slate-600 dark:text-slate-400"
+        />
         <time
-          class="text-sm text-slate-500"
+          class="text-sm text-slate-600 dark:text-slate-400"
           datetime={publishDate.toISOString()}
         >
           {formatDate(publishDate)}
         </time>
       </div>
-      <span class="text-slate-500"> &middot; </span>
+      <span class="text-slate-600 dark:text-slate-400"> &middot; </span>
       <div class="flex flex-wrap gap-2">
-        {tags.map((tag) => <span class="text-sm text-slate-500">#{tag}</span>)}
+        {
+          tags.map((tag) => (
+            <span class="text-sm text-slate-600 dark:text-slate-400">
+              #{tag}
+            </span>
+          ))
+        }
       </div>
     </div>
-    <h3 class="text-xl font-display font-bold text-slate-900 dark:text-white">
+    <h2 class="text-xl font-display font-bold text-slate-900 dark:text-white">
       {title}
-    </h3>
+    </h2>
     <div class="flex flex-col gap-4">
       <p class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
         {description}

@@ -67,6 +67,25 @@ describe("initBackToTop", () => {
     );
   });
 
+  it("moves focus to main before scrolling and keeps a focused control visible", () => {
+    const { btn } = createFixture();
+    const main = document.createElement("main");
+    main.id = "main-content";
+    main.tabIndex = -1;
+    document.body.append(main, btn);
+    Object.defineProperty(window, "scrollY", { value: 400 });
+    const cleanup = initBackToTop(btn, null);
+    btn.focus();
+    Object.defineProperty(window, "scrollY", { value: 0 });
+    window.dispatchEvent(new Event("scroll"));
+    expect(btn.getAttribute("aria-hidden")).toBeNull();
+    btn.click();
+    expect(document.activeElement).toBe(main);
+    cleanup();
+    main.remove();
+    btn.remove();
+  });
+
   it("cleanup removes all listeners", () => {
     const { btn, sidebar } = createFixture();
     const cleanup = initBackToTop(btn, sidebar);

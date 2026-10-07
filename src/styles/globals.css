@@ -232,7 +232,7 @@
     --tw-prose-headings: var(--color-slate-50);
     --tw-prose-p: var(--color-slate-50);
     --tw-prose-a: var(--color-accent);
-    --tw-prose-blockquote: var(--color-primary);
+    --tw-prose-blockquote: var(--color-accent);
     --tw-prose-figcaption: var(--color-slate-50);
     --tw-prose-strong: var(--color-slate-50);
     --tw-prose-code: var(--color-slate-50);
@@ -273,6 +273,9 @@ pre code {
 }
 
 @layer base {
+  html {
+    scroll-padding-top: 6rem;
+  }
   body {
     -webkit-font-smoothing: antialiased;
   }

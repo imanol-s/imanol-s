@@ -63,7 +63,7 @@ export function initBackToTop(
   }
 
   function update() {
-    if (window.scrollY > SCROLL_THRESHOLD) {
+    if (window.scrollY > SCROLL_THRESHOLD || document.activeElement === btn) {
       show();
     } else {
       hide();
@@ -94,6 +94,7 @@ export function initBackToTop(
   btn.addEventListener(
     "click",
     () => {
+      document.getElementById("main-content")?.focus({ preventScroll: true });
       window.scrollTo({
         top: 0,
         behavior: prefersReducedMotion() ? "instant" : "smooth",

@@ -56,13 +56,6 @@ export function initHeaderScroll(
       56,
       window.innerWidth - (window.innerWidth < 768 ? 32 : 48),
     );
-    if (
-      window.innerWidth >= 768 &&
-      menuButton?.getAttribute("aria-expanded") === "true"
-    ) {
-      menuButton.setAttribute("aria-expanded", "false");
-      header.querySelector("#mobile-menu")?.classList.add("hidden");
-    }
     // Measure once per resize: the capsule contracts from its right edge while the frog stays anchored.
     const expandedWidth = Math.min(960, available);
     header.style.setProperty("--header-expanded-width", `${expandedWidth}px`);
@@ -111,21 +104,6 @@ export function initHeaderScroll(
   header.addEventListener("focusin", schedule, { signal });
   header.addEventListener("focusout", schedule, { signal });
   header.addEventListener("click", schedule, { signal });
-  header.addEventListener(
-    "keydown",
-    (event) => {
-      if (
-        event.key === "Escape" &&
-        menuButton?.getAttribute("aria-expanded") === "true"
-      ) {
-        menuButton.setAttribute("aria-expanded", "false");
-        header.querySelector("#mobile-menu")?.classList.add("hidden");
-        menuButton.focus({ preventScroll: true });
-        schedule();
-      }
-    },
-    { signal },
-  );
   render();
   return () => {
     controller.abort();
