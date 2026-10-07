@@ -18,18 +18,30 @@ export interface Education {
 
 export const workExperience: WorkExperience[] = [
   {
-    title: "Associate Data Analyst",
-    startDate: "2026-01-16",
+    title: "Data Analyst",
+    startDate: "2026-10-01",
     company: "Freeman",
     location: "United States",
     description:
-      "I help teams define, document, and maintain reliable material master data across legacy and target systems.",
-    goals: [
-      "Built the team’s data dictionary with 300+ definitions, connecting data types, system translations, and governance metadata.",
-      "Established a cross-functional request workflow on a new internal platform, from intake through completion.",
-      "Wrote process documentation and led walkthroughs to help stakeholders align on data standards.",
-    ],
+      "Building on my experience in SAP automation, data governance, and project delivery.",
+    goals: [],
     currentJob: true,
+  },
+  {
+    title: "Associate Data Analyst",
+    startDate: "2026-01-16",
+    endDate: "2026-10-01",
+    company: "Freeman",
+    location: "United States",
+    description:
+      "Built SAP automation and data governance tools while coordinating delivery and validating releases for enterprise data operations.",
+    goals: [
+      "Built a Python automation tool for SAP material changes, completing 3,000+ updates with built-in logging and self-healing for multi-day runs. Cut a multi-day manual task to ~3 hours (estimated).",
+      "Created and operationalized an enterprise Data Dictionary documenting lineage and technical information for ~200+ SAP fields, helping teams interpret data clearly and consistently.",
+      "Managed project and feature delivery for data operations, from requirements gathering and scoping through backlog prioritization and execution tracking. Delivered 30+ user stories.",
+      "Performed user acceptance testing ahead of release, identifying gaps beyond the stated scope and routing issues to development.",
+    ],
+    currentJob: false,
   },
 
   {

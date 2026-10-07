@@ -28,7 +28,7 @@ const edu = primaryEducation();
   <div class="experience-layout">
     <div class="career-timeline">
       {
-        jobs.map((job) => {
+        jobs.map((job, index) => {
           const start = jobStartDate(job);
           const end = jobEndDate(job);
           return (
@@ -58,9 +58,9 @@ const edu = primaryEducation();
                 </p>
               </>
               <p class="career-description">{job.description}</p>
-              {job.currentJob && (
+              {index < 2 && job.goals.length > 0 && (
                 <ul class="career-highlights">
-                  {job.goals.slice(0, 3).map((goal) => (
+                  {job.goals.map((goal) => (
                     <li>
                       <svg
                         class="highlight-arrow"
