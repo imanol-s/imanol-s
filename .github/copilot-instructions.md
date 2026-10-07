@@ -199,7 +199,7 @@ function displayName(name: string) {
 ## Performance
 
 - Raster content images use Netlify Image CDN with AVIF quality 80 and responsive widths 400/800/1200. SVG artwork uses its imported source directly; image preloads must match rendered URLs exactly.
-- Hashed `/_astro/` assets cache immutably for one year. HTML uses `Netlify-CDN-Cache-Control: public, max-age=0, stale-while-revalidate=86400`; unversioned images revalidate to avoid stale replacements.
+- Hashed `/_astro/` assets and their Image CDN variants cache immutably for one year. HTML uses `Netlify-CDN-Cache-Control: public, max-age=0, stale-while-revalidate=86400`; unversioned images revalidate to avoid stale replacements.
 - Set `loading="eager"` and `fetchpriority="high"` only for above-the-fold images; use `loading="lazy"` for everything else
 - Keep client JS minimal: only `TopoBackground.tsx`, `TypewriterText.tsx`, and `LoadingOverlay.tsx` hydrate — avoid adding new React islands unless truly interactive
 - Container: `max-w-7xl mx-auto px-6`
