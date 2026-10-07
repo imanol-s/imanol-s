@@ -16,6 +16,7 @@ const pages = [
   { name: "Projects", path: "/projects/" },
   { name: "Blog", path: "/blog/" },
   { name: "Project detail", path: "/projects/crime-analysis/" },
+  { name: "Automaton case study", path: "/projects/automaton/" },
   { name: "Blog post", path: "/blog/overcoming-ingrained-introversion/" },
 ];
 

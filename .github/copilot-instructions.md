@@ -49,6 +49,8 @@ const { title, description } = Astro.props;
   - `TypewriterText.tsx` — hero name animation (`client:load`, SSR-safe)
   - `LoadingOverlay.tsx` — session loading overlay (`client:only="react"`, skips SSR)
 - **Content collections**: All blog/project content goes through Astro content collections with Zod schemas in `src/content/config.ts` — do not bypass with raw file reads
+- Project `startDate` and `endDate` are optional when unconfirmed. Never invent dates: omit unavailable date text, sort dated projects newest first, use stable ID ordering for ties, and place undated projects last in stable ID order.
+- Project charts and architecture diagrams use server-rendered Astro HTML/CSS with visible data and descriptions. Keep measurement scope and approximation qualifiers explicit; omit business identifiers rather than hiding them in the DOM. Do not add a chart runtime or React island.
 - **Static data**: Typed arrays/objects exported from `src/data/*.ts` for non-content data (jobs, education)
 - **Single layout**: All pages use `src/layouts/Layout.astro` — do not create additional layouts without justification
 - **No shadcn/ui**: The shadcn stack has been removed. Build components with Tailwind utility classes directly

@@ -18,6 +18,9 @@ const REGISTRY = [
     displayName: "Java",
   },
   { id: "jupyter", iconPath: `${TECH_ICON_BASE_PATH}/jupyter.svg` },
+  { id: "javascript", displayName: "JavaScript" },
+  { id: "selenium", displayName: "Selenium" },
+  { id: "pyside6", displayName: "PySide6" },
   { id: "mysql", iconPath: `${TECH_ICON_BASE_PATH}/database.svg` },
   {
     id: "python",

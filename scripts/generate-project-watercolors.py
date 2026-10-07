@@ -274,6 +274,47 @@ def housing():
     p.save("housing-analysis")
 
 
+def automation():
+    p = Watercolor(1225)
+    p.background()
+    p.wash((785, 645), (535, 48), BLUE, 0.13)
+    # Input sheets, a browser, and a journal describe automation without business data.
+    for offset in [26, 13, 0]:
+        p.polygon([(232 + offset, 310 - offset), (393 + offset, 298 - offset),
+                   (407 + offset, 541 - offset), (246 + offset, 553 - offset)],
+                  PAPER, 0.98)
+    for y, length in [(350, 106), (383, 88), (416, 112), (449, 74)]:
+        p.line([(266, y), (266 + length, y - 6)], BLUE, 3, 0.46)
+    p.arrow([(433, 410), (491, 410), (521, 400)], SAGE, 5, 0.73)
+    p.polygon([(543, 215), (1007, 221), (1000, 564), (537, 558)], PAPER, 0.98)
+    p.polygon([(543, 215), (1007, 221), (1006, 268), (542, 262)], BLUE, 0.77)
+    for x, color in [(564, CLAY), (583, OCHRE), (602, SAGE)]:
+        p.ellipse((x, 239), (5, 5), color, 0.85, outline=False)
+    p.line([(652, 239), (917, 243)], PAPER, 3, 0.68)
+    for y in [309, 365, 421]:
+        p.polygon([(574, y), (598, y), (598, y + 25), (574, y + 25)],
+                  PALE, 0.64)
+        p.line([(614, y + 12), (847, y + 15)], BLUE, 3, 0.34)
+        p.line([(908, y + 11), (918, y + 20), (935, y + 1)], SAGE, 4, 0.8)
+    p.arrow([(1019, 375), (1081, 375), (1113, 389)], SAGE, 5, 0.73)
+    p.polygon([(1140, 287), (1300, 302), (1281, 577), (1121, 562)], SAGE, 0.73)
+    p.polygon([(1154, 306), (1286, 319), (1269, 557), (1136, 545)], PAPER, 0.97)
+    p.polygon([(1180, 284), (1240, 290), (1240, 325), (1177, 319)], BLUE, 0.68)
+    p.line([(1162, 363), (1258, 372)], INK, 2, 0.35)
+    p.line([(1159, 395), (1243, 403)], INK, 2, 0.35)
+    p.line([(1160, 468), (1184, 494), (1233, 439)], SAGE, 8, 0.83)
+    # A cog is a simple mechanical cue, hand-drawn with transparent pigment.
+    center = np.array([858, 555])
+    angles = np.linspace(0, 2 * np.pi, 48, endpoint=False)
+    radii = np.array([104, 104, 83, 83] * 12)
+    points = center + np.column_stack((np.cos(angles), np.sin(angles))) * radii[:, None]
+    p.polygon(points, BLUE, 0.83)
+    p.ellipse(tuple(center), (56, 56), PAPER, 0.98)
+    p.ellipse(tuple(center), (31, 31), SAGE, 0.78)
+    p.line([(259, 662), (1242, 662)], INK, 1, 0.14)
+    p.save("automaton")
+
+
 def scheduling():
     p = Watercolor(1224)
     p.background()
@@ -304,5 +345,5 @@ def scheduling():
 
 
 if __name__ == "__main__":
-    for draw in (robotics, library, housing, scheduling):
+    for draw in (robotics, library, housing, scheduling, automation):
         draw()

@@ -29,8 +29,8 @@ const projects = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      startDate: z.date(),
-      endDate: z.date(),
+      startDate: z.date().optional(),
+      endDate: z.date().optional(),
       summary: z.string(),
       url: z.string().optional(),
       cover: image(),

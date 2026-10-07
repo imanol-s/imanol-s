@@ -65,5 +65,7 @@ Instructions for AI coding assistants working with this repository.
 - `ME.focusAreas` supplies the hero context strip. Career and education context continues to use `src/data/career.ts`.
 - Homepage project cards show all projects in a responsive grid; `ProjectsCarousel.astro` is also reused by the projects listing.
 - Project covers use original watercolor concept illustrations from `src/assets/projects/` in consistent 2:1 full-bleed media regions. The original Dallas arrest-count map remains uncropped in the case-study body; cover illustrations do not represent screenshots or measured results.
+- Project dates are optional when unconfirmed. Dated projects sort newest first, with stable ID ordering for ties; undated projects follow in stable ID order, and their pages omit unavailable dates.
+- Automaton charts and architecture diagrams use server-rendered Astro HTML/CSS, with visible data and descriptions. Measurements are operation-specific, retain approximation qualifiers, and omit business identifiers. No chart runtime or React island is added.
 - Hero portrait uses `src/assets/portrait-lineart.svg`, a transparent vector trace of the original illustration, with an unframed treatment and compact mobile presentation.
 - Header navigation contracts toward a fixed frog anchor on downward scroll and expands on upward scroll or activation. `src/utils/headerScroll.ts` measures the header width, protects keyboard/menu interaction, and cleans up on Astro navigation; reduced motion disables transitions and the landing gesture.

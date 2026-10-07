@@ -1,0 +1,228 @@
+---
+const measurements = [
+  {
+    title: "Time for one check",
+    unit: "Seconds",
+    before: "8.0 s",
+    after: "≈0.1 s",
+    beforeValue: 8,
+    afterValue: 0.1,
+    ticks: [0, 2, 4, 6, 8],
+  },
+  {
+    title: "Browser probes",
+    unit: "Probes per check",
+    before: "≈80",
+    after: "1",
+    beforeValue: 80,
+    afterValue: 1,
+    ticks: [0, 20, 40, 60, 80],
+  },
+];
+---
+
+<figure
+  class="automaton-metrics not-prose"
+  aria-labelledby="automaton-metrics-caption"
+>
+  <div class="metrics-heading">
+    <p class="metrics-kicker font-display">
+      Recorded comparison / One operation
+    </p>
+    <p class="metrics-context">
+      Reading a legitimately blank field before editing
+    </p>
+  </div>
+  <div class="metrics-grid">
+    {
+      measurements.map((measurement) => (
+        <div class="metric-chart">
+          <h3 class="font-display">{measurement.title}</h3>
+          <p class="metric-unit">{measurement.unit}</p>
+          <dl class="metric-series">
+            <div class="metric-row">
+              <dt>Recorded baseline</dt>
+              <dd>
+                <span class="metric-value font-display">
+                  {measurement.before}
+                </span>
+                <span class="metric-track" aria-hidden="true">
+                  <span class="metric-bar metric-before" />
+                </span>
+              </dd>
+            </div>
+            <div class="metric-row">
+              <dt>Optimized check</dt>
+              <dd>
+                <span class="metric-value font-display">
+                  {measurement.after}
+                </span>
+                <span class="metric-track" aria-hidden="true">
+                  <span
+                    class="metric-bar metric-after"
+                    style={`width: ${(measurement.afterValue / measurement.beforeValue) * 100}%`}
+                  />
+                </span>
+              </dd>
+            </div>
+          </dl>
+          <div class="metric-axis font-display" aria-hidden="true">
+            {measurement.ticks.map((tick) => (
+              <span>{tick}</span>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+  <figcaption id="automaton-metrics-caption">
+    One blank-field check, before and after. Recorded September 10, 2026; after
+    duration and before probe count are approximate. These measurements describe
+    this check, not an entire record or run.
+  </figcaption>
+</figure>
+
+<style>
+  .automaton-metrics {
+    margin: 2rem 0;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background: #fff;
+    color: #0f172a;
+  }
+  .metrics-kicker {
+    margin: 0 0 0.75rem;
+    color: #475569;
+    font-size: 0.65rem;
+    line-height: 1.6;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .metrics-context {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.6;
+  }
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    margin-top: 1.75rem;
+  }
+  .metric-chart h3 {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+  .metric-unit {
+    margin: 0.25rem 0 1.25rem;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+  .metric-series {
+    margin: 0;
+  }
+  .metric-row + .metric-row {
+    margin-top: 1.1rem;
+  }
+  .metric-row {
+    position: relative;
+    padding-bottom: 1.65rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  .metric-row dd {
+    margin: 0;
+  }
+  .metric-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.25rem;
+    border-left: 1px solid #94a3b8;
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(25% - 1px),
+      #e2e8f0 calc(25% - 1px),
+      #e2e8f0 25%
+    );
+  }
+  .metric-bar {
+    display: block;
+    height: 100%;
+  }
+  .metric-before {
+    width: 100%;
+    background: #64748b;
+  }
+  .metric-after {
+    background: #166534;
+  }
+  .metric-axis {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  .automaton-metrics figcaption {
+    margin-top: 1.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.7;
+  }
+  :global(.dark) .automaton-metrics {
+    background: #111c2e;
+    border-color: #334155;
+    color: #f8fafc;
+  }
+  :global(.dark) .metrics-kicker,
+  :global(.dark) .metric-unit,
+  :global(.dark) .metric-axis,
+  :global(.dark) .automaton-metrics figcaption {
+    color: #cbd5e1;
+  }
+  :global(.dark) .metric-track {
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(25% - 1px),
+      #334155 calc(25% - 1px),
+      #334155 25%
+    );
+  }
+  :global(.dark) .metric-before {
+    background: #94a3b8;
+  }
+  :global(.dark) .metric-after {
+    background: #b6e5d3;
+  }
+  :global(.dark) .automaton-metrics figcaption {
+    border-color: #334155;
+  }
+  @media (max-width: 639px) {
+    .metrics-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+    .metric-chart + .metric-chart {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 1.5rem;
+    }
+    :global(.dark) .metric-chart + .metric-chart {
+      border-color: #334155;
+    }
+  }
+</style>

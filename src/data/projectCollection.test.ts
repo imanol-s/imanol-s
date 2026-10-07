@@ -2,7 +2,12 @@ import { describe, it, expect } from "vitest";
 import { getSortedProjects, getProjectPageData } from "./projectCollection";
 
 // Minimal shape matching what the functions need
-function makeProject(id: string, startDate: Date, title = id, url?: string) {
+function makeProject(
+  id: string,
+  startDate: Date | undefined,
+  title = id,
+  url?: string,
+) {
   return { id, data: { startDate, title, url } };
 }
 
@@ -14,6 +19,21 @@ describe("getSortedProjects", () => {
   it("sorts newest startDate first", () => {
     const sorted = getSortedProjects([older, newest, newer]);
     expect(sorted.map((p) => p.id)).toEqual(["c", "b", "a"]);
+  });
+
+  it("places undated projects after dated projects in stable ID order", () => {
+    const zeta = makeProject("z", undefined);
+    const delta = makeProject("d", undefined);
+    const sorted = getSortedProjects([zeta, older, delta, newer]);
+    expect(sorted.map((project) => project.id)).toEqual(["b", "a", "d", "z"]);
+  });
+
+  it("uses stable ID order when project dates match", () => {
+    const second = makeProject("b", new Date("2024-01-01"));
+    const first = makeProject("a", new Date("2024-01-01"));
+    expect(
+      getSortedProjects([second, first]).map((project) => project.id),
+    ).toEqual(["a", "b"]);
   });
 
   it("does not mutate the input array", () => {

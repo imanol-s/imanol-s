@@ -23,13 +23,15 @@ const { title, summary, tags, cover, url, startDate, endDate } = post.data;
 const { Content } = await render(post);
 const { prev, next, hasValidUrl } = getProjectPageData(sorted, post.id);
 const artworkAlt =
-  post.id === "sensori-robotics"
-    ? "Watercolor illustration of a wheeled robot following a route around block obstacles"
-    : post.id === "pert-scheduling"
-      ? "Watercolor illustration of task cards connected by branching dependency arrows and a completion check mark"
-      : post.id === "crime-analysis"
-        ? "Watercolor illustration of houses on a map beside a magnifying glass over a bar chart"
-        : "Watercolor illustration of books, an open book, and a library card catalog";
+  post.id === "automaton"
+    ? "Watercolor concept illustration of input sheets leading to a browser window with a gear and a checked run journal"
+    : post.id === "sensori-robotics"
+      ? "Watercolor illustration of a wheeled robot following a route around block obstacles"
+      : post.id === "pert-scheduling"
+        ? "Watercolor illustration of task cards connected by branching dependency arrows and a completion check mark"
+        : post.id === "crime-analysis"
+          ? "Watercolor illustration of houses on a map beside a magnifying glass over a bar chart"
+          : "Watercolor illustration of books, an open book, and a library card catalog";
 const artworkLabel = "Project concept illustration";
 ---
 
@@ -51,28 +53,42 @@ const artworkLabel = "Project concept illustration";
   </nav>
 
   <header class="project-header">
-    <p class="section-kicker">Project notebook / {startDate.getFullYear()}</p>
+    <p class="section-kicker">
+      Project notebook{startDate ? ` / ${startDate.getFullYear()}` : ""}
+    </p>
     <h1 class="font-display">{title}</h1>
     <p class="project-summary">{summary}</p>
-    <div class="project-hero-meta font-display">
-      <span>{formatDate(startDate)} to {formatDate(endDate)}</span>
-      {
-        hasValidUrl && (
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-link focus-ring"
-          >
-            View repository{" "}
-            <>
-              <span aria-hidden="true">↗</span>
-              <span class="sr-only"> (opens in a new tab)</span>
-            </>
-          </a>
-        )
-      }
-    </div>
+    {
+      (startDate || endDate || hasValidUrl) && (
+        <div class="project-hero-meta font-display">
+          {(startDate || endDate) && (
+            <span>
+              {startDate && endDate
+                ? `${formatDate(startDate)} to ${formatDate(endDate)}`
+                : startDate
+                  ? `Started ${formatDate(startDate)}`
+                  : endDate
+                    ? `Completed ${formatDate(endDate)}`
+                    : ""}
+            </span>
+          )}
+          {hasValidUrl && (
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-link focus-ring"
+            >
+              View repository{" "}
+              <>
+                <span aria-hidden="true">↗</span>
+                <span class="sr-only"> (opens in a new tab)</span>
+              </>
+            </a>
+          )}
+        </div>
+      )
+    }
   </header>
 
   <figure class={`project-figure project-${post.id} cad-border`}>
