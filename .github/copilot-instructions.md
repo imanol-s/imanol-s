@@ -26,6 +26,7 @@ Review instructions for a personal portfolio site built with Astro 7.3, React 19
 
 ## Code Style
 
+- Avoid em dashes in visitor-facing copy, accessible labels, and metadata.
 - TypeScript in strict mode (`astro/tsconfigs/strict`)
 - Prefer `const` for values that don't change; use arrow functions for utility exports
 - Use proper TypeScript interfaces instead of `any` — define props interfaces in each component

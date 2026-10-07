@@ -4,7 +4,7 @@ export const SITE = {
   website: "https://imanols.dev", // replace this with your deployed domain
   title: "Imanol Saldana",
   description:
-    "Imanol Saldana — analytical engineer building processes and systems that solve data problems. Projects in data analysis, data science, automation, and software engineering.",
+    "Imanol Saldana: analytical engineer building processes and systems that solve data problems. Projects in data analysis, data science, automation, and software engineering.",
   tags: ["portfolio", "Resume cv", "Astro"],
   ogImage: "/og-image.webp",
   logo: "frog",
@@ -38,7 +38,7 @@ export const ME: {
   headline: ["Making data reliable.", "Making work simpler."],
   portraitNote: "Always learning. Usually building.",
   workingStyle:
-    "I ask questions, learn the context, and work toward a useful first version. When the problem changes, I adapt — and keep improving what I build.",
+    "I ask questions, learn the context, and work toward a useful first version. When the problem changes, I adapt and keep improving what I build.",
   approach: [
     {
       title: "Understand the problem",

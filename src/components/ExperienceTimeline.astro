@@ -38,8 +38,7 @@ const edu = primaryEducation();
               <div class="timeline-point" aria-hidden="true" />
               <div class="career-entry-top">
                 <p class="career-dates">
-                  {start ? formatDate(start) : ""}{" "}
-                  <span aria-hidden="true">—</span>{" "}
+                  {start ? formatDate(start) : ""} <span>to</span>{" "}
                   {job.currentJob ? "Present" : end ? formatDate(end) : ""}
                 </p>
                 {job.currentJob && (

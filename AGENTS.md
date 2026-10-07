@@ -16,6 +16,7 @@ Instructions for AI coding assistants working with this repository.
 
 ## Learned User Preferences
 
+- Avoid em dashes in visitor-facing copy, accessible labels, and metadata.
 - Hover effects should enhance/brighten elements, never dim text
 - Use Plan mode before implementing multi-step or multi-file changes
 - Prefer minimal, focused edits over broad rewrites

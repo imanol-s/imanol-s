@@ -59,8 +59,8 @@ export const workExperience: WorkExperience[] = [
     description:
       "Owned material data validation across U.S. operations during a system migration. Built workflows to compare production and legacy records, gathered stakeholder requirements, and documented processes for team handoffs.",
     goals: [
-      "Analyzed and validated material master records across U.S. operations — maintained data integrity throughout an active enterprise system migration",
-      "Led cross-functional requirements analysis and stakeholder gathering — surfaced business needs, defined scope, and structured development-ready user stories following internal SDLC standards",
+      "Analyzed and validated material master records across U.S. operations. Maintained data integrity throughout an active enterprise system migration",
+      "Led cross-functional requirements analysis and stakeholder gathering. Surfaced business needs, defined scope, and structured development-ready user stories following internal SDLC standards",
       "Built validation workflows comparing production and legacy system hierarchies to verify data integrity during migration",
       "Documented internal data processing workflows to preserve institutional knowledge ahead of team transitions",
     ],
@@ -75,10 +75,10 @@ export const workExperience: WorkExperience[] = [
     description:
       "Learned enterprise data governance through hands-on migration work. Facilitated discovery sessions, investigated data behavior across systems, and translated stakeholder needs into development-ready user stories.",
     goals: [
-      "Led cross-functional discovery and facilitation for a revenue-critical product attribute lacking governance — ran stakeholder sessions that produced the governance model, metadata requirements, and user story",
+      "Led cross-functional discovery and facilitation for a revenue-critical product attribute lacking governance. Ran stakeholder sessions that produced the governance model, metadata requirements, and user story",
       "Supported a bulk master data extension project enabling invoicing out of internal systems for a newly established business entity",
-      "Investigated lifecycle flag behavior across legacy and target systems — documented cross-system gaps in communication, audit trails, and stakeholder notification that informed future enhancements",
-      "Authored user stories following internal SDLC standards — led requirements gathering across cross-functional stakeholders, defined acceptance criteria, surfaced edge cases, and structured stories to development-ready state",
+      "Investigated lifecycle flag behavior across legacy and target systems. Documented cross-system gaps in communication, audit trails, and stakeholder notification that informed future enhancements",
+      "Authored user stories following internal SDLC standards. Led requirements gathering across cross-functional stakeholders, defined acceptance criteria, surfaced edge cases, and structured stories to development-ready state",
     ],
     currentJob: false,
   },
