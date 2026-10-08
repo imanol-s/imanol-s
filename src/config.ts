@@ -78,7 +78,7 @@ export const ME: {
   contactInfo: {
     email: "Imanol.dev@proton.me",
     linkedin: "https://linkedin.com/in/imanol-saldana",
-    resumeDoc: "Saldana.Resume.pdf",
+    resumeDoc: "resume.pdf",
   },
 };
 

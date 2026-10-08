@@ -1,6 +1,13 @@
 [build]
   command = "npm run build"
   publish = "dist"
+  ignore = "node scripts/resume-pipeline.mjs ignore"
+
+[[redirects]]
+  from = "/resume.pdf"
+  to = "https://imanol-s.github.io/imanol-s/resume.pdf"
+  status = 302
+  force = true
 
 [build.environment]
   NODE_VERSION = "22"

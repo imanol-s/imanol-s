@@ -89,3 +89,12 @@ imanol-s-threat-model.md
 # playwright artifacts
 test-results/
 playwright-report/
+
+# Generated resume artifacts
+resume/*.pdf
+resume/*.aux
+resume/*.log
+resume/*.out
+resume/*.fls
+resume/*.fdb_latexmk
+_site/

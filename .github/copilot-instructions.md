@@ -106,7 +106,7 @@ const { title, description } = Astro.props;
 | `languages`             | `{name, level}[]`        | Profile communication rows                   |
 | `contactInfo.email`     | `string`                 | Hero/footer email links                      |
 | `contactInfo.linkedin`  | `string`                 | Reference for LinkedIn URL                   |
-| `contactInfo.resumeDoc` | `string`                 | Header, hero, profile, footer résumé links   |
+| `contactInfo.resumeDoc` | `string` (`resume.pdf`)                 | Header, hero, profile, footer résumé links   |
 
 ### `SOCIALS` — social link entries
 
@@ -124,7 +124,7 @@ Each entry: `{ name, url, icon, show }`. Consumed via `SOCIALS.find(s => s.name 
 - External links use `target="_blank"` with `rel="noopener noreferrer"`
 - Security headers are set in `netlify.toml` (`X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, `Content-Security-Policy`)
 - Netlify build environment pins Node 22 via `NODE_VERSION` in `netlify.toml`
-- Resume PDF is served as a static file from `public/` — do not inline sensitive personal data in source
+- Resume PDF is published independently through GitHub Pages; never commit generated PDFs or sensitive personal data
 
 ### XSS Prevention
 
@@ -227,3 +227,11 @@ function displayName(name: string) {
 - Custom utility classes in globals.css: `cad-border`, `cta-primary`, `drawing-hover`, `focus-ring`, `horizontal-scroll-snap`, `typing-caret`, `project-mdx`, `topo-lines`
 - Project prose uses `@tailwindcss/typography` `.prose` class with custom color overrides in globals.css
 - Scoped Astro `<style>` blocks cannot use `@apply` with Tailwind classes unless `@reference` is added — prefer plain CSS in scoped styles
+
+## Resume publishing
+
+- `ME.contactInfo.resumeDoc` is `resume.pdf`; existing buttons use `/resume.pdf`, a forced Netlify 302 to the Pages PDF.
+- `resume/main.tex` is the maintained source. Push to `ui-migration` to compile with pdfLaTeX and publish independently. Never commit generated output.
+- Publication is serialized and compares current resume inputs; later site-only changes do not invalidate a valid build.
+- Resume-only changes skip Netlify through `node scripts/resume-pipeline.mjs ignore`; uncertain history builds normally.
+- Run `node --test scripts/resume-pipeline.check.mjs` for the Git-history regression checks.

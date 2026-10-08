@@ -74,3 +74,11 @@ Instructions for AI coding assistants working with this repository.
 - Header navigation contracts toward a fixed frog anchor on downward scroll and expands on upward scroll or activation. `src/utils/headerScroll.ts` measures the header width, protects keyboard/menu interaction, and cleans up on Astro navigation; labels reveal after expansion, and reduced motion disables transitions.
 
 - Intro name reveal starts while the overlay fades and never clears already-visible text. Returning visits, late hydration, reduced motion, Escape, and no-JS preserve the full name. The existing topography island persists across Astro navigation to retain its animation phase; Back to Top keeps a stable 48px outlined target.
+
+## Resume publishing
+
+- `ME.contactInfo.resumeDoc` is `resume.pdf`; existing buttons use `/resume.pdf`, a forced Netlify 302 to the Pages PDF.
+- `resume/main.tex` is the maintained source. Push to `ui-migration` to compile with pdfLaTeX and publish independently. Never commit generated output.
+- Publication is serialized and compares current resume inputs; later site-only changes do not invalidate a valid build.
+- Resume-only changes skip Netlify through `node scripts/resume-pipeline.mjs ignore`; uncertain history builds normally.
+- Run `node --test scripts/resume-pipeline.check.mjs` for the Git-history regression checks.
