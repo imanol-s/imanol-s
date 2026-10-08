@@ -1,0 +1,176 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{iftex}
+\ifPDFTeX
+  \input{glyphtounicode}
+  \pdfgentounicode=1
+\fi
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Imanol Saldana} \\ \vspace{1pt}
+    \href{https://github.com/imanol-s}{\underline{Github}} $|$
+    \href{https://www.linkedin.com/in/imanol-saldana}{\underline{LinkedIn}}  $|$
+    \href{https://imanols.dev}{\underline{Portfolio}}
+\end{center}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {The University of Texas at Dallas}{Richardson, TX}
+      {Bachelor's in Computer Science}{Graduated Dec 2025}
+      \resumeItemListStart
+        \resumeItem{Relevant Coursework: Software Engineering Methodologies, Advanced Algorithms, Database Systems (SQL, ER Modeling), Data Analysis (Python, Pandas, R)}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+\subsection*{Professional Experience}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Freeman}{United States}
+      {Data Analyst}{Oct 2026 – Present}
+      \resumeItemListStart
+        \resumeItem{Own SAP data governance from request intake through change execution and validation, including new data setup and standardized workflows.}
+        \resumeItem{Connect business users, developers, and enterprise teams to translate business needs into technical requirements.}
+        \resumeItem{Manage requirements and backlogs for automation, features, enhancements, and bug reports.}
+        \resumeItem{Investigate process problems and root causes with business users, delivering solutions through automation, data reporting, and improved request workflows.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Freeman}{Dallas, TX}
+      {Associate Data Analyst}{Jan 2026 – Oct 2026}
+      \resumeItemListStart
+          \resumeItem{Leading documentation of 100+ material master data attributes across 4 legacy and S/4HANA systems, establishing data governance framework that supports enterprise-wide decision-making and cross-system data consistency.}
+          \resumeItem{Supporting data quality validation during S/4HANA migration of 25,000+ material records, ensuring accurate hierarchy mapping and maintaining operational continuity across sales and supply chain operations.}
+          \resumeItem{Developing Python scripts to automate data validation and cleaning tasks, reducing manual processing time while improving accuracy in identifying data quality issues and anomalies.}
+          \resumeItem{Collaborating cross-functionally with Sales, Materials Management, and IT stakeholders to align data standards, document anomalies through Excel-based reports, and establish governance policies supporting data-informed decisions.}
+      \resumeItemListEnd
+  
+    \resumeSubheading
+      {Freeman}{Dallas, TX}
+      {Data Operations Analyst (Part-Time)}{Aug 2025 – Jan 2026}
+      \resumeItemListStart
+        \resumeItem{Managed and updated 100+ material master records including critical attributes for sizing and supply chains, supporting company-wide S/4HANA transformation and data standardization initiatives.}
+        \resumeItem{Developed Python scripts using pandas to automate data validation, corrections, and quality reporting, improving efficiency of data quality checks and ensuring accuracy of material master records.}
+        \resumeItem{Identified and corrected 1,000+ data integrity errors through automated validation scripts, preventing downstream system failures and maintaining supply chain data accuracy.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Freeman}{Dallas, TX}
+      {Master Materials Data Intern}{May 2025 – Aug 2025}
+      \resumeItemListStart
+          \resumeItem{Designed and implemented a new enterprise data field in SAP, integrating with 3+ downstream systems and preventing mismatches across sales and supply chain operations.}
+          \resumeItem{Led cross functional requirements gathering with Sales, Materials Management, and IT, translating business needs into technical specifications and ensuring adoption across teams.}
+          \resumeItem{Validated and migrated 2,000+ records during the transition to SAP S/4HANA, maintaining 100\% integrity of critical material master data.}
+          \resumeItem{Collaborated in Agile Scrum sprints, contributing to backlog refinement and process improvements that accelerated bug resolution speed by 10\%.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+\subsection*{Academic Projects}
+  \resumeSubHeadingListStart
+      
+    \resumeSubheading
+      {Autonomous Robotics Navigation Project}{University of Texas at Dallas / Sensori Robotics}
+      {Developer – Implementation \& Documentation}{Aug 2025 - Dec 2025}
+      \resumeItemListStart
+        \resumeItem{Developed reinforcement learning navigation system for legged ground robot using Isaac Lab/Sim, implementing custom reward functions, termination conditions, and penalty structures in Python to train edge-following behaviors for outdoor maintenance tasks.}
+        \resumeItem{Designed and trained RL policies through iterative experimentation, analyzing simulation performance data and creating visualizations to evaluate agent behavior across varying terrain conditions and edge-following scenarios.}
+        \resumeItem{Documented system architecture showing integration between perception inputs (LiDAR, proprioception), navigation logic, and motor control, creating technical references and onboarding materials for future development.}
+        \resumeItem{Implemented simulation-based validation workflows using scenario checks and scripted test runs, establishing evaluation methodology aligned with robotics and reinforcement learning best practices.}
+      \resumeItemListEnd
+
+
+    \resumeSubheading
+      {Dallas Crime Effect on Housing Price}{University of Texas at Dallas}
+      {Developer}{Oct 2024}
+      \resumeItemListStart
+        \resumeItem{Cleaned and analyzed 20k+ crime and housing records in R, building regression and classification models (including linear regression, random forest, and k-NN) to predict housing price trends based on crime density and location factors.}
+        \resumeItem{Developed ggplot2 dashboards to visualize geographic and statistical correlations, identifying spatial patterns between crime rates and housing costs across Dallas neighborhoods.}
+        \resumeItem{Delivered findings through technical report documenting data preprocessing, feature engineering, model evaluation, and interactive visualizations.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \item 
+    \small{
+        \textbf{Programming \& Analysis:} Python (Pandas, NumPy, Matplotlib), R (ggplot2, tidyverse), SQL, Java, C++ \\
+        
+        \textbf{Machine Learning \& Data Science:} Scikit-learn, Reinforcement Learning (Isaac Lab/Sim), Statistical Modeling, Feature Engineering, Data Visualization \\
+        
+        \textbf{Tools \& Platforms:} Git, SAP S/4HANA, SQLAlchemy, Jupyter, Unix/Linux, LaTeX \\
+    }
+\end{itemize}
+
+
+%-----------ACHIEVEMENTS-----------
+\section{Achievements}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+        \textbf{Academic Excellence Recipient}:\ The University of Texas at Dallas \\
+    }}
+ \end{itemize}
+
+\end{document}

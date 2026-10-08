@@ -1,86 +1,235 @@
 ---
 import { getCollection } from "astro:content";
-import { Picture } from "astro:assets";
+import { netlifyImage } from "@/utils/netlifyImage";
 import { getSortedProjects } from "@/data/projectCollection";
+import { getTechView } from "@/data/techRegistry";
 
+interface Props {
+  showHeading?: boolean;
+}
+const { showHeading = true } = Astro.props;
 const allProjects = getSortedProjects(await getCollection("projects"));
+const ProjectHeading = showHeading ? "h3" : "h2";
 ---
 
 <section
-  class="mb-32 scroll-mt-20 render-deferred"
+  class:list={[
+    "project-section scroll-mt-24",
+    { "mb-28 render-deferred": showHeading },
+  ]}
   id="projects"
-  aria-label="Projects"
+  aria-labelledby={showHeading ? "projects-heading" : undefined}
+  aria-label={showHeading ? undefined : "Project collection"}
 >
-  <div
-    class="flex items-end justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4"
-  >
-    <div>
-      <h2 class="text-3xl font-display font-bold">PROJECTS</h2>
-    </div>
-  </div>
-  <div id="projects-track" class="horizontal-scroll-snap">
+  {
+    showHeading && (
+      <div class="project-section-heading">
+        <h2 id="projects-heading" class="section-heading">
+          Projects
+        </h2>
+        <a href="/projects" class="project-index-link focus-ring font-display">
+          All projects <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    )
+  }
+  <div class="project-grid">
     {
       allProjects.map((project) => (
         <a
           href={`/projects/${project.id}`}
-          class="group flex flex-col cad-border bg-slate-50 dark:bg-slate-900 shadow-sm cursor-pointer hover:border-primary hover:bg-white dark:hover:bg-slate-800 transition-colors"
+          class={`project-card project-${project.id} group cad-border focus-ring`}
         >
-          <div class="relative h-[160px] overflow-hidden border-b border-slate-200 dark:border-slate-800">
-            <Picture
-              src={project.data.cover}
-              alt={project.data.title}
-              class="absolute inset-0 w-full h-full object-cover grayscale opacity-60 group-hover:scale-105 transition-transform duration-1000"
-              formats={["avif"]}
-              fallbackFormat="webp"
-              widths={[300, 350]}
-              sizes="(min-width: 768px) 350px, 300px"
+          <div class="project-artwork">
+            <img
+              {...netlifyImage(project.data.cover)}
+              alt=""
+              class="project-cover"
+              sizes="(min-width: 1280px) 560px, (min-width: 768px) 45vw, 90vw"
+              loading="lazy"
+              decoding="async"
             />
-            <div class="absolute inset-0 bg-primary/10 mix-blend-multiply" />
           </div>
-          <div class="p-5 flex flex-col flex-grow">
-            <h3 class="text-lg font-display font-bold mb-3">
+          <div class="project-copy">
+            <div
+              class="project-tags font-display"
+              aria-label="Selected technologies"
+            >
+              {project.data.tags.slice(0, 3).map((tag) => (
+                <span>{getTechView(tag).displayName}</span>
+              ))}
+            </div>
+            <ProjectHeading class="project-title font-display">
               {project.data.title}
-            </h3>
-            <p class="text-xs text-slate-700 dark:text-slate-200 leading-relaxed flex-grow">
-              {project.data.summary}
-            </p>
+            </ProjectHeading>
+            <p>{project.data.summary}</p>
+            <span class="project-read font-display">
+              Explore project <span aria-hidden="true">↗</span>
+            </span>
           </div>
         </a>
       ))
     }
   </div>
-
-  <div class="flex justify-end gap-2 mt-4">
-    <button
-      id="carousel-prev"
-      class="cad-border px-3 py-1.5 font-display text-xs uppercase tracking-widest text-slate-500 hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-      aria-label="Previous projects"
-    >
-      ← PREV
-    </button>
-    <button
-      id="carousel-next"
-      class="cad-border px-3 py-1.5 font-display text-xs uppercase tracking-widest text-slate-500 hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-      aria-label="Next projects"
-    >
-      NEXT →
-    </button>
-  </div>
 </section>
 
-<script>
-  import { initCarousel } from "../utils/carousel";
+<style>
+  .project-section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .project-index-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+    padding: 0.6rem 0;
+    color: #334155;
+    font-size: 0.75rem;
+  }
+  .project-index-link:hover {
+    color: #0f172a;
+  }
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 4px;
+    color: #0f172a;
+  }
+  .project-artwork {
+    position: relative;
+    aspect-ratio: 2 / 1;
+    overflow: hidden;
+    background: #e8edf5;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .project-artwork :global(.project-cover) {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
 
-  let cleanup: (() => void) | undefined;
-  document.addEventListener("astro:page-load", () => {
-    cleanup?.();
-    const track = document.getElementById("projects-track");
-    const prev = document.getElementById(
-      "carousel-prev",
-    ) as HTMLButtonElement | null;
-    const next = document.getElementById(
-      "carousel-next",
-    ) as HTMLButtonElement | null;
-    if (track && prev && next) cleanup = initCarousel(track, prev, next);
-  });
-</script>
+  .project-copy {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1.5rem;
+  }
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    color: #475569;
+    font-size: 0.65rem;
+    line-height: 1.5;
+  }
+  .project-tags span + span::before {
+    content: "/";
+    margin-right: 1rem;
+    color: #64748b;
+  }
+  .project-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.035em;
+    margin-bottom: 0.75rem;
+  }
+  .project-copy p {
+    color: #475569;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    max-width: 46ch;
+    margin-bottom: 1.5rem;
+  }
+  .project-read {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+    color: #334155;
+    font-size: 0.7rem;
+  }
+  .project-read span {
+    font-size: 1rem;
+  }
+  .project-card:hover {
+    border-color: #94a3b8;
+    background: #f8fafc;
+  }
+  .project-card:hover .project-read {
+    color: #0f172a;
+  }
+  :global(.dark) .project-card {
+    background: #111c2e;
+    color: #f8fafc;
+  }
+  :global(.dark) .project-card:hover {
+    background: #162338;
+  }
+  :global(.dark) .project-artwork {
+    border-color: #334155;
+  }
+  :global(.dark) .project-copy p,
+  :global(.dark) .project-tags {
+    color: #cbd5e1;
+  }
+  :global(.dark) .project-read {
+    border-color: #334155;
+    color: #cbd5e1;
+  }
+  :global(.dark) .project-index-link {
+    color: #cbd5e1;
+  }
+  :global(.dark) .project-card:hover .project-read,
+  :global(.dark) .project-index-link:hover {
+    color: #fff;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .project-artwork :global(.project-cover) {
+      transition: transform 250ms ease;
+    }
+    .project-card:hover .project-artwork :global(.project-cover) {
+      transform: scale(1.035);
+    }
+    .project-card,
+    .project-read,
+    .project-index-link {
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+    }
+  }
+  @media (max-width: 767px) {
+    .project-section-heading {
+      display: block;
+    }
+    .project-index-link {
+      margin-top: 1rem;
+    }
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+    .project-copy {
+      padding: 1.25rem;
+    }
+  }
+</style>

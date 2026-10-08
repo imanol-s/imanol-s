@@ -9,9 +9,11 @@ import LoadingOverlay from "../components/LoadingOverlay.tsx";
 import BackToTop from "../components/BackToTop.astro";
 
 import { SITE } from "@/config";
+import type { ImageMetadata } from "astro";
+import { netlifyImage } from "@/utils/netlifyImage";
 
 // Resolve hashed font URLs at build time for preloading
-import interLatinUrl from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import plexSansLatinUrl from "@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url";
 import jbMonoLatinUrl from "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url";
 
 interface Props {
@@ -19,6 +21,8 @@ interface Props {
   scrollSmooth?: boolean;
   description?: string;
   imageOg?: string;
+  heroImage?: ImageMetadata;
+  heroSizes?: string;
 }
 
 const {
@@ -26,6 +30,8 @@ const {
   description = SITE.description,
   scrollSmooth = false,
   imageOg = SITE.ogImage,
+  heroImage,
+  heroSizes,
 } = Astro.props;
 
 const tags = SITE.tags;
@@ -49,7 +55,7 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
       rel="preload"
       as="font"
       type="font/woff2"
-      href={interLatinUrl}
+      href={plexSansLatinUrl}
       crossorigin
     />
     <link
@@ -59,6 +65,19 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
       href={jbMonoLatinUrl}
       crossorigin
     />
+
+    {
+      heroImage && (
+        <link
+          rel="preload"
+          as="image"
+          href={netlifyImage(heroImage).src}
+          imagesrcset={netlifyImage(heroImage).srcset}
+          imagesizes={heroSizes}
+          fetchpriority="high"
+        />
+      )
+    }
 
     <meta name="title" content={title} />
     <meta name="description" content={description} />
@@ -114,7 +133,7 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
   >
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
       >Skip to main content</a
     >
 
@@ -129,11 +148,15 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
     >
     </div>
     <LoadingOverlay client:only="react" />
-    <TopoBackground client:only="react" />
+    <TopoBackground client:only="react" transition:persist="topo-background" />
     <BackToTop />
     <SiteHeader />
 
-    <main id="main-content" class="relative z-10 max-w-7xl mx-auto px-6 py-12">
+    <main
+      id="main-content"
+      tabindex="-1"
+      class="relative z-10 max-w-7xl mx-auto px-6 py-10 md:py-12"
+    >
       <slot />
     </main>
 

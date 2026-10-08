@@ -14,9 +14,8 @@ test.afterEach(() => {
 const pages = [
   { name: "Home", path: "/" },
   { name: "Projects", path: "/projects/" },
-  { name: "Blog", path: "/blog/" },
   { name: "Project detail", path: "/projects/crime-analysis/" },
-  { name: "Blog post", path: "/blog/overcoming-ingrained-introversion/" },
+  { name: "Automaton case study", path: "/projects/automaton/" },
 ];
 
 for (const { name, path } of pages) {
@@ -24,6 +23,7 @@ for (const { name, path } of pages) {
     test("renders heading and no broken images", async ({ page }) => {
       await page.goto(path);
       await expect(page.locator("h1").first()).toBeVisible();
+      await expect(page.locator('a[href^="/blog"]')).toHaveCount(0);
 
       // Wait for lazy-loaded images, then check all <img> elements loaded
       await page.waitForLoadState("networkidle");
@@ -54,6 +54,13 @@ for (const { name, path } of pages) {
     });
   });
 }
+
+test("removed blog URLs return 404", async ({ request }) => {
+  for (const path of ["/blog/", "/blog/overcoming-ingrained-introversion/"]) {
+    const response = await request.get(path);
+    expect(response.status(), path).toBe(404);
+  }
+});
 
 test.describe("Layout", () => {
   test("header and footer present on every page", async ({ page }) => {

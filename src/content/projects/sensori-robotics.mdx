@@ -1,6 +1,6 @@
 ---
 title: Sensori Robotics
-summary: Senior capstone project developing PPO-based autonomous navigation in Nvidia IsaacSim for a mobile robotics platform.
+summary: I implemented Python training logic for a capstone robot learning to follow edges for outdoor maintenance. My work included simulated environments, custom rewards, scripted evaluation, performance visualizations, and documentation for continued development.
 tags:
   - Robotics
   - Nvidia IsaacLab
@@ -10,30 +10,41 @@ tags:
   - Simulation
 startDate: 2025-08-01
 endDate: 2025-12-01
-cover: "./images/sensori-robotics/cover.webp"
-ogImage: "./images/sensori-robotics/cover.webp"
+cover: "../../assets/projects/robotics.webp"
+ogImage: "../../assets/projects/robotics.webp"
 ---
 
-## Overview
+## The navigation task
 
-Senior capstone project at The University of Texas at Dallas (Fall 2025). The project developed an autonomous navigation system for a mobile robotics platform, using reinforcement learning for path planning and Nvidia IsaacSim/IsaacLab as the simulation environment.
+Our capstone task was to teach a legged ground robot to follow an edge for outdoor maintenance. Simulation let us develop and evaluate navigation behavior before physical deployment.
 
-## Role
+On the Fall 2025 capstone team at UT Dallas, I was a **developer focused on implementation and documentation**, working on the simulation environments, reinforcement-learning training setup, and validation workflows.
 
-Developer on the capstone team, focused on the reinforcement-learning training loops and environment creation — porting real-world environments into Nvidia IsaacSim and defining the IsaacLab training setup (observation and action spaces, reward shaping) used to train the PPO navigation policy.
+## Training-task implementation
 
-## Problem
+I recreated real-world environments in NVIDIA IsaacSim and helped define the IsaacLab training setup, including what the robot observes and which actions it can take.
 
-Training a navigation policy on physical hardware is slow and expensive — every failed trajectory risks damaging the robot or its environment, and resetting between episodes takes real time. Dynamic obstacles compound this because the agent needs thousands of interactions to learn reactive avoidance behavior, which is impractical to collect in the real world. The project needed a way to iterate on the navigation policy rapidly without physical deployment.
+I implemented task logic in Python:
 
-## Approach
+- **Custom reward functions and penalties** supplied the feedback used to train edge-following behavior.
+- **Termination conditions** defined when a training episode ends.
 
-The navigation policy was trained using Proximal Policy Optimization (PPO), a reinforcement learning algorithm suited for continuous control tasks. PPO was chosen over alternatives like SAC or DQN because it offers stable training with monotonic improvement guarantees, which mattered given the limited capstone timeline — an unstable training process would have been difficult to debug within a single semester.
+The team used Proximal Policy Optimization (PPO) for continuous control. IsaacSim provided the physics environment; IsaacLab organized the training loop. My contribution focused on the environments and task logic around the algorithm.
 
-Real-world environments were ported into Nvidia IsaacSim, which provided a physics-accurate simulation for the robot to train in. IsaacLab sat on top of IsaacSim as the framework for defining the RL training loop — observation space, action space, reward shaping, and episode management. This allowed the team to run thousands of training episodes in parallel on GPU, compressing what would have been weeks of physical testing into hours of simulation time.
+## Evaluation
 
-Control systems principles were applied at the hardware-software boundary to translate the learned policy's continuous action outputs into motor commands compatible with the physical robot platform, bridging the sim-to-real gap for eventual deployment validation.
+I designed and trained policies through iterative experimentation. I analyzed simulation performance data and created visualizations to evaluate agent behavior across varying terrain conditions and edge-following scenarios.
 
-## Availability
+I also implemented **scenario checks and scripted test runs** for simulation-based validation, providing repeatable ways to evaluate the resulting behavior.
+
+## Documentation and integration
+
+I documented the architecture connecting perception inputs, navigation logic, and motor control, creating technical references and onboarding materials for continued development.
+
+That documentation described the hardware-software boundary: continuous policy outputs need to map to commands the physical robot can execute. The simulation work supported development and evaluation; it did not replace physical deployment validation.
+
+## Deliverables and availability
+
+My deliverables combined executable training-task logic, simulated environments, evaluation scripts, performance visualizations, and architecture documentation. Together, they supported the team's navigation experiments and provided references for continued development.
 
 Source code and detailed results are covered under NDA and are not publicly available.

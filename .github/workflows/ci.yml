@@ -9,12 +9,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Decide whether site checks are needed
+        id: site
+        env:
+          CACHED_COMMIT_REF: ${{ github.event.action == 'synchronize' && github.event.before || github.event.pull_request.base.sha }}
+          COMMIT_REF: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if node scripts/resume-pipeline.mjs ignore; then
+            echo 'build=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'build=true' >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-node@v4
+        if: steps.site.outputs.build == 'true'
         with:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+        if: steps.site.outputs.build == 'true'
+      - run: npm run test:git-identity
+        if: steps.site.outputs.build == 'true'
       - run: npm run test
+        if: steps.site.outputs.build == 'true'
       - run: npm run build
+        if: steps.site.outputs.build == 'true'
       - run: npx playwright install --with-deps chromium
+        if: steps.site.outputs.build == 'true'
       - run: npm run test:e2e
+        if: steps.site.outputs.build == 'true'

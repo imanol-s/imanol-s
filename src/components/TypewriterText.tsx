@@ -43,29 +43,37 @@ function Caret({ hidden }: { hidden: boolean }) {
  */
 const TypewriterText = ({ text }: { text: string }) => {
   const reducedMotion = useReducedMotion();
-  const isReady = useSiteLifecycle().state === "ready";
+  const { state } = useSiteLifecycle();
+  const reveal = state === "overlay-fading" || state === "ready";
+  const animateOnFirstVisit = useRef(
+    !reducedMotion && (state === "loading" || state === "overlay-playing"),
+  );
   const [displayed, setDisplayed] = useState(text);
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState(true);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef(false);
   const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
-    setDisplayed("");
-    setDone(false);
-    abortRef.current = false;
-
-    // Skip animation: reduced motion, return visit (ready immediately on mount),
-    // or already animated — hasAnimatedRef prevents re-triggering when unrelated
-    // state changes cause a re-render after the typewriter has already played.
-    if (reducedMotion || !isReady || hasAnimatedRef.current) {
+    // Clear only behind the opaque overlay; fading and ready share one reveal.
+    // Late hydration, return visits, and reduced motion keep the full name.
+    if (
+      reducedMotion ||
+      !animateOnFirstVisit.current ||
+      hasAnimatedRef.current
+    ) {
       setDisplayed(text);
       setDone(true);
       return;
     }
+    if (!reveal) {
+      setDisplayed("");
+      setDone(false);
+      return;
+    }
 
-    // Wait for overlay to finish (state === 'ready') before animating
     hasAnimatedRef.current = true;
+    abortRef.current = false;
     let index = 0;
 
     const type = () => {
@@ -86,9 +94,10 @@ const TypewriterText = ({ text }: { text: string }) => {
       abortRef.current = true;
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [text, reducedMotion, isReady]);
+  }, [text, reducedMotion, reveal]);
 
   const skip = useCallback(() => {
+    hasAnimatedRef.current = true;
     abortRef.current = true;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setDisplayed(text);
@@ -111,7 +120,11 @@ const TypewriterText = ({ text }: { text: string }) => {
       <span aria-hidden="true" className="invisible">
         {text}
       </span>
-      <span aria-hidden="true" className="absolute inset-0">
+      <span
+        aria-hidden="true"
+        data-typewriter-output
+        className="absolute inset-0"
+      >
         {displayed}
         {!reducedMotion ? <Caret hidden={done} /> : null}
       </span>

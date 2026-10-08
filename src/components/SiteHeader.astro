@@ -1,123 +1,114 @@
 ---
+import { Icon } from "astro-icon/components";
 import { ME, SITE } from "../config";
 
+const isProjectsPage = Astro.url.pathname.startsWith("/projects");
 const resumeHref = `/${ME.contactInfo.resumeDoc}`;
+const links = [
+  { label: "WORK", href: "/projects", current: isProjectsPage },
+  { label: "EXPERIENCE", href: "/#experience", current: false },
+  { label: "HOW I WORK", href: "/#approach", current: false },
+];
 ---
 
-<header
-  class="sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800 bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)]"
->
-  <nav
-    class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between"
-    aria-label="Site navigation"
-  >
-    <a
-      href="/"
-      class="flex items-center space-x-2 font-display font-bold text-lg tracking-tighter focus-ring rounded-sm"
-      aria-label={`Home — ${ME.name}`}
-    >
-      <span class="text-primary">[</span>
-      <span>{SITE.logoText.toUpperCase()}</span>
-      <span class="text-primary">]</span>
-    </a>
-
-    <!-- Desktop nav -->
-    <div class="hidden md:flex items-center space-x-8 font-display text-sm">
+<div class="header-spacer" aria-hidden="true"></div>
+<header class="site-header">
+  <span class="header-surface" aria-hidden="true">
+    <span class="header-start"></span>
+    <span class="header-rail"></span>
+    <span class="header-end"></span>
+  </span>
+  <span class="header-frog" aria-hidden="true">
+    <Icon
+      name={SITE.logo}
+      class="brand-frog"
+      data-brand-frog
+      aria-hidden="true"
+    />
+  </span>
+  <button
+    id="header-dock-btn"
+    class="header-dock-btn focus-ring"
+    aria-label="Open navigation"
+    aria-expanded="false"
+    aria-controls="header-navigation"
+    hidden></button>
+  <div id="header-navigation">
+    <nav class="site-nav" aria-label="Site navigation">
       <a
-        class="drawing-hover text-accent hover:text-white transition-colors focus-ring rounded-sm"
-        href="/projects"
+        href="/"
+        class="site-brand font-display focus-ring"
+        aria-label={`${SITE.logoText.toUpperCase()}, Home`}
       >
-        PROJECTS
+        <span class="brand-bracket" aria-hidden="true">[</span>
+        <span>{SITE.logoText.toUpperCase()}</span>
+        <span class="brand-bracket" aria-hidden="true">]</span>
       </a>
-      <a
-        class="cta-primary focus-ring"
-        href={resumeHref}
-        target="_blank"
-        rel="noopener noreferrer"
+      <div class="desktop-links font-display">
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              class="nav-link focus-ring"
+              aria-current={link.current ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          ))
+        }
+        <a
+          class="header-resume cta-primary focus-ring"
+          href={resumeHref}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          RESUME <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <button
+        id="mobile-menu-btn"
+        class="mobile-menu-button focus-ring"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
       >
-        RESUME
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
+          stroke-width="1.5"
           stroke-linecap="round"
-          stroke-linejoin="round"
-          ><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline
-            points="7 10 12 15 17 10"></polyline><line
-            x1="12"
-            y1="15"
-            x2="12"
-            y2="3"></line></svg
+          aria-hidden="true"
         >
-      </a>
-    </div>
-
-    <!-- Mobile hamburger -->
-    <button
-      id="mobile-menu-btn"
-      class="md:hidden p-2 text-slate-500 hover:text-primary focus-ring rounded-sm"
-      aria-label="Open menu"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        ><line x1="4" y1="12" x2="20" y2="12"></line><line
-          x1="4"
-          y1="6"
-          x2="20"
-          y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg
-      >
-    </button>
-  </nav>
-
-  <!-- Mobile menu -->
-  <div
-    id="mobile-menu"
-    class="md:hidden border-t border-slate-200 dark:border-slate-800 bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)]"
-  >
-    <div class="flex flex-col px-6 py-4 space-y-4 font-display text-sm">
-      <a
-        class="text-accent hover:text-white transition-colors focus-ring rounded-sm"
-        href="/projects">PROJECTS</a
-      >
-      <a
-        class="cta-primary focus-ring w-fit"
-        href={resumeHref}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        RESUME
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          ><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline
-            points="7 10 12 15 17 10"></polyline><line
-            x1="12"
-            y1="15"
-            x2="12"
-            y2="3"></line></svg
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </nav>
+    <div id="mobile-menu" class="header-menu">
+      <div class="mobile-links font-display">
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              class="nav-link focus-ring"
+              aria-current={link.current ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          ))
+        }
+        <a
+          class="header-resume cta-primary focus-ring"
+          href={resumeHref}
+          target="_blank"
+          rel="noopener noreferrer"
         >
-      </a>
+          RESUME <span aria-hidden="true">↗</span>
+        </a>
+      </div>
     </div>
   </div>
 </header>
@@ -128,14 +119,307 @@ const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 
 <script>
   import { initMobileMenu } from "../utils/mobileMenu";
+  import { initHeaderScroll } from "../utils/headerScroll";
 
   let cleanup: (() => void) | undefined;
+  document.addEventListener("astro:before-swap", () => cleanup?.());
   document.addEventListener("astro:page-load", () => {
     cleanup?.();
-    const btn = document.getElementById(
-      "mobile-menu-btn",
-    ) as HTMLButtonElement | null;
+    const header = document.querySelector<HTMLElement>(".site-header");
+    const button =
+      document.querySelector<HTMLButtonElement>("#mobile-menu-btn");
     const menu = document.getElementById("mobile-menu");
-    if (btn && menu) cleanup = initMobileMenu(btn, menu);
+    const disposeMenu =
+      button && menu ? initMobileMenu(button, menu) : undefined;
+    const disposeHeader = header ? initHeaderScroll(header, button) : undefined;
+    cleanup = () => {
+      disposeHeader?.();
+      disposeMenu?.();
+    };
   });
 </script>
+
+<style>
+  .header-spacer {
+    height: 80px;
+  }
+  .site-header {
+    position: fixed;
+    z-index: 50;
+    top: 12px;
+    left: var(--header-left, max(24px, calc((100vw - 960px) / 2)));
+    width: var(--header-expanded-width, min(960px, calc(100% - 48px)));
+    --header-background: #0f172af5;
+    --header-border: #94a3b833;
+    pointer-events: none;
+  }
+  .header-surface {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 56px;
+    filter: drop-shadow(0 8px 15px #02061726);
+  }
+  .header-start,
+  .header-rail,
+  .header-end {
+    position: absolute;
+    top: 0;
+    height: 56px;
+    background: var(--header-background);
+    border: 1px solid var(--header-border);
+  }
+  .header-start,
+  .header-end {
+    width: 28px;
+  }
+  .header-start {
+    left: 0;
+    border-right: 0;
+    border-radius: 28px 0 0 28px;
+  }
+  .header-rail {
+    left: 28px;
+    width: calc(
+      var(--header-expanded-width, min(960px, calc(100vw - 48px))) - 56px
+    );
+    border-inline: 0;
+    transform-origin: left center;
+    transform: scaleX(1);
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .header-end {
+    left: 28px;
+    border-left: 0;
+    border-radius: 0 28px 28px 0;
+    transform: translateX(
+      calc(var(--header-expanded-width, min(960px, calc(100vw - 48px))) - 56px)
+    );
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .site-nav {
+    position: relative;
+    height: 56px;
+    padding: 0 16px 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  #header-navigation {
+    position: relative;
+    pointer-events: auto;
+    transition:
+      opacity 180ms 420ms,
+      visibility 0ms 420ms;
+  }
+  .site-header[data-header-compact] {
+    --header-border: #94a3b84d;
+  }
+  .site-brand {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding-left: 38px;
+    font-size: 1rem;
+    font-weight: 650;
+    letter-spacing: -0.05em;
+    color: #f1f5f9;
+  }
+  .brand-bracket {
+    color: #64748b;
+  }
+  .header-frog {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    pointer-events: none;
+    z-index: 2;
+    color: #b6e5d3;
+  }
+  .header-frog :global(svg) {
+    display: block;
+    width: 28px;
+    height: 28px;
+    transform-origin: center bottom;
+  }
+  .desktop-links {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+  }
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 0.75rem;
+    color: #aebed1;
+    transition: color 180ms;
+  }
+  .nav-link:hover {
+    color: #fff;
+  }
+  .nav-link[aria-current="page"] {
+    color: #d7f5e9;
+  }
+  .header-resume {
+    gap: 0.8rem;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+  }
+  .header-resume span {
+    font-size: 1rem;
+  }
+  .mobile-menu-button {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 3px;
+    color: #aebed1;
+    cursor: pointer;
+  }
+  .mobile-menu-button:hover {
+    color: #fff;
+  }
+  .header-menu {
+    display: none;
+    opacity: 0;
+    transition:
+      opacity 160ms ease,
+      display 160ms allow-discrete;
+    margin: 0;
+    padding: 0 20px 8px;
+    background: var(--header-background);
+    border: 1px solid var(--header-border);
+    border-radius: 0 0 12px 12px;
+  }
+  .mobile-links {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 0.75rem 0;
+    gap: 0.25rem;
+  }
+  .mobile-links .nav-link {
+    width: 100%;
+  }
+  .header-dock-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 56px;
+    height: 56px;
+    pointer-events: auto;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 1;
+  }
+  .header-dock-btn[hidden] {
+    display: none;
+  }
+  .header-dock-btn:focus-visible {
+    outline: 2px solid #b6e5d3;
+    outline-offset: -5px;
+  }
+  .site-header[data-header-docked] {
+    --header-border: #b6e5d361;
+  }
+  .site-header[data-header-docked] .header-rail {
+    transform: scaleX(0);
+    transition-delay: 60ms;
+  }
+  .site-header[data-header-docked] .header-end {
+    transform: translateX(0);
+    transition-delay: 60ms;
+  }
+  .site-header[data-header-docked] #header-navigation {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 120ms,
+      visibility 0ms 120ms;
+  }
+  .site-header:has(.header-dock-btn:hover) {
+    --header-background: #1a2a38f5;
+    --header-border: #b6e5d399;
+  }
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .site-nav {
+      padding-right: 12px;
+      gap: 1rem;
+    }
+    .site-brand {
+      font-size: 0.9rem;
+    }
+    .desktop-links {
+      gap: 1.1rem;
+    }
+    .nav-link {
+      font-size: 0.7rem;
+    }
+    .header-resume {
+      padding-inline: 0.8rem;
+      font-size: 0.65rem;
+    }
+  }
+  @media (max-width: 767px) {
+    .site-header {
+      left: var(--header-left, 16px);
+      width: var(--header-expanded-width, calc(100% - 32px));
+    }
+    .header-rail {
+      width: calc(var(--header-expanded-width, calc(100vw - 32px)) - 56px);
+    }
+    .header-end {
+      transform: translateX(
+        calc(var(--header-expanded-width, calc(100vw - 32px)) - 56px)
+      );
+    }
+    .site-nav {
+      padding: 0 10px 0 14px;
+      gap: 1rem;
+    }
+    .site-brand {
+      font-size: 0.9rem;
+      padding-left: 36px;
+      gap: 0.25rem;
+    }
+    .desktop-links {
+      display: none;
+    }
+    .mobile-menu-button {
+      display: inline-flex;
+    }
+    .header-menu:not(.hidden) {
+      display: block;
+      opacity: 1;
+    }
+    @starting-style {
+      .header-menu:not(.hidden) {
+        opacity: 0;
+      }
+    }
+  }
+  @media (max-width: 320px) {
+    .site-brand {
+      font-size: 0.8rem;
+    }
+    .site-nav {
+      gap: 0.5rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .header-rail,
+    .header-end,
+    #header-navigation,
+    .site-header[data-header-docked] #header-navigation,
+    .header-menu {
+      transition: none;
+    }
+  }
+</style>

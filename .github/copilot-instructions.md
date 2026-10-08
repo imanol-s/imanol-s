@@ -16,7 +16,7 @@ Review instructions for a personal portfolio site built with Astro 7.3, React 19
 
 ## Naming Conventions
 
-- **Astro components**: PascalCase (e.g., `SiteHeader.astro`, `PostCard.astro`)
+- **Astro components**: PascalCase (e.g., `SiteHeader.astro`, `SiteFooter.astro`)
 - **React components**: PascalCase `.tsx` files (e.g., `TopoBackground.tsx`, `TypewriterText.tsx`)
 - **Data files**: PascalCase or camelCase in `src/data/` (e.g., `Jobs.ts`, `education.ts`)
 - **Content files**: kebab-case for posts and projects (e.g., `crime-analysis.mdx`)
@@ -26,6 +26,8 @@ Review instructions for a personal portfolio site built with Astro 7.3, React 19
 
 ## Code Style
 
+- Avoid em dashes in visitor-facing copy, accessible labels, and metadata.
+- Use plain headings that identify content. Avoid decorative numbered kickers, generic slogans, and redundant preambles. Keep supporting labels only when they provide useful information.
 - TypeScript in strict mode (`astro/tsconfigs/strict`)
 - Prefer `const` for values that don't change; use arrow functions for utility exports
 - Use proper TypeScript interfaces instead of `any` — define props interfaces in each component
@@ -48,9 +50,19 @@ const { title, description } = Astro.props;
   - `TypewriterText.tsx` — hero name animation (`client:load`, SSR-safe)
   - `LoadingOverlay.tsx` — session loading overlay (`client:only="react"`, skips SSR)
 - **Content collections**: All blog/project content goes through Astro content collections with Zod schemas in `src/content/config.ts` — do not bypass with raw file reads
+- Blog routes, navigation, and legacy redirects are removed. Posts and their content schema remain archived; do not expose them as public pages.
+- Project `startDate` and `endDate` are optional when unconfirmed. Never invent dates: omit unavailable date text, sort dated projects newest first, use stable ID ordering for ties, and place undated projects last in stable ID order.
+- Project charts and architecture diagrams use server-rendered Astro HTML/CSS with visible data and descriptions. Keep measurement scope and approximation qualifiers explicit; omit business identifiers rather than hiding them in the DOM. Do not add a chart runtime or React island.
 - **Static data**: Typed arrays/objects exported from `src/data/*.ts` for non-content data (jobs, education)
 - **Single layout**: All pages use `src/layouts/Layout.astro` — do not create additional layouts without justification
 - **No shadcn/ui**: The shadcn stack has been removed. Build components with Tailwind utility classes directly
+
+## Portfolio Writing Agent
+
+- Delegate substantive visitor-facing writing and editorial reviews to `portfolio_writer`, defined in [`.codex/agents/portfolio-writer.toml`](../.codex/agents/portfolio-writer.toml). This agent drafts and reviews project summaries, case studies, homepage copy, and blog prose; the parent agent applies changes and owns validation and Git operations.
+- The writer must read [the portfolio-writing skill](../.agents/skills/portfolio-writing/SKILL.md) before drafting or reviewing project articles, including formatting-only work. Every project draft or review includes a Markdown audit and brief formatting decisions; use restrained headings, lists, bold, and code where they help reading, without quotas.
+- Follow the five editorial criteria in its definition: clear problem/contribution/outcome, easy scanning, grounded voice, preserved facts and metrics, and plain language without em dashes.
+- Career bullets in `src/data/career.ts` remain unchanged unless the user explicitly requests edits to those bullets. General requests to improve site copy do not authorize rewriting them.
 
 ## Site Configuration (`src/config.ts`)
 
@@ -77,22 +89,24 @@ const { title, description } = Astro.props;
 
 ### `ME` — personal content
 
-| Field                   | Type                     | Used by                                     |
-| ----------------------- | ------------------------ | ------------------------------------------- |
-| `name`                  | `string`                 | TypewriterText, image alt, nav aria-label   |
-| `profession`            | `string[]`               | Hero subtitle (joined with `•`)             |
-| `profileImage`          | `string`                 | Filename reference for profile photo        |
-| `aboutMe`               | `string`                 | Hero paragraph, Layout description default  |
-| `bio`                   | `string`                 | About section long-form paragraph           |
-| `location`              | `string`                 | About section dl, footer coordinates        |
-| `focusAreas`            | `string[]`               | Hero specialty cards (3 boxes)              |
-| `coreLanguages`         | `string[]`               | Tech Specs — Core Languages grid            |
-| `competencies`          | `string[]`               | Tech Specs — Competencies list              |
-| `languages`             | `{name, level}[]`        | Tech Specs — Communication table            |
-| `profileFacts`          | `{value, description}[]` | About section stats row                     |
-| `contactInfo.email`     | `string`                 | Footer, About section                       |
-| `contactInfo.linkedin`  | `string`                 | Reference for LinkedIn URL                  |
-| `contactInfo.resumeDoc` | `string`                 | Resume PDF filename (served from `public/`) |
+| Field                   | Type                     | Used by                                      |
+| ----------------------- | ------------------------ | -------------------------------------------- |
+| `name`                  | `string`                 | TypewriterText, portrait alt, nav aria-label |
+| `profession`            | `string[]`               | Hero profession line                         |
+| `aboutMe`               | `string`                 | Hero introduction, homepage meta description |
+| `headline`              | `string[]`               | Hero two-line value statement                |
+| `portraitNote`          | `string`                 | Animated portrait status caption (CSS dots)  |
+| `workingStyle`          | `string`                 | Approach section introduction                |
+| `approach`              | `{title, description}[]` | Three working approach cards                 |
+| `contactNote`           | `string`                 | Footer contact invitation                    |
+| `location`              | `string`                 | Geographic reference                         |
+| `focusAreas`            | `string[]`               | Hero context strip                           |
+| `coreLanguages`         | `TechId[]`               | Profile toolkit language grid                |
+| `competencies`          | `string[]`               | Profile areas of practice                    |
+| `languages`             | `{name, level}[]`        | Profile communication rows                   |
+| `contactInfo.email`     | `string`                 | Hero/footer email links                      |
+| `contactInfo.linkedin`  | `string`                 | Reference for LinkedIn URL                   |
+| `contactInfo.resumeDoc` | `string` (`resume.pdf`)  | Header, hero, profile, footer résumé links   |
 
 ### `SOCIALS` — social link entries
 
@@ -110,7 +124,7 @@ Each entry: `{ name, url, icon, show }`. Consumed via `SOCIALS.find(s => s.name 
 - External links use `target="_blank"` with `rel="noopener noreferrer"`
 - Security headers are set in `netlify.toml` (`X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, `Content-Security-Policy`)
 - Netlify build environment pins Node 22 via `NODE_VERSION` in `netlify.toml`
-- Resume PDF is served as a static file from `public/` — do not inline sensitive personal data in source
+- Resume PDF is published independently through GitHub Pages; never commit generated PDFs or sensitive personal data
 
 ### XSS Prevention
 
@@ -196,9 +210,12 @@ function displayName(name: string) {
 
 ## Performance
 
-- Use Astro's `<Image>` component for all images — provides automatic WebP conversion and responsive sizing
+- Raster content images use Netlify Image CDN with AVIF quality 80 and responsive widths 400/800/1200. SVG artwork uses its imported source directly; image preloads must match rendered URLs exactly.
+- Hashed `/_astro/` assets and their Image CDN variants cache immutably for one year. HTML uses `Netlify-CDN-Cache-Control: public, max-age=0, stale-while-revalidate=86400`; unversioned images revalidate to avoid stale replacements.
 - Set `loading="eager"` and `fetchpriority="high"` only for above-the-fold images; use `loading="lazy"` for everything else
 - Keep client JS minimal: only `TopoBackground.tsx`, `TypewriterText.tsx`, and `LoadingOverlay.tsx` hydrate — avoid adding new React islands unless truly interactive
+- Intro name reveal starts while the overlay fades and never clears already-visible text. Returning visits, late hydration, reduced motion, Escape, and no-JS preserve the full name. The existing topography island persists across Astro navigation to retain its animation phase; Back to Top keeps a stable 48px outlined target.
+- Header docking animates only its fixed-height decorative rail/endcap transforms and navigation opacity. Text and layout dimensions stay fixed; the frog and 56px dock target stay anchored. Underline hover uses scaleX, and Back to Top retains its 48px target. Reduced motion removes transitions.
 - Container: `max-w-7xl mx-auto px-6`
 
 ## Styling
@@ -207,7 +224,26 @@ function displayName(name: string) {
 - Dark mode is **class-based** via `<html class="dark">` (set by inline script in Layout.astro) — use `dark:` prefix in Tailwind or `.dark` selector in custom CSS
 - Design system: blueprint/topographic theme with slate palette
 - Color tokens: `primary` (#64748b), `accent` (#94a3b8), `background-light` (#f8fafc), `background-dark` (#0f172a)
-- Fonts: JetBrains Mono (`font-display`) for headings/nav/CTAs, Inter (`font-body`) for body text
+- Fonts: JetBrains Mono (`font-display`) for headings/nav/CTAs, IBM Plex Sans (`font-body`) for body text
 - Custom utility classes in globals.css: `cad-border`, `cta-primary`, `drawing-hover`, `focus-ring`, `horizontal-scroll-snap`, `typing-caret`, `project-mdx`, `topo-lines`
-- Blog prose uses `@tailwindcss/typography` `.prose` class with custom color overrides in globals.css
+- Project prose uses `@tailwindcss/typography` `.prose` class with custom color overrides in globals.css
 - Scoped Astro `<style>` blocks cannot use `@apply` with Tailwind classes unless `@reference` is added — prefer plain CSS in scoped styles
+
+## Resume publishing
+
+- `ME.contactInfo.resumeDoc` is `resume.pdf`; existing buttons use `/resume.pdf`, a forced Netlify 302 to the Pages PDF.
+- `resume/main.tex` is the maintained source. Push to `ui-migration` to compile with pdfLaTeX and publish independently. Never commit generated output.
+- Publication is serialized and compares current resume inputs; later site-only changes do not invalidate a valid build.
+- Resume-only changes skip Netlify through `node scripts/resume-pipeline.mjs ignore`; uncertain history builds normally.
+- Run `node --test scripts/resume-pipeline.check.mjs` for the Git-history regression checks.
+- PR CI also skips site checks on resume-only synchronize pushes using the full before/head range; opened PRs and uncertain history keep site checks.
+
+## Git identity
+
+- Verified GitHub account: `imanol-s` (ID `72887568`). Use repo-local name `Imanol Saldana` and email `72887568+imanol-s@users.noreply.github.com` for new work. The inherited global identity maps to `imanol655`, a different GitHub account, and must not be used here.
+- `npm install`/`npm ci` runs local identity setup through `prepare`, except in CI or outside a Git worktree. Run `npm run setup:git-identity` explicitly when needed; it configures only this repository's identity and `core.hooksPath=.husky`, never global settings.
+- Run `npm run check:git-identity` before committing. Enabled hooks check effective author and committer emails, including environment/config overrides, before linting; pre-push also checks each pushed tip. Correct conflicting overrides rather than relying on global fallback or bypassing the configured checks. Existing contributors and historical identities are not rewritten by these guards.
+- `npm run test:git-identity` exercises setup and guards in isolated temporary repositories and runs in CI.
+- Commitlint imports its conventional rules and parser preset through ESM in `commitlint.config.js`; keep the parser as a direct dependency and preserve the standard rules and commit hook.
+
+- Resume publication runs only from `main`; author changes on `ui-migration` and merge to publish. The workflow trigger, job guard, and freshness comparison all target `main`.

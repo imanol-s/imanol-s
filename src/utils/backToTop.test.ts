@@ -6,9 +6,7 @@ function createFixture() {
   const btn = document.createElement("button");
   btn.classList.add("opacity-0", "pointer-events-none");
 
-  const sidebar = document.createElement("div");
-
-  return { btn, sidebar };
+  return { btn };
 }
 
 describe("initBackToTop", () => {
@@ -35,8 +33,8 @@ describe("initBackToTop", () => {
   });
 
   it("shows button after scroll threshold", () => {
-    const { btn, sidebar } = createFixture();
-    initBackToTop(btn, sidebar);
+    const { btn } = createFixture();
+    initBackToTop(btn);
 
     Object.defineProperty(window, "scrollY", { value: 400 });
     window.dispatchEvent(new Event("scroll"));
@@ -46,8 +44,8 @@ describe("initBackToTop", () => {
   });
 
   it("hides button before scroll threshold", () => {
-    const { btn, sidebar } = createFixture();
-    initBackToTop(btn, sidebar);
+    const { btn } = createFixture();
+    initBackToTop(btn);
 
     Object.defineProperty(window, "scrollY", { value: 400 });
     window.dispatchEvent(new Event("scroll"));
@@ -58,8 +56,8 @@ describe("initBackToTop", () => {
   });
 
   it("scrolls to top on click", () => {
-    const { btn, sidebar } = createFixture();
-    initBackToTop(btn, sidebar);
+    const { btn } = createFixture();
+    initBackToTop(btn);
     btn.click();
 
     expect(window.scrollTo).toHaveBeenCalledWith(
@@ -67,9 +65,28 @@ describe("initBackToTop", () => {
     );
   });
 
+  it("moves focus to main before scrolling and keeps a focused control visible", () => {
+    const { btn } = createFixture();
+    const main = document.createElement("main");
+    main.id = "main-content";
+    main.tabIndex = -1;
+    document.body.append(main, btn);
+    Object.defineProperty(window, "scrollY", { value: 400 });
+    const cleanup = initBackToTop(btn);
+    btn.focus();
+    Object.defineProperty(window, "scrollY", { value: 0 });
+    window.dispatchEvent(new Event("scroll"));
+    expect(btn.getAttribute("aria-hidden")).toBeNull();
+    btn.click();
+    expect(document.activeElement).toBe(main);
+    cleanup();
+    main.remove();
+    btn.remove();
+  });
+
   it("cleanup removes all listeners", () => {
-    const { btn, sidebar } = createFixture();
-    const cleanup = initBackToTop(btn, sidebar);
+    const { btn } = createFixture();
+    const cleanup = initBackToTop(btn);
     cleanup();
 
     Object.defineProperty(window, "scrollY", { value: 400 });
@@ -78,120 +95,13 @@ describe("initBackToTop", () => {
     expect(btn.classList.contains("opacity-0")).toBe(true);
   });
 
-  it("works without a sidebar (null)", () => {
+  it("initializes visibility at the current scroll position", () => {
     const { btn } = createFixture();
     Object.defineProperty(window, "scrollY", { value: 400 });
-    const cleanup = initBackToTop(btn, null);
+    const cleanup = initBackToTop(btn);
     window.dispatchEvent(new Event("scroll"));
 
     expect(btn.classList.contains("opacity-100")).toBe(true);
-    expect(btn.classList.contains("collapsed")).toBe(false);
     cleanup();
-  });
-});
-
-describe("collapse/expand based on sidebar overlap", () => {
-  function makeRect(top: number, bottom: number): DOMRect {
-    return {
-      top,
-      bottom,
-      left: 0,
-      right: 0,
-      width: 0,
-      height: bottom - top,
-      x: 0,
-      y: top,
-      toJSON: () => ({}),
-    } as DOMRect;
-  }
-
-  beforeEach(() => {
-    Object.defineProperty(window, "scrollY", {
-      value: 0,
-      writable: true,
-      configurable: true,
-    });
-    Object.defineProperty(window, "innerWidth", {
-      value: 1280,
-      writable: true,
-      configurable: true,
-    });
-    window.scrollTo = vi.fn();
-    window.matchMedia = vi
-      .fn()
-      .mockReturnValue({ matches: false, addEventListener: vi.fn() });
-  });
-
-  it("collapses when button and sidebar rects overlap", () => {
-    const btn = document.createElement("button");
-    const sidebar = document.createElement("div");
-    // btn: top=700 bottom=750, sidebar: top=720 bottom=900 → overlaps
-    btn.getBoundingClientRect = () => makeRect(700, 750);
-    sidebar.getBoundingClientRect = () => makeRect(720, 900);
-
-    initBackToTop(btn, sidebar);
-    window.dispatchEvent(new Event("scroll"));
-
-    expect(btn.classList.contains("collapsed")).toBe(true);
-  });
-
-  it("expands when button and sidebar rects do not overlap", () => {
-    const btn = document.createElement("button");
-    const sidebar = document.createElement("div");
-    // btn: top=100 bottom=150, sidebar: top=400 bottom=800 → no overlap
-    btn.getBoundingClientRect = () => makeRect(100, 150);
-    sidebar.getBoundingClientRect = () => makeRect(400, 800);
-
-    initBackToTop(btn, sidebar);
-    window.dispatchEvent(new Event("scroll"));
-
-    expect(btn.classList.contains("collapsed")).toBe(false);
-  });
-
-  it("never collapses when sidebar is null", () => {
-    const btn = document.createElement("button");
-    btn.getBoundingClientRect = () => makeRect(700, 750);
-
-    initBackToTop(btn, null);
-    window.dispatchEvent(new Event("scroll"));
-
-    expect(btn.classList.contains("collapsed")).toBe(false);
-  });
-
-  it("never collapses when viewport is narrower than collapseMinWidth", () => {
-    const btn = document.createElement("button");
-    const sidebar = document.createElement("div");
-    btn.getBoundingClientRect = () => makeRect(700, 750);
-    sidebar.getBoundingClientRect = () => makeRect(720, 900);
-
-    Object.defineProperty(window, "innerWidth", {
-      value: 800,
-      configurable: true,
-    });
-    initBackToTop(btn, sidebar);
-    window.dispatchEvent(new Event("scroll"));
-
-    expect(btn.classList.contains("collapsed")).toBe(false);
-  });
-
-  it("re-evaluates collapse on each scroll event", () => {
-    const btn = document.createElement("button");
-    const sidebar = document.createElement("div");
-
-    let sidebarTop = 720;
-    btn.getBoundingClientRect = () => makeRect(700, 750);
-    sidebar.getBoundingClientRect = () =>
-      makeRect(sidebarTop, sidebarTop + 200);
-
-    initBackToTop(btn, sidebar);
-
-    // First scroll: overlapping → collapsed
-    window.dispatchEvent(new Event("scroll"));
-    expect(btn.classList.contains("collapsed")).toBe(true);
-
-    // Sidebar scrolls above button: no overlap → expanded
-    sidebarTop = 0;
-    window.dispatchEvent(new Event("scroll"));
-    expect(btn.classList.contains("collapsed")).toBe(false);
   });
 });

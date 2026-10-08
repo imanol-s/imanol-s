@@ -1,0 +1,378 @@
+---
+const layers = [
+  {
+    title: "Workflow adapter",
+    detail: "Translate workflow actions into browser operations.",
+  },
+  {
+    title: "Shared browser services",
+    detail: "Page readiness, record processing, and recovery.",
+  },
+  {
+    title: "Signed-in browser",
+    detail: "Interact with the enterprise application.",
+  },
+  { title: "SAP", detail: "The system where changes are made." },
+];
+const changeSteps = [
+  { title: "Edit", detail: "Apply the intended changes." },
+  { title: "Save", detail: "Use the workflow's save rules." },
+  {
+    title: "Confirm workflow result",
+    detail: "Use the checks supported by that workflow.",
+  },
+  { title: "Record outcome", detail: "Write the result to the run journal." },
+];
+---
+
+<div class="automaton-architecture not-prose">
+  <figure
+    class="architecture-figure"
+    aria-labelledby="automaton-system-title automaton-system-caption"
+  >
+    <div class="architecture-heading">
+      <p class="architecture-kicker font-display">01 / System structure</p>
+      <h3 id="automaton-system-title" class="font-display">
+        Separate policy from browser mechanics
+      </h3>
+    </div>
+    <ol class="system-flow" role="list">
+      <li>
+        <div class="diagram-node">
+          <strong class="font-display">Operator interface / Command line</strong
+          ><span>Select the work to run.</span>
+        </div>
+      </li>
+      <li class="orchestration-row">
+        <div class="diagram-node orchestration-node">
+          <strong class="font-display">Workflow orchestration</strong><span
+            >Coordinate the record loop and workflow actions.</span
+          >
+        </div>
+        <svg
+          class="journal-connector"
+          viewBox="0 0 80 52"
+          aria-hidden="true"
+          fill="none"
+        >
+          <path d="M0 16H76M69 10L76 16L69 22"></path>
+          <path class="resume-connector" d="M80 36H4"></path>
+          <path d="M11 30L4 36L11 42"></path>
+        </svg>
+        <div class="journal-branch">
+          <div class="diagram-node journal-node">
+            <strong class="font-display">Run journals</strong><span
+              >Keep recorded outcomes available for supported resume behavior.</span
+            >
+          </div>
+          <span class="branch-link font-display"
+            >Record outcomes; resume supported work.</span
+          >
+        </div>
+      </li>
+      {
+        layers.map((layer) => (
+          <li>
+            <div class="diagram-node">
+              <>
+                <strong class="font-display">{layer.title}</strong>
+                <span>{layer.detail}</span>
+              </>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+    <figcaption id="automaton-system-caption">
+      Simplified runtime view. Orchestration also calls shared browser services
+      directly. These are responsibility boundaries, not an exact import graph.
+    </figcaption>
+  </figure>
+
+  <figure
+    class="architecture-figure"
+    aria-labelledby="automaton-flow-title automaton-flow-caption"
+  >
+    <div class="architecture-heading">
+      <p class="architecture-kicker font-display">
+        02 / Field-update decisions
+      </p>
+      <h3 id="automaton-flow-title" class="font-display">
+        Check before changing a record
+      </h3>
+    </div>
+    <ol class="decision-entry" role="list">
+      <li>
+        <div class="diagram-node">
+          <strong class="font-display">Read current value</strong><span
+            >Inspect the field before editing.</span
+          >
+        </div>
+      </li>
+      <li>
+        <div class="diagram-node decision-node">
+          <strong class="font-display">Compare with intended value</strong><span
+            >Decide whether a change is needed.</span
+          >
+        </div>
+      </li>
+    </ol>
+    <svg
+      class="decision-connector"
+      viewBox="0 0 800 36"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      fill="none"
+    >
+      <path d="M400 0V14H200V32M400 14H600V32"></path>
+      <path d="M194 25L200 32L206 25M594 25L600 32L606 25"></path>
+    </svg>
+    <div class="decision-branches">
+      <div class="decision-branch">
+        <p class="branch-label font-display">Already matches</p>
+        <div class="diagram-node">
+          <strong class="font-display">Record skipped outcome</strong><span
+            >Leave the matching value unchanged.</span
+          >
+        </div>
+      </div>
+      <div class="decision-branch">
+        <p class="branch-label font-display">Change needed</p>
+        <ol class="change-flow" role="list">
+          {
+            changeSteps.map((step) => (
+              <li>
+                <div class="diagram-node">
+                  <>
+                    <strong class="font-display">{step.title}</strong>
+                    <span>{step.detail}</span>
+                  </>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+    <div class="recovery-note">
+      <strong class="font-display">Recovery is conditional</strong>
+      <p>
+        Supported recovery paths can discard a stranded draft or restore a
+        session. Other failures stop for operator review.
+      </p>
+    </div>
+    <figcaption id="automaton-flow-caption">
+      Simplified field-update workflow. Save and verification rules remain
+      specific to each workflow.
+    </figcaption>
+  </figure>
+</div>
+
+<style>
+  .automaton-architecture {
+    margin: 2rem 0;
+    color: #0f172a;
+  }
+  .architecture-figure {
+    margin: 0;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background: #fff;
+  }
+  .architecture-figure + .architecture-figure {
+    margin-top: 1.5rem;
+  }
+  .architecture-kicker {
+    margin: 0 0 0.75rem;
+    font-size: 0.65rem;
+    line-height: 1.6;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .architecture-heading h3 {
+    margin: 0 0 1.75rem;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    font-weight: 500;
+  }
+  .system-flow,
+  .decision-entry,
+  .change-flow {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .system-flow > li,
+  .decision-entry > li,
+  .change-flow > li {
+    position: relative;
+    margin: 0;
+    padding: 0;
+  }
+  .system-flow > li + li,
+  .decision-entry > li + li,
+  .change-flow > li + li {
+    margin-top: 2rem;
+  }
+  .system-flow > li + li::before,
+  .decision-entry > li + li::before,
+  .change-flow > li + li::before {
+    content: "↓";
+    position: absolute;
+    top: -1.7rem;
+    left: 1rem;
+    color: #64748b;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+  .diagram-node {
+    border: 1px solid #64748b;
+    border-radius: 3px;
+    padding: 0.85rem 1rem;
+  }
+  .diagram-node strong {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+  .diagram-node span {
+    display: block;
+    margin-top: 0.35rem;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.65;
+  }
+  .orchestration-node,
+  .decision-node {
+    border-color: #518069;
+    background: #eff8f2;
+  }
+  .orchestration-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: center;
+  }
+  .journal-connector {
+    width: 100%;
+    stroke: #64748b;
+    stroke-width: 2;
+  }
+  .resume-connector {
+    stroke-dasharray: 5 4;
+  }
+  .branch-link {
+    display: block;
+    margin: 0.65rem 0 0;
+    font-size: 0.75rem;
+    color: #475569;
+    line-height: 1.7;
+  }
+  .journal-node {
+    border-style: dashed;
+  }
+  .decision-connector {
+    display: block;
+    width: 100%;
+    height: 2.25rem;
+    stroke: #64748b;
+    stroke-width: 1.5;
+  }
+  .decision-branches {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 0;
+  }
+  .decision-branch {
+    min-width: 0;
+  }
+  .branch-label {
+    margin: 0 0 0.75rem;
+    color: #166534;
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+  .recovery-note {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-left: 2px solid #64748b;
+  }
+  .recovery-note strong {
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.6;
+  }
+  .recovery-note p {
+    margin: 0.4rem 0 0;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.7;
+  }
+  .architecture-figure figcaption {
+    margin-top: 1.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.7;
+  }
+  :global(.dark) .automaton-architecture {
+    color: #f8fafc;
+  }
+  :global(.dark) .architecture-figure {
+    background: #111c2e;
+    border-color: #334155;
+  }
+  :global(.dark) .architecture-kicker,
+  :global(.dark) .diagram-node span,
+  :global(.dark) .branch-link,
+  :global(.dark) .recovery-note p,
+  :global(.dark) .architecture-figure figcaption {
+    color: #cbd5e1;
+  }
+  :global(.dark) .diagram-node {
+    border-color: #64748b;
+  }
+  :global(.dark) .orchestration-node,
+  :global(.dark) .decision-node {
+    background: #172f30;
+    border-color: #6b9e8a;
+  }
+  :global(.dark) .branch-label {
+    color: #b6e5d3;
+  }
+  :global(.dark) .architecture-figure figcaption {
+    border-color: #334155;
+  }
+  @media (max-width: 639px) {
+    .orchestration-row,
+    .decision-branches {
+      grid-template-columns: 1fr;
+    }
+    .journal-connector {
+      width: 4rem;
+      height: 3rem;
+      justify-self: center;
+      transform: rotate(90deg);
+    }
+    .decision-connector {
+      display: none;
+    }
+    .decision-branches {
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .decision-branch {
+      border-top: 1px solid #64748b;
+      padding-top: 1rem;
+    }
+    .branch-label::before {
+      content: "↳ ";
+    }
+  }
+</style>

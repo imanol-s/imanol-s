@@ -97,7 +97,7 @@ export default function TopoBackground() {
         style={{ zIndex: -2 }}
         aria-hidden="true"
       >
-        <div ref={containerRef} style={TOPO_LINES_STYLE}>
+        <div data-topo-background ref={containerRef} style={TOPO_LINES_STYLE}>
           <svg
             viewBox={`0 0 ${dims.width} ${dims.height}`}
             xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +140,7 @@ export default function TopoBackground() {
               filter="url(#topo-warp)"
               fill="none"
               stroke="var(--color-accent)"
-              strokeOpacity="0.40"
+              strokeOpacity="0.10"
               strokeWidth="1.2"
             >
               {lineYs.map((y) => (

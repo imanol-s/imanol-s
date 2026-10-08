@@ -1,136 +1,358 @@
 ---
-import { Picture } from "astro:assets";
+import { netlifyImage } from "@/utils/netlifyImage";
 import TypewriterText from "./TypewriterText.tsx";
 import { ME, SOCIALS } from "../config";
-import profileImage from "../assets/Profile-1.png";
+import { timelineJobs, primaryEducation } from "../data/career";
+import portraitLineart from "../assets/portrait-lineart.svg";
 
-const github = SOCIALS.find((s) => s.name === "GitHub");
-const linkedin = SOCIALS.find((s) => s.name === "LinkedIn");
+const currentJob = timelineJobs().find((job) => job.currentJob);
+const education = primaryEducation();
 ---
 
-<section
-  class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32"
-  aria-label="Hero"
->
-  <div class="lg:col-span-7">
-    <TypewriterText client:load text={ME.name} />
-    <div
-      class="text-lg md:text-xl font-display text-primary mb-8 tracking-tight"
-    >
-      {ME.profession.join(" \u2022 ")}
+<section class="hero-section" aria-label="Introduction">
+  <div class="hero-main">
+    <div class="hero-copy">
+      <div class="hero-name"><TypewriterText client:load text={ME.name} /></div>
+      <p class="hero-profession">{ME.profession.join(" / ")}</p>
+      <h2 class="hero-headline">
+        {ME.headline.map((line) => <span>{line}</span>)}
+      </h2>
+      <p class="hero-description">{ME.aboutMe}</p>
+      <div class="hero-actions">
+        <a class="cta-primary focus-ring" href="#projects"
+          >Explore my work <span aria-hidden="true">↗</span></a
+        >
+        <a
+          class="text-link focus-ring"
+          href={`/${ME.contactInfo.resumeDoc}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          >View résumé <span aria-hidden="true">↗</span></a
+        >
+      </div>
     </div>
-    <p
-      class="text-xl text-slate-700 dark:text-slate-200 max-w-2xl mb-10 leading-relaxed font-light"
-    >
-      {ME.aboutMe}
-    </p>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-      {
-        ME.focusAreas.map((area) => (
-          <div class="p-5 cad-border bg-slate-50 dark:bg-slate-900 flex flex-col justify-center items-start group hover:border-primary hover:bg-white dark:hover:bg-slate-800 transition-colors">
-            <p class="font-display font-bold text-slate-900 dark:text-white mb-1">
-              {area}
-            </p>
-          </div>
-        ))
-      }
+    <div class="portrait-column">
+      <div class="portrait-illustration">
+        <img
+          {...netlifyImage(portraitLineart)}
+          alt={`${ME.name} illustrated portrait`}
+          class="portrait-image"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <p class="portrait-note font-display">
+        {ME.portraitNote}<span class="iteration-dots" aria-hidden="true"
+          >...</span
+        >
+      </p>
+      <div class="hero-socials">
+        {
+          SOCIALS.filter((social) => social.show).map((social) => (
+            <a
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-link focus-ring"
+            >
+              {social.name}
+              <span aria-hidden="true">↗</span>
+            </a>
+          ))
+        }
+        <a href={`mailto:${ME.contactInfo.email}`} class="text-link focus-ring"
+          >Email<span aria-hidden="true">↗</span></a
+        >
+      </div>
     </div>
   </div>
-  <div class="lg:col-span-5 flex justify-center">
-    <div class="relative group">
-      <div
-        class="absolute -inset-4 border border-dashed border-primary/40 group-hover:scale-105 transition-transform duration-700"
-      >
-      </div>
-      <Picture
-        src={profileImage}
-        alt={`${ME.name} portrait`}
-        class="w-64 h-64 grayscale contrast-125 object-cover cad-border brightness-90"
-        formats={["avif"]}
-        fallbackFormat="webp"
-        widths={[256, 512]}
-        sizes="256px"
-        loading="eager"
-        fetchpriority="high"
-      />
-      <div class="absolute bottom-4 -right-8 flex flex-col gap-2">
-        {
-          github?.show && (
-            <a
-              class="w-10 h-10 bg-[var(--color-background-dark)] text-white flex items-center justify-center hover:bg-primary transition-colors focus-ring"
-              href={github.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <>
-                  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-                  <path d="M9 18c-4.51 2-5-2-7-2" />
-                </>
-              </svg>
-            </a>
-          )
-        }
-        {
-          linkedin?.show && (
-            <a
-              class="w-10 h-10 bg-[var(--color-background-dark)] text-white flex items-center justify-center hover:bg-primary transition-colors focus-ring"
-              href={linkedin.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <>
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                  <rect width="4" height="12" x="2" y="9" />
-                  <circle cx="4" cy="4" r="2" />
-                </>
-              </svg>
-            </a>
-          )
-        }
-        <a
-          class="w-10 h-10 bg-[var(--color-background-dark)] text-white flex items-center justify-center hover:bg-primary transition-colors focus-ring"
-          href={`mailto:${ME.contactInfo.email}`}
-          aria-label="Email"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            ><rect width="20" height="16" x="2" y="4" rx="2"></rect><path
-              d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg
-          >
-        </a>
-      </div>
+  <div class="hero-context">
+    {
+      currentJob && (
+        <div>
+          <>
+            <span class="context-label">Currently</span>
+            <p>
+              {currentJob.title}
+              <span class="context-detail">at {currentJob.company}</span>
+            </p>
+          </>
+        </div>
+      )
+    }
+    {
+      education && (
+        <div>
+          <>
+            <span class="context-label">Foundation</span>
+            <p>
+              {education.title}
+              <span class="context-detail">{education.school}</span>
+            </p>
+          </>
+        </div>
+      )
+    }
+    <div>
+      <span class="context-label">Working across</span><p>
+        {ME.focusAreas.map((area) => <span class="context-focus">{area}</span>)}
+      </p>
     </div>
   </div>
 </section>
+
+<style>
+  .hero-section {
+    margin: 1.5rem 0 6rem;
+  }
+  .hero-main {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    align-items: center;
+    gap: 5rem;
+    padding: 1rem 0 3.75rem;
+  }
+  .hero-copy {
+    min-width: 0;
+  }
+  .hero-name :global(h1) {
+    font-size: clamp(2.4rem, 4.3vw, 4rem);
+    letter-spacing: -0.07em;
+    font-weight: 650;
+    line-height: 1.18;
+    margin-bottom: 1rem;
+  }
+  .hero-profession {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: #b6c6da;
+  }
+  .hero-headline {
+    font-family: var(--font-body);
+    font-size: clamp(2rem, 3.3vw, 3rem);
+    line-height: 1.16;
+    letter-spacing: -0.055em;
+    font-weight: 550;
+    margin: 2.3rem 0 1.3rem;
+  }
+  .hero-headline span {
+    display: block;
+  }
+  .hero-headline span:last-child {
+    color: #b6e5d3;
+  }
+  .hero-description {
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.85;
+    max-width: 34rem;
+  }
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  .hero-actions .cta-primary {
+    padding: 0.9rem 1.25rem;
+    gap: 1.4rem;
+  }
+  .portrait-column {
+    width: 100%;
+    max-width: 23rem;
+    justify-self: end;
+  }
+  .portrait-illustration {
+    position: relative;
+    width: min(100%, 21.5rem);
+    margin-inline: auto;
+    isolation: isolate;
+  }
+  .portrait-illustration::before {
+    content: "";
+    position: absolute;
+    inset: -2rem 0;
+    z-index: -1;
+    background: radial-gradient(
+      ellipse,
+      #0f172ae6 0%,
+      #0f172a99 38%,
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+  .portrait-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
+  }
+  .portrait-note {
+    max-width: 20rem;
+    margin: 0.9rem auto 0;
+    text-align: center;
+    color: #a9bacd;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    line-height: 1.65;
+  }
+  .iteration-dots {
+    display: inline-block;
+    width: 3ch;
+    white-space: nowrap;
+    clip-path: inset(0 100% 0 0);
+    animation: iteration-dots 1.4s steps(1, end) infinite;
+  }
+  @keyframes iteration-dots {
+    0% {
+      clip-path: inset(0 100% 0 0);
+    }
+    25% {
+      clip-path: inset(0 66.6667% 0 0);
+    }
+    50% {
+      clip-path: inset(0 33.3333% 0 0);
+    }
+    75%,
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .iteration-dots {
+      animation: none;
+      clip-path: none;
+    }
+  }
+  .hero-socials {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+    margin-top: 0.75rem;
+  }
+  .hero-socials a {
+    font-size: 0.7rem;
+    gap: 0.35rem;
+  }
+  .hero-context {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    border-top: 1px solid #334155;
+    border-bottom: 1px solid #334155;
+    padding: 1.6rem 0;
+  }
+  .context-label {
+    display: block;
+    color: #94a3b8;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.6rem;
+  }
+  .hero-context p {
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.65;
+  }
+  .context-detail {
+    display: block;
+    font-weight: 400;
+    color: #94a3b8;
+    font-size: 0.78rem;
+    margin-top: 0.15rem;
+  }
+  .context-focus {
+    display: block;
+    font-weight: 400;
+    font-size: 0.78rem;
+    color: #cbd5e1;
+  }
+  @media (max-width: 1023px) {
+    .hero-main {
+      gap: 2.5rem;
+      grid-template-columns: 1.3fr 1fr;
+    }
+    .hero-name :global(h1) {
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+    }
+  }
+  @media (max-width: 767px) {
+    .hero-section {
+      margin: 0.5rem 0 4rem;
+    }
+    .hero-main {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+      padding-bottom: 2rem;
+    }
+    .hero-name :global(h1) {
+      font-size: clamp(2rem, 7.7vw, 3.5rem);
+    }
+    .hero-headline {
+      font-size: clamp(1.8rem, 6vw, 2.5rem);
+      margin-top: 1.75rem;
+    }
+    .hero-profession {
+      font-size: 0.7rem;
+    }
+    .hero-actions {
+      gap: 1.3rem;
+    }
+    .portrait-column {
+      max-width: 100%;
+      justify-self: start;
+      display: grid;
+      grid-template-columns: 7rem minmax(0, 1fr);
+      gap: 0 0.9rem;
+      align-items: center;
+    }
+    .portrait-illustration {
+      grid-row: 1 / 3;
+      width: 7rem;
+    }
+    .portrait-illustration::before {
+      inset: -1rem 0;
+    }
+    .portrait-note {
+      max-width: none;
+      margin: 0;
+      text-align: left;
+      font-size: 0.75rem;
+      line-height: 1.6;
+      align-self: end;
+    }
+    .hero-socials {
+      justify-content: start;
+      align-self: start;
+      gap: 0.1rem 0.75rem;
+      margin-top: 0.3rem;
+    }
+    .hero-socials a {
+      font-size: 0.65rem;
+      min-height: 2.75rem;
+    }
+    .hero-context {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .hero-context > div:last-child {
+      grid-column: 1 / -1;
+    }
+    .hero-context > div:last-child p {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 1rem;
+    }
+    .hero-context p {
+      font-size: 0.8rem;
+    }
+    .context-detail {
+      font-size: 0.72rem;
+    }
+  }
+</style>

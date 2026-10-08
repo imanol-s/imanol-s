@@ -1,6 +1,6 @@
 ---
-title: Dallas Crime Relationship with Housing Prices
-summary: Data analysis examining relationships between crime patterns and housing prices across Dallas neighborhoods.
+title: Dallas Crime & Housing
+summary: To test whether crime explained Dallas housing prices, I analyzed arrest and housing data in R. Revisiting the analysis with a broader model showed crime had limited explanatory power alongside market factors.
 tags:
   - R
   - ggplot2
@@ -10,28 +10,42 @@ tags:
 startDate: 2024-08-01
 endDate: 2024-12-01
 url: https://github.com/imanol-s/Dallas-Crime-Analysis
-cover: "./images/crime-analysis/crime_analysis_footer.webp"
-ogImage: "./images/crime-analysis/crime_analysis_footer.webp"
+cover: "../../assets/projects/housing-analysis.webp"
+ogImage: "../../assets/projects/housing-analysis.webp"
 ---
 
-## Overview
+import arrestMap from "./images/crime-analysis/crime_analysis_map.webp";
+import { netlifyImage } from "@/utils/netlifyImage";
 
-This project started as a group analysis in Fall 2024, built around a straightforward hypothesis: that crime rates in Dallas zip codes would correlate meaningfully with housing prices. Two datasets were joined at the zip-code level — Dallas Police Department arrest records (`Police_Arrests.csv`, ~50k incidents with arrest zip codes) and Zillow Dallas housing listings (`Zillow-dallas.csv`, property prices keyed by zip). Cleaning, aggregation, and joins were handled in R with `dplyr`; visualizations used `ggplot2`.
+## The question and my contribution
 
-The original analysis produced per-zip arrest counts, average and median property prices, and a merged summary table (`Dallas_Arrests_Property_Summary.csv`). A scatter plot of total arrests vs. average property price per zip showed a visible trend, and a shape map highlighted arrest hotspots across the DFW area.
+I worked on the original group analysis in Fall 2024 and returned as the **sole analyst** in March 2026 to revisit its central hypothesis: whether crime patterns meaningfully explain Dallas housing prices.
 
-![DFW arrest hotspot shape map showing per-zip arrest density across Dallas neighborhoods](./images/crime-analysis/crime_analysis_map.webp)
+## The original analysis
 
-## 2026 Remediation
+We joined Dallas Police Department arrest records (roughly 50k incidents) and Zillow housing listings at the zip-code level. In R, `dplyr` handled cleaning and aggregation; `ggplot2` handled visualization.
 
-In March 2026, I circled back to this project with better analytical tools and reperformed the regression analysis. The parsimonious model achieved an R² of 0.854, confirming that education level, listing price, and market pressure explain most of the variance in housing prices. Crime rate ranked 98th out of 141 features in the factor importance analysis — a weak predictor at best.
+The result was a table of arrest counts and average and median property prices, plus a scatter plot and a map of recorded arrest counts.
 
-This contradicted the original project's implicit assumption that crime would be a dominant factor. The honest finding is that crime has minimal independent explanatory power once socioeconomic and market variables are accounted for. The shape map still has value as a geographic visualization of arrest density, but the causal story the original project was built around does not hold up under a properly specified model.
+<figure class="analysis-figure" style={`max-width: ${arrestMap.width}px`}>
+  <img
+    {...netlifyImage(arrestMap)}
+    alt="Map from the original 2024 Dallas analysis showing recorded arrest counts by ZIP code, not population-adjusted crime rates"
+    class="analysis-map"
+    sizes={`(min-width: 640px) ${arrestMap.width}px, calc(100vw - 48px)`}
+    loading="lazy"
+    decoding="async"
+  />
+</figure>
 
-## Role
+## Revisiting the assumption
 
-Developer (Group Project — Fall 2024), sole analyst on the 2026 remediation.
+In 2026, I reran the analysis with a broader regression model. It reported an R² of 0.854; crime ranked 98th of 141 features in the importance analysis, behind socioeconomic and market variables.
 
-## What I Learned
+Within that analysis, crime offered **limited independent explanatory power**. The original two-variable relationship was not enough to support the initial explanation, and these model results do not establish causation.
 
-The original analysis suffered from omitted variable bias — correlating two variables without controlling for confounders that drive both. Revisiting the project two years later with a multivariate approach produced a materially different conclusion. The 2026 remediation is the more defensible analysis; the 2024 version is preserved in the repository as a record of where the work started.
+## What I learned
+
+A plausible story needs more than a correlation. The initial approach omitted variables that could affect both crime and housing prices. Revisiting the work changed the conclusion and made the limitations clearer.
+
+The repository preserves the 2024 work alongside the 2026 remediation so the progression remains visible.

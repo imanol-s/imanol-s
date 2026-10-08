@@ -1,0 +1,252 @@
+---
+// Cumulative bounds from Automaton docs/mdm-cost-savings.html at
+// 3fcca5579466627d3422c5d77fc3f5508ab167df; coordinates retain the source scale.
+const lower =
+  "78.0,223.9 84.6,167.4 150.5,165.9 170.2,165.1 196.6,162.4 249.3,162.2 255.9,162.2 269.1,161.4 308.6,160.3 354.7,154.3 361.3,154.0 381.1,153.8 387.6,153.8 400.8,153.8 433.8,153.8 446.9,150.6 479.9,150.6 486.5,150.6 493.1,150.6 499.6,149.7 506.2,148.6 532.6,148.4 585.3,145.2 591.9,145.1 611.6,145.1 618.2,145.1 624.8,145.1 631.4,144.9 638.0,144.9 657.8,144.3 664.4,142.4 670.9,129.1 677.5,129.1 684.1,129.1 703.9,129.1 710.5,128.6 717.1,127.8 723.6,127.6 730.2,127.6 743.4,127.6 750.0,127.5";
+const upper =
+  "78.0,223.9 84.6,167.4 150.5,165.9 170.2,163.5 196.6,156.0 249.3,155.7 255.9,155.4 269.1,153.2 308.6,150.3 354.7,133.4 361.3,132.2 381.1,131.9 387.6,131.9 400.8,131.9 433.8,131.9 446.9,123.0 479.9,123.0 486.5,123.0 493.1,123.0 499.6,120.4 506.2,117.3 532.6,117.0 585.3,107.8 591.9,107.8 611.6,107.7 618.2,107.7 624.8,107.7 631.4,107.3 638.0,107.3 657.8,105.4 664.4,99.9 670.9,62.9 677.5,62.8 684.1,62.8 703.9,62.8 710.5,61.7 717.1,59.0 723.6,59.0 730.2,59.0 743.4,59.0 750.0,58.5";
+const band = `${lower} ${upper.split(" ").reverse().join(" ")}`;
+const ticks = [140, 105, 70, 35, 0];
+const months = [
+  { label: "May", x: 130.7 },
+  { label: "Jun", x: 334.9 },
+  { label: "Jul", x: 532.6 },
+  { label: "Aug", x: 736.8 },
+];
+---
+
+<figure
+  class="automaton-metrics not-prose"
+  aria-labelledby="automaton-metrics-title automaton-metrics-caption"
+>
+  <h3 id="automaton-metrics-title">Estimated manual work avoided</h3>
+  <p class="metrics-total"><strong>76–119.5</strong> <span>hours</span></p>
+  <p class="metrics-context">
+    Repetitive SAP work handled by automation, freeing time for other tasks.
+  </p>
+
+  <div
+    class="metrics-chart"
+    role="img"
+    aria-label="Cumulative estimate of manual work avoided from April 23 to August 3, 2026, increasing to a range of 76 to 119.5 hours. The dashed line is the lower estimate; the solid line is the upper estimate."
+  >
+    <p class="chart-unit">Cumulative hours</p>
+    <div class="chart-area" aria-hidden="true">
+      <div class="chart-y-axis font-display">
+        {
+          ticks.map((tick, index) => (
+            <span style={`top: ${index * 25}%`}>{tick}</span>
+          ))
+        }
+      </div>
+      <svg viewBox="78 26 672 222" preserveAspectRatio="none" focusable="false">
+        {
+          ticks.map((tick) => (
+            <line
+              class="chart-grid"
+              x1="78"
+              y1={248 - (tick / 140) * 222}
+              x2="750"
+              y2={248 - (tick / 140) * 222}
+              vector-effect="non-scaling-stroke"
+            />
+          ))
+        }
+        <polygon class="estimate-band" points={band}></polygon>
+        <polyline
+          class="estimate-lower"
+          points={lower}
+          vector-effect="non-scaling-stroke"></polyline>
+        <polyline
+          class="estimate-upper"
+          points={upper}
+          vector-effect="non-scaling-stroke"></polyline>
+      </svg>
+    </div>
+    <div class="chart-x-axis font-display" aria-hidden="true">
+      {
+        months.map((month) => (
+          <span style={`left: ${((month.x - 78) / 672) * 100}%`}>
+            {month.label}
+          </span>
+        ))
+      }
+    </div>
+    <p class="chart-period">April 23 to August 3, 2026</p>
+  </div>
+
+  <ul class="chart-legend" role="list">
+    <li>
+      <span class="legend-line legend-lower" aria-hidden="true"></span>Lower
+      estimate: 76 hours
+    </li>
+    <li>
+      <span class="legend-line legend-upper" aria-hidden="true"></span>Upper
+      estimate: 119.5 hours
+    </li>
+  </ul>
+  <figcaption id="automaton-metrics-caption">
+    Based on 4,328 recorded outcomes and estimated manual effort per outcome.
+    This estimates repetitive work avoided, not net time saved: setup,
+    monitoring, and review time have not been deducted.
+  </figcaption>
+</figure>
+
+<style>
+  .automaton-metrics {
+    --chart-ink: #0f172a;
+    --chart-muted: #475569;
+    --chart-rule: #cbd5e1;
+    --chart-low: #475569;
+    --chart-high: #166534;
+    --chart-band: rgba(22, 101, 52, 0.12);
+    margin: 2rem 0;
+    padding: 1.75rem 0;
+    border-block: 1px solid var(--chart-rule);
+    color: var(--chart-ink);
+  }
+  .automaton-metrics h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .metrics-total {
+    margin: 0.6rem 0 0.5rem;
+    font-size: 1.125rem;
+    line-height: 1.2;
+  }
+  .metrics-total strong {
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    color: var(--chart-high);
+  }
+  .metrics-total span {
+    display: inline-block;
+    margin-left: 0.25rem;
+  }
+  .metrics-context {
+    margin: 0;
+    max-width: 52ch;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .metrics-chart {
+    margin-top: 1.75rem;
+  }
+  .chart-unit,
+  .chart-period {
+    margin: 0;
+    color: var(--chart-muted);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .chart-unit {
+    margin-bottom: 1rem;
+  }
+  .chart-area {
+    position: relative;
+    height: clamp(11rem, 28vw, 15rem);
+    margin-left: 2.75rem;
+  }
+  .chart-y-axis {
+    position: absolute;
+    inset: 0 auto 0 -2.75rem;
+    width: 2.1rem;
+    color: var(--chart-muted);
+    font-size: 0.75rem;
+    text-align: right;
+    line-height: 1;
+  }
+  .chart-y-axis span {
+    position: absolute;
+    right: 0;
+    transform: translateY(-50%);
+  }
+  .chart-area svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .chart-grid {
+    stroke: var(--chart-rule);
+    stroke-width: 1;
+  }
+  .estimate-band {
+    fill: var(--chart-band);
+  }
+  .estimate-lower,
+  .estimate-upper {
+    fill: none;
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+  .estimate-lower {
+    stroke: var(--chart-low);
+    stroke-dasharray: 5 4;
+  }
+  .estimate-upper {
+    stroke: var(--chart-high);
+  }
+  .chart-x-axis {
+    position: relative;
+    margin: 0.8rem 0 0 2.75rem;
+    height: 1.25rem;
+    color: var(--chart-muted);
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  .chart-x-axis span {
+    position: absolute;
+    transform: translateX(-50%);
+  }
+  .chart-x-axis span:last-child {
+    transform: translateX(-100%);
+  }
+  .chart-period {
+    margin-top: 0.6rem;
+  }
+  .chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.5rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .chart-legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .legend-line {
+    width: 1.5rem;
+    border-top: 2px solid;
+    flex-shrink: 0;
+  }
+  .legend-lower {
+    border-color: var(--chart-low);
+    border-top-style: dashed;
+  }
+  .legend-upper {
+    border-color: var(--chart-high);
+  }
+  .automaton-metrics figcaption {
+    margin-top: 1rem;
+    color: var(--chart-muted);
+    font-size: 0.875rem;
+    line-height: 1.65;
+  }
+  :global(.dark) .automaton-metrics {
+    --chart-ink: #f8fafc;
+    --chart-muted: #cbd5e1;
+    --chart-rule: #334155;
+    --chart-low: #cbd5e1;
+    --chart-high: #b6e5d3;
+    --chart-band: rgba(182, 229, 211, 0.15);
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+import { ME } from "../config";
+---
+
+<section
+  id="approach"
+  class="approach-section scroll-mt-28"
+  aria-labelledby="approach-heading"
+>
+  <div class="approach-intro">
+    <h2 id="approach-heading" class="section-heading">How I work</h2>
+    <p class="section-intro">{ME.workingStyle}</p>
+  </div>
+  <div class="approach-grid">
+    {
+      ME.approach.map((step) => (
+        <article class="approach-card cad-border">
+          <h3>{step.title}</h3>
+          <p>{step.description}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .approach-section {
+    margin-bottom: 5rem;
+  }
+  .approach-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 2rem;
+  }
+  .approach-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .approach-card {
+    border-radius: 4px;
+    padding: 1.75rem;
+    background: #111c2e;
+  }
+  .approach-card h3 {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.035em;
+  }
+  .approach-card p {
+    color: #b4c1d2;
+    font-size: 0.875rem;
+    line-height: 1.85;
+  }
+  @media (max-width: 767px) {
+    .approach-intro {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+    .approach-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

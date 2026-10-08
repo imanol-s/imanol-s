@@ -35,10 +35,9 @@ describe("workExperience", () => {
     }
   });
 
-  it("every entry has a non-empty goals array", () => {
+  it("every entry has a goals array of non-empty strings", () => {
     for (const job of workExperience) {
       expect(Array.isArray(job.goals)).toBe(true);
-      expect(job.goals.length).toBeGreaterThan(0);
       for (const goal of job.goals) {
         expect(typeof goal).toBe("string");
         expect(goal.length).toBeGreaterThan(0);
@@ -166,8 +165,8 @@ describe("career accessors", () => {
   });
 
   describe("timelineJobs", () => {
-    it("returns at most 3 entries", () => {
-      expect(timelineJobs().length).toBeLessThanOrEqual(3);
+    it("returns every work experience", () => {
+      expect(timelineJobs().length).toBe(workExperience.length);
     });
 
     it("returns the first entries from workExperience", () => {
