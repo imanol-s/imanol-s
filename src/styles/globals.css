@@ -1,19 +1,15 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* ── Latin-only font loading ──────────────────────────────────────
-   Replaces full @fontsource-variable imports (13 @font-face blocks
-   covering Cyrillic, Greek, Vietnamese, Latin-ext, Latin) with just
-   the 2 subsets actually used by this English-language site.
-   Eliminates 11 unused @font-face declarations from the CSS bundle. */
+/* Load only the normal Latin variable subsets used by this English-language site. */
 
-/* Inter Variable — Latin subset only */
+/* IBM Plex Sans Variable — Latin subset only */
 @font-face {
-  font-family: "Inter Variable";
+  font-family: "IBM Plex Sans Variable";
   font-style: normal;
   font-display: swap;
-  font-weight: 100 900;
-  src: url("@fontsource-variable/inter/files/inter-latin-wght-normal.woff2")
+  font-weight: 100 700;
+  src: url("@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2")
     format("woff2-variations");
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -47,7 +43,7 @@
   --color-slate-700: #334155;
   --color-slate-800: #1e293b;
   --font-display: "JetBrains Mono Variable", "JetBrains Mono", monospace;
-  --font-body: "Inter Variable", "Inter", sans-serif;
+  --font-body: "IBM Plex Sans Variable", "IBM Plex Sans", sans-serif;
 
   --radius-DEFAULT: 4px;
 }
@@ -62,17 +58,19 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 0;
+    width: 100%;
     height: 1px;
     background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
   }
   @media (prefers-reduced-motion: no-preference) {
     .drawing-hover::after {
-      transition: width 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+      transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
     }
   }
   .drawing-hover:hover::after {
-    width: 100%;
+    transform: scaleX(1);
   }
   .cad-border {
     border: 1px solid color-mix(in srgb, var(--color-accent) 20%, transparent);

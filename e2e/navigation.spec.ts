@@ -95,7 +95,10 @@ test.describe("Site navigation", () => {
     await expect
       .poll(() =>
         header.evaluate((element) =>
-          Math.round(element.getBoundingClientRect().width),
+          Math.round(
+            element.querySelector(".header-end")!.getBoundingClientRect()
+              .right - element.getBoundingClientRect().left,
+          ),
         ),
       )
       .toBe(56);

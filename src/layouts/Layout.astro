@@ -13,7 +13,7 @@ import type { ImageMetadata } from "astro";
 import { netlifyImage } from "@/utils/netlifyImage";
 
 // Resolve hashed font URLs at build time for preloading
-import interLatinUrl from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import plexSansLatinUrl from "@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url";
 import jbMonoLatinUrl from "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url";
 
 interface Props {
@@ -55,7 +55,7 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
       rel="preload"
       as="font"
       type="font/woff2"
-      href={interLatinUrl}
+      href={plexSansLatinUrl}
       crossorigin
     />
     <link

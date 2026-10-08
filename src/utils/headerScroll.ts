@@ -56,10 +56,9 @@ export function initHeaderScroll(
       56,
       window.innerWidth - (window.innerWidth < 768 ? 32 : 48),
     );
-    // Measure once per resize: the capsule contracts from its right edge while the frog stays anchored.
+    // Resize only the static layout; decorative transforms tuck the shell toward the fixed frog anchor.
     const expandedWidth = Math.min(960, available);
     header.style.setProperty("--header-expanded-width", `${expandedWidth}px`);
-    header.style.setProperty("--header-compact-width", `${expandedWidth}px`);
     header.style.setProperty(
       "--header-left",
       `${(window.innerWidth - expandedWidth) / 2}px`,
@@ -111,7 +110,6 @@ export function initHeaderScroll(
     window.cancelAnimationFrame(focusFrame);
     setDocked(false);
     header.style.removeProperty("--header-expanded-width");
-    header.style.removeProperty("--header-compact-width");
     header.style.removeProperty("--header-left");
     header.removeAttribute("data-header-compact");
     header.removeAttribute("data-keyboard-engaged");

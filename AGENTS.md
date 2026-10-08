@@ -41,13 +41,13 @@ Instructions for AI coding assistants working with this repository.
 
 - Astro 7.3 portfolio site with React 19, Tailwind CSS 4, TypeScript, and Vite 8
 - PRs follow `.github/pull_request_template.md` template
-- Design tokens: `--color-primary: #64748b` (slate gray), slate palette, JetBrains Mono display + Inter body
+- Design tokens: `--color-primary: #64748b` (slate gray), slate palette, JetBrains Mono display + IBM Plex Sans body
 - Nav links use `text-primary` base with `hover:text-white` (muted → bright on hover)
 - Card titles stay bright on hover; interactivity signaled via border and image effects
 - Build command: `npm run build` runs `astro check && astro build`; preview on port 4321
 - Browser-level validation is available via `npm run test:e2e` with Playwright against the local preview on port 4321
 - Netlify pins Node 22 via `NODE_VERSION` in `netlify.toml`
-- Fonts self-hosted via `@fontsource-variable` (Inter + JetBrains Mono) — no Google Fonts CDN
+- Fonts self-hosted via `@fontsource-variable` (Latin-only IBM Plex Sans + JetBrains Mono) — no Google Fonts CDN
 - Raster content images use Netlify Image CDN with AVIF quality 80 and responsive widths 400/800/1200; SVG artwork stays vector. Hashed `/_astro/` assets and their Image CDN variants cache immutably for one year; HTML uses CDN stale-while-revalidate, and unversioned images revalidate.
 - Three React islands: `TopoBackground.tsx` (`client:only="react"`), `TypewriterText.tsx` (`client:load`), and `LoadingOverlay.tsx` (`client:only="react"`)
 - Project subagents in `.cursor/agents/`: `coding-specialist` (mandatory for code changes), `software-architect`, `performance-optimizer`
@@ -69,9 +69,9 @@ Instructions for AI coding assistants working with this repository.
 - Homepage project cards show all projects in a responsive grid; `ProjectsCarousel.astro` is also reused by the projects listing.
 - Project covers use original watercolor concept illustrations from `src/assets/projects/` in consistent 2:1 full-bleed media regions. The original Dallas arrest-count map remains uncropped in the case-study body; cover illustrations do not represent screenshots or measured results.
 - Project dates are optional when unconfirmed. Dated projects sort newest first, with stable ID ordering for ties; undated projects follow in stable ID order, and their pages omit unavailable dates.
-- Automaton charts and architecture diagrams use server-rendered Astro HTML/CSS, with visible data and descriptions. Measurements are operation-specific, retain approximation qualifiers, and omit business identifiers. No chart runtime or React island is added.
+- Automaton's server-rendered chart shows the historical estimate of 76–119.5 hours of repetitive manual work avoided across 4,328 recorded outcomes, not measured net savings. Preserve the model's dates, assumptions, and excluded setup/review effort. Its chart and architecture diagrams omit business identifiers and add no client runtime or React island.
 - Hero portrait uses `src/assets/portrait-lineart.svg`, a transparent vector trace of the original illustration, with an unframed treatment and compact mobile presentation.
-- Header navigation contracts toward a fixed frog anchor on downward scroll and expands on upward scroll or activation. `src/utils/headerScroll.ts` measures the header width, protects keyboard/menu interaction, and cleans up on Astro navigation; labels reveal after expansion, and reduced motion disables transitions.
+- Header navigation tucks a fixed-height decorative shell toward a fixed frog anchor on downward scroll and expands on upward scroll or activation. The shell uses transforms; navigation text and its layout keep their original dimensions. `src/utils/headerScroll.ts` measures the header width, protects keyboard/menu interaction, and cleans up on Astro navigation; labels reveal after expansion, and reduced motion disables transitions.
 
 - Intro name reveal starts while the overlay fades and never clears already-visible text. Returning visits, late hydration, reduced motion, Escape, and no-JS preserve the full name. The existing topography island persists across Astro navigation to retain its animation phase; Back to Top keeps a stable 48px outlined target.
 
@@ -90,5 +90,6 @@ Instructions for AI coding assistants working with this repository.
 - `npm install`/`npm ci` runs local identity setup through `prepare`, except in CI or outside a Git worktree. Run `npm run setup:git-identity` explicitly when needed; it configures only this repository's identity and `core.hooksPath=.husky`, never global settings.
 - Run `npm run check:git-identity` before committing. Enabled hooks check effective author and committer emails, including environment/config overrides, before linting; pre-push also checks each pushed tip. Correct conflicting overrides rather than relying on global fallback or bypassing the configured checks. Existing contributors and historical identities are not rewritten by these guards.
 - `npm run test:git-identity` exercises setup and guards in isolated temporary repositories and runs in CI.
+- Commitlint imports its conventional rules and parser preset through ESM in `commitlint.config.js`; keep the parser as a direct dependency and preserve the standard rules and commit hook.
 
 - Resume publication runs only from `main`; author changes on `ui-migration` and merge to publish. The workflow trigger, job guard, and freshness comparison all target `main`.

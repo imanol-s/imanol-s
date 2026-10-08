@@ -215,6 +215,7 @@ function displayName(name: string) {
 - Set `loading="eager"` and `fetchpriority="high"` only for above-the-fold images; use `loading="lazy"` for everything else
 - Keep client JS minimal: only `TopoBackground.tsx`, `TypewriterText.tsx`, and `LoadingOverlay.tsx` hydrate — avoid adding new React islands unless truly interactive
 - Intro name reveal starts while the overlay fades and never clears already-visible text. Returning visits, late hydration, reduced motion, Escape, and no-JS preserve the full name. The existing topography island persists across Astro navigation to retain its animation phase; Back to Top keeps a stable 48px outlined target.
+- Header docking animates only its fixed-height decorative rail/endcap transforms and navigation opacity. Text and layout dimensions stay fixed; the frog and 56px dock target stay anchored. Underline hover uses scaleX, and Back to Top retains its 48px target. Reduced motion removes transitions.
 - Container: `max-w-7xl mx-auto px-6`
 
 ## Styling
@@ -223,7 +224,7 @@ function displayName(name: string) {
 - Dark mode is **class-based** via `<html class="dark">` (set by inline script in Layout.astro) — use `dark:` prefix in Tailwind or `.dark` selector in custom CSS
 - Design system: blueprint/topographic theme with slate palette
 - Color tokens: `primary` (#64748b), `accent` (#94a3b8), `background-light` (#f8fafc), `background-dark` (#0f172a)
-- Fonts: JetBrains Mono (`font-display`) for headings/nav/CTAs, Inter (`font-body`) for body text
+- Fonts: JetBrains Mono (`font-display`) for headings/nav/CTAs, IBM Plex Sans (`font-body`) for body text
 - Custom utility classes in globals.css: `cad-border`, `cta-primary`, `drawing-hover`, `focus-ring`, `horizontal-scroll-snap`, `typing-caret`, `project-mdx`, `topo-lines`
 - Project prose uses `@tailwindcss/typography` `.prose` class with custom color overrides in globals.css
 - Scoped Astro `<style>` blocks cannot use `@apply` with Tailwind classes unless `@reference` is added — prefer plain CSS in scoped styles
@@ -243,5 +244,6 @@ function displayName(name: string) {
 - `npm install`/`npm ci` runs local identity setup through `prepare`, except in CI or outside a Git worktree. Run `npm run setup:git-identity` explicitly when needed; it configures only this repository's identity and `core.hooksPath=.husky`, never global settings.
 - Run `npm run check:git-identity` before committing. Enabled hooks check effective author and committer emails, including environment/config overrides, before linting; pre-push also checks each pushed tip. Correct conflicting overrides rather than relying on global fallback or bypassing the configured checks. Existing contributors and historical identities are not rewritten by these guards.
 - `npm run test:git-identity` exercises setup and guards in isolated temporary repositories and runs in CI.
+- Commitlint imports its conventional rules and parser preset through ESM in `commitlint.config.js`; keep the parser as a direct dependency and preserve the standard rules and commit hook.
 
 - Resume publication runs only from `main`; author changes on `ui-migration` and merge to publish. The workflow trigger, job guard, and freshness comparison all target `main`.

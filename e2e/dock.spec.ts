@@ -19,6 +19,9 @@ const waitForHeader = async (page: Page, width: number) => {
       ),
     )
     .toBe(expandedWidth);
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+  });
   return header;
 };
 
@@ -39,20 +42,39 @@ for (const width of [1280, 800, 390, 320]) {
     const motion = await page.evaluate(async () => {
       const shell = document.querySelector(".site-header")!;
       const frog = document.querySelector(".header-frog")!;
+      const end = document.querySelector(".header-end")!;
+      const link = document.querySelector(".site-brand")!;
       const initial = shell.getBoundingClientRect().width;
+      const textBounds = link.getBoundingClientRect();
       const frogX = frog.getBoundingClientRect().x;
       const widths: number[] = [];
       const frogXs: number[] = [];
+      const layoutWidths: number[] = [];
+      const textSizes: Array<{ width: number; height: number }> = [];
       window.scrollTo({ top: 800, behavior: "instant" });
       const start = performance.now();
       while (performance.now() - start < 700) {
         await new Promise<void>((resolve) =>
           requestAnimationFrame(() => resolve()),
         );
-        widths.push(shell.getBoundingClientRect().width);
+        widths.push(
+          end.getBoundingClientRect().right -
+            shell.getBoundingClientRect().left,
+        );
+        layoutWidths.push(shell.getBoundingClientRect().width);
+        const text = link.getBoundingClientRect();
+        textSizes.push({ width: text.width, height: text.height });
         frogXs.push(frog.getBoundingClientRect().x);
       }
-      return { initial, frogX, widths, frogXs };
+      return {
+        initial,
+        frogX,
+        widths,
+        frogXs,
+        layoutWidths,
+        textSizes,
+        textBounds: { width: textBounds.width, height: textBounds.height },
+      };
     });
     expect(
       motion.widths.some(
@@ -62,6 +84,18 @@ for (const width of [1280, 800, 390, 320]) {
     expect(motion.frogXs.every((x) => Math.abs(x - motion.frogX) < 0.5)).toBe(
       true,
     );
+    expect(
+      motion.layoutWidths.every(
+        (sample) => Math.abs(sample - motion.initial) < 0.5,
+      ),
+    ).toBe(true);
+    expect(
+      motion.textSizes.every(
+        (sample) =>
+          Math.abs(sample.width - motion.textBounds.width) < 0.5 &&
+          Math.abs(sample.height - motion.textBounds.height) < 0.5,
+      ),
+    ).toBe(true);
     const button = page.getByRole("button", { name: "Open navigation" });
     await expect(header).toHaveAttribute("data-header-docked", "");
     await expect(button).toBeVisible();
@@ -69,7 +103,10 @@ for (const width of [1280, 800, 390, 320]) {
     await expect
       .poll(() =>
         header.evaluate((element) =>
-          Math.round(element.getBoundingClientRect().width),
+          Math.round(
+            element.querySelector(".header-end")!.getBoundingClientRect()
+              .right - element.getBoundingClientRect().left,
+          ),
         ),
       )
       .toBe(56);
@@ -80,6 +117,17 @@ for (const width of [1280, 800, 390, 320]) {
     const bounds = await header.boundingBox();
     expect(bounds!.x).toBeGreaterThanOrEqual(0);
     expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+    const target = await button.boundingBox();
+    expect(target!.width).toBe(56);
+    expect(target!.height).toBe(56);
+    expect(
+      await header.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        return element.contains(
+          document.elementFromPoint(rect.left + 100, rect.top + 28),
+        );
+      }),
+    ).toBe(false);
     await button.click();
     await expect(header).not.toHaveAttribute("data-header-docked", "");
     await expect(page.locator(".site-brand")).toBeFocused();
@@ -149,8 +197,10 @@ test("reduced motion keeps the dock accessible without animation", async ({
         requestAnimationFrame(() =>
           resolve({
             width: Math.round(
-              document.querySelector(".site-header")!.getBoundingClientRect()
-                .width,
+              document.querySelector(".header-end")!.getBoundingClientRect()
+                .right -
+                document.querySelector(".site-header")!.getBoundingClientRect()
+                  .left,
             ),
             opacity: getComputedStyle(
               document.querySelector("#header-navigation")!,
