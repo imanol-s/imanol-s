@@ -2,7 +2,7 @@ name: Publish resume
 
 on:
   push:
-    branches: [ui-migration]
+    branches: [main]
     paths:
       - 'resume/**'
       - '.github/workflows/publish-resume.yml'
@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   publish:
-    if: github.ref == 'refs/heads/ui-migration'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -54,8 +54,8 @@ jobs:
       - name: Check current resume inputs
         id: freshness
         run: |
-          git fetch origin +refs/heads/ui-migration:refs/remotes/origin/ui-migration
-          node scripts/resume-pipeline.mjs fresh "$GITHUB_SHA" origin/ui-migration >> "$GITHUB_OUTPUT"
+          git fetch origin +refs/heads/main:refs/remotes/origin/main
+          node scripts/resume-pipeline.mjs fresh "$GITHUB_SHA" origin/main >> "$GITHUB_OUTPUT"
       - name: Deploy PDF
         if: steps.freshness.outputs.publish == 'true'
         id: deployment
