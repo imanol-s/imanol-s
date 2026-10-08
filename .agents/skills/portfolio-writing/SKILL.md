@@ -12,6 +12,15 @@ Follow the user's current scope and the editorial criteria in
 Use src/content/projects/crime-analysis.mdx as a reference for restrained
 Markdown formatting, not as a mandatory article template.
 
+## Technical substance
+
+Anchor technical case studies in the actual task and concrete artifacts
+documented in maintained sources. Review the project, maintained résumé,
+and relevant history before replacing specific work with generic process
+descriptions. Explain what the owner implemented, evaluated, or delivered
+and why it mattered. Do not invent results to fill evidence gaps, and avoid
+repeating the same deliverable list across multiple sections.
+
 ## Headings and labels
 
 Use plain headings that identify content. Avoid decorative numbered kickers, generic slogans, and redundant preambles. Keep supporting labels only when they provide useful information.
