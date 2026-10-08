@@ -1,6 +1,6 @@
 ---
 title: Automaton
-summary: Repetitive SAP updates prompted me to build Automaton as the solo developer. It combines reusable workflows, a desktop interface, and run records. A targeted optimization reduced one recorded field check from 8s to approximately 0.1s.
+summary: I built Automaton as the solo developer to handle repetitive SAP updates and free time for other work. It combines reusable workflows, a desktop interface, and run records for reviewing outcomes and resuming supported work.
 tags:
   - Python
   - JavaScript
@@ -21,7 +21,7 @@ import AutomatonArchitecture from "@/components/AutomatonArchitecture.astro";
 
 Making the same SAP change across many records means repeating a sequence of clicks, field edits, and saves. Interrupted batches introduce another problem: knowing what completed before deciding where to continue.
 
-I built Automaton to automate those workflows while keeping their progress and outcomes visible.
+I built Automaton to take that repetitive work off my hands and free time for other tasks, while keeping progress and outcomes visible.
 
 ## My contribution
 
@@ -29,15 +29,19 @@ As the **solo developer**, I designed and implemented the project end to end: br
 
 As a computer science graduate, I approached Automaton as a software engineering problem. The challenge was to coordinate browser state and workflow-specific behavior while keeping a durable record of execution.
 
-## Removing an unnecessary wait
+## Time for other work
 
-One field-read condition treated a valid blank value as though the field had not finished loading. That triggered repeated browser checks before accepting the value already returned.
+The project's savings model estimates **76–119.5 hours of manual work avoided** across 4,328 recorded row outcomes from April 23 through August 3, 2026.
 
-I refined the condition to distinguish a resolved blank from an unresolved field. The recorded duration for that check changed from **8.0 seconds to approximately 0.1 seconds**, while unresolved fields retained their readiness checks. Browser probes for that check changed from **approximately 80 to 1**.
+Automaton handles the repetitive browser steps in batches, freeing me to focus on other tasks. Run records keep outcomes available for review, with supported recovery and resume paths when a run needs attention.
 
 <AutomatonMetrics />
 
-The measurements come from the project's performance ledger, recorded September 10, 2026, for one blank-field check in a live batch.
+### How the estimate works
+
+The model combines 2,070 component-maintenance outcomes at 90 seconds each with 2,258 material saves at 38.6–108 seconds each. The lower material rate comes from a timed example cited in the project's report; the upper rate is a practitioner estimate.
+
+These rates were not benchmarked against the same population. Recorded outcomes can include repeat work, so they are not a count of unique records. **Setup, monitoring, and review time are not deducted**. The range describes estimated repetitive manual work avoided, rather than measured net time savings.
 
 ## Architecture around what varies
 

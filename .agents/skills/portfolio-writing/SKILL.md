@@ -16,6 +16,19 @@ Markdown formatting, not as a mandatory article template.
 
 Use plain headings that identify content. Avoid decorative numbered kickers, generic slogans, and redundant preambles. Keep supporting labels only when they provide useful information.
 
+## Outcomes and metrics
+
+Lead with what changed for the person using the tool, such as time freed for
+other work or less repetitive manual work. State qualitative outcomes when
+supported; never invent hours saved or infer them from operation timings.
+
+Choose metrics that help readers understand that outcome. Do not promote an
+isolated detection check or browser-probe count into the project's headline
+result. Include a microbenchmark only when its connection to a meaningful
+outcome is established and the technical detail helps explain an engineering
+decision. A graph is optional; omit it when the evidence does not support a
+useful comparison.
+
 ## Markdown formatting
 
 Audit Markdown formatting in every project draft and review, including

@@ -30,20 +30,19 @@ test("every project is discoverable from the homepage and project collection", a
   ).toBeVisible();
 });
 
-test("operation measurements and both architecture diagrams remain readable at 320px", async ({
+test("estimated time avoided and architecture diagrams remain readable at 320px", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 800 });
   await page.goto("/projects/automaton/");
   const chart = page.getByRole("figure", {
-    name: /One blank-field check, before and after/,
+    name: /Estimated manual work avoided/,
   });
   await expect(chart).toBeVisible();
-  await expect(chart).toContainText("8.0 s");
-  await expect(chart).toContainText("≈0.1 s");
-  await expect(chart).toContainText("≈80");
+  await expect(chart).toContainText("76–119.5");
+  await expect(chart).toContainText("not net time saved");
   await expect(chart).toContainText(
-    "These measurements describe this check, not an entire record or run.",
+    "monitoring, and review time have not been deducted",
   );
   const system = page.getByRole("figure", {
     name: /Separate policy from browser mechanics/,
@@ -51,6 +50,8 @@ test("operation measurements and both architecture diagrams remain readable at 3
   const workflow = page.getByRole("figure", {
     name: /Check before changing a record/,
   });
+  await expect(system).toBeVisible();
+  await expect(workflow).toBeVisible();
   await expect(system).toContainText("Run journals");
   await expect(workflow).toContainText("Already matches");
   await expect(workflow).toContainText("Change needed");
