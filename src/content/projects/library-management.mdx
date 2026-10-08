@@ -19,19 +19,19 @@ A library needs to track its catalog and loans together. Repeating author detail
 
 ## My contribution
 
-As lead developer, I built a database-backed library system with Python, SQLAlchemy, MySQL, and a Django frontend. The system supports a 10k+ record catalog, check-in and checkout, and circulation history.
+As **lead developer**, I built a database-backed library system with Python, SQLAlchemy, MySQL, and a Django frontend. The system supports a **10k+ record catalog**, check-in and checkout, and circulation history.
 
 ## The modeling decision
 
 Books and authors have a many-to-many relationship. Putting a list of authors inside each book record would make updates fragile and querying difficult.
 
-I normalized the schema to third normal form: separate Books, Authors, and Publishers tables, with a BookAuthors junction table. Circulation records link members and books with timestamps.
+I normalized the schema to third normal form: separate `Books`, `Authors`, and `Publishers` tables, with a `BookAuthors` junction table. Circulation records link members and books with timestamps.
 
 That means an author's details can change in one place. Finding every book by that author becomes a join rather than a string search.
 
 ## From schema to workflow
 
-The Django interface gives librarians a way to manage circulation without direct database access. SQLAlchemy maps the schema to Python objects. Checkout updates availability and creates a circulation record within one transaction.
+The Django interface gives librarians a way to manage circulation without direct database access. SQLAlchemy maps the schema to Python objects. Checkout updates availability and creates a circulation record **within one transaction**.
 
 UML diagrams document the relationships so the team can understand and extend the design.
 

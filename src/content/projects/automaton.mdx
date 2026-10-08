@@ -25,7 +25,7 @@ I built Automaton to automate those workflows while keeping their progress and o
 
 ## My contribution
 
-As the solo developer, I designed and implemented the project end to end: browser automation, reusable infrastructure, workflow adapters, the desktop interface, run journals, and tests.
+As the **solo developer**, I designed and implemented the project end to end: browser automation, reusable infrastructure, workflow adapters, the desktop interface, run journals, and tests.
 
 As a computer science graduate, I approached Automaton as a software engineering problem. The challenge was to coordinate browser state and workflow-specific behavior while keeping a durable record of execution.
 
@@ -61,7 +61,8 @@ Supported recovery paths can discard a stranded draft or restore a session. Some
 
 ## Correctness and verification
 
-Offline tests exercise input handling, workflow logic, journals, and interface behavior without a live SAP connection. Separate live checks establish whether SAP displayed the expected screen and persisted a change.
+- **Offline tests** exercise input handling, workflow logic, journals, and interface behavior without a live SAP connection.
+- **Separate live checks** establish whether SAP displayed the expected screen and persisted a change.
 
 Keeping these checks distinct makes the evidence easier to interpret.
 

@@ -20,7 +20,7 @@ Scheduling by hand becomes error-prone as dependencies grow. One incorrect compl
 
 ## My contribution
 
-As lead developer on this Fall 2024 class project, I built a Java scheduler that identifies the tasks that determine the project's completion time. It also calculates slack: how long each task can be delayed without delaying the project.
+As **lead developer** on this Fall 2024 class project, I built a Java scheduler that identifies the tasks that determine the project's completion time. It also calculates slack: how long each task can be delayed without delaying the project.
 
 The tool implements PERT/CPM scheduling, representing tasks and dependencies as a directed acyclic graph.
 
@@ -28,9 +28,12 @@ The tool implements PERT/CPM scheduling, representing tasks and dependencies as 
 
 The graph uses adjacency lists. A DFS-based topological sort tracks active nodes to detect cycles before scheduling begins. Invalid cyclic input stops the calculation.
 
-A forward pass computes earliest start and finish times. A backward pass computes latest start and finish times. Together, the passes identify slack and the zero-slack tasks that determine the project duration, in O(V+E) time.
+1. **A forward pass** computes earliest start and finish times.
+2. **A backward pass** computes latest start and finish times.
 
-Here, V is the number of tasks and E is the number of dependencies. The calculation scales with those counts rather than checking every possible path.
+Together, the passes identify slack and the zero-slack tasks that determine the project duration, in `O(V+E)` time.
+
+Here, `V` is the number of tasks and `E` is the number of dependencies. The calculation scales with those counts rather than checking every possible path.
 
 The output includes each task's earliest completion, latest completion, slack, and critical status.
 
@@ -40,7 +43,7 @@ I used course-provided inputs and generated task networks with known critical pa
 
 ## The result and lesson
 
-The scheduler produces a timing breakdown for every task and identifies the critical path. Detecting cycles first keeps an impossible dependency structure from producing a misleading schedule.
+The scheduler produces a timing breakdown for every task and identifies the **critical path**. Detecting cycles first keeps an impossible dependency structure from producing a misleading schedule.
 
 The lesson was to check the assumptions behind a calculation before trusting its output. Graph theory provided the method; validation made the result useful.
 

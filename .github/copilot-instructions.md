@@ -59,6 +59,7 @@ const { title, description } = Astro.props;
 ## Portfolio Writing Agent
 
 - Delegate substantive visitor-facing writing and editorial reviews to `portfolio_writer`, defined in [`.codex/agents/portfolio-writer.toml`](../.codex/agents/portfolio-writer.toml). This agent drafts and reviews project summaries, case studies, homepage copy, and blog prose; the parent agent applies changes and owns validation and Git operations.
+- The writer must read [the portfolio-writing skill](../.agents/skills/portfolio-writing/SKILL.md) before drafting or reviewing project articles, including formatting-only work. Every project draft or review includes a Markdown audit and brief formatting decisions; use restrained headings, lists, bold, and code where they help reading, without quotas.
 - Follow the five editorial criteria in its definition: clear problem/contribution/outcome, easy scanning, grounded voice, preserved facts and metrics, and plain language without em dashes.
 - Career bullets in `src/data/career.ts` remain unchanged unless the user explicitly requests edits to those bullets. General requests to improve site copy do not authorize rewriting them.
 
