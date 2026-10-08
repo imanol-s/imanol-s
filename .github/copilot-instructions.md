@@ -106,7 +106,7 @@ const { title, description } = Astro.props;
 | `languages`             | `{name, level}[]`        | Profile communication rows                   |
 | `contactInfo.email`     | `string`                 | Hero/footer email links                      |
 | `contactInfo.linkedin`  | `string`                 | Reference for LinkedIn URL                   |
-| `contactInfo.resumeDoc` | `string` (`resume.pdf`)                 | Header, hero, profile, footer résumé links   |
+| `contactInfo.resumeDoc` | `string` (`resume.pdf`)  | Header, hero, profile, footer résumé links   |
 
 ### `SOCIALS` — social link entries
 
@@ -236,3 +236,10 @@ function displayName(name: string) {
 - Resume-only changes skip Netlify through `node scripts/resume-pipeline.mjs ignore`; uncertain history builds normally.
 - Run `node --test scripts/resume-pipeline.check.mjs` for the Git-history regression checks.
 - PR CI also skips site checks on resume-only synchronize pushes using the full before/head range; opened PRs and uncertain history keep site checks.
+
+## Git identity
+
+- Verified GitHub account: `imanol-s` (ID `72887568`). Use repo-local name `Imanol Saldana` and email `72887568+imanol-s@users.noreply.github.com` for new work. The inherited global identity maps to `imanol655`, a different GitHub account, and must not be used here.
+- `npm install`/`npm ci` runs local identity setup through `prepare`, except in CI or outside a Git worktree. Run `npm run setup:git-identity` explicitly when needed; it configures only this repository's identity and `core.hooksPath=.husky`, never global settings.
+- Run `npm run check:git-identity` before committing. Enabled hooks check effective author and committer emails, including environment/config overrides, before linting; pre-push also checks each pushed tip. Correct conflicting overrides rather than relying on global fallback or bypassing the configured checks. Existing contributors and historical identities are not rewritten by these guards.
+- `npm run test:git-identity` exercises setup and guards in isolated temporary repositories and runs in CI.

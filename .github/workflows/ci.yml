@@ -29,6 +29,8 @@ jobs:
           cache: npm
       - run: npm ci
         if: steps.site.outputs.build == 'true'
+      - run: npm run test:git-identity
+        if: steps.site.outputs.build == 'true'
       - run: npm run test
         if: steps.site.outputs.build == 'true'
       - run: npm run build

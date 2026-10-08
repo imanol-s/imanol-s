@@ -19,7 +19,11 @@
     "astro": "astro",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "prepare": "node scripts/git-identity.mjs --setup",
+    "setup:git-identity": "node scripts/git-identity.mjs --setup",
+    "check:git-identity": "node scripts/git-identity.mjs",
+    "test:git-identity": "node --test scripts/git-identity.node-test.mjs"
   },
   "lint-staged": {
     "*.{astro,ts,tsx}": "astro check"
