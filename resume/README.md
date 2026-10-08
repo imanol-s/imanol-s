@@ -7,3 +7,5 @@ The public address is `/resume.pdf`, redirected by Netlify to the Pages PDF. Fai
 Overleaf saves do not trigger GitHub. If editing there, export the current source and replace `main.tex` before pushing. Preserve the engine guards around the pdfLaTeX-only Unicode commands. Do not commit generated PDFs or the old source variant.
 
 Run `node --test scripts/resume-pipeline.check.mjs` to verify freshness and Netlify build-ignore decisions.
+
+To retry without editing source, open GitHub Actions, select **Publish resume**, and run the workflow on `ui-migration`. Wait for its deployment to succeed before sharing the updated PDF; compilation errors leave the previously published version available.
