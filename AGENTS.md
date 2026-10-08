@@ -82,3 +82,4 @@ Instructions for AI coding assistants working with this repository.
 - Publication is serialized and compares current resume inputs; later site-only changes do not invalidate a valid build.
 - Resume-only changes skip Netlify through `node scripts/resume-pipeline.mjs ignore`; uncertain history builds normally.
 - Run `node --test scripts/resume-pipeline.check.mjs` for the Git-history regression checks.
+- PR CI also skips site checks on resume-only synchronize pushes using the full before/head range; opened PRs and uncertain history keep site checks.
