@@ -52,9 +52,6 @@ const artworkAlt =
   </nav>
 
   <header class="project-header">
-    <p class="section-kicker">
-      Project notebook{startDate ? ` / ${startDate.getFullYear()}` : ""}
-    </p>
     <h1 class="font-display">{title}</h1>
     <p class="project-summary">{summary}</p>
     {
@@ -152,9 +149,6 @@ const artworkAlt =
   .project-header {
     max-width: 58rem;
     margin-bottom: 2.5rem;
-  }
-  .project-header .section-kicker {
-    margin-bottom: 1rem;
   }
   .project-header h1 {
     font-size: clamp(2rem, 4.5vw, 3.5rem);
@@ -328,9 +322,6 @@ const artworkAlt =
     }
   }
   @media (max-width: 639px) {
-    .project-header .section-kicker {
-      margin-bottom: 1rem;
-    }
     .project-header h1 {
       letter-spacing: -0.04em;
     }

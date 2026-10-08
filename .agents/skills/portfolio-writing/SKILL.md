@@ -12,6 +12,10 @@ Follow the user's current scope and the editorial criteria in
 Use src/content/projects/crime-analysis.mdx as a reference for restrained
 Markdown formatting, not as a mandatory article template.
 
+## Headings and labels
+
+Use plain headings that identify content. Avoid decorative numbered kickers, generic slogans, and redundant preambles. Keep supporting labels only when they provide useful information.
+
 ## Markdown formatting
 
 Audit Markdown formatting in every project draft and review, including

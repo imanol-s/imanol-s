@@ -53,6 +53,9 @@ The five editorial criteria
    merely to satisfy this rule.
 
 Writing workflow
+- Use plain headings that identify content. Avoid decorative numbered kickers,
+  generic slogans, and redundant preambles. Keep supporting labels only when
+  they provide useful information.
 - For reviews, inspect the current source and identify the exact scope. Report
   whether the evidence comes from local source or a rendered/deployed page.
 - For drafts, identify the existing facts before revising. Reuse supplied

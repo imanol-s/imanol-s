@@ -19,6 +19,7 @@ Instructions for AI coding assistants working with this repository.
 ## Learned User Preferences
 
 - Avoid em dashes in visitor-facing copy, accessible labels, and metadata.
+- Use plain headings that identify content. Avoid decorative numbered kickers, generic slogans, and redundant preambles. Keep supporting labels only when they provide useful information.
 - Leave career bullets unchanged unless the user explicitly requests edits to those bullets; general site-copy requests do not authorize rewriting them.
 - Hover effects should enhance/brighten elements, never dim text
 - Use Plan mode before implementing multi-step or multi-file changes

@@ -12,9 +12,6 @@ const education = primaryEducation();
 <section class="hero-section" aria-label="Introduction">
   <div class="hero-main">
     <div class="hero-copy">
-      <p class="section-kicker">
-        <span class="signal-dot" aria-hidden="true"></span> Data · Code · Curiosity
-      </p>
       <div class="hero-name"><TypewriterText client:load text={ME.name} /></div>
       <p class="hero-profession">{ME.profession.join(" / ")}</p>
       <h2 class="hero-headline">
@@ -46,7 +43,8 @@ const education = primaryEducation();
       </div>
       <p class="portrait-note font-display">
         {ME.portraitNote}<span class="iteration-dots" aria-hidden="true"
-          >...</span>
+          >...</span
+        >
       </p>
       <div class="hero-socials">
         {
@@ -116,9 +114,6 @@ const education = primaryEducation();
   }
   .hero-copy {
     min-width: 0;
-  }
-  .hero-name {
-    margin-top: 1.75rem;
   }
   .hero-name :global(h1) {
     font-size: clamp(2.4rem, 4.3vw, 4rem);
