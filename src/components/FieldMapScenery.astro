@@ -11,6 +11,14 @@ const farShore =
 const nearShore =
   "C948.8 542.3 947.2 542.8 933 539C918.8 535.2 889.2 525.5 867 520C844.8 514.5 822.3 512.2 800 506C777.7 499.8 751.8 490.7 733 483C714.2 475.3 701.3 467.2 687 460C672.7 452.8 661.5 445.3 647 440C632.5 434.7 615.7 430.3 600 428C584.3 425.7 567.5 427 553 426C538.5 425 526.3 421.3 513 422C499.7 422.7 486.3 426.3 473 430C459.7 433.7 447.3 439.3 433 444C418.7 448.7 409.2 457 387 458C364.8 459 325.7 453 300 450C274.3 447 253.7 443 233 440C212.3 437 185.5 433.3 176 432";
 const lakeShore = `${farShore}${nearShore}Z`;
+// One repeat of the lower hills: uneven spacing and sizes, never mirrored so the light stays on the left.
+// Each scale is wide enough to cover the band at its sideways shift, so no image edge shows.
+const hills = [
+  { y: 0, x: 0, scale: 1.1 },
+  { y: 230, x: -440, scale: 1.45 },
+  { y: 560, x: 0, scale: 1.2 },
+  { y: 790, x: -300, scale: 1.35 },
+];
 ---
 
 <div class="field-map-scenery" aria-hidden="true">
@@ -290,37 +298,55 @@ const lakeShore = `${farShore}${nearShore}Z`;
           <stop offset="0.45" stop-color="#fff"></stop>
           <stop offset="1" stop-color="#fff" stop-opacity="0"></stop>
         </linearGradient>
+        <radialGradient id="field-map-band-hole">
+          <stop offset="0.5"></stop>
+          <stop offset="1" stop-opacity="0"></stop>
+        </radialGradient>
+        <!-- The holes clear the contour lines baked into the band's corners, which would otherwise repeat down the page. -->
         <mask id="field-map-band" maskUnits="userSpaceOnUse">
           <rect
             y="400"
             width="1024"
             height="260"
             fill="url(#field-map-band-fade)"></rect>
+          <ellipse
+            cx="40"
+            cy="470"
+            rx="170"
+            ry="130"
+            fill="url(#field-map-band-hole)"></ellipse>
+          <ellipse
+            cx="890"
+            cy="640"
+            rx="200"
+            ry="90"
+            fill="url(#field-map-band-hole)"></ellipse>
         </mask>
         <pattern
           id="field-map-ridge-bands"
           patternUnits="userSpaceOnUse"
           y="378"
           width="1024"
-          height="720"
+          height="1160"
         >
-          <svg width="1024" height="260" viewBox="0 400 1024 260">
-            <image
-              href={terrainImage.src}
-              width="1024"
-              height="1536"
-              mask="url(#field-map-band)"
-              transform="matrix(-1 0 0 1 1024 0)"
-            />
-          </svg>
-          <svg y="360" width="1024" height="260" viewBox="0 400 1024 260">
-            <image
-              href={terrainImage.src}
-              width="1024"
-              height="1536"
-              mask="url(#field-map-band)"
-            />
-          </svg>
+          {
+            hills.map(({ y, x, scale }) => (
+              <svg
+                x={x}
+                y={y}
+                width={1024 * scale}
+                height={260 * scale}
+                viewBox="0 400 1024 260"
+              >
+                <image
+                  href={terrainImage.src}
+                  width="1024"
+                  height="1536"
+                  mask="url(#field-map-band)"
+                />
+              </svg>
+            ))
+          }
         </pattern>
       </defs>
       <!-- The painting's ground colour, so the bands fade into land rather than into the page. -->
@@ -469,6 +495,13 @@ const lakeShore = `${farShore}${nearShore}Z`;
     width: 100%;
     min-height: 0;
     mask-image: linear-gradient(transparent, #000 30vw);
+  }
+  /* Narrow screens see the middle of the hills at 3.5x size, so about a third as many fill the page. */
+  @media (max-width: 767px) {
+    .field-map-ridges {
+      width: 350%;
+      margin-left: -125%;
+    }
   }
   /* Brighter than the land above so the trail's end still reads through the footer. */
   .field-map-foot {
