@@ -5,9 +5,12 @@ import terrain from "../assets/field-map-terrain.webp";
 const terrainImage = await getImage({ src: terrain, format: "webp" });
 const leftContour = [1, 0.84, 0.66, 0.5, 0.31];
 const rightContour = [1, 0.78, 0.6, 0.36];
-// Lake outline in terrain pixels: far shore along the upper hills, near edge along the crests that hide it.
-const lakeShore =
-  "M176 432L196 414L225 400L260 392L300 388L350 386L400 388L440 392L480 398L520 402L560 405L600 404L640 408L680 413L720 418L760 423L800 428L840 434L880 441L910 450L935 460C953 470 961 505 959 547L933 540L867 520L800 507L733 484L687 460L647 440L600 428L553 426L513 422L473 430L433 444L387 459L300 450L233 440L200 434Z";
+// Lake outline in terrain pixels: far shore along the upper hills, near shore a smooth curve along the crests that hide it.
+const farShore =
+  "M176 432L196 414L225 400L260 392L300 388L350 386L400 388L440 392L480 398L520 402L560 405L600 404L640 408L680 413L720 418L760 423L800 428L840 434L880 441L910 452C928 464 945 498 952 543";
+const nearShore =
+  "C948.8 542.3 947.2 542.8 933 539C918.8 535.2 889.2 525.5 867 520C844.8 514.5 822.3 512.2 800 506C777.7 499.8 751.8 490.7 733 483C714.2 475.3 701.3 467.2 687 460C672.7 452.8 661.5 445.3 647 440C632.5 434.7 615.7 430.3 600 428C584.3 425.7 567.5 427 553 426C538.5 425 526.3 421.3 513 422C499.7 422.7 486.3 426.3 473 430C459.7 433.7 447.3 439.3 433 444C418.7 448.7 409.2 457 387 458C364.8 459 325.7 453 300 450C274.3 447 253.7 443 233 440C212.3 437 185.5 433.3 176 432";
+const lakeShore = `${farShore}${nearShore}Z`;
 ---
 
 <div class="field-map-scenery" aria-hidden="true">
@@ -25,9 +28,83 @@ const lakeShore =
     decoding="async"
     fetchpriority="low"
   />
-  <div class="field-map-lake">
+  <div class="field-map-additions">
     <svg viewBox="0 0 1024 1536" preserveAspectRatio="none">
       <defs>
+        <filter id="field-map-lake-rim-soft">
+          <feGaussianBlur stdDeviation="0.8"></feGaussianBlur>
+        </filter>
+        <filter id="field-map-soft-edge">
+          <feGaussianBlur stdDeviation="5"></feGaussianBlur>
+        </filter>
+        <linearGradient
+          id="field-map-range-haze"
+          gradientUnits="userSpaceOnUse"
+          x1="0"
+          y1="190"
+          x2="0"
+          y2="300"
+        >
+          <stop offset="0" stop-color="#fff"></stop>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"></stop>
+        </linearGradient>
+        <linearGradient
+          id="field-map-range-west"
+          gradientUnits="userSpaceOnUse"
+          x1="250"
+          y1="0"
+          x2="330"
+          y2="0"
+        >
+          <stop offset="0"></stop>
+          <stop offset="1" stop-opacity="0"></stop>
+        </linearGradient>
+        <!-- Sky above the existing range's west slope, so the new peaks sit behind it and fade into haze. -->
+        <mask
+          id="field-map-range-sky"
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="0"
+          width="1024"
+          height="1536"
+        >
+          <path
+            d="M0 0H630L600 166L575 178L545 186L520 195L490 213L460 228L430 245L380 268L300 310L0 310Z"
+            fill="url(#field-map-range-haze)"
+            filter="url(#field-map-soft-edge)"></path>
+          <rect width="1024" height="320" fill="url(#field-map-range-west)"
+          ></rect>
+        </mask>
+        <clipPath id="field-map-range-peaks">
+          <path
+            d="M560 204L600 187L640 162L690 122L720 88L745 110L770 138L800 130L840 95L880 66L910 90L960 110L1024 125V340H560Z"
+          ></path>
+        </clipPath>
+        <linearGradient
+          id="field-map-ridge-fade"
+          gradientUnits="userSpaceOnUse"
+          x1="0"
+          y1="560"
+          x2="0"
+          y2="640"
+        >
+          <stop offset="0" stop-color="#fff"></stop>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"></stop>
+        </linearGradient>
+        <!-- In the terrain's own pixels: the hump's crest, its west end cut down into the valley. -->
+        <mask
+          id="field-map-ridge"
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="0"
+          width="1024"
+          height="1536"
+        >
+          <path
+            d="M165 640L172 560L195 480L233 430L387 444L433 429L473 415L513 407L553 411L600 413L647 425L687 445L733 469L800 492L867 505L933 525L1024 552V640Z"
+            fill="url(#field-map-ridge-fade)"
+            filter="url(#field-map-soft-edge)"></path>
+        </mask>
         <filter
           id="field-map-lake-brush"
           x="-5%"
@@ -42,7 +119,7 @@ const lakeShore =
             seed="7"></feTurbulence>
           <feDisplacementMap
             in="SourceGraphic"
-            scale="10"
+            scale="4"
             xChannelSelector="R"
             yChannelSelector="G"></feDisplacementMap>
           <feGaussianBlur stdDeviation="1.2"></feGaussianBlur>
@@ -77,12 +154,14 @@ const lakeShore =
             values="0.54 0 0 0 0.3 0.45 0 0 0 0.52 0.31 0 0 0 0.75 0 0 0 0 1"
           ></feColorMatrix>
         </filter>
+        <!-- Bounded to the lake: over the whole terrain it costs ~60ms a frame on CPU rendering. -->
         <filter
           id="field-map-lake-ripple"
-          x="0"
-          y="0"
-          width="100%"
-          height="100%"
+          filterUnits="userSpaceOnUse"
+          x="150"
+          y="370"
+          width="830"
+          height="200"
         >
           <feTurbulence
             type="fractalNoise"
@@ -131,34 +210,69 @@ const lakeShore =
           ><rect x="540" width="484" height="1536"></rect></clipPath
         >
       </defs>
-      <g mask="url(#field-map-lake-water)">
-        <rect x="150" y="380" width="830" height="180" fill="#0f172a"></rect>
-        <g mask="url(#field-map-lake-sheen)">
-          <rect
-            x="150"
-            y="380"
-            width="830"
-            height="180"
-            filter="url(#field-map-lake-paint)"
-            opacity="0.44"></rect>
+      <!-- A smaller, lower copy of the summits, further away to the west. -->
+      <g mask="url(#field-map-range-sky)">
+        <image
+          href={terrainImage.src}
+          width="1024"
+          height="1536"
+          clip-path="url(#field-map-range-peaks)"
+          transform="translate(-234 109) scale(0.8 0.62)"
+          opacity="0.2"
+        />
+      </g>
+      <g class="field-map-lake">
+        <g mask="url(#field-map-lake-water)">
+          <rect x="150" y="380" width="830" height="180" fill="#0f172a"></rect>
+          <g mask="url(#field-map-lake-sheen)">
+            <rect
+              x="150"
+              y="380"
+              width="830"
+              height="180"
+              filter="url(#field-map-lake-paint)"
+              opacity="0.44"></rect>
+          </g>
+          <!-- Terrain mirrored about each arm's far shore (y' = 2(a + mx) - y). -->
+          <g filter="url(#field-map-lake-ripple)" opacity="0.22">
+            <image
+              href={terrainImage.src}
+              width="1024"
+              height="1536"
+              clip-path="url(#field-map-lake-west)"
+              transform="matrix(1 0.054 0 -1 0 770)"
+            />
+            <image
+              href={terrainImage.src}
+              width="1024"
+              height="1536"
+              clip-path="url(#field-map-lake-east)"
+              transform="matrix(1 0.293 0 -1 0 645.4)"
+            />
+          </g>
         </g>
-        <!-- Terrain mirrored about each arm's far shore (y' = 2(a + mx) - y). -->
-        <g filter="url(#field-map-lake-ripple)" opacity="0.22">
-          <image
-            href={terrainImage.src}
-            width="1024"
-            height="1536"
-            clip-path="url(#field-map-lake-west)"
-            transform="matrix(1 0.054 0 -1 0 770)"
-          />
-          <image
-            href={terrainImage.src}
-            width="1024"
-            height="1536"
-            clip-path="url(#field-map-lake-east)"
-            transform="matrix(1 0.293 0 -1 0 645.4)"
-          />
-        </g>
+        <!-- Light catching the near shore, so the waterline reads cleanly against the crests. -->
+        <path
+          d={`M952 543${nearShore}`}
+          fill="none"
+          stroke="#b9cde6"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          opacity="0.15"
+          filter="url(#field-map-lake-rim-soft)"></path>
+      </g>
+      <!-- A nearer ridge below the lake: the hump mirrored and enlarged, painted over the slope it covers. -->
+      <g
+        transform="matrix(-1.1 0 0 1.1 864.3 72.5)"
+        mask="url(#field-map-ridge)"
+      >
+        <rect x="160" y="395" width="864" height="245" fill="#0f172a"></rect>
+        <image
+          href={terrainImage.src}
+          width="1024"
+          height="1536"
+          opacity="0.24"
+        />
       </g>
     </svg>
   </div>
@@ -258,14 +372,14 @@ const lakeShore =
       transform: translateX(60%);
     }
   }
-  /* The lake shares the terrain's size, so it stays in its valley. The hero does not scale with it:
+  /* The additions share the terrain's size, so they stay in place on it. The hero does not scale with it:
      below 1200px the lake reaches the portrait, and from 1625px it runs into the trail and project cards. */
-  .field-map-lake {
+  .field-map-additions {
     position: absolute;
     inset: 0 0 auto;
     aspect-ratio: 1024 / 1536;
   }
-  .field-map-lake svg {
+  .field-map-additions svg {
     width: 100%;
     height: 100%;
   }

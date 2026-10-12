@@ -322,14 +322,17 @@ for (const [width, shown] of [
       if (r.url().includes("field-map-terrain")) terrain.add(r.url());
     });
     await open(page, width);
-    const lake = page.locator(".field-map-scenery .field-map-lake svg");
+    const additions = page.locator(
+      ".field-map-scenery .field-map-additions svg",
+    );
+    const lake = additions.locator(".field-map-lake");
     await expect(lake).toHaveCount(1);
     if (!shown) {
       await expect(lake).toBeHidden();
       return;
     }
     await expect(lake).toBeVisible();
-    const hits = await lake.evaluate((svg, sel) => {
+    const hits = await additions.evaluate((svg, sel) => {
       const shore = svg.querySelector<SVGPathElement>(".lake-shore")!;
       const box = svg.getBoundingClientRect();
       const scale = 1024 / box.width;
