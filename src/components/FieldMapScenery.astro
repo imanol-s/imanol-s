@@ -276,6 +276,69 @@ const lakeShore = `${farShore}${nearShore}Z`;
       </g>
     </svg>
   </div>
+  <!-- Below the painting, its ridges repeat down the page and its lakeshore closes it at the contact footer. -->
+  <div class="field-map-lower">
+    <svg
+      class="field-map-ridges"
+      viewBox="0 0 1024 40000"
+      preserveAspectRatio="xMinYMin slice"
+    >
+      <defs>
+        <linearGradient id="field-map-band-fade" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity="0"></stop>
+          <stop offset="0.1" stop-color="#fff"></stop>
+          <stop offset="0.45" stop-color="#fff"></stop>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"></stop>
+        </linearGradient>
+        <mask id="field-map-band" maskUnits="userSpaceOnUse">
+          <rect
+            y="400"
+            width="1024"
+            height="260"
+            fill="url(#field-map-band-fade)"></rect>
+        </mask>
+        <pattern
+          id="field-map-ridge-bands"
+          patternUnits="userSpaceOnUse"
+          y="378"
+          width="1024"
+          height="720"
+        >
+          <svg width="1024" height="260" viewBox="0 400 1024 260">
+            <image
+              href={terrainImage.src}
+              width="1024"
+              height="1536"
+              mask="url(#field-map-band)"
+              transform="matrix(-1 0 0 1 1024 0)"
+            />
+          </svg>
+          <svg y="360" width="1024" height="260" viewBox="0 400 1024 260">
+            <image
+              href={terrainImage.src}
+              width="1024"
+              height="1536"
+              mask="url(#field-map-band)"
+            />
+          </svg>
+        </pattern>
+      </defs>
+      <!-- The painting's ground colour, so the bands fade into land rather than into the page. -->
+      <rect width="1024" height="40000" fill="#021a2e"></rect>
+      <rect
+        y="378"
+        width="1024"
+        height="40000"
+        fill="url(#field-map-ridge-bands)"></rect>
+    </svg>
+  </div>
+  <svg
+    class="field-map-foot"
+    viewBox="0 1180 1024 356"
+    preserveAspectRatio="none"
+  >
+    <image href={terrainImage.src} width="1024" height="1536" />
+  </svg>
   <svg class="field-map-contour contour-left" viewBox="-100 -100 200 200">
     <defs>
       <path
@@ -387,6 +450,34 @@ const lakeShore = `${farShore}${nearShore}Z`;
     .field-map-lake {
       display: none;
     }
+  }
+  /* The spacer starts the lower land where the painting begins to fade, and the bands where its last ridge ends. */
+  .field-map-lower {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 0.24;
+  }
+  .field-map-lower::before {
+    content: "";
+    flex: none;
+    aspect-ratio: 1024 / 922;
+  }
+  .field-map-ridges {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    mask-image: linear-gradient(transparent, #000 30vw);
+  }
+  /* Brighter than the land above so the trail's end still reads through the footer. */
+  .field-map-foot {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    opacity: 0.45;
+    aspect-ratio: 1024 / 356;
+    mask-image: linear-gradient(transparent, #000 40%);
   }
   #field-map-trail-ink {
     fill: none;

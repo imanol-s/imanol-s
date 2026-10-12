@@ -270,6 +270,41 @@ test("decorative scenery is inert and terrain image loads once", async ({
   ).toBeGreaterThan(0);
 });
 
+for (const width of [1920, 1280, 390]) {
+  // Catches: the page below the painting going blank again, or the lower land adding a download.
+  test(`lower land runs from the painting to the footer at ${width}px`, async ({
+    page,
+  }) => {
+    const terrain = new Set<string>();
+    page.on("request", (r) => {
+      if (r.url().includes("field-map-terrain")) terrain.add(r.url());
+    });
+    await open(page, width);
+    const src = await page.locator(".field-map-terrain").getAttribute("src");
+    const lower = page.locator(".field-map-scenery .field-map-lower");
+    const box = (selector: string) =>
+      page.locator(selector).evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        return { top: r.top + scrollY, bottom: r.bottom + scrollY };
+      });
+    const [painting, ridges, foot, footer] = await Promise.all([
+      box(".field-map-terrain"),
+      box(".field-map-ridges"),
+      box(".field-map-foot"),
+      box("footer#contact"),
+    ]);
+    expect(ridges.top).toBeLessThan(painting.bottom);
+    expect(ridges.bottom).toBeCloseTo(footer.bottom, 0);
+    expect(foot.bottom).toBeCloseTo(footer.bottom, 0);
+    const hrefs = await lower
+      .locator("image")
+      .evaluateAll((els) => els.map((el) => el.getAttribute("href")));
+    expect(hrefs.length).toBeGreaterThan(0);
+    expect(hrefs.every((href) => href === src)).toBe(true);
+    expect(terrain.size).toBe(1);
+  });
+}
+
 for (const [width, shown] of [
   [1440, true],
   [1024, true],
