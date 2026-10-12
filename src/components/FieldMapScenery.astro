@@ -462,7 +462,7 @@ const hills = [
     }
   }
   /* The additions share the terrain's size, so they stay in place on it. The hero does not scale with it:
-     below 1200px the lake reaches the portrait, and from 1625px it runs into the trail and project cards. */
+     below 1240px the lake reaches the trail and then the portrait, and from 1625px it runs into the trail and project cards. */
   .field-map-additions {
     position: absolute;
     inset: 0 0 auto;
@@ -472,7 +472,7 @@ const hills = [
     width: 100%;
     height: 100%;
   }
-  @media (max-width: 1199px), (min-width: 1625px) {
+  @media (max-width: 1239px), (min-width: 1625px) {
     .field-map-lake {
       display: none;
     }

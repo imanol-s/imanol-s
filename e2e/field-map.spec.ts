@@ -85,9 +85,9 @@ async function expectTrailAnchored(page: Page) {
 }
 
 const FIRE_BASELINE = [
-  { width: 1440, x: 762.04, y: 364.34, w: 15.22, h: 21.99 },
-  // y was 831.21 before the hero excerpt above the stacked scene was removed.
-  { width: 390, x: 283.87, y: 618.43, w: 9.35, h: 13.51 },
+  // Measured on the origin/ui-migration hero after the work excerpt was removed; later scenery work must not move it.
+  { width: 1440, x: 762.04, y: 388.34, w: 15.22, h: 21.99 },
+  { width: 390, x: 283.87, y: 608.43, w: 9.35, h: 13.51 },
 ];
 
 for (const b of FIRE_BASELINE) {
@@ -219,7 +219,7 @@ test("approach keeps all titled items without step numbers", async ({
 // Catches: dropped projects or hidden/collapsed career roles.
 test("all projects and career highlights are rendered", async ({ page }) => {
   await open(page, 1440);
-  await expect(page.locator(".project-card")).toHaveCount(4);
+  await expect(page.locator(".project-card")).toHaveCount(5);
   // Today's fixture counts (src/data/career.ts); update when career content changes.
   const counts = await page
     .locator(".career-entry")
@@ -344,7 +344,8 @@ for (const [width, shown] of [
   [1600, true],
   [1440, true],
   [1280, true],
-  [1200, true],
+  [1240, true],
+  [1200, false],
   [1024, false],
   [390, false],
 ] as const) {

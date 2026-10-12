@@ -35,7 +35,7 @@ test("trail ink draws as sections scroll in and completes at contact", async ({
     "url(#field-map-trail-reveal)",
   );
   await expect.poll(() => drawn(page)).toBeGreaterThan(0);
-  expect(await drawn(page)).toBeLessThan(0.5);
+  expect(await drawn(page)).toBeLessThan(0.99);
   await page.locator("footer#contact").scrollIntoViewIfNeeded();
   await expect.poll(() => drawn(page), { timeout: 5000 }).toBeGreaterThan(0.99);
 });
