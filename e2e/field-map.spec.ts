@@ -349,7 +349,7 @@ for (const [width, shown] of [
   [1024, false],
   [390, false],
 ] as const) {
-  // Catches: lake drawn under the portrait, trail or project cards, or adding a download.
+  // Catches: lake drawn under the portrait, trail or project cards, or a second terrain download.
   test(`terrain lake is ${shown ? "clear of portrait, trail and cards" : "hidden"} at ${width}px`, async ({
     page,
   }) => {
@@ -402,9 +402,10 @@ for (const [width, shown] of [
         .getAttribute("src");
       return {
         found,
-        reusesTerrain: [...svg.querySelectorAll("image")].every(
-          (img) => img.getAttribute("href") === terrainSrc,
-        ),
+        // The lake is the one baked image; everything else reuses the terrain.
+        reusesTerrain: [
+          ...svg.querySelectorAll("image:not(.field-map-lake)"),
+        ].every((img) => img.getAttribute("href") === terrainSrc),
       };
     }, TRAIL);
     expect(hits.found).toEqual([]);

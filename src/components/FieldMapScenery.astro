@@ -1,8 +1,10 @@
 ---
 import { getImage } from "astro:assets";
 import terrain from "../assets/field-map-terrain.webp";
+import lake from "../assets/field-map-lake.webp";
 
 const terrainImage = await getImage({ src: terrain, format: "webp" });
+const lakeImage = await getImage({ src: lake, format: "webp" });
 const leftContour = [1, 0.84, 0.66, 0.5, 0.31];
 const rightContour = [1, 0.78, 0.6, 0.36];
 // Lake outline in terrain pixels: far shore along the upper hills, near shore a smooth curve along the crests that hide it.
@@ -39,9 +41,6 @@ const hills = [
   <div class="field-map-additions">
     <svg viewBox="0 0 1024 1536" preserveAspectRatio="none">
       <defs>
-        <filter id="field-map-lake-rim-soft">
-          <feGaussianBlur stdDeviation="0.8"></feGaussianBlur>
-        </filter>
         <filter id="field-map-soft-edge">
           <feGaussianBlur stdDeviation="5"></feGaussianBlur>
         </filter>
@@ -113,110 +112,7 @@ const hills = [
             fill="url(#field-map-ridge-fade)"
             filter="url(#field-map-soft-edge)"></path>
         </mask>
-        <filter
-          id="field-map-lake-brush"
-          x="-5%"
-          y="-30%"
-          width="110%"
-          height="160%"
-        >
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.02 0.14"
-            numOctaves="2"
-            seed="7"></feTurbulence>
-          <feDisplacementMap
-            in="SourceGraphic"
-            scale="4"
-            xChannelSelector="R"
-            yChannelSelector="G"></feDisplacementMap>
-          <feGaussianBlur stdDeviation="1.2"></feGaussianBlur>
-        </filter>
-        <filter
-          id="field-map-lake-fade"
-          x="-10%"
-          y="-50%"
-          width="120%"
-          height="200%"
-        >
-          <feGaussianBlur stdDeviation="9"></feGaussianBlur>
-        </filter>
-        <!-- Horizontal strokes in the artwork's water blues, stepped like its flat paint. -->
-        <filter
-          id="field-map-lake-paint"
-          x="0"
-          y="0"
-          width="100%"
-          height="100%"
-          color-interpolation-filters="sRGB"
-        >
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.005 0.08"
-            numOctaves="3"
-            seed="2"></feTurbulence>
-          <feComponentTransfer>
-            <feFuncR type="discrete" tableValues="0 0.2 0.45 0.7 1"></feFuncR>
-          </feComponentTransfer>
-          <feColorMatrix
-            values="0.54 0 0 0 0.3 0.45 0 0 0 0.52 0.31 0 0 0 0.75 0 0 0 0 1"
-          ></feColorMatrix>
-        </filter>
-        <!-- Bounded to the lake: over the whole terrain it costs ~60ms a frame on CPU rendering. -->
-        <filter
-          id="field-map-lake-ripple"
-          filterUnits="userSpaceOnUse"
-          x="150"
-          y="370"
-          width="830"
-          height="200"
-        >
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.006 0.18"
-            numOctaves="2"
-            seed="4"></feTurbulence>
-          <feDisplacementMap
-            in="SourceGraphic"
-            scale="7"
-            xChannelSelector="R"
-            yChannelSelector="G"></feDisplacementMap>
-        </filter>
-        <mask
-          id="field-map-lake-water"
-          maskUnits="userSpaceOnUse"
-          x="0"
-          y="0"
-          width="1024"
-          height="1536"
-        >
-          <path
-            class="lake-shore"
-            d={lakeShore}
-            fill="#fff"
-            filter="url(#field-map-lake-brush)"></path>
-        </mask>
-        <!-- Open water catches the light; the band under the far shore holds the hills' dark reflection. -->
-        <mask
-          id="field-map-lake-sheen"
-          maskUnits="userSpaceOnUse"
-          x="0"
-          y="0"
-          width="1024"
-          height="1536"
-        >
-          <path
-            d={lakeShore}
-            fill="#fff"
-            transform="translate(0 22)"
-            filter="url(#field-map-lake-fade)"></path>
-        </mask>
-        <clipPath id="field-map-lake-west"
-          ><rect width="540" height="1536"></rect></clipPath
-        >
-        <clipPath id="field-map-lake-east"
-          ><rect x="540" width="484" height="1536"></rect></clipPath
-        >
+        <path class="lake-shore" d={lakeShore}></path>
       </defs>
       <!-- A smaller, lower copy of the summits, further away to the west. -->
       <g mask="url(#field-map-range-sky)">
@@ -229,46 +125,15 @@ const hills = [
           opacity="0.2"
         />
       </g>
-      <g class="field-map-lake">
-        <g mask="url(#field-map-lake-water)">
-          <rect x="150" y="380" width="830" height="180" fill="#0f172a"></rect>
-          <g mask="url(#field-map-lake-sheen)">
-            <rect
-              x="150"
-              y="380"
-              width="830"
-              height="180"
-              filter="url(#field-map-lake-paint)"
-              opacity="0.44"></rect>
-          </g>
-          <!-- Terrain mirrored about each arm's far shore (y' = 2(a + mx) - y). -->
-          <g filter="url(#field-map-lake-ripple)" opacity="0.22">
-            <image
-              href={terrainImage.src}
-              width="1024"
-              height="1536"
-              clip-path="url(#field-map-lake-west)"
-              transform="matrix(1 0.054 0 -1 0 770)"
-            />
-            <image
-              href={terrainImage.src}
-              width="1024"
-              height="1536"
-              clip-path="url(#field-map-lake-east)"
-              transform="matrix(1 0.293 0 -1 0 645.4)"
-            />
-          </g>
-        </g>
-        <!-- Light catching the near shore, so the waterline reads cleanly against the crests. -->
-        <path
-          d={`M952 543${nearShore}`}
-          fill="none"
-          stroke="#b9cde6"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          opacity="0.15"
-          filter="url(#field-map-lake-rim-soft)"></path>
-      </g>
+      <!-- Baked from the SVG lake in 61057dd: its masks and filters were redrawn on every animation frame. -->
+      <image
+        class="field-map-lake"
+        href={lakeImage.src}
+        x="168"
+        y="378"
+        width="792"
+        height="174"
+      />
       <!-- A nearer ridge below the lake: the hump mirrored and enlarged, painted over the slope it covers. -->
       <g
         transform="matrix(-1.1 0 0 1.1 864.3 72.5)"
