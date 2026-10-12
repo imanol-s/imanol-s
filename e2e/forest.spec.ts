@@ -32,9 +32,11 @@ test("forest tells its story once after 25 seconds", async ({ page }) => {
     "viewBox",
     "0 0 2103 748",
   );
-  await expect(page.locator(".forest-art > image")).toHaveAttribute(
-    "href",
-    /hero-landscape.*\.webp/,
+  // The homepage field-map terrain replaces the forest's static mountain raster.
+  await expect(page.locator(".forest-art > image")).toHaveCount(0);
+  await expect(page.locator(".field-map-terrain")).toHaveAttribute(
+    "src",
+    /field-map-terrain.*\.webp/,
   );
   await expect(page.locator("#forest-pine")).toHaveAttribute(
     "href",

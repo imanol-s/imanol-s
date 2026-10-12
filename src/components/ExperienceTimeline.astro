@@ -1,15 +1,7 @@
 ---
-import { ME } from "../config";
-import {
-  jobStartDate,
-  jobEndDate,
-  timelineJobs,
-  primaryEducation,
-} from "../data/career";
-import { getTechView } from "../data/techRegistry";
+import { jobStartDate, jobEndDate, timelineJobs } from "../data/career";
 import { formatDate } from "../utils/formatDate";
 const jobs = timelineJobs();
-const edu = primaryEducation();
 ---
 
 <section
@@ -20,159 +12,76 @@ const edu = primaryEducation();
   <div class="experience-heading">
     <h2 id="experience-heading" class="section-heading">Experience</h2>
   </div>
-  <div class="experience-layout">
-    <div class="career-timeline">
-      {
-        jobs.map((job) => {
-          const start = jobStartDate(job);
-          const end = jobEndDate(job);
-          return (
-            <article
-              class:list={["career-entry", { "current-entry": job.currentJob }]}
-            >
-              <div class="timeline-point" aria-hidden="true" />
-              <div class="career-entry-top">
-                <p class="career-dates">
-                  {start ? formatDate(start) : ""} <span>to</span>{" "}
-                  {job.currentJob ? "Present" : end ? formatDate(end) : ""}
-                </p>
-                {job.currentJob && (
-                  <span class="current-label">
-                    <span class="signal-dot" aria-hidden="true" />
-                    Current role
-                  </span>
-                )}
-              </div>
-              <>
-                <h3>{job.title}</h3>
-                <p class="career-company">
-                  {job.company}
-                  <span aria-hidden="true"> / </span>
-                  {job.location}
-                </p>
-              </>
-              <p class="career-description">{job.description}</p>
-              {job.goals.length > 0 && (
-                <ul class="career-highlights">
-                  {job.goals.map((goal) => (
-                    <li>
-                      <svg
-                        class="highlight-arrow"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M7 17L17 7M7 7H17V17"
-                          stroke="currentColor"
-                          stroke-width="1.5"
-                        />
-                      </svg>
-                      <span>{goal}</span>
-                    </li>
-                  ))}
-                </ul>
+  <div class="career-timeline">
+    {
+      jobs.map((job) => {
+        const start = jobStartDate(job);
+        const end = jobEndDate(job);
+        return (
+          <article
+            class:list={["career-entry", { "current-entry": job.currentJob }]}
+          >
+            <div class="timeline-point" aria-hidden="true" />
+            <div class="career-entry-top">
+              <p class="career-dates">
+                {start ? formatDate(start) : ""} <span>to</span>{" "}
+                {job.currentJob ? "Present" : end ? formatDate(end) : ""}
+              </p>
+              {job.currentJob && (
+                <span class="current-label">
+                  <span class="signal-dot" aria-hidden="true" />
+                  Current role
+                </span>
               )}
-            </article>
-          );
-        })
-      }
-    </div>
-    <aside
-      id="profile-sidebar"
-      class="profile-panel cad-border"
-      aria-label="Background and toolkit"
-    >
-      <p class="section-kicker">Background & toolkit</p>
-      {
-        edu && (
-          <div class="profile-block">
+            </div>
             <>
-              <h3>Education</h3>
-              <p class="education-title">{edu.title}</p>
-              <p class="profile-detail">{edu.school}</p>
-              <p class="profile-detail">
-                {edu.endDate ? formatDate(new Date(edu.endDate)) : ""}
+              <h3>{job.title}</h3>
+              <p class="career-company">
+                {job.company}
+                <span aria-hidden="true"> / </span>
+                {job.location}
               </p>
             </>
-          </div>
-        )
-      }
-      <div class="profile-block">
-        <h3>Core languages</h3><div class="language-grid">
-          {
-            ME.coreLanguages.map((tech) => {
-              const { displayName, iconPath } = getTechView(tech);
-              return (
-                <div class="language-item">
-                  {iconPath && (
-                    <img
-                      src={iconPath}
-                      alt=""
-                      width="20"
-                      height="20"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  )}
-                  <span>{displayName}</span>
-                </div>
-              );
-            })
-          }
-        </div>
-      </div>
-      <div class="profile-block">
-        <h3>Areas of practice</h3><ul class="competencies">
-          {
-            ME.competencies.map((item) => (
-              <li>
-                <span aria-hidden="true">+</span>
-                {item}
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-      <div class="profile-block">
-        <h3>Communication</h3><div class="communication">
-          {
-            ME.languages.map((lang) => (
-              <div>
-                <>
-                  <span>{lang.name}</span>
-                  <span class="profile-detail">{lang.level}</span>
-                </>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-      <a
-        class="text-link focus-ring"
-        href={`/${ME.contactInfo.resumeDoc}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        >The full résumé <span aria-hidden="true">↗</span></a
-      >
-    </aside>
+            <p class="career-description">{job.description}</p>
+            {job.goals.length > 0 && (
+              <ul class="career-highlights">
+                {job.goals.map((goal) => (
+                  <li>
+                    <svg
+                      class="highlight-arrow"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M7 17L17 7M7 7H17V17"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                      />
+                    </svg>
+                    <span>{goal}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </article>
+        );
+      })
+    }
   </div>
 </section>
 
 <style>
   .experience-section {
-    margin-bottom: 6rem;
+    margin-bottom: 3rem;
   }
   .experience-heading {
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.75rem;
   }
-  .experience-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
-    gap: 4rem;
-    align-items: start;
+  .section-heading {
+    font-size: clamp(1.5rem, 2.3vw, 2rem);
   }
   .career-timeline {
     padding-left: 1.25rem;
@@ -180,7 +89,7 @@ const edu = primaryEducation();
   .career-entry {
     position: relative;
     border-left: 1px solid #334155;
-    padding: 0.1rem 0 2.5rem 2rem;
+    padding: 0.1rem 0 2rem 1.5rem;
   }
   .career-entry:last-child {
     padding-bottom: 0.25rem;
@@ -267,104 +176,12 @@ const edu = primaryEducation();
     color: #b6e5d3;
     margin-top: 0.3rem;
   }
-  .profile-panel {
-    padding: 1.75rem;
-    border-radius: 4px;
-    background: #111c2e;
-  }
-  .profile-panel > .section-kicker {
-    margin-bottom: 1.75rem;
-    font-size: 0.6rem;
-  }
-  .profile-block {
-    border-bottom: 1px solid #2b394c;
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .profile-block h3 {
-    color: #94a3b8;
-    font-family: var(--font-display);
-    text-transform: uppercase;
-    font-size: 0.6rem;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.8rem;
-  }
-  .education-title {
-    font-weight: 550;
-    font-size: 0.9rem;
-    margin-bottom: 0.4rem;
-  }
-  .profile-detail {
-    color: #a6b5c8;
-    font-size: 0.8rem;
-    line-height: 1.7;
-  }
-  .language-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-  }
-  .language-item {
-    display: flex;
-    gap: 0.6rem;
-    align-items: center;
-    font-family: var(--font-display);
-    font-size: 0.8rem;
-  }
-  .competencies {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    font-size: 0.8rem;
-    color: #cbd5e1;
-  }
-  .competencies li {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-  }
-  .competencies li span {
-    color: #b6e5d3;
-  }
-  .communication {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-  }
-  .communication > div {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  @media (max-width: 1023px) {
-    .experience-layout {
-      gap: 2rem;
-      grid-template-columns: 1.5fr 1fr;
-    }
-    .profile-panel {
-      padding: 1.25rem;
-    }
-  }
   @media (max-width: 767px) {
-    .experience-section {
-      margin-bottom: 4rem;
-    }
-    .experience-layout {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-    }
     .career-timeline {
       padding-left: 0.35rem;
     }
-    .career-entry {
-      padding-left: 1.35rem;
-    }
     .career-entry h3 {
       font-size: 1rem;
-    }
-    .profile-panel {
-      padding: 1.5rem;
     }
   }
 </style>

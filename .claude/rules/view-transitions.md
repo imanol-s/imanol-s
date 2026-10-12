@@ -30,4 +30,4 @@ This guarantees:
 
 ## DOM IDs
 
-DOM IDs, class names, and thresholds are plain literals owned by each component/util pair (e.g. `#back-to-top` in BackToTop.astro + backToTop.ts). When an ID crosses components, note it with a comment at the lookup site (`#profile-sidebar` is defined in ExperienceTimeline.astro but used by BackToTop.astro).
+DOM IDs, class names, and thresholds are plain literals owned by each component/util pair (e.g. `#back-to-top` in BackToTop.astro + backToTop.ts). When an ID crosses components, note it with a comment at the lookup site (`#profile-sidebar` is defined in ProfileToolkit.astro but used by BackToTop.astro).

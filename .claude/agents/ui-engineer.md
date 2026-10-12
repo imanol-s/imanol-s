@@ -51,7 +51,7 @@ document.addEventListener("astro:page-load", () => {
 
 ## DOM IDs
 
-DOM IDs, class names, and thresholds are plain literals owned by each component/util pair. When an ID crosses components (e.g. `#profile-sidebar` defined in ExperienceTimeline.astro, used by BackToTop.astro), note it with a comment at the lookup site.
+DOM IDs, class names, and thresholds are plain literals owned by each component/util pair. When an ID crosses components (e.g. `#profile-sidebar` defined in ProfileToolkit.astro, used by BackToTop.astro), note it with a comment at the lookup site.
 
 ## Required Utilities
 

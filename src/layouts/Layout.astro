@@ -7,6 +7,7 @@ import SiteFooter from "../components/SiteFooter.astro";
 import TopoBackground from "../components/TopoBackground.tsx";
 import LoadingOverlay from "../components/LoadingOverlay.tsx";
 import BackToTop from "../components/BackToTop.astro";
+import FieldMapScenery from "../components/FieldMapScenery.astro";
 
 import { SITE } from "@/config";
 import type { ImageMetadata } from "astro";
@@ -23,6 +24,7 @@ interface Props {
   imageOg?: string;
   heroImage?: ImageMetadata;
   heroSizes?: string;
+  fieldMap?: boolean;
 }
 
 const {
@@ -32,6 +34,7 @@ const {
   imageOg = SITE.ogImage,
   heroImage,
   heroSizes,
+  fieldMap = false,
 } = Astro.props;
 
 const tags = SITE.tags;
@@ -129,6 +132,7 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
     </script>
   </head>
   <body
+    data-field-map={fieldMap || undefined}
     class="min-h-screen bg-transparent font-body text-slate-800 dark:text-slate-200 selection:bg-primary selection:text-white"
   >
     <a
@@ -148,9 +152,15 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
     >
     </div>
     <LoadingOverlay client:only="react" />
-    <TopoBackground client:only="react" transition:persist="topo-background" />
+    <div class="topo-layer">
+      <TopoBackground
+        client:only="react"
+        transition:persist="topo-background"
+      />
+    </div>
     <BackToTop />
     <SiteHeader />
+    {fieldMap && <FieldMapScenery />}
 
     <main
       id="main-content"
@@ -163,3 +173,12 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
     <SiteFooter />
   </body>
 </html>
+
+<style>
+  :global(body[data-field-map]) {
+    position: relative;
+  }
+  :global(body[data-field-map] .topo-layer) {
+    visibility: hidden;
+  }
+</style>

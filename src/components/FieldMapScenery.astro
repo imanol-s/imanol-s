@@ -1,0 +1,118 @@
+---
+import { getImage } from "astro:assets";
+import terrain from "../assets/field-map-terrain.webp";
+
+const terrainImage = await getImage({ src: terrain, format: "webp" });
+const leftContour = [1, 0.84, 0.66, 0.5, 0.31];
+const rightContour = [1, 0.78, 0.6, 0.36];
+---
+
+<div class="field-map-scenery" aria-hidden="true">
+  <img
+    class="field-map-terrain"
+    src={terrainImage.src}
+    width={terrain.width}
+    height={terrain.height}
+    alt=""
+    loading="eager"
+    decoding="async"
+    fetchpriority="low"
+  />
+  <svg class="field-map-contour contour-left" viewBox="-100 -100 200 200">
+    <defs>
+      <path
+        id="field-map-contour-left"
+        d="M0-88C38-90 82-62 86-18C90 30 60 80 8 86C-40 92-84 58-88 10C-92-40-46-86 0-88Z"
+        vector-effect="non-scaling-stroke"></path>
+    </defs>
+    {
+      leftContour.map((scale) => (
+        <use href="#field-map-contour-left" transform={`scale(${scale})`} />
+      ))
+    }
+  </svg>
+  <svg class="field-map-contour contour-right" viewBox="-100 -100 200 200">
+    <defs>
+      <path
+        id="field-map-contour-right"
+        d="M-6-80C40-84 92-40 84 8C76 56 34 92-14 84C-60 76-90 34-84-12C-78-56-50-76-6-80Z"
+        vector-effect="non-scaling-stroke"></path>
+    </defs>
+    {
+      rightContour.map((scale) => (
+        <use href="#field-map-contour-right" transform={`scale(${scale})`} />
+      ))
+    }
+  </svg>
+  <svg class="field-map-trail">
+    <path id="field-map-trail-path" vector-effect="non-scaling-stroke"></path>
+  </svg>
+</div>
+
+<style>
+  .field-map-scenery {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: clip;
+    pointer-events: none;
+  }
+  .field-map-terrain {
+    display: block;
+    width: 100%;
+    height: auto;
+    opacity: 0.24;
+    mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  }
+  .field-map-contour {
+    position: absolute;
+    width: 18rem;
+    height: 18rem;
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1;
+    opacity: 0.16;
+  }
+  .contour-left {
+    top: 42%;
+    right: calc(50% + 41rem);
+  }
+  .contour-right {
+    top: 70%;
+    left: calc(50% + 41rem);
+  }
+  .field-map-trail {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: var(--color-soft-mint);
+    stroke-width: 1;
+    stroke-dasharray: 4 8;
+    opacity: 0.32;
+  }
+  @media (max-width: 1399px) {
+    .field-map-contour {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { initFieldMapTrail } from "@/utils/fieldMapTrail";
+
+  let cleanup: (() => void) | undefined;
+  document.addEventListener("astro:page-load", () => {
+    cleanup?.();
+    cleanup = undefined;
+    const path = document.getElementById(
+      "field-map-trail-path",
+    ) as SVGPathElement | null;
+    if (path) cleanup = initFieldMapTrail(path);
+  });
+  document.addEventListener("astro:before-swap", () => {
+    cleanup?.();
+    cleanup = undefined;
+  });
+</script>

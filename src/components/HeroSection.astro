@@ -6,6 +6,12 @@ import { timelineJobs, primaryEducation } from "../data/career";
 import portraitLineart from "../assets/portrait-lineart.svg";
 import ForestScene from "./ForestScene.astro";
 
+interface Props {
+  staticTerrain?: boolean;
+}
+
+const { staticTerrain = true } = Astro.props;
+
 const currentJob = timelineJobs().find((job) => job.currentJob);
 const enterpriseWork = timelineJobs().find((job) => !job.currentJob);
 const education = primaryEducation();
@@ -13,7 +19,7 @@ const education = primaryEducation();
 
 <section class="hero-section" aria-label="Introduction">
   <div class="hero-landscape">
-    <ForestScene />
+    <ForestScene staticTerrain={staticTerrain} />
   </div>
   <div class="hero-main">
     <div class="hero-copy">

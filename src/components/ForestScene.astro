@@ -3,6 +3,11 @@ import landscape from "../assets/hero-landscape.webp";
 import pine from "../assets/forest-pine.webp";
 import { getImage } from "astro:assets";
 
+interface Props {
+  staticTerrain?: boolean;
+}
+
+const { staticTerrain = true } = Astro.props;
 const optimizedLandscape = await getImage({
   src: landscape,
   width: 1600,
@@ -13,7 +18,11 @@ const optimizedLandscape = await getImage({
 
 <div class="forest-scene" data-paused="true">
   <svg viewBox="0 0 2103 748" aria-hidden="true" class="forest-art">
-    <image href={optimizedLandscape.src} width="2103" height="748" />
+    {
+      staticTerrain && (
+        <image href={optimizedLandscape.src} width="2103" height="748" />
+      )
+    }
     <defs>
       <image
         id="forest-pine"
