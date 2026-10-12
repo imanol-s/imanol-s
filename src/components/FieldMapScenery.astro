@@ -325,7 +325,7 @@ const hills = [
         <pattern
           id="field-map-ridge-bands"
           patternUnits="userSpaceOnUse"
-          y="378"
+          y="40"
           width="1024"
           height="1160"
         >
@@ -352,7 +352,7 @@ const hills = [
       <!-- The painting's ground colour, so the bands fade into land rather than into the page. -->
       <rect width="1024" height="40000" fill="#021a2e"></rect>
       <rect
-        y="378"
+        y="40"
         width="1024"
         height="40000"
         fill="url(#field-map-ridge-bands)"></rect>
@@ -477,7 +477,7 @@ const hills = [
       display: none;
     }
   }
-  /* The spacer starts the lower land where the painting begins to fade, and the bands where its last ridge ends. */
+  /* The spacer starts the lower land just below the painting's nearer ridge, so the next hill follows at the usual spacing. */
   .field-map-lower {
     position: absolute;
     inset: 0;
@@ -488,13 +488,13 @@ const hills = [
   .field-map-lower::before {
     content: "";
     flex: none;
-    aspect-ratio: 1024 / 922;
+    aspect-ratio: 1024 / 800;
   }
   .field-map-ridges {
     flex: 1;
     width: 100%;
     min-height: 0;
-    mask-image: linear-gradient(transparent, #000 30vw);
+    mask-image: linear-gradient(transparent, #000 12vw);
   }
   /* Narrow screens see the middle of the hills at 3.5x size, so about a third as many fill the page. */
   @media (max-width: 767px) {
