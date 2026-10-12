@@ -142,12 +142,10 @@ test("navigating to /projects and back keeps one trail and restores route backgr
 }) => {
   await open(page, 1440);
   await expect(page.locator("body")).toHaveAttribute("data-field-map", /.*/);
-  const topoVisibility = () =>
-    page
-      .locator(".topo-layer")
-      .evaluate((el) => getComputedStyle(el).visibility);
+  const topoDisplay = () =>
+    page.locator(".topo-layer").evaluate((el) => getComputedStyle(el).display);
   expect(await page.locator(".topo-layer").count()).toBe(1);
-  expect(await topoVisibility()).toBe("hidden");
+  expect(await topoDisplay()).toBe("none");
 
   await page.locator('header a[href="/projects"]:visible').first().click();
   await expect(page).toHaveURL(/\/projects\/?$/);
@@ -157,14 +155,14 @@ test("navigating to /projects and back keeps one trail and restores route backgr
   );
   await expect(page.locator(".field-map-scenery")).toHaveCount(0);
   expect(await page.locator(".topo-layer").count()).toBe(1);
-  expect(await topoVisibility()).not.toBe("hidden");
+  expect(await topoDisplay()).not.toBe("none");
 
   await page.goBack();
   await expect(page).toHaveURL("/");
   await expect(page.locator(TRAIL)).toHaveCount(1);
   await expect(page.locator(TRAIL)).toHaveAttribute("d", /.+/);
   await expect(page.locator("body")).toHaveAttribute("data-field-map", /.*/);
-  expect(await topoVisibility()).toBe("hidden");
+  expect(await topoDisplay()).toBe("none");
   await expect(async () => {
     await expectTrailAnchored(page);
   }).toPass({ timeout: 5000 });

@@ -178,7 +178,8 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
   :global(body[data-field-map]) {
     position: relative;
   }
+  /* display: none, not visibility: hidden: the topo filter animates every frame and a hidden layer still repaints. */
   :global(body[data-field-map] .topo-layer) {
-    visibility: hidden;
+    display: none;
   }
 </style>
