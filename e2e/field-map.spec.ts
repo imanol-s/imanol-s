@@ -269,3 +269,37 @@ test("decorative scenery is inert and terrain image loads once", async ({
     ),
   ).toBeGreaterThan(0);
 });
+
+for (const [width, shown] of [
+  [1440, true],
+  [1024, true],
+  [834, true],
+  [390, false],
+] as const) {
+  // Catches: camp drawn on the terrain's peak, the ground layer adding a download, or ground behind stacked hero links.
+  test(`camp ground ${shown ? "sits under" : "is hidden from"} the camp at ${width}px`, async ({
+    page,
+  }) => {
+    const terrain = new Set<string>();
+    page.on("request", (r) => {
+      if (r.url().includes("field-map-terrain")) terrain.add(r.url());
+    });
+    await open(page, width);
+    const ground = page.locator(".camp-ground");
+    await expect(ground).toHaveCount(1);
+    if (!shown) {
+      await expect(ground).toBeHidden();
+      return;
+    }
+    expect(await ground.locator("image").getAttribute("href")).toBe(
+      await page.locator(".field-map-terrain").getAttribute("src"),
+    );
+    expect(terrain.size).toBe(1);
+    const [g, fire] = await Promise.all([
+      ground.boundingBox(),
+      page.locator(".campfire").boundingBox(),
+    ]);
+    expect(fire!.x).toBeGreaterThan(g!.x);
+    expect(fire!.x + fire!.width).toBeLessThan(g!.x + g!.width);
+  });
+}

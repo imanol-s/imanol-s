@@ -1,6 +1,7 @@
 ---
 import landscape from "../assets/hero-landscape.webp";
 import pine from "../assets/forest-pine.webp";
+import terrain from "../assets/field-map-terrain.webp";
 import { getImage } from "astro:assets";
 
 interface Props {
@@ -14,6 +15,8 @@ const optimizedLandscape = await getImage({
   format: "webp",
   quality: 70,
 });
+// Same options as FieldMapScenery.astro, so the camp ground reuses the terrain request.
+const terrainImage = await getImage({ src: terrain, format: "webp" });
 ---
 
 <div class="forest-scene" data-paused="true">
@@ -58,6 +61,43 @@ const optimizedLandscape = await getImage({
       ><g class="pine-wind"><use href="#forest-pine"></use></g></g
     >
     <g class="forest-clearing">
+      {
+        !staticTerrain && (
+          <g class="camp-ground" mask="url(#camp-ground-fade)">
+            <defs>
+              <radialGradient
+                id="camp-ground-shape"
+                cx="960"
+                cy="640"
+                r="420"
+                gradientUnits="userSpaceOnUse"
+                gradientTransform="translate(960 640) scale(1 .3) translate(-960 -640)"
+              >
+                <stop offset=".55" stop-color="#fff" />
+                <stop offset="1" stop-color="#fff" stop-opacity="0" />
+              </radialGradient>
+              <mask id="camp-ground-fade">
+                <rect
+                  x="500"
+                  y="560"
+                  width="1000"
+                  height="240"
+                  fill="url(#camp-ground-shape)"
+                />
+              </mask>
+            </defs>
+            {/* The terrain's lake shore and foreground hill, placed under the camp so it does not sit on a peak. */}
+            <image
+              href={terrainImage.src}
+              x="85"
+              y="-1025"
+              width="1280"
+              height="1920"
+              opacity=".8"
+            />
+          </g>
+        )
+      }
       <g transform="translate(1020 610)"
         ><g class="falling-tree"
           ><g class="pine-wind"><use href="#forest-pine"></use></g></g
@@ -472,6 +512,10 @@ const optimizedLandscape = await getImage({
   @media (max-width: 767px) {
     .forest-clearing {
       transform: translate(850px, -200px);
+    }
+    /* Stacked, the camp sits low among the trees and the ground would sit behind the hero links. */
+    .camp-ground {
+      display: none;
     }
     .forest-scene {
       width: 48rem;
