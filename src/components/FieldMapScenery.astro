@@ -5,10 +5,9 @@ import terrain from "../assets/field-map-terrain.webp";
 const terrainImage = await getImage({ src: terrain, format: "webp" });
 const leftContour = [1, 0.84, 0.66, 0.5, 0.31];
 const rightContour = [1, 0.78, 0.6, 0.36];
-// Tarn shoreline in lake-box units, blurred so the edge reads like the terrain's wash.
-const lakeMask = `url("data:image/svg+xml,${encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 185 58"><filter id="b"><feGaussianBlur stdDeviation="8"/></filter><path filter="url(#b)" d="M12 10L60 8L120 9L173 8C176 20 164 31 141 40C113 48 76 49 47 44C25 40 10 29 12 10Z"/></svg>',
-)}")`;
+// Lake outline in terrain pixels: far shore along the upper hills, near edge along the crests that hide it.
+const lakeShore =
+  "M176 432L196 414L225 400L260 392L300 388L350 386L400 388L440 392L480 398L520 402L560 405L600 404L640 408L680 413L720 418L760 423L800 428L840 434L880 441L910 450L935 460C953 470 961 505 959 547L933 540L867 520L800 507L733 484L687 460L647 440L600 428L553 426L513 422L473 430L433 444L387 459L300 450L233 440L200 434Z";
 ---
 
 <div class="field-map-scenery" aria-hidden="true">
@@ -27,13 +26,141 @@ const lakeMask = `url("data:image/svg+xml,${encodeURIComponent(
     fetchpriority="low"
   />
   <div class="field-map-lake">
-    <div
-      class="field-map-tarn"
-      style={`--terrain: url(${terrainImage.src}); --lake-mask: ${lakeMask}`}
-    >
-      <span class="lake-reflection"></span>
-      <span class="lake-water"></span>
-    </div>
+    <svg viewBox="0 0 1024 1536" preserveAspectRatio="none">
+      <defs>
+        <filter
+          id="field-map-lake-brush"
+          x="-5%"
+          y="-30%"
+          width="110%"
+          height="160%"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.02 0.14"
+            numOctaves="2"
+            seed="7"></feTurbulence>
+          <feDisplacementMap
+            in="SourceGraphic"
+            scale="10"
+            xChannelSelector="R"
+            yChannelSelector="G"></feDisplacementMap>
+          <feGaussianBlur stdDeviation="1.2"></feGaussianBlur>
+        </filter>
+        <filter
+          id="field-map-lake-fade"
+          x="-10%"
+          y="-50%"
+          width="120%"
+          height="200%"
+        >
+          <feGaussianBlur stdDeviation="9"></feGaussianBlur>
+        </filter>
+        <!-- Horizontal strokes in the artwork's water blues, stepped like its flat paint. -->
+        <filter
+          id="field-map-lake-paint"
+          x="0"
+          y="0"
+          width="100%"
+          height="100%"
+          color-interpolation-filters="sRGB"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.005 0.08"
+            numOctaves="3"
+            seed="2"></feTurbulence>
+          <feComponentTransfer>
+            <feFuncR type="discrete" tableValues="0 0.2 0.45 0.7 1"></feFuncR>
+          </feComponentTransfer>
+          <feColorMatrix
+            values="0.54 0 0 0 0.3 0.45 0 0 0 0.52 0.31 0 0 0 0.75 0 0 0 0 1"
+          ></feColorMatrix>
+        </filter>
+        <filter
+          id="field-map-lake-ripple"
+          x="0"
+          y="0"
+          width="100%"
+          height="100%"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.006 0.18"
+            numOctaves="2"
+            seed="4"></feTurbulence>
+          <feDisplacementMap
+            in="SourceGraphic"
+            scale="7"
+            xChannelSelector="R"
+            yChannelSelector="G"></feDisplacementMap>
+        </filter>
+        <mask
+          id="field-map-lake-water"
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="0"
+          width="1024"
+          height="1536"
+        >
+          <path
+            class="lake-shore"
+            d={lakeShore}
+            fill="#fff"
+            filter="url(#field-map-lake-brush)"></path>
+        </mask>
+        <!-- Open water catches the light; the band under the far shore holds the hills' dark reflection. -->
+        <mask
+          id="field-map-lake-sheen"
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="0"
+          width="1024"
+          height="1536"
+        >
+          <path
+            d={lakeShore}
+            fill="#fff"
+            transform="translate(0 22)"
+            filter="url(#field-map-lake-fade)"></path>
+        </mask>
+        <clipPath id="field-map-lake-west"
+          ><rect width="540" height="1536"></rect></clipPath
+        >
+        <clipPath id="field-map-lake-east"
+          ><rect x="540" width="484" height="1536"></rect></clipPath
+        >
+      </defs>
+      <g mask="url(#field-map-lake-water)">
+        <rect x="150" y="380" width="830" height="180" fill="#0f172a"></rect>
+        <g mask="url(#field-map-lake-sheen)">
+          <rect
+            x="150"
+            y="380"
+            width="830"
+            height="180"
+            filter="url(#field-map-lake-paint)"
+            opacity="0.44"></rect>
+        </g>
+        <!-- Terrain mirrored about each arm's far shore (y' = 2(a + mx) - y). -->
+        <g filter="url(#field-map-lake-ripple)" opacity="0.22">
+          <image
+            href={terrainImage.src}
+            width="1024"
+            height="1536"
+            clip-path="url(#field-map-lake-west)"
+            transform="matrix(1 0.054 0 -1 0 770)"
+          />
+          <image
+            href={terrainImage.src}
+            width="1024"
+            height="1536"
+            clip-path="url(#field-map-lake-east)"
+            transform="matrix(1 0.293 0 -1 0 645.4)"
+          />
+        </g>
+      </g>
+    </svg>
   </div>
   <svg class="field-map-contour contour-left" viewBox="-100 -100 200 200">
     <defs>
@@ -131,43 +258,18 @@ const lakeMask = `url("data:image/svg+xml,${encodeURIComponent(
       transform: translateX(60%);
     }
   }
-  /*
-   * Alpine tarn in the saddle at terrain (455, 360), 185 x 58 image px, above the middle hill's crest.
-   * It reuses the terrain file: the painted water from the bottom of the artwork, plus the slope above
-   * the lake mirrored into it. Background positions are src / (artwork size - lake size).
-   */
+  /* The lake shares the terrain's size, so it stays in its valley. The hero does not scale with it:
+     below 1200px the lake reaches the portrait, and from 1625px it runs into the trail and project cards. */
   .field-map-lake {
     position: absolute;
     inset: 0 0 auto;
     aspect-ratio: 1024 / 1536;
   }
-  .field-map-tarn {
-    position: absolute;
-    left: calc(455 / 1024 * 100%);
-    top: calc(360 / 1536 * 100%);
-    width: calc(185 / 1024 * 100%);
-    aspect-ratio: 185 / 58;
-    opacity: 0.3;
-    mask: var(--lake-mask) center / 100% 100% no-repeat;
+  .field-map-lake svg {
+    width: 100%;
+    height: 100%;
   }
-  .field-map-tarn span {
-    position: absolute;
-    inset: 0;
-    background-image: var(--terrain);
-    background-repeat: no-repeat;
-    background-size: calc(1024 / 185 * 100%) auto;
-  }
-  .field-map-tarn .lake-water {
-    background-position: calc(705 / 839 * 100%) calc(1394 / 1478 * 100%);
-    opacity: 0.85;
-  }
-  .field-map-tarn .lake-reflection {
-    background-position: calc(455 / 839 * 100%) calc(302 / 1478 * 100%);
-    transform: scaleY(-1);
-  }
-  /* The terrain scales with the viewport but the hero does not: below 1200px the intro text covers
-     the saddle, and from 1540px the saddle drops into the stats row. */
-  @media (max-width: 1199px), (min-width: 1540px) {
+  @media (max-width: 1199px), (min-width: 1625px) {
     .field-map-lake {
       display: none;
     }
