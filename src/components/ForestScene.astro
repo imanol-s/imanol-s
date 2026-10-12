@@ -1,0 +1,530 @@
+---
+import landscape from "../assets/hero-landscape.webp";
+import pine from "../assets/forest-pine.webp";
+import { getImage } from "astro:assets";
+
+const optimizedLandscape = await getImage({
+  src: landscape,
+  width: 1600,
+  format: "webp",
+  quality: 70,
+});
+---
+
+<div class="forest-scene" data-paused="true">
+  <svg viewBox="0 0 2103 748" aria-hidden="true" class="forest-art">
+    <image href={optimizedLandscape.src} width="2103" height="748" />
+    <defs>
+      <image
+        id="forest-pine"
+        href={pine.src}
+        x="-50"
+        y="-150"
+        width="100"
+        height="150"
+      />
+    </defs>
+    <g transform="translate(1800 175)"
+      ><g class="pine-wind"><use href="#forest-pine"></use></g></g
+    >
+    <g transform="translate(1890 180) scale(.7)"
+      ><g class="pine-wind second-pine"><use href="#forest-pine"></use></g></g
+    >
+    <g transform="translate(1708 170) scale(.55)"
+      ><g class="pine-wind"><use href="#forest-pine"></use></g></g
+    >
+    <g transform="translate(970 610) scale(.65)"
+      ><g class="pine-wind"><use href="#forest-pine"></use></g></g
+    >
+    <g transform="translate(1110 620) scale(.55)"
+      ><g class="pine-wind"><use href="#forest-pine"></use></g></g
+    >
+    <g transform="translate(1870 540) scale(.8)"
+      ><g class="pine-wind"><use href="#forest-pine"></use></g></g
+    >
+    <g transform="translate(1960 545) scale(.65)"
+      ><g class="pine-wind"><use href="#forest-pine"></use></g></g
+    >
+    <g transform="translate(2040 550) scale(.5)"
+      ><g class="pine-wind"><use href="#forest-pine"></use></g></g
+    >
+    <g class="forest-clearing">
+      <g transform="translate(1020 610)"
+        ><g class="falling-tree"
+          ><g class="pine-wind"><use href="#forest-pine"></use></g></g
+        ><path d="M-2 0V-7H2V0" fill="#55796f" class="tree-stump"></path></g
+      >
+      <g transform="translate(868 424) scale(1.6)">
+        <g
+          class="forest-person"
+          fill="none"
+          stroke="#779c91"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        >
+          <g class="person-torso">
+            <circle cx="23" cy="91" r="3" fill="#779c91" stroke="none"></circle>
+            <path d="M23 96 24 106" stroke-width="3"></path>
+            <path class="walking-arm" d="M24 98 21 103 22 108"></path>
+            <path class="working-arm" d="M24 98 30 102 35 107"></path>
+          </g>
+          <g class="standing-legs">
+            <path class="left-leg" d="M24 106 23 111 20 116"></path>
+            <path class="right-leg" d="M24 106 25 111 28 116"></path>
+          </g>
+          <path
+            class="crouching-legs"
+            d="M24 111 32 111 28 116M24 111 21 114 24 116"></path>
+          <path
+            class="resting-legs"
+            d="M24 111 31 112 35 116M24 111 21 114 28 116"></path>
+          <g class="axe-arm">
+            <path d="M24 98 33 100 39 94"></path>
+            <path d="M37 99 43 87" stroke="#86a89b"></path>
+            <path d="M42 87 47 87 46 91 40 91Z" fill="#779c91" stroke="none"
+            ></path>
+          </g>
+          <g class="carried-wood" stroke="#76978a" stroke-width="2"
+            ><path d="M29 99 42 103M29 102 41 106"></path></g
+          >
+        </g>
+        <g class="campfire" transform="translate(67 115)">
+          <path
+            d="m-8 0 16-2m-15-1 14 4"
+            stroke="#8cac9b"
+            stroke-width="2"
+            stroke-linecap="round"></path>
+          <g class="fire-flame" fill="#b6c2a0">
+            <path d="M-5-2Q-9-9-2-14L0-22Q2-13 5-11Q11-5 5-2Z"></path>
+            <path d="M-2-2Q-4-8 1-12Q5-5 2-2Z" fill="#d2d2b2"></path>
+          </g>
+        </g>
+      </g>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .forest-scene {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(1250px, 100vw);
+  }
+  .forest-art {
+    width: 100%;
+    display: block;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .forest-person,
+  .campfire,
+  .tree-stump,
+  .resting-legs,
+  .carried-wood,
+  .crouching-legs,
+  .working-arm,
+  .axe-arm,
+  .fire-flame {
+    opacity: 0;
+  }
+  .pine-wind {
+    transform-origin: 0 0;
+    opacity: 0.55;
+  }
+  .falling-tree .pine-wind {
+    transform-origin: 0 0;
+  }
+  .falling-tree {
+    transform-origin: 0 0;
+  }
+  .left-leg,
+  .right-leg {
+    transform-origin: 24px 106px;
+  }
+  .person-torso {
+    transform-origin: 24px 106px;
+  }
+  .walking-arm,
+  .axe-arm {
+    transform-origin: 24px 98px;
+  }
+  .pine-wind {
+    --wind-duration: 7s;
+    --wind-phase: -1s;
+  }
+  .forest-art > g:nth-of-type(2n) .pine-wind {
+    --wind-duration: 8.3s;
+    --wind-phase: -4s;
+  }
+  .forest-art > g:nth-of-type(3n) .pine-wind {
+    --wind-duration: 6.4s;
+    --wind-phase: -2.8s;
+  }
+  .falling-tree .pine-wind {
+    --wind-duration: 7.7s;
+    --wind-phase: -3s;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pine-wind {
+      animation: pine-wind var(--wind-duration) var(--wind-phase) ease-in-out
+        infinite;
+    }
+    .forest-person {
+      animation: forest-story 30s 25s linear both;
+    }
+    .left-leg,
+    .right-leg {
+      animation:
+        stride 0.6s 25s 10,
+        stride 0.6s 44s 5;
+    }
+    .right-leg {
+      animation-name: opposite-stride, opposite-stride;
+    }
+    .walking-arm {
+      animation:
+        arm-stride 0.6s 25s 10,
+        arm-stride 0.6s 44s 5,
+        arm-visible 30s 25s both;
+    }
+    .standing-legs {
+      animation: standing-visible 30s 25s both;
+    }
+    .crouching-legs,
+    .working-arm {
+      animation: crouch-visible 30s 25s both;
+    }
+    .person-torso {
+      animation: torso-pose 30s 25s both;
+    }
+    .axe-arm {
+      animation:
+        chopping 0.8s 31s 10,
+        axe-visible 8s 31s both;
+    }
+    .falling-tree {
+      animation:
+        tree-fall 2s 39s both,
+        tree-used 1s 44s forwards;
+    }
+    .tree-stump {
+      animation: appear 0.5s 40.5s forwards;
+    }
+    .carried-wood {
+      animation: carry-wood 6s 44s both;
+    }
+    .resting-legs {
+      animation: appear 0.5s 51s forwards;
+    }
+    .campfire {
+      animation: appear 0.8s 48s forwards;
+    }
+    .fire-flame {
+      transform-origin: 0 0;
+      animation:
+        appear 1s 50s forwards,
+        fire-flicker 2.7s 51s ease-in-out infinite;
+    }
+    [data-paused="true"] .forest-art * {
+      animation-play-state: paused;
+    }
+  }
+  @keyframes pine-wind {
+    0%,
+    100% {
+      transform: rotate(-0.7deg);
+    }
+    18% {
+      transform: rotate(0.5deg);
+    }
+    42% {
+      transform: rotate(3deg);
+    }
+    61% {
+      transform: rotate(1deg);
+    }
+    76% {
+      transform: rotate(1.8deg);
+    }
+    90% {
+      transform: rotate(-1deg);
+    }
+  }
+  @keyframes forest-story {
+    0% {
+      opacity: 0;
+      transform: translateX(-5px);
+    }
+    1% {
+      opacity: 1;
+      transform: translateX(-5px);
+    }
+    20%,
+    63.3333% {
+      opacity: 1;
+      transform: translateX(67px);
+    }
+    73.3333%,
+    83.3333% {
+      opacity: 1;
+      transform: translateX(28px);
+    }
+    86.6667%,
+    100% {
+      opacity: 1;
+      transform: translateX(13px);
+    }
+  }
+  @keyframes stride {
+    0%,
+    100% {
+      transform: rotate(-16deg);
+    }
+    50% {
+      transform: rotate(16deg);
+    }
+  }
+  @keyframes opposite-stride {
+    0%,
+    100% {
+      transform: rotate(16deg);
+    }
+    50% {
+      transform: rotate(-16deg);
+    }
+  }
+  @keyframes arm-stride {
+    0%,
+    100% {
+      transform: rotate(18deg);
+    }
+    50% {
+      transform: rotate(-18deg);
+    }
+  }
+  @keyframes arm-visible {
+    0%,
+    19.99%,
+    63.34%,
+    73.33% {
+      opacity: 1;
+    }
+    20%,
+    63.33%,
+    73.34%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes standing-visible {
+    0%,
+    52.99%,
+    63.34%,
+    73.32% {
+      opacity: 1;
+    }
+    53.33%,
+    63.33%,
+    73.33%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes crouch-visible {
+    0%,
+    52.99%,
+    63.34%,
+    73.32%,
+    86.67%,
+    100% {
+      opacity: 0;
+    }
+    53.33%,
+    63.33%,
+    73.33%,
+    83.33% {
+      opacity: 1;
+    }
+  }
+  @keyframes torso-pose {
+    0%,
+    19.99% {
+      transform: none;
+    }
+    20%,
+    46.66% {
+      transform: rotate(7deg);
+    }
+    48%,
+    52.99% {
+      transform: none;
+    }
+    55%,
+    62% {
+      transform: translateY(5px) rotate(35deg);
+    }
+    63.33%,
+    73.32% {
+      transform: none;
+    }
+    75%,
+    83.33% {
+      transform: translateY(5px) rotate(35deg);
+    }
+    86.67%,
+    100% {
+      transform: translateY(5px) rotate(-12deg);
+    }
+  }
+  @keyframes axe-visible {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    1%,
+    99% {
+      opacity: 1;
+    }
+  }
+  @keyframes chopping {
+    0%,
+    100% {
+      transform: rotate(-45deg);
+    }
+    45% {
+      transform: rotate(25deg);
+    }
+  }
+  @keyframes tree-fall {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: cubic-bezier(0.7, 0, 1, 0.6);
+    }
+    88% {
+      transform: rotate(86deg);
+    }
+    95% {
+      transform: rotate(80deg);
+    }
+    100% {
+      transform: rotate(82deg);
+    }
+  }
+  @keyframes tree-used {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes appear {
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes carry-wood {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    2%,
+    65% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+      transform: translate(10px, 9px);
+    }
+  }
+  @keyframes fire-flicker {
+    0%,
+    100% {
+      transform: scale(0.9, 0.95);
+      opacity: 0.8;
+    }
+    27% {
+      transform: scale(1.04, 1.12);
+      opacity: 1;
+    }
+    52% {
+      transform: scale(0.95, 1);
+      opacity: 0.9;
+    }
+    73% {
+      transform: scale(0.85, 1.08);
+      opacity: 0.85;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 1399px) {
+    .forest-clearing {
+      transform: translate(350px, -200px);
+    }
+  }
+  @media (max-width: 767px) {
+    .forest-clearing {
+      transform: translate(850px, -200px);
+    }
+    .forest-scene {
+      width: 48rem;
+    }
+    .forest-art {
+      opacity: 0.4;
+    }
+  }
+</style>
+
+<script>
+  let cleanup: (() => void) | undefined;
+  const initForest = () => {
+    cleanup?.();
+    const scene = document.querySelector<HTMLElement>(".forest-scene");
+    const button = scene
+      ?.closest(".hero-section")
+      ?.querySelector<HTMLButtonElement>(".scenery-control");
+    if (!scene || !button) return;
+    const controller = new AbortController();
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let visible = false;
+    let userPaused = false;
+    const update = () => {
+      scene.dataset.paused = String(
+        userPaused || !visible || document.hidden || motion.matches,
+      );
+      scene.dataset.userPaused = String(userPaused);
+      button.dataset.userPaused = String(userPaused);
+      document.documentElement.dataset.sceneryPaused = String(userPaused);
+      document.dispatchEvent(new Event("scenery:pause-change"));
+      button.hidden = motion.matches;
+      button.setAttribute(
+        "aria-label",
+        `${userPaused ? "Play" : "Pause"} scenery animation`,
+      );
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      update();
+    });
+    observer.observe(scene);
+    button.addEventListener(
+      "click",
+      () => {
+        userPaused = !userPaused;
+        update();
+      },
+      { signal: controller.signal },
+    );
+    document.addEventListener("visibilitychange", update, {
+      signal: controller.signal,
+    });
+    motion.addEventListener("change", update, { signal: controller.signal });
+    update();
+    cleanup = () => {
+      delete document.documentElement.dataset.sceneryPaused;
+      document.dispatchEvent(new Event("scenery:pause-change"));
+      observer.disconnect();
+      controller.abort();
+    };
+  };
+  document.addEventListener("astro:page-load", initForest);
+  document.addEventListener("astro:before-swap", () => cleanup?.());
+</script>

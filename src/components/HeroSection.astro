@@ -4,12 +4,17 @@ import TypewriterText from "./TypewriterText.tsx";
 import { ME, SOCIALS } from "../config";
 import { timelineJobs, primaryEducation } from "../data/career";
 import portraitLineart from "../assets/portrait-lineart.svg";
+import ForestScene from "./ForestScene.astro";
 
 const currentJob = timelineJobs().find((job) => job.currentJob);
+const enterpriseWork = timelineJobs().find((job) => !job.currentJob);
 const education = primaryEducation();
 ---
 
 <section class="hero-section" aria-label="Introduction">
+  <div class="hero-landscape">
+    <ForestScene />
+  </div>
   <div class="hero-main">
     <div class="hero-copy">
       <div class="hero-name"><TypewriterText client:load text={ME.name} /></div>
@@ -18,6 +23,20 @@ const education = primaryEducation();
         {ME.headline.map((line) => <span>{line}</span>)}
       </h2>
       <p class="hero-description">{ME.aboutMe}</p>
+      {
+        enterpriseWork && (
+          <div class="hero-evidence">
+            <p class="context-label">Enterprise work</p>
+            <p class="hero-evidence-attribution">
+              {enterpriseWork.title} · {enterpriseWork.company}
+            </p>
+            <p class="hero-evidence-description">{enterpriseWork.goals[0]}</p>
+            <a class="text-link focus-ring" href="#experience">
+              Work history <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        )
+      }
       <div class="hero-actions">
         <a class="cta-primary focus-ring" href="#projects"
           >Explore my work <span aria-hidden="true">↗</span></a
@@ -29,6 +48,23 @@ const education = primaryEducation();
           rel="noopener noreferrer"
           >View résumé <span aria-hidden="true">↗</span></a
         >
+        <button
+          type="button"
+          class="scenery-control focus-ring"
+          aria-label="Pause scenery animation"
+          hidden
+        >
+          <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+            <path
+              class="pause-icon"
+              d="M5 3V13M11 3V13"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"></path>
+            <path class="play-icon" d="M4 2 13 8 4 14Z" fill="currentColor"
+            ></path>
+          </svg>
+        </button>
       </div>
     </div>
     <div class="portrait-column">
@@ -102,48 +138,110 @@ const education = primaryEducation();
 </section>
 
 <style>
+  .scenery-control {
+    z-index: 2;
+    position: relative;
+    flex-shrink: 0;
+    pointer-events: auto;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: grid;
+    place-items: center;
+    color: var(--color-supporting);
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .scenery-control[hidden] {
+    display: none;
+  }
+  .scenery-control:hover {
+    color: var(--color-mint-hover);
+  }
+  .play-icon {
+    display: none;
+  }
+  [data-user-paused="true"] .pause-icon {
+    display: none;
+  }
+  [data-user-paused="true"] .play-icon {
+    display: block;
+  }
+  .scenery-control::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid
+      color-mix(in srgb, var(--color-soft-mint) 30%, var(--color-card));
+    background: var(--color-card);
+    border-radius: 50%;
+  }
+  .scenery-control > svg {
+    position: relative;
+  }
+  .scenery-control:hover::before {
+    border-color: color-mix(
+      in srgb,
+      var(--color-soft-mint) 60%,
+      var(--color-card)
+    );
+  }
+
   .hero-section {
-    margin: 1.5rem 0 6rem;
+    overflow-wrap: anywhere;
+    margin: 0 0 2.5rem;
+    position: relative;
+    isolation: isolate;
+  }
+  .hero-landscape {
+    position: absolute;
+    top: -5rem;
+    bottom: 0;
+    left: calc((100% - 100vw) / 2);
+    width: 100vw;
+    overflow: clip;
+    z-index: -1;
+    pointer-events: none;
   }
   .hero-main {
     display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    align-items: center;
-    gap: 5rem;
-    padding: 1rem 0 3.75rem;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 4rem;
+    padding: 0.5rem 0 1.5rem;
   }
   .hero-copy {
     min-width: 0;
   }
   .hero-name :global(h1) {
-    font-size: clamp(2.4rem, 4.3vw, 4rem);
-    letter-spacing: -0.07em;
+    font-size: clamp(2.4rem, 4.3vw, 3.75rem);
+    letter-spacing: -0.04em;
     font-weight: 650;
     line-height: 1.18;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
   .hero-profession {
     font-family: var(--font-display);
     font-size: 0.8rem;
     line-height: 1.8;
-    color: #b6c6da;
+    color: var(--color-supporting);
   }
   .hero-headline {
     font-family: var(--font-body);
-    font-size: clamp(2rem, 3.3vw, 3rem);
+    font-size: clamp(2rem, 3.1vw, 2.75rem);
     line-height: 1.16;
-    letter-spacing: -0.055em;
+    letter-spacing: -0.04em;
     font-weight: 550;
-    margin: 2.3rem 0 1.3rem;
+    margin: 1.5rem 0 1rem;
   }
   .hero-headline span {
     display: block;
   }
   .hero-headline span:last-child {
-    color: #b6e5d3;
+    color: var(--color-soft-mint);
   }
   .hero-description {
-    color: #cbd5e1;
+    color: var(--color-body);
     font-size: 1rem;
     line-height: 1.85;
     max-width: 34rem;
@@ -152,8 +250,26 @@ const education = primaryEducation();
     display: flex;
     align-items: center;
     gap: 1.8rem;
-    margin-top: 2rem;
+    margin-top: 1.25rem;
     flex-wrap: wrap;
+  }
+  .hero-evidence {
+    margin-top: 1.25rem;
+    max-width: 34rem;
+  }
+  .hero-evidence-attribution {
+    color: var(--color-supporting);
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  .hero-evidence-description {
+    margin-top: 0.5rem;
+    color: var(--color-body);
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
+  .hero-evidence .text-link {
+    min-height: 44px;
   }
   .hero-actions .cta-primary {
     padding: 0.9rem 1.25rem;
@@ -161,8 +277,9 @@ const education = primaryEducation();
   }
   .portrait-column {
     width: 100%;
-    max-width: 23rem;
+    max-width: 21rem;
     justify-self: end;
+    padding-top: 1rem;
   }
   .portrait-illustration {
     position: relative;
@@ -187,7 +304,11 @@ const education = primaryEducation();
     display: block;
     width: 100%;
     height: auto;
-    mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
+    mask-image: linear-gradient(
+      to bottom,
+      var(--color-background-dark) 88%,
+      transparent 100%
+    );
   }
   .portrait-note {
     max-width: 20rem;
@@ -234,23 +355,23 @@ const education = primaryEducation();
     margin-top: 0.75rem;
   }
   .hero-socials a {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     gap: 0.35rem;
   }
   .hero-context {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 2rem;
-    border-top: 1px solid #334155;
-    border-bottom: 1px solid #334155;
-    padding: 1.6rem 0;
+    border-top: 1px solid var(--color-slate-700);
+    border-bottom: 1px solid var(--color-slate-700);
+    padding: 1.25rem 0;
   }
   .context-label {
     display: block;
-    color: #94a3b8;
+    color: var(--color-accent);
     font-family: var(--font-display);
     text-transform: uppercase;
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     letter-spacing: 0.12em;
     margin-bottom: 0.6rem;
   }
@@ -262,7 +383,7 @@ const education = primaryEducation();
   .context-detail {
     display: block;
     font-weight: 400;
-    color: #94a3b8;
+    color: var(--color-accent);
     font-size: 0.78rem;
     margin-top: 0.15rem;
   }
@@ -270,50 +391,65 @@ const education = primaryEducation();
     display: block;
     font-weight: 400;
     font-size: 0.78rem;
-    color: #cbd5e1;
+    color: var(--color-body);
   }
   @media (max-width: 1023px) {
     .hero-main {
       gap: 2.5rem;
-      grid-template-columns: 1.3fr 1fr;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
     }
     .hero-name :global(h1) {
       font-size: clamp(2.4rem, 5vw, 3.5rem);
     }
   }
   @media (max-width: 767px) {
+    .hero-landscape {
+      top: auto;
+      bottom: 8rem;
+      height: 17rem;
+    }
     .hero-section {
-      margin: 0.5rem 0 4rem;
+      margin: 0.5rem 0 1rem;
     }
     .hero-main {
       grid-template-columns: 1fr;
-      gap: 1.75rem;
-      padding-bottom: 2rem;
+      gap: 1rem;
+      padding-bottom: 1rem;
     }
     .hero-name :global(h1) {
       font-size: clamp(2rem, 7.7vw, 3.5rem);
     }
     .hero-headline {
       font-size: clamp(1.8rem, 6vw, 2.5rem);
-      margin-top: 1.75rem;
+      margin-top: 1.25rem;
     }
     .hero-profession {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
     }
     .hero-actions {
-      gap: 1.3rem;
+      gap: 0.75rem 0.6rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    .hero-actions a {
+      min-height: 44px;
+    }
+    .hero-actions .cta-primary {
+      padding: 0.75rem 0.9rem;
+      gap: 0.6rem;
     }
     .portrait-column {
       max-width: 100%;
       justify-self: start;
       display: grid;
-      grid-template-columns: 7rem minmax(0, 1fr);
+      grid-template-columns: min(7rem, 40%) minmax(0, 1fr);
       gap: 0 0.9rem;
       align-items: center;
+      padding-top: 0;
     }
     .portrait-illustration {
       grid-row: 1 / 3;
-      width: 7rem;
+      width: min(7rem, 100%);
     }
     .portrait-illustration::before {
       inset: -1rem 0;
@@ -333,12 +469,13 @@ const education = primaryEducation();
       margin-top: 0.3rem;
     }
     .hero-socials a {
-      font-size: 0.65rem;
+      font-size: 0.75rem;
       min-height: 2.75rem;
     }
     .hero-context {
-      grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
+      padding-block: 0.75rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
     }
     .hero-context > div:last-child {
       grid-column: 1 / -1;
@@ -352,7 +489,30 @@ const education = primaryEducation();
       font-size: 0.8rem;
     }
     .context-detail {
-      font-size: 0.72rem;
+      font-size: 0.75rem;
     }
   }
 </style>
+
+<script>
+  let cleanupActions: (() => void) | undefined;
+  document.addEventListener("astro:before-swap", () => {
+    cleanupActions?.();
+    cleanupActions = undefined;
+  });
+  document.addEventListener("astro:page-load", () => {
+    cleanupActions?.();
+    cleanupActions = undefined;
+    const copy = document.querySelector(".hero-copy");
+    const actions = copy?.querySelector(".hero-actions");
+    const intro = copy?.querySelector(".hero-description");
+    if (!copy || !actions || !intro) return;
+    const mobile = window.matchMedia("(max-width: 767px)");
+    // DOM order keeps mobile reading and keyboard navigation aligned with the layout.
+    const arrange = () =>
+      mobile.matches ? copy.insertBefore(actions, intro) : copy.append(actions);
+    arrange();
+    mobile.addEventListener("change", arrange);
+    cleanupActions = () => mobile.removeEventListener("change", arrange);
+  });
+</script>
