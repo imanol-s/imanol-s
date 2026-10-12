@@ -5,6 +5,10 @@ import terrain from "../assets/field-map-terrain.webp";
 const terrainImage = await getImage({ src: terrain, format: "webp" });
 const leftContour = [1, 0.84, 0.66, 0.5, 0.31];
 const rightContour = [1, 0.78, 0.6, 0.36];
+// Tarn shoreline in lake-box units, blurred so the edge reads like the terrain's wash.
+const lakeMask = `url("data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 185 58"><filter id="b"><feGaussianBlur stdDeviation="8"/></filter><path filter="url(#b)" d="M12 10L60 8L120 9L173 8C176 20 164 31 141 40C113 48 76 49 47 44C25 40 10 29 12 10Z"/></svg>',
+)}")`;
 ---
 
 <div class="field-map-scenery" aria-hidden="true">
@@ -22,6 +26,15 @@ const rightContour = [1, 0.78, 0.6, 0.36];
     decoding="async"
     fetchpriority="low"
   />
+  <div class="field-map-lake">
+    <div
+      class="field-map-tarn"
+      style={`--terrain: url(${terrainImage.src}); --lake-mask: ${lakeMask}`}
+    >
+      <span class="lake-reflection"></span>
+      <span class="lake-water"></span>
+    </div>
+  </div>
   <svg class="field-map-contour contour-left" viewBox="-100 -100 200 200">
     <defs>
       <path
@@ -116,6 +129,47 @@ const rightContour = [1, 0.78, 0.6, 0.36];
     .field-map-clouds span {
       animation: none;
       transform: translateX(60%);
+    }
+  }
+  /*
+   * Alpine tarn in the saddle at terrain (455, 360), 185 x 58 image px, above the middle hill's crest.
+   * It reuses the terrain file: the painted water from the bottom of the artwork, plus the slope above
+   * the lake mirrored into it. Background positions are src / (artwork size - lake size).
+   */
+  .field-map-lake {
+    position: absolute;
+    inset: 0 0 auto;
+    aspect-ratio: 1024 / 1536;
+  }
+  .field-map-tarn {
+    position: absolute;
+    left: calc(455 / 1024 * 100%);
+    top: calc(360 / 1536 * 100%);
+    width: calc(185 / 1024 * 100%);
+    aspect-ratio: 185 / 58;
+    opacity: 0.3;
+    mask: var(--lake-mask) center / 100% 100% no-repeat;
+  }
+  .field-map-tarn span {
+    position: absolute;
+    inset: 0;
+    background-image: var(--terrain);
+    background-repeat: no-repeat;
+    background-size: calc(1024 / 185 * 100%) auto;
+  }
+  .field-map-tarn .lake-water {
+    background-position: calc(705 / 839 * 100%) calc(1394 / 1478 * 100%);
+    opacity: 0.85;
+  }
+  .field-map-tarn .lake-reflection {
+    background-position: calc(455 / 839 * 100%) calc(302 / 1478 * 100%);
+    transform: scaleY(-1);
+  }
+  /* The terrain scales with the viewport but the hero does not: below 1200px the intro text covers
+     the saddle, and from 1540px the saddle drops into the stats row. */
+  @media (max-width: 1199px), (min-width: 1540px) {
+    .field-map-lake {
+      display: none;
     }
   }
   #field-map-trail-ink {

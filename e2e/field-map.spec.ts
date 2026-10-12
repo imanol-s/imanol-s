@@ -303,3 +303,76 @@ for (const [width, shown] of [
     expect(fire!.x + fire!.width).toBeLessThan(g!.x + g!.width);
   });
 }
+
+for (const [width, shown] of [
+  [1920, false],
+  [1536, true],
+  [1440, true],
+  [1280, true],
+  [1200, true],
+  [1024, false],
+  [390, false],
+] as const) {
+  // Catches: lake drawn over hero text, the portrait or the trail, or adding a download.
+  test(`terrain lake is ${shown ? "clear of text, portrait and trail" : "hidden"} at ${width}px`, async ({
+    page,
+  }) => {
+    const terrain = new Set<string>();
+    page.on("request", (r) => {
+      if (r.url().includes("field-map-terrain")) terrain.add(r.url());
+    });
+    await open(page, width);
+    const lake = page.locator(".field-map-scenery .field-map-tarn");
+    await expect(lake).toHaveCount(1);
+    if (!shown) {
+      await expect(lake).toBeHidden();
+      return;
+    }
+    await expect(lake).toBeVisible();
+    const hits = await lake.evaluate((el, sel) => {
+      const water = el.querySelector(".lake-water")!;
+      const terrainSrc = document
+        .querySelector(".field-map-terrain")!
+        .getAttribute("src")!;
+      const box = el.getBoundingClientRect();
+      const inside = (x: number, y: number) =>
+        x > box.left && x < box.right && y > box.top && y < box.bottom;
+      const overlaps = (q: DOMRect) =>
+        q.width > 0 &&
+        q.right > box.left &&
+        q.left < box.right &&
+        q.bottom > box.top &&
+        q.top < box.bottom;
+      const hero = document.querySelector(".hero-section")!;
+      const found: string[] = [];
+      const walker = document.createTreeWalker(hero, NodeFilter.SHOW_TEXT);
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+        if (!n.textContent?.trim()) continue;
+        const range = document.createRange();
+        range.selectNodeContents(n);
+        if ([...range.getClientRects()].some(overlaps))
+          found.push(n.textContent);
+      }
+      for (const img of hero.querySelectorAll("img")) {
+        if (overlaps(img.getBoundingClientRect())) found.push("portrait");
+      }
+      const path = document.querySelector<SVGPathElement>(sel)!;
+      const origin = path.ownerSVGElement!.getBoundingClientRect();
+      for (let l = 0; l < path.getTotalLength(); l += 4) {
+        const p = path.getPointAtLength(l);
+        if (inside(p.x + origin.left, p.y + origin.top)) {
+          found.push("trail");
+          break;
+        }
+      }
+      return {
+        found,
+        reusesTerrain:
+          getComputedStyle(water).backgroundImage.includes(terrainSrc),
+      };
+    }, TRAIL);
+    expect(hits.found).toEqual([]);
+    expect(hits.reusesTerrain).toBe(true);
+    expect(terrain.size).toBe(1);
+  });
+}
