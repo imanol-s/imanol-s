@@ -160,7 +160,7 @@ test("navigating to /projects and back keeps one trail and restores route backgr
   expect(await topoVisibility()).not.toBe("hidden");
 
   await page.goBack();
-  await expect(page).toHaveURL(/localhost:4322\/$/);
+  await expect(page).toHaveURL("/");
   await expect(page.locator(TRAIL)).toHaveCount(1);
   await expect(page.locator(TRAIL)).toHaveAttribute("d", /.+/);
   await expect(page.locator("body")).toHaveAttribute("data-field-map", /.*/);

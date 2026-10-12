@@ -210,7 +210,11 @@ test("scenery responds to page visibility signals", async ({ page }) => {
       else Reflect.deleteProperty(document, "hidden");
       document.dispatchEvent(new Event("visibilitychange"));
     }
-    await wait();
+    // A resumed animation starts on a later frame, which a slow runner may not reach within a fixed wait.
+    const deadline = performance.now() + 2000;
+    while (clock() === stillAt && performance.now() < deadline) {
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+    }
     return {
       pausedStates,
       pausedAttribute,
