@@ -8,6 +8,10 @@ const rightContour = [1, 0.78, 0.6, 0.36];
 ---
 
 <div class="field-map-scenery" aria-hidden="true">
+  <div class="field-map-clouds">
+    <span></span>
+    <span></span>
+  </div>
   <img
     class="field-map-terrain"
     src={terrainImage.src}
@@ -45,6 +49,13 @@ const rightContour = [1, 0.78, 0.6, 0.36];
     }
   </svg>
   <svg class="field-map-trail">
+    <defs>
+      <mask id="field-map-trail-reveal" maskUnits="userSpaceOnUse">
+        <path id="field-map-trail-ink" vector-effect="non-scaling-stroke"
+        ></path>
+      </mask>
+    </defs>
+    <!-- initTrailInk adds the reveal mask, so the trail stays whole without JS. -->
     <path id="field-map-trail-path" vector-effect="non-scaling-stroke"></path>
   </svg>
 </div>
@@ -63,6 +74,55 @@ const rightContour = [1, 0.78, 0.6, 0.36];
     height: auto;
     opacity: 0.24;
     mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  }
+  /* Cloud shadows drift over the terrain; they share its size and fade. */
+  .field-map-clouds {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 1;
+    aspect-ratio: 1024 / 1536;
+    overflow: clip;
+    mask-image: linear-gradient(to bottom, #000 45%, transparent 60%);
+  }
+  .field-map-clouds span {
+    position: absolute;
+    top: 6%;
+    left: 0;
+    width: 55%;
+    height: 16%;
+    background: radial-gradient(closest-side, rgb(2 6 23 / 55%), transparent);
+    animation: field-map-cloud 90s linear -40s infinite;
+  }
+  .field-map-clouds span + span {
+    top: 22%;
+    width: 42%;
+    height: 12%;
+    animation-duration: 120s;
+    animation-delay: -95s;
+  }
+  @keyframes field-map-cloud {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(240%);
+    }
+  }
+  /* .forest-scene[data-paused] (ForestScene.astro) covers the pause button, offscreen hero and hidden tabs. */
+  :global(body:has(.forest-scene[data-paused="true"])) .field-map-clouds span {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .field-map-clouds span {
+      animation: none;
+      transform: translateX(60%);
+    }
+  }
+  #field-map-trail-ink {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 12;
+    stroke-linecap: round;
   }
   .field-map-contour {
     position: absolute;
@@ -100,7 +160,7 @@ const rightContour = [1, 0.78, 0.6, 0.36];
 </style>
 
 <script>
-  import { initFieldMapTrail } from "@/utils/fieldMapTrail";
+  import { initFieldMapTrail, initTrailInk } from "@/utils/fieldMapTrail";
 
   let cleanup: (() => void) | undefined;
   document.addEventListener("astro:page-load", () => {
@@ -109,7 +169,16 @@ const rightContour = [1, 0.78, 0.6, 0.36];
     const path = document.getElementById(
       "field-map-trail-path",
     ) as SVGPathElement | null;
-    if (path) cleanup = initFieldMapTrail(path);
+    const ink = document.getElementById(
+      "field-map-trail-ink",
+    ) as SVGPathElement | null;
+    if (!path || !ink) return;
+    const stopTrail = initFieldMapTrail(path);
+    const stopInk = initTrailInk(path, ink);
+    cleanup = () => {
+      stopTrail();
+      stopInk();
+    };
   });
   document.addEventListener("astro:before-swap", () => {
     cleanup?.();

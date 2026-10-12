@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildTrailPath, clearTurnY } from "./fieldMapTrail";
+import { buildTrailPath, clearTurnY, lengthAtY } from "./fieldMapTrail";
 
 const numbers = (d: string) => (d.match(/-?\d+(\.\d+)?/g) ?? []).map(Number);
 const xs = (d: string) => numbers(d).filter((_, i) => i % 2 === 0);
@@ -77,5 +77,20 @@ describe("buildTrailPath with a lowered leg", () => {
     });
     expect(d.startsWith("M302 843C302 852")).toBe(true);
     expect(numbers(d).slice(-2)).toEqual([375, 7800]);
+  });
+});
+
+describe("lengthAtY", () => {
+  // A drop, a flat leg, then a descent: y never decreases along the length.
+  const yAt = (l: number) => (l < 100 ? l : l < 300 ? 100 : 100 + (l - 300));
+
+  it("finds the first length that reaches y", () => {
+    expect(lengthAtY(1000, yAt, 50)).toBeCloseTo(50, 3);
+    expect(lengthAtY(1000, yAt, 400)).toBeCloseTo(600, 3);
+  });
+
+  it("clamps to the ends of the path", () => {
+    expect(lengthAtY(1000, yAt, -Infinity)).toBeCloseTo(0, 3);
+    expect(lengthAtY(1000, yAt, 5000)).toBe(1000);
   });
 });

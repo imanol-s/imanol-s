@@ -1,3 +1,5 @@
+import { prefersReducedMotion } from "./prefersReducedMotion";
+
 export interface TrailGeometry {
   startX: number;
   startY: number;
@@ -186,5 +188,105 @@ export function initFieldMapTrail(path: SVGPathElement): () => void {
     controller.abort();
     observer.disconnect();
     cancelAnimationFrame(frame);
+  };
+}
+
+/** Length along a path whose y never decreases at which it first reaches y. */
+export function lengthAtY(
+  total: number,
+  yAt: (length: number) => number,
+  y: number,
+): number {
+  let lo = 0;
+  let hi = total;
+  for (let i = 0; i < 24; i++) {
+    const mid = (lo + hi) / 2;
+    if (yAt(mid) < y) lo = mid;
+    else hi = mid;
+  }
+  return hi;
+}
+
+// Sections in ProjectsCarousel, ExperienceTimeline, ApproachSection, HeroSection and SiteFooter.
+const INK_TARGETS =
+  ".hero-section, .project-section, .career-entry, .approach-item, #profile-sidebar, #contact";
+const INK_TRANSITION = "stroke-dashoffset 1.6s cubic-bezier(0.16, 1, 0.3, 1)";
+
+/**
+ * Masks the trail with an ink stroke that draws down to the bottom of each
+ * section once it scrolls into view. Holds while the scenery is paused and is
+ * skipped under reduced motion, which leaves the trail whole.
+ */
+export function initTrailInk(
+  path: SVGPathElement,
+  ink: SVGPathElement,
+): () => void {
+  const svg = path.ownerSVGElement;
+  const mask = ink.closest("mask");
+  if (
+    !svg ||
+    !mask ||
+    prefersReducedMotion() ||
+    !("IntersectionObserver" in window)
+  ) {
+    return () => {};
+  }
+  const seen = new Set<Element>();
+  let total = 0;
+  const paused = () =>
+    document.documentElement.dataset.sceneryPaused === "true";
+
+  const offsetFor = () => {
+    const top = svg.getBoundingClientRect().top;
+    const y = Math.max(
+      -Infinity,
+      ...[...seen].map((el) => el.getBoundingClientRect().bottom - top),
+    );
+    return total - lengthAtY(total, (l) => path.getPointAtLength(l).y, y);
+  };
+  const reveal = (animate: boolean) => {
+    if (!total || paused()) return;
+    ink.style.transition = animate ? INK_TRANSITION : "none";
+    ink.style.strokeDashoffset = String(offsetFor());
+  };
+  const sync = () => {
+    const d = path.getAttribute("d") ?? "";
+    ink.setAttribute("d", d);
+    total = d ? path.getTotalLength() : 0;
+    ink.style.strokeDasharray = `${total} ${total}`;
+    ink.style.transition = "none";
+    ink.style.strokeDashoffset = String(total ? offsetFor() : 0);
+  };
+  const hold = () => {
+    if (paused()) {
+      const now = getComputedStyle(ink).strokeDashoffset;
+      ink.style.transition = "none";
+      ink.style.strokeDashoffset = now;
+    } else reveal(true);
+  };
+
+  path.setAttribute("mask", `url(#${mask.id})`);
+  sync();
+  const shape = new MutationObserver(sync);
+  shape.observe(path, { attributeFilter: ["d"] });
+  const sections = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        seen.add(entry.target);
+        sections.unobserve(entry.target);
+      }
+      reveal(true);
+    },
+    { rootMargin: "0px 0px -15% 0px" },
+  );
+  for (const el of document.querySelectorAll(INK_TARGETS)) sections.observe(el);
+  document.addEventListener("scenery:pause-change", hold);
+
+  return () => {
+    shape.disconnect();
+    sections.disconnect();
+    document.removeEventListener("scenery:pause-change", hold);
+    path.removeAttribute("mask");
   };
 }
