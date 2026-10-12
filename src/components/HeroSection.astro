@@ -13,7 +13,6 @@ interface Props {
 const { staticTerrain = true } = Astro.props;
 
 const currentJob = timelineJobs().find((job) => job.currentJob);
-const enterpriseWork = timelineJobs().find((job) => !job.currentJob);
 const education = primaryEducation();
 ---
 
@@ -29,20 +28,6 @@ const education = primaryEducation();
         {ME.headline.map((line) => <span>{line}</span>)}
       </h2>
       <p class="hero-description">{ME.aboutMe}</p>
-      {
-        enterpriseWork && (
-          <div class="hero-evidence">
-            <p class="context-label">Enterprise work</p>
-            <p class="hero-evidence-attribution">
-              {enterpriseWork.title} · {enterpriseWork.company}
-            </p>
-            <p class="hero-evidence-description">{enterpriseWork.goals[0]}</p>
-            <a class="text-link focus-ring" href="#experience">
-              Work history <span aria-hidden="true">↗</span>
-            </a>
-          </div>
-        )
-      }
       <div class="hero-actions">
         <a class="cta-primary focus-ring" href="#projects"
           >Explore my work <span aria-hidden="true">↗</span></a
@@ -258,24 +243,6 @@ const education = primaryEducation();
     gap: 1.8rem;
     margin-top: 1.25rem;
     flex-wrap: wrap;
-  }
-  .hero-evidence {
-    margin-top: 1.25rem;
-    max-width: 34rem;
-  }
-  .hero-evidence-attribution {
-    color: var(--color-supporting);
-    font-size: 0.75rem;
-    line-height: 1.5;
-  }
-  .hero-evidence-description {
-    margin-top: 0.5rem;
-    color: var(--color-body);
-    font-size: 0.875rem;
-    line-height: 1.7;
-  }
-  .hero-evidence .text-link {
-    min-height: 44px;
   }
   .hero-actions .cta-primary {
     padding: 0.9rem 1.25rem;

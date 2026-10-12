@@ -86,7 +86,8 @@ async function expectTrailAnchored(page: Page) {
 
 const FIRE_BASELINE = [
   { width: 1440, x: 762.04, y: 364.34, w: 15.22, h: 21.99 },
-  { width: 390, x: 283.87, y: 831.21, w: 9.35, h: 13.51 },
+  // y was 831.21 before the hero excerpt above the stacked scene was removed.
+  { width: 390, x: 283.87, y: 618.43, w: 9.35, h: 13.51 },
 ];
 
 for (const b of FIRE_BASELINE) {
