@@ -410,6 +410,8 @@ const hills = [
     stroke-width: 1;
     stroke-dasharray: 4 8;
     opacity: 0.32;
+    /* Own layer: otherwise each frame of the ink reveal repaints the lower hills beneath it. */
+    will-change: transform;
   }
   @media (max-width: 1399px) {
     .field-map-contour {
