@@ -32,6 +32,7 @@ const projects = defineCollection({
       startDate: z.date().optional(),
       endDate: z.date().optional(),
       summary: z.string(),
+      cardSummary: z.string().trim().min(1).optional(),
       url: z.string().optional(),
       cover: image(),
       tags: z.array(techTagSchema),

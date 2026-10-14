@@ -63,7 +63,7 @@ const ProjectHeading = showHeading ? "h3" : "h2";
             <ProjectHeading class="project-title font-display">
               {project.data.title}
             </ProjectHeading>
-            <p>{project.data.summary}</p>
+            <p>{project.data.cardSummary ?? project.data.summary}</p>
             <span class="project-read font-display">
               Explore project <span aria-hidden="true">↗</span>
             </span>
@@ -136,8 +136,9 @@ const ProjectHeading = showHeading ? "h3" : "h2";
     gap: 0.5rem 1rem;
     margin-bottom: 1rem;
     color: #475569;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     line-height: 1.5;
+    overflow-wrap: anywhere;
   }
   .project-tags span + span::before {
     content: "/";
@@ -161,12 +162,12 @@ const ProjectHeading = showHeading ? "h3" : "h2";
   .project-read {
     display: flex;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.5rem;
     margin-top: auto;
     padding-top: 1rem;
     border-top: 1px solid #e2e8f0;
     color: #334155;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
   .project-read span {
     font-size: 1rem;
