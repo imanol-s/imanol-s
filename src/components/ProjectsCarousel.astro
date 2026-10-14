@@ -35,7 +35,7 @@ const ProjectHeading = showHeading ? "h3" : "h2";
   }
   <div class="project-grid">
     {
-      allProjects.map((project) => (
+      allProjects.map((project, index) => (
         <a
           href={`/projects/${project.id}`}
           class={`project-card project-${project.id} group cad-border focus-ring`}
@@ -45,6 +45,7 @@ const ProjectHeading = showHeading ? "h3" : "h2";
               {...netlifyImage(project.data.cover)}
               alt=""
               class="project-cover"
+              data-transition-cover={(!showHeading && index < 2) || undefined}
               sizes="(min-width: 1280px) 560px, (min-width: 768px) 45vw, 90vw"
               loading="lazy"
               decoding="async"

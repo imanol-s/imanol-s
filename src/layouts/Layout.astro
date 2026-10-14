@@ -112,6 +112,10 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
       </style></noscript
     >
     <ClientRouter />
+    <script>
+      import { initPageTransitions } from "@/utils/pageTransition";
+      initPageTransitions();
+    </script>
 
     {
       /* Speculation Rules API — prerender same-origin pages on hover for instant navigation.
