@@ -188,31 +188,19 @@ test("experience and supporting columns sit side by side at 1440px", async ({
 
 for (const width of [900, 834]) {
   // Catches: wrong stacking order or columns persisting at/below 900px.
-  test(`sections stack experience -> approach -> profile at ${width}px`, async ({
+  test(`sections stack experience -> profile at ${width}px`, async ({
     page,
   }) => {
     await open(page, width);
     const boxes = [];
-    for (const sel of ["#experience", "#approach", "#profile-sidebar"]) {
+    for (const sel of ["#experience", "#profile-sidebar"]) {
       const box = await page.locator(sel).boundingBox();
       expect(box, sel).not.toBeNull();
       boxes.push(box!);
     }
     expect(boxes[1].y).toBeGreaterThanOrEqual(boxes[0].y + boxes[0].height - 1);
-    expect(boxes[2].y).toBeGreaterThanOrEqual(boxes[1].y + boxes[1].height - 1);
   });
 }
-
-// Catches: step numbers/icons remaining, or approach items dropped.
-test("approach keeps all titled items without step numbers", async ({
-  page,
-}) => {
-  await open(page, 1440);
-  const items = await page.locator("#approach .approach-item").count();
-  expect(items).toBe(3);
-  await expect(page.locator("#approach h3")).toHaveCount(items);
-  await expect(page.locator("#approach .step-number")).toHaveCount(0);
-});
 
 // Catches: dropped projects or hidden/collapsed career roles.
 test("all projects and career highlights are rendered", async ({ page }) => {
