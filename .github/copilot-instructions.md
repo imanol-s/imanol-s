@@ -8,11 +8,14 @@ applyTo: "**/*.{astro,ts,tsx,mjs,css,md,mdx}"
 
 Review instructions for a personal portfolio site built with Astro 7.3, React 19, Tailwind CSS 4, Vite 8, and TypeScript. Applies to all source files under `src/`, config files at the root, and content collections.
 
+Product context lives in `PRODUCT.md`; `DESIGN.md` records the current implemented design.
+
 ## Instruction Precedence
 
 - This file is the canonical instruction source for coding agents in this repository.
 - If `AGENTS.md` or `CLAUDE.md` conflicts with this file, this file takes precedence.
 - `AGENTS.md` and `CLAUDE.md` should only contain tool-specific deltas and links back to this file.
+- Repository Impeccable hooks are configured in `.codex/hooks.json` with the vendored `.agents/skills/impeccable/` launcher and `.impeccable/config.json`. Preserve this complete bundle; downloaded binaries, local configuration/consent, and hook caches stay untracked. Comp-first applies to new surfaces; refinements preserve the incumbent design.
 
 ## Naming Conventions
 
@@ -216,7 +219,7 @@ function displayName(name: string) {
 - Hashed `/_astro/` assets and their Image CDN variants cache immutably for one year. HTML uses `Netlify-CDN-Cache-Control: public, max-age=0, stale-while-revalidate=86400`; unversioned images revalidate to avoid stale replacements.
 - Set `loading="eager"` and `fetchpriority="high"` only for above-the-fold images; use `loading="lazy"` for everything else
 - Keep client JS minimal: only `TopoBackground.tsx`, `TypewriterText.tsx`, and `LoadingOverlay.tsx` hydrate — avoid adding new React islands unless truly interactive
-- Intro name reveal starts while the overlay fades and never clears already-visible text. Returning visits, late hydration, reduced motion, Escape, and no-JS preserve the full name. The existing topography island persists across Astro navigation to retain its animation phase; Back to Top keeps a stable 48px outlined target.
+- The full hero name remains visible through hydration. Intro dots are transparent, decorative, and nonblocking; the caret and dots finish once per session. Non-home routes, reduced motion, return visits, and constrained connections skip the intro. Denied session storage must not break rendering. The existing topography island persists across Astro navigation to retain its animation phase; Back to Top keeps a stable 48px outlined target.
 - Header docking animates only its fixed-height decorative rail/endcap transforms and navigation opacity. Text and layout dimensions stay fixed; the frog and 56px dock target stay anchored. Underline hover uses scaleX, and Back to Top retains its 48px target. Reduced motion removes transitions.
 - Container: `max-w-7xl mx-auto px-6`
 

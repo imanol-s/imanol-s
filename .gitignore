@@ -98,3 +98,8 @@ resume/*.out
 resume/*.fls
 resume/*.fdb_latexmk
 _site/
+
+# Impeccable local runtime and consent
+.agents/skills/impeccable/scripts/bin/
+.impeccable/config.local.json
+.impeccable/hook.cache.json

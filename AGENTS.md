@@ -6,10 +6,12 @@ Instructions for AI coding assistants working with this repository.
 
 - Primary instructions live in `.github/copilot-instructions.md`.
 - If this file conflicts with `.github/copilot-instructions.md`, `.github/copilot-instructions.md` wins.
+- Product context lives in `PRODUCT.md`; `DESIGN.md` records the current implemented design.
 
 ## Agent-Specific Deltas
 
 - Prefer concise, direct responses.
+- Repository Impeccable hooks live in `.codex/hooks.json` and use the vendored `.agents/skills/impeccable/` launcher. `.impeccable/config.json` enables edit/Stop checks and comp-first work for new surfaces; refinements preserve the current design. Keep downloaded binaries, local consent/configuration, and hook caches untracked.
 - For high-level questions, answer directly first; only explore code if needed.
 - Delegate substantive portfolio writing and editorial reviews to `portfolio_writer`, defined in [`.codex/agents/portfolio-writer.toml`](.codex/agents/portfolio-writer.toml). The parent agent applies drafts and owns validation and Git operations.
 - The writer must read [the portfolio-writing skill](.agents/skills/portfolio-writing/SKILL.md) before drafting or reviewing project articles, including formatting-only work. Every project draft or review includes a Markdown audit and brief formatting decisions; use restrained headings, lists, bold, and code where they help reading, without quotas.
@@ -74,7 +76,7 @@ Instructions for AI coding assistants working with this repository.
 - Hero portrait uses `src/assets/portrait-lineart.svg`, a transparent vector trace of the original illustration, with an unframed treatment and compact mobile presentation.
 - Header navigation tucks a fixed-height decorative shell toward a fixed frog anchor on downward scroll and expands on upward scroll or activation. The shell uses transforms; navigation text and its layout keep their original dimensions. `src/utils/headerScroll.ts` measures the header width, protects keyboard/menu interaction, and cleans up on Astro navigation; labels reveal after expansion, and reduced motion disables transitions.
 
-- Intro name reveal starts while the overlay fades and never clears already-visible text. Returning visits, late hydration, reduced motion, Escape, and no-JS preserve the full name. The existing topography island persists across Astro navigation to retain its animation phase; Back to Top keeps a stable 48px outlined target.
+- The full hero name remains visible through hydration. Intro dots are transparent, decorative, and nonblocking; the caret and dots finish once per session. Non-home routes, reduced motion, return visits, and constrained connections skip the intro. Denied session storage must not break rendering. The existing topography island persists across Astro navigation to retain its animation phase; Back to Top keeps a stable 48px outlined target.
 
 ## Resume publishing
 

@@ -1,7 +1,4 @@
-import type {
-  TransitionBeforePreparationEvent,
-  TransitionBeforeSwapEvent,
-} from "astro:transitions/client";
+import type { TransitionBeforePreparationEvent } from "astro:transitions/client";
 
 async function prepareArtwork(event: TransitionBeforePreparationEvent) {
   if (event.signal.aborted || event.defaultPrevented) return;
@@ -65,10 +62,5 @@ export function initPageTransitions() {
       await loader();
       await prepareArtwork(transition);
     };
-  });
-  document.addEventListener("astro:before-swap", (event) => {
-    const { newDocument } = event as TransitionBeforeSwapEvent;
-    const overlay = newDocument.getElementById("loading-overlay");
-    if (overlay) overlay.style.display = "none";
   });
 }

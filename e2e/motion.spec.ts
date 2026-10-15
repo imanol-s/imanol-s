@@ -6,7 +6,7 @@ type MotionWindow = Window & {
 };
 
 for (const width of [1280, 390]) {
-  test(`first-visit name reveal never clears during overlay fading at ${width}px`, async ({
+  test(`first-visit name stays complete during the intro at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 800 });
@@ -18,13 +18,7 @@ for (const width of [1280, 390]) {
       const start = performance.now();
       const sample = () => {
         const output = document.querySelector("[data-typewriter-output]");
-        const overlay = document.querySelector("[data-loading-overlay]");
-        const fallback = document.getElementById("loading-overlay");
-        const revealed =
-          overlay?.getAttribute("data-loading-overlay") === "overlay-fading" ||
-          (!overlay && fallback?.style.display === "none");
-        if (output && revealed)
-          browser.nameSamples.push(output.textContent ?? "");
+        if (output) browser.nameSamples.push(output.textContent ?? "");
         if (performance.now() - start < 4000) requestAnimationFrame(sample);
       };
       requestAnimationFrame(sample);
@@ -32,6 +26,10 @@ for (const width of [1280, 390]) {
     await page.goto("/");
     const fullName = await page.locator("h1").getAttribute("aria-label");
     expect(fullName).toBeTruthy();
+    await page
+      .locator('astro-island[component-url*="TypewriterText"]:not([ssr])')
+      .waitFor({ state: "attached" });
+    await expect(page.locator("[data-loading-overlay]")).toHaveCount(0);
     await expect
       .poll(() =>
         page.evaluate(() =>
@@ -45,18 +43,7 @@ for (const width of [1280, 390]) {
     const samples = await page.evaluate(
       () => (window as unknown as MotionWindow).nameSamples,
     );
-    expect(
-      samples.some(
-        (sample) => sample.length > 0 && sample.length < fullName!.length,
-      ),
-    ).toBe(true);
-    expect(
-      samples.every(
-        (sample, index) =>
-          fullName!.startsWith(sample) &&
-          (!index || sample.length >= samples[index - 1].length),
-      ),
-    ).toBe(true);
+    expect(samples.every((sample) => sample === fullName)).toBe(true);
   });
 }
 
