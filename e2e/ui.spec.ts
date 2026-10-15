@@ -18,6 +18,23 @@ const pages = [
   { name: "Automaton case study", path: "/projects/automaton/" },
 ];
 
+async function expectOpaqueCanvas(page: import("@playwright/test").Page) {
+  const { background, tokenBackground } = await page.evaluate(() => {
+    const probe = document.createElement("span");
+    probe.style.backgroundColor = "var(--color-background-dark)";
+    document.body.append(probe);
+    const tokenBackground = getComputedStyle(probe).backgroundColor;
+    probe.remove();
+    return {
+      background: getComputedStyle(document.documentElement).backgroundColor,
+      tokenBackground,
+    };
+  });
+
+  expect(background).toBe(tokenBackground);
+  expect(background).toMatch(/^rgb\(/);
+}
+
 for (const { name, path } of pages) {
   test.describe(name, () => {
     test("renders heading and no broken images", async ({ page }) => {
@@ -63,6 +80,53 @@ test("removed blog URLs return 404", async ({ request }) => {
 });
 
 test.describe("Layout", () => {
+  test("root canvas stays opaque across routes and navigation", async ({
+    browser,
+    baseURL,
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/");
+    await expectOpaqueCanvas(page);
+
+    await page.locator('.desktop-links a[href="/#projects"]').click();
+    await expect(page.locator("#projects h2")).toBeInViewport();
+    await expectOpaqueCanvas(page);
+
+    await page
+      .locator('a.project-card[href="/projects/library-management"]')
+      .click();
+    await expect(page).toHaveURL(/\/projects\/library-management\/?$/);
+    await expectOpaqueCanvas(page);
+
+    await page.locator('.desktop-links a[href="/#projects"]').click();
+    await expect(page).toHaveURL("/#projects");
+    await expectOpaqueCanvas(page);
+
+    const missingPage = await page.goto("/__background-canvas-missing__/");
+    expect(missingPage?.status()).toBe(404);
+    await expectOpaqueCanvas(page);
+
+    const context = await browser.newContext({
+      baseURL,
+      javaScriptEnabled: false,
+    });
+    const noScriptPage = await context.newPage();
+    try {
+      for (const path of [
+        "/",
+        "/projects/library-management/",
+        "/__background-canvas-missing__/",
+      ]) {
+        const response = await noScriptPage.goto(path);
+        if (path.startsWith("/__")) expect(response?.status()).toBe(404);
+        await expectOpaqueCanvas(noScriptPage);
+      }
+    } finally {
+      await context.close();
+    }
+  });
+
   test("header and footer present on every page", async ({ page }) => {
     for (const { path } of pages) {
       await page.goto(path);

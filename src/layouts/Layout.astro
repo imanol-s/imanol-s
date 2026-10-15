@@ -46,7 +46,7 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
 <!doctype html>
 <html
   lang={SITE.lang ?? "en"}
-  class={`dark bg-[var(--color-background-dark)]${scrollSmooth ? " scroll-smooth" : ""}`}
+  class:list={["dark", "bg-background-dark", { "scroll-smooth": scrollSmooth }]}
 >
   <head>
     <meta charset="UTF-8" />
