@@ -14,6 +14,53 @@ async function waitForHeader(page: Page) {
     .not.toBe("");
 }
 
+async function captureNextViewTransition(page: Page) {
+  await page.evaluate(() => {
+    const target = window as Window & {
+      __nextAstroTransitionFinished?: Promise<void>;
+    };
+    target.__nextAstroTransitionFinished = new Promise((resolve) => {
+      document.addEventListener(
+        "astro:before-swap",
+        (event) => {
+          const transition = (
+            event as Event & {
+              viewTransition?: { finished: Promise<unknown> };
+            }
+          ).viewTransition;
+          if (transition) {
+            void transition.finished.then(
+              () => resolve(),
+              () => resolve(),
+            );
+          } else {
+            document.addEventListener("astro:page-load", () => resolve(), {
+              once: true,
+            });
+          }
+        },
+        { once: true },
+      );
+    });
+  });
+}
+
+async function waitForViewTransition(page: Page) {
+  await page.evaluate(() => {
+    const target = window as Window & {
+      __nextAstroTransitionFinished?: Promise<void>;
+    };
+    return target.__nextAstroTransitionFinished;
+  });
+}
+
+async function expandDockedHeader(page: Page) {
+  const header = page.locator(".site-header");
+  if ((await header.getAttribute("data-header-docked")) !== null) {
+    await page.getByRole("button", { name: "Open navigation" }).click();
+  }
+}
+
 async function expectSeparatePanel(page: Page, width: number) {
   const surface = await page.locator(".header-surface").boundingBox();
   const panel = await page.locator("#mobile-menu").boundingBox();
@@ -105,14 +152,19 @@ test("mobile menu preserves keyboard, route and desktop-resize behavior", async 
   await expect(page.locator("#projects h2")).toBeInViewport();
   await waitForHeader(page);
   await expect(button).toHaveAttribute("aria-expanded", "false");
+  await captureNextViewTransition(page);
   await page
     .locator('a.project-card[href="/projects/library-management"]')
     .click();
   await expect(page).toHaveURL(/\/projects\/library-management\/?$/);
+  await waitForViewTransition(page);
   await waitForHeader(page);
+  await expandDockedHeader(page);
   await button.click();
+  await captureNextViewTransition(page);
   await panel.getByRole("link", { name: "WORK", exact: true }).click();
   await expect(page).toHaveURL("/#projects");
+  await waitForViewTransition(page);
   await expect(page.locator("#projects h2")).toBeInViewport();
   await waitForHeader(page);
   await expect(button).toHaveAttribute("aria-expanded", "false");
@@ -124,6 +176,9 @@ test("mobile menu preserves keyboard, route and desktop-resize behavior", async 
   await button.click();
   await expectSeparatePanel(page, 390);
   await panel.getByRole("link", { name: "WORK", exact: true }).focus();
+  await expect(
+    panel.getByRole("link", { name: "WORK", exact: true }),
+  ).toBeFocused();
   await page.setViewportSize({ width: 1280, height: 900 });
   await expect(panel).toBeHidden();
   await expect(button).toHaveAttribute("aria-expanded", "false");

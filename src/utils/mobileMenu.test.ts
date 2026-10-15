@@ -63,9 +63,31 @@ describe("initMobileMenu", () => {
       value: 1024,
       configurable: true,
     });
+    menu.querySelector("a")!.blur();
     window.dispatchEvent(new Event("resize"));
     expect(btn.getAttribute("aria-expanded")).toBe("false");
     expect(document.activeElement).toBe(brand);
+    cleanup();
+  });
+
+  it("keeps focus outside the header when the open menu closes on resize", () => {
+    const { btn, menu } = createFixture();
+    const header = document.createElement("header");
+    const outside = document.createElement("input");
+    header.append(btn, menu);
+    document.body.append(header, outside);
+    const cleanup = initMobileMenu(btn, menu);
+    btn.click();
+    outside.focus();
+    Object.defineProperty(window, "innerWidth", {
+      value: 1024,
+      configurable: true,
+    });
+
+    window.dispatchEvent(new Event("resize"));
+
+    expect(btn.getAttribute("aria-expanded")).toBe("false");
+    expect(document.activeElement).toBe(outside);
     cleanup();
   });
 

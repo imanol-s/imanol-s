@@ -48,8 +48,12 @@ export function initMobileMenu(
     "resize",
     () => {
       if (window.innerWidth < 768 || !isOpen()) return;
+      const activeElement = document.activeElement;
       const focusHidden =
-        menu.contains(document.activeElement) || document.activeElement === btn;
+        menu.contains(activeElement) ||
+        activeElement === btn ||
+        activeElement === document.body ||
+        activeElement === document.documentElement;
       setOpen(false);
       if (focusHidden)
         btn
