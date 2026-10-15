@@ -131,8 +131,10 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
     await page.waitForTimeout(350);
     expect(await snapshot()).toEqual(before);
 
-    await page.locator('.desktop-links a[href="/projects"]').click();
-    await expect(page).toHaveURL(/\/projects\/?$/);
+    await page
+      .locator('a.project-card[href="/projects/library-management"]')
+      .click();
+    await expect(page).toHaveURL(/\/projects\/library-management\/?$/);
     await expect(page.locator("body")).not.toHaveAttribute("data-field-map");
     if (reducedMotion === "no-preference") {
       await expect
@@ -148,8 +150,10 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
       expect(after.frequency).not.toBe(before.frequency);
     }
 
-    await page.locator('main a[href^="/projects/"]').first().click();
-    await expect(page).toHaveURL(/\/projects\/[^/]+\/?$/);
+    await page
+      .locator('.project-pagination a[href="/projects/crime-analysis"]')
+      .click();
+    await expect(page).toHaveURL(/\/projects\/crime-analysis\/?$/);
     if (reducedMotion === "no-preference") {
       await expect
         .poll(async () => (await snapshot()).transform)

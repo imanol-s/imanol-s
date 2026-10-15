@@ -9,7 +9,7 @@ async function prepareHero(page: Page) {
     (source) => {
       const incoming = new DOMParser().parseFromString(source, "text/html");
       const hero = incoming.querySelector<HTMLImageElement>(
-        ".project-figure .project-cover",
+        ".project-opening-art img",
       );
       if (!hero) throw new Error("Required detail hero is missing");
       const src = hero.getAttribute("src")!;
@@ -42,7 +42,7 @@ async function captureFirstPaint(page: Page) {
       );
       requestAnimationFrame(() => {
         const image = document.querySelector<HTMLImageElement>(
-          ".project-figure .project-cover",
+          ".project-opening-art img",
         );
         samples.push({
           ready: Boolean(image?.complete && image.naturalWidth > 0),
@@ -102,7 +102,7 @@ for (const width of [390, 1280]) {
       expect(await page.locator("#main-content h1").textContent()).toBe(
         "Page not found",
       );
-      expect(candidates).toEqual([width === 1280 ? "1200" : "400"]);
+      expect(candidates).toEqual([width === 1280 ? "800" : "400"]);
     } finally {
       release();
     }
@@ -112,7 +112,7 @@ for (const width of [390, 1280]) {
     expect(first.ready).toBe(true);
     expect(first.covered).toBe(false);
     expect(first.source).toContain(
-      `readiness-width=${width === 1280 ? "1200" : "400"}`,
+      `readiness-width=${width === 1280 ? "800" : "400"}`,
     );
   });
 }
@@ -179,19 +179,28 @@ test("aborts stale artwork preparation and preserves keyboard and history naviga
   try {
     await page.locator(".site-brand").click();
     await seen;
-    await page.locator('.desktop-links a[href="/projects"]').click();
-    await expect(page.locator("#main-content h1")).toHaveText("Projects");
+    await page.locator('.desktop-links a[href="/#projects"]').click();
+    await expect(page.locator("#projects h2")).toHaveText("Projects");
   } finally {
     release();
     await page.unrouteAll({ behavior: "wait" });
   }
   await page.waitForTimeout(900);
-  await expect(page).toHaveURL(/\/projects\/?$/);
+  await expect(page).toHaveURL("/#projects");
+  await page
+    .locator('a.project-card[href="/projects/library-management"]')
+    .click();
+  await expect(page.locator("#main-content h1")).toHaveText(
+    "Library Management System",
+  );
   await page.locator(".site-brand").focus();
   await page.keyboard.press("Enter");
+  await expect(page).toHaveURL("/");
   await expect(page.locator("body[data-field-map]")).toHaveCount(1);
   await page.goBack();
-  await expect(page.locator("#main-content h1")).toHaveText("Projects");
+  await expect(page.locator("#main-content h1")).toHaveText(
+    "Library Management System",
+  );
   await page.goForward();
   await expect(page.locator("body[data-field-map]")).toHaveCount(1);
   await expect(page.locator("[data-loading-overlay]")).toHaveCount(0);
@@ -203,11 +212,15 @@ test("repeated CPU-throttled swaps never capture the fallback or replay the intr
 }) => {
   const cdp = await context.newCDPSession(page);
   await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
-  await page.goto("/404/");
+  await page.goto("/");
   await captureFirstPaint(page);
   for (let visit = 0; visit < 3; visit++) {
-    await page.locator('.desktop-links a[href="/projects"]').click();
-    await expect(page.locator("#main-content h1")).toHaveText("Projects");
+    await page
+      .locator('a.project-card[href="/projects/library-management"]')
+      .click();
+    await expect(page.locator("#main-content h1")).toHaveText(
+      "Library Management System",
+    );
     await page.locator(".site-brand").click();
     await expect(page.locator("body[data-field-map]")).toHaveCount(1);
     await expect(page.locator("[data-loading-overlay]")).toHaveCount(0);

@@ -55,7 +55,7 @@ Instructions for AI coding assistants working with this repository.
 - Blog routes, navigation, and legacy redirects are removed. Posts and their content schema remain archived; do not expose them as public pages.
 - `src/config.ts` is the single source of truth for all personal/site data — full field reference in `.github/copilot-instructions.md` under "Site Configuration"
 - Paper MCP is used for design prototyping; designs live in a Paper file with separate pages per section (Home, Projects, Blog)
-- Tag pills appear in `projects/index.astro` (listing) and `projects/[id].astro` (hero + stack sidebar) — stack sidebar uses a different, already-accessible style
+- Project technology labels appear in the homepage gallery and case-study metadata, using display names from the shared technology registry.
 
 ## Homepage content configuration
 
@@ -66,7 +66,8 @@ Instructions for AI coding assistants working with this repository.
 - `ME.contactNote: string` supplies the footer invitation.
 - `ME.aboutMe` is the concise hero introduction and homepage meta description.
 - `ME.focusAreas` supplies the hero context strip. Career and education context continues to use `src/data/career.ts`.
-- Homepage project cards show all projects in a responsive grid; `ProjectsCarousel.astro` is also reused by the projects listing. Optional project `cardSummary` supplies card copy, falling back to `summary`; the full `summary` remains the detail introduction and metadata source.
+- Homepage project cards show all projects in a responsive grid rendered by `ProjectsCarousel.astro`. Optional project `cardSummary` supplies card copy, falling back to `summary`; the full `summary` remains the detail introduction and metadata source.
+- WORK and case-study “All projects” links target `/#projects`. Individual `/projects/[id]` pages remain; legacy `/projects` and `/projects/` redirect exactly to `/#projects` through Astro static fallback and forced Netlify 301 rules, never a wildcard.
 - Project covers use original watercolor concept illustrations from `src/assets/projects/` in consistent 2:1 full-bleed media regions. The original Dallas arrest-count map remains uncropped in the case-study body; cover illustrations do not represent screenshots or measured results.
 - Project dates are optional when unconfirmed. Dated projects sort newest first, with stable ID ordering for ties; undated projects follow in stable ID order, and their pages omit unavailable dates.
 - Automaton's server-rendered chart shows the historical estimate of 76–119.5 hours of repetitive manual work avoided across 4,328 recorded outcomes, not measured net savings. Preserve the model's dates, assumptions, and excluded setup/review effort. Its chart and architecture diagrams omit business identifiers and add no client runtime or React island.

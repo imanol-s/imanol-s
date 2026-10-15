@@ -50,8 +50,9 @@ const { title, description } = Astro.props;
   - `TypewriterText.tsx` — hero name animation (`client:load`, SSR-safe)
   - `LoadingOverlay.tsx` — session loading overlay (`client:only="react"`, skips SSR)
 - **Content collections**: All blog/project content goes through Astro content collections with Zod schemas in `src/content/config.ts` — do not bypass with raw file reads
-- Optional project `cardSummary` supplies homepage and listing card copy, falling back to `summary`; the full `summary` remains the detail introduction and metadata source.
+- Optional project `cardSummary` supplies homepage gallery card copy, falling back to `summary`; the full `summary` remains the detail introduction and metadata source.
 - Blog routes, navigation, and legacy redirects are removed. Posts and their content schema remain archived; do not expose them as public pages.
+- The homepage `/#projects` gallery is the complete project index. WORK and case-study “All projects” links return there; retain every individual `/projects/[id]` page. Exact `/projects` and `/projects/` legacy paths redirect to `/#projects`: Astro supplies a static fallback and Netlify supplies forced HTTP 301 rules. Never redirect `/projects/*` or recreate a duplicate listing page.
 - Project `startDate` and `endDate` are optional when unconfirmed. Never invent dates: omit unavailable date text, sort dated projects newest first, use stable ID ordering for ties, and place undated projects last in stable ID order.
 - Project charts and architecture diagrams use server-rendered Astro HTML/CSS with visible data and descriptions. Keep measurement scope and approximation qualifiers explicit; omit business identifiers rather than hiding them in the DOM. Do not add a chart runtime or React island.
 - **Static data**: Typed arrays/objects exported from `src/data/*.ts` for non-content data (jobs, education)

@@ -1,0 +1,130 @@
+---
+import { formatDate } from "../utils/formatDate";
+import { getTechView } from "../data/techRegistry";
+
+interface Props {
+  title: string;
+  startDate?: Date;
+  endDate?: Date;
+  tags: readonly string[];
+  hasValidUrl: boolean;
+  url?: string;
+  compact?: boolean;
+}
+
+const {
+  title,
+  startDate,
+  endDate,
+  tags,
+  hasValidUrl,
+  url,
+  compact = false,
+} = Astro.props;
+---
+
+<section
+  class:list={["project-details", { "is-compact": compact }]}
+  aria-label="Project details"
+>
+  <dl class="project-metadata">
+    {
+      !compact && (
+        <div>
+          <>
+            <dt>Project</dt>
+            <dd>{title}</dd>
+          </>
+        </div>
+      )
+    }
+    {
+      (startDate || endDate) && (
+        <div>
+          <dt>When</dt>
+          <dd>
+            {startDate && endDate
+              ? `${formatDate(startDate)} to ${formatDate(endDate)}`
+              : startDate
+                ? `Started ${formatDate(startDate)}`
+                : endDate
+                  ? `Completed ${formatDate(endDate)}`
+                  : ""}
+          </dd>
+        </div>
+      )
+    }
+    <div>
+      <dt>Tools &amp; techniques</dt>
+      <dd>
+        <ul class="project-tools">
+          {tags.map((tag) => <li>{getTechView(tag).displayName}</li>)}
+        </ul>
+      </dd>
+    </div>
+  </dl>
+  {
+    hasValidUrl && (
+      <a
+        class="project-source"
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        View repository{" "}
+        <>
+          <span aria-hidden="true">↗</span>
+          <span class="sr-only"> (opens in a new tab)</span>
+        </>
+      </a>
+    )
+  }
+</section>
+
+<style>
+  .project-metadata {
+    margin: 1.75rem 0.75rem 0;
+  }
+  dt {
+    margin: 1rem 0 0.25rem;
+    font-size: 0.75rem;
+    color: var(--story-mint);
+  }
+  dd,
+  .project-tools {
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+    line-height: 1.65;
+    list-style: none;
+  }
+  .project-tools li {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .project-source {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    margin: 1rem 0.75rem 0;
+    font-size: 0.875rem;
+    color: #d7f5e9;
+  }
+  .is-compact .project-metadata {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+  }
+  .is-compact dt {
+    margin-top: 0;
+  }
+  .is-compact .project-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+  }
+  .is-compact .project-source {
+    margin-inline: 0;
+  }
+</style>

@@ -104,8 +104,10 @@ test("navigating away and back leaves one trail ink observer", async ({
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await open(page);
   expect(await count()).toBe(1);
-  await page.locator('header a[href="/projects"]:visible').first().click();
-  await expect(page).toHaveURL(/\/projects\/?$/);
+  await page
+    .locator('a.project-card[href="/projects/library-management"]')
+    .click();
+  await expect(page).toHaveURL(/\/projects\/library-management\/?$/);
   expect(await count()).toBe(0);
   await page.goBack();
   await expect(page.locator(TRAIL)).toHaveAttribute("mask", /.+/);

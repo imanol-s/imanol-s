@@ -15,37 +15,55 @@ cover: "../../assets/projects/robotics.webp"
 ogImage: "../../assets/projects/robotics.webp"
 ---
 
-## The navigation task
+import ProjectTrainingLoop from "../../components/ProjectTrainingLoop.astro";
+
+## Why simulation
 
 Our capstone task was to teach a legged ground robot to follow an edge for outdoor maintenance. Simulation let us develop and evaluate navigation behavior before physical deployment.
 
-On the Fall 2025 capstone team at UT Dallas, I was a **developer focused on implementation and documentation**, working on the simulation environments, reinforcement-learning training setup, and validation workflows.
+On the Fall 2025 capstone team at UT Dallas, I was a **developer focused on implementation and documentation**. I worked on the simulation environments, reinforcement-learning training setup, and validation workflows.
 
-## Training-task implementation
+## Building the environment
 
 I recreated real-world environments in NVIDIA IsaacSim and helped define the IsaacLab training setup, including what the robot observes and which actions it can take.
 
-I implemented task logic in Python:
+I implemented the task logic in Python:
 
-- **Custom reward functions and penalties** supplied the feedback used to train edge-following behavior.
+- **Custom rewards and penalties** supplied feedback for learning edge-following behavior.
 - **Termination conditions** defined when a training episode ends.
 
-The team used Proximal Policy Optimization (PPO) for continuous control. IsaacSim provided the physics environment; IsaacLab organized the training loop. My contribution focused on the environments and task logic around the algorithm.
+<figure>
+  <img
+    src="/project-story/environment-go2w.png"
+    width="1908"
+    height="824"
+    alt="Watercolor concept illustration of a Unitree Go2-W wheeled quadruped in a simulated obstacle environment"
+    loading="lazy"
+    decoding="async"
+  />
+  <figcaption>
+    Concept illustration, not a simulator screenshot or measured result.
+  </figcaption>
+</figure>
 
-## Evaluation
+## Training loop
 
-I designed and trained policies through iterative experimentation. I analyzed simulation performance data and created visualizations to evaluate agent behavior across varying terrain conditions and edge-following scenarios.
+The team used Proximal Policy Optimization (PPO), a reinforcement-learning algorithm for continuous control. IsaacSim provided the physics environment; IsaacLab organized the training loop. My implementation work focused on the environments and task logic around the algorithm.
 
-I also implemented **scenario checks and scripted test runs** for simulation-based validation, providing repeatable ways to evaluate the resulting behavior.
+I designed and trained control policies through iterative experimentation. I analyzed simulation performance data and created visualizations to evaluate behavior across varying terrain conditions and edge-following scenarios.
 
-## Documentation and integration
+I also implemented **scenario checks and scripted test runs**, giving the team repeatable ways to evaluate behavior in simulation.
 
-I documented the architecture connecting perception inputs, navigation logic, and motor control, creating technical references and onboarding materials for continued development.
+<ProjectTrainingLoop />
 
-That documentation described the hardware-software boundary: continuous policy outputs need to map to commands the physical robot can execute. The simulation work supported development and evaluation; it did not replace physical deployment validation.
+## Hardware boundary
 
-## Deliverables and availability
+I documented the architecture connecting perception inputs, navigation logic, and motor control. The documentation included technical references and onboarding materials for continued development.
 
-My deliverables combined executable training-task logic, simulated environments, evaluation scripts, performance visualizations, and architecture documentation. Together, they supported the team's navigation experiments and provided references for continued development.
+That connection also defined a boundary: the model’s continuous outputs need to become commands the physical robot can execute. Our simulation work supported development and evaluation; physical deployment still required validation on the robot.
+
+## What the work produced
+
+My deliverables brought together executable training-task logic, simulated environments, evaluation scripts, performance visualizations, and architecture documentation. They supported the team’s navigation experiments and provided references for continued development.
 
 Source code and detailed results are covered under NDA and are not publicly available.

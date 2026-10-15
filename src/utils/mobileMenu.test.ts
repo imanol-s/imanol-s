@@ -10,7 +10,7 @@ function createFixture() {
   const menu = document.createElement("div");
   menu.classList.add("hidden");
   menu.innerHTML = `
-    <a href="/projects">Projects</a>
+    <a href="/#projects">WORK</a>
     <a href="/blog">Blog</a>
   `;
 

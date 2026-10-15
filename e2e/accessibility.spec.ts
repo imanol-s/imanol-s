@@ -3,7 +3,6 @@ import { readdirSync } from "node:fs";
 
 const routes = [
   "/",
-  "/projects/",
   "/404/",
   ...readdirSync("src/content/projects")
     .filter((file) => file.endsWith(".mdx"))

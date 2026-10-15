@@ -5,7 +5,7 @@ import { ME, SITE } from "../config";
 const isProjectsPage = Astro.url.pathname.startsWith("/projects");
 const resumeHref = `/${ME.contactInfo.resumeDoc}`;
 const links = [
-  { label: "WORK", href: "/projects", current: isProjectsPage },
+  { label: "WORK", href: "/#projects", current: isProjectsPage },
   { label: "EXPERIENCE", href: "/#experience", current: false },
 ];
 ---
@@ -291,11 +291,11 @@ const links = [
     transition:
       opacity 160ms ease,
       display 160ms allow-discrete;
-    margin: 0;
+    margin: 8px 0 0;
     padding: 0 20px 8px;
-    background: var(--header-background);
+    background: var(--color-background-dark);
     border: 1px solid var(--header-border);
-    border-radius: 0 0 12px 12px;
+    border-radius: 12px;
   }
   .mobile-links {
     display: flex;

@@ -1,28 +1,18 @@
 import { test, expect } from "@playwright/test";
-import { readdirSync } from "node:fs";
-
-const projectCount = readdirSync("src/content/projects").filter((file) =>
-  file.endsWith(".mdx"),
-).length;
-
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() =>
     sessionStorage.setItem("site-lifecycle-ready", "true"),
   );
 });
 
-test("every project is discoverable from the homepage and project collection", async ({
+test("Automaton is discoverable from the complete homepage gallery", async ({
   page,
 }) => {
-  for (const path of ["/", "/projects/"]) {
-    await page.goto(path);
-    await expect(page.locator("a.project-card")).toHaveCount(projectCount);
-    const automaton = page.locator(
-      'a.project-card[href="/projects/automaton"]',
-    );
-    await expect(automaton).toContainText("Automaton");
-    await expect(automaton).toHaveAttribute("href", "/projects/automaton");
-  }
+  await page.goto("/");
+  await expect(page.locator("#projects a.project-card")).toHaveCount(5);
+  const automaton = page.locator('a.project-card[href="/projects/automaton"]');
+  await expect(automaton).toContainText("Automaton");
+  await expect(automaton).toHaveAttribute("href", "/projects/automaton");
   await page.locator('a.project-card[href="/projects/automaton"]').click();
   await expect(page).toHaveURL(/\/projects\/automaton\/?$/);
   await expect(
@@ -58,9 +48,18 @@ test("estimated time avoided and architecture diagrams remain readable at 320px"
   await expect(workflow).toContainText(
     "Save and verification rules remain specific to each workflow.",
   );
-  await expect(page.locator(".project-header")).not.toContainText(
+  await expect(page.locator(".project-opening")).toBeVisible();
+  await expect(page.locator(".project-opening")).not.toContainText(
     /Invalid Date|NaN/,
   );
+  const details = page
+    .locator(".project-facts-compact")
+    .getByRole("region", { name: "Project details" });
+  await expect(details).toBeVisible();
+  await expect(
+    details.getByRole("term", { name: "When", exact: true }),
+  ).toHaveCount(0);
+  await expect(details).not.toContainText(/Invalid Date|NaN/);
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(320);

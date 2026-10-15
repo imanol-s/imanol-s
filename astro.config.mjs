@@ -10,6 +10,9 @@ import { satteri } from "@astrojs/markdown-satteri";
 // https://astro.build/config
 export default defineConfig({
   site: "https://imanols.dev",
+  redirects: {
+    "/projects": "/#projects",
+  },
   integrations: [mdx(), react(), icon(), sitemap()],
   vite: {
     plugins: [tailwindcss()],

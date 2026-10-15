@@ -13,7 +13,7 @@ test.afterEach(() => {
 // Pages to verify
 const pages = [
   { name: "Home", path: "/" },
-  { name: "Projects", path: "/projects/" },
+  { name: "Library case study", path: "/projects/library-management/" },
   { name: "Project detail", path: "/projects/crime-analysis/" },
   { name: "Automaton case study", path: "/projects/automaton/" },
 ];
@@ -84,7 +84,9 @@ test.describe("Layout", () => {
   test("responsive: desktop viewport renders full nav", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto("/");
-    await expect(page.locator('a[href*="/projects"]').first()).toBeVisible();
+    await expect(
+      page.locator('.desktop-links a[href="/#projects"]'),
+    ).toBeVisible();
   });
 });
 

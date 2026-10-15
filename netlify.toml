@@ -9,6 +9,18 @@
   status = 302
   force = true
 
+[[redirects]]
+  from = "/projects"
+  to = "/#projects"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/projects/"
+  to = "/#projects"
+  status = 301
+  force = true
+
 [build.environment]
   NODE_VERSION = "22"
 

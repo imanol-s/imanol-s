@@ -8,7 +8,7 @@ async function prepareArtwork(event: TransitionBeforePreparationEvent) {
   const incoming = event.newDocument;
   const sources = [
     ...incoming.querySelectorAll(
-      ".field-map-terrain, .portrait-image, .forest-scene image[href], .project-figure .project-cover",
+      ".field-map-terrain, .portrait-image, .forest-scene image[href], .project-opening-art img",
     ),
     ...[...incoming.querySelectorAll("[data-transition-cover]")].slice(
       0,

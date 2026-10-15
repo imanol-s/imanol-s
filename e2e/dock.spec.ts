@@ -252,8 +252,13 @@ test("Astro navigation initializes a fresh working header", async ({
 }) => {
   await page.goto("/");
   await waitForHeader(page, 1280);
-  await page.locator(".desktop-links a[href='/projects']").click();
-  await expect(page).toHaveURL(/\/projects\/?$/);
+  await page
+    .locator('a.project-card[href="/projects/library-management"]')
+    .click();
+  await expect(page).toHaveURL(/\/projects\/library-management\/?$/);
+  await page.getByRole("link", { name: "All projects", exact: true }).click();
+  await expect(page).toHaveURL("/#projects");
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
   const header = await waitForHeader(page, 1280);
   await page.mouse.wheel(0, 800);
   await expect(header).toHaveAttribute("data-header-docked", "");
@@ -273,7 +278,7 @@ test("navigation has a visible fallback without JavaScript", async ({
   const page = await context.newPage();
   await page.goto("/");
   await expect(page.locator(".site-brand")).toBeVisible();
-  await expect(page.locator("#mobile-menu a[href='/projects']")).toBeVisible();
+  await expect(page.locator("#mobile-menu a[href='/#projects']")).toBeVisible();
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(320);

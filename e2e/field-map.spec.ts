@@ -137,7 +137,7 @@ test("trail re-anchors after resizing 1440 -> 390 -> 1024", async ({
 });
 
 // Catches: duplicate paths on navigation, topo layer not suppressed/restored, scenery leaking to other routes.
-test("navigating to /projects and back keeps one trail and restores route backgrounds", async ({
+test("navigating to a case study and back keeps one trail and restores route backgrounds", async ({
   page,
 }) => {
   await open(page, 1440);
@@ -147,8 +147,10 @@ test("navigating to /projects and back keeps one trail and restores route backgr
   expect(await page.locator(".topo-layer").count()).toBe(1);
   expect(await topoDisplay()).toBe("none");
 
-  await page.locator('header a[href="/projects"]:visible').first().click();
-  await expect(page).toHaveURL(/\/projects\/?$/);
+  await page
+    .locator('a.project-card[href="/projects/library-management"]')
+    .click();
+  await expect(page).toHaveURL(/\/projects\/library-management\/?$/);
   await expect(page.locator("body")).not.toHaveAttribute(
     "data-field-map",
     /.*/,

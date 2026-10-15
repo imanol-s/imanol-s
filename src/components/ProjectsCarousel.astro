@@ -4,38 +4,20 @@ import { netlifyImage } from "@/utils/netlifyImage";
 import { getSortedProjects } from "@/data/projectCollection";
 import { getTechView } from "@/data/techRegistry";
 
-interface Props {
-  showHeading?: boolean;
-}
-const { showHeading = true } = Astro.props;
 const allProjects = getSortedProjects(await getCollection("projects"));
-const ProjectHeading = showHeading ? "h3" : "h2";
 ---
 
 <section
-  class:list={[
-    "project-section scroll-mt-24",
-    { "mb-28 render-deferred": showHeading },
-  ]}
+  class="project-section scroll-mt-24 mb-28 render-deferred"
   id="projects"
-  aria-labelledby={showHeading ? "projects-heading" : undefined}
-  aria-label={showHeading ? undefined : "Project collection"}
+  aria-labelledby="projects-heading"
 >
-  {
-    showHeading && (
-      <div class="project-section-heading">
-        <h2 id="projects-heading" class="section-heading">
-          Projects
-        </h2>
-        <a href="/projects" class="project-index-link focus-ring font-display">
-          All projects <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-    )
-  }
+  <h2 id="projects-heading" class="section-heading project-section-heading">
+    Projects
+  </h2>
   <div class="project-grid">
     {
-      allProjects.map((project, index) => (
+      allProjects.map((project) => (
         <a
           href={`/projects/${project.id}`}
           class={`project-card project-${project.id} group cad-border focus-ring`}
@@ -45,7 +27,6 @@ const ProjectHeading = showHeading ? "h3" : "h2";
               {...netlifyImage(project.data.cover)}
               alt=""
               class="project-cover"
-              data-transition-cover={(!showHeading && index < 2) || undefined}
               sizes="(min-width: 1280px) 560px, (min-width: 768px) 45vw, 90vw"
               loading="lazy"
               decoding="async"
@@ -60,9 +41,7 @@ const ProjectHeading = showHeading ? "h3" : "h2";
                 <span>{getTechView(tag).displayName}</span>
               ))}
             </div>
-            <ProjectHeading class="project-title font-display">
-              {project.data.title}
-            </ProjectHeading>
+            <h3 class="project-title font-display">{project.data.title}</h3>
             <p>{project.data.cardSummary ?? project.data.summary}</p>
             <span class="project-read font-display">
               Explore project <span aria-hidden="true">↗</span>
@@ -76,23 +55,7 @@ const ProjectHeading = showHeading ? "h3" : "h2";
 
 <style>
   .project-section-heading {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 2rem;
     margin-bottom: 2rem;
-  }
-  .project-index-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-shrink: 0;
-    padding: 0.6rem 0;
-    color: #334155;
-    font-size: 0.75rem;
-  }
-  .project-index-link:hover {
-    color: #0f172a;
   }
   .project-grid {
     display: grid;
@@ -197,11 +160,7 @@ const ProjectHeading = showHeading ? "h3" : "h2";
     border-color: #334155;
     color: #cbd5e1;
   }
-  :global(.dark) .project-index-link {
-    color: #cbd5e1;
-  }
-  :global(.dark) .project-card:hover .project-read,
-  :global(.dark) .project-index-link:hover {
+  :global(.dark) .project-card:hover .project-read {
     color: #fff;
   }
   @media (prefers-reduced-motion: no-preference) {
@@ -212,8 +171,7 @@ const ProjectHeading = showHeading ? "h3" : "h2";
       transform: scale(1.035);
     }
     .project-card,
-    .project-read,
-    .project-index-link {
+    .project-read {
       transition:
         background-color 0.2s ease,
         color 0.2s ease,
@@ -221,12 +179,6 @@ const ProjectHeading = showHeading ? "h3" : "h2";
     }
   }
   @media (max-width: 767px) {
-    .project-section-heading {
-      display: block;
-    }
-    .project-index-link {
-      margin-top: 1rem;
-    }
     .project-grid {
       grid-template-columns: 1fr;
     }
