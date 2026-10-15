@@ -9,6 +9,13 @@ npm run test:watch # vitest (watch mode)
 npm run test:e2e # playwright (UI/e2e tests, auto-starts preview server)
 npx astro check # Type-check Astro + TS files
 
+## Astro documentation
+
+- Consult the Astro Docs MCP (Model Context Protocol) server for current official documentation before making Astro-specific recommendations or changes, including APIs, routing, content collections, configuration, and best practices. Prefer retrieved documentation over remembered APIs.
+- Check `package.json` and the lockfile for the installed Astro version, and apply version-compatible guidance. Latest documentation does not authorize a dependency upgrade.
+- If the server is unavailable, use official Astro documentation and state that MCP access was unavailable. Do not claim a live lookup without retrieving documentation.
+- Follow [the canonical repository instructions](.github/copilot-instructions.md) when applying documentation to this project.
+
 ## Architecture
 
 - Astro-first: default to `.astro` components. React `.tsx` only for client-side interactivity.
