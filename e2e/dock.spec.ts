@@ -51,12 +51,45 @@ for (const width of [1280, 800, 390, 320]) {
       const frogXs: number[] = [];
       const layoutWidths: number[] = [];
       const textSizes: Array<{ width: number; height: number }> = [];
-      window.scrollTo({ top: 800, behavior: "instant" });
-      const start = performance.now();
-      while (performance.now() - start < 700) {
-        await new Promise<void>((resolve) =>
-          requestAnimationFrame(() => resolve()),
-        );
+      // Capture and seek real CSS transitions so a busy frame cannot skip the intermediate geometry.
+      const transitions = await new Promise<CSSTransition[]>((resolve) => {
+        const observer = new MutationObserver(() => {
+          if (!shell.hasAttribute("data-header-docked")) return;
+          observer.disconnect();
+          getComputedStyle(end).transform;
+          const active = shell
+            .getAnimations({ subtree: true })
+            .filter(
+              (animation): animation is CSSTransition =>
+                animation instanceof CSSTransition,
+            );
+          active.forEach((animation) => animation.pause());
+          resolve(active);
+        });
+        observer.observe(shell, {
+          attributes: true,
+          attributeFilter: ["data-header-docked"],
+        });
+        window.scrollTo({ top: 800, behavior: "instant" });
+      });
+      await Promise.all(transitions.map((animation) => animation.ready));
+      const transformTargets = transitions
+        .filter((animation) => animation.transitionProperty === "transform")
+        .map((animation) =>
+          (animation.effect as KeyframeEffect).target === end
+            ? "end"
+            : (animation.effect as KeyframeEffect).target ===
+                document.querySelector(".header-rail")
+              ? "rail"
+              : "unexpected",
+        )
+        .sort();
+      for (const progress of [0, 0.25, 0.5, 0.75, 1]) {
+        for (const animation of transitions) {
+          const timing = animation.effect!.getComputedTiming();
+          animation.currentTime =
+            Number(timing.delay) + Number(timing.duration) * progress;
+        }
         widths.push(
           end.getBoundingClientRect().right -
             shell.getBoundingClientRect().left,
@@ -66,7 +99,9 @@ for (const width of [1280, 800, 390, 320]) {
         textSizes.push({ width: text.width, height: text.height });
         frogXs.push(frog.getBoundingClientRect().x);
       }
+      transitions.forEach((animation) => animation.finish());
       return {
+        transformTargets,
         initial,
         frogX,
         widths,
@@ -76,6 +111,7 @@ for (const width of [1280, 800, 390, 320]) {
         textBounds: { width: textBounds.width, height: textBounds.height },
       };
     });
+    expect(motion.transformTargets).toEqual(["end", "rail"]);
     expect(
       motion.widths.some(
         (sample) => sample > 76 && sample < motion.initial - 20,
