@@ -66,24 +66,13 @@ describe("buildLineYs", () => {
     expect(ys[ys.length - 1]).toBeGreaterThanOrEqual(600);
   });
 
-  it("lines are spaced exactly gap apart", () => {
-    const gap = 24;
-    const ys = buildLineYs(480, gap);
-    for (let i = 1; i < ys.length; i++) {
-      expect(ys[i] - ys[i - 1]).toBeCloseTo(gap);
-    }
+  it("places every 24px line including both buffer ends", () => {
+    expect(buildLineYs(48, 24)).toEqual([-20, 4, 28, 52, 76]);
   });
 
   it("produces more lines for taller viewports", () => {
     const short = buildLineYs(300, 24);
     const tall = buildLineYs(900, 24);
     expect(tall.length).toBeGreaterThan(short.length);
-  });
-
-  it("works with different gap sizes", () => {
-    const ys = buildLineYs(480, 48);
-    for (let i = 1; i < ys.length; i++) {
-      expect(ys[i] - ys[i - 1]).toBeCloseTo(48);
-    }
   });
 });

@@ -1,9 +1,4 @@
 {
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_NEW_INIT": "true",
-    "autoMemoryEnabled": "true"
-  },
   "hooks": {
     "PostToolUse": [
       {
@@ -53,19 +48,6 @@
           }
         ]
       }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/imanol/.claude/hooks/session-summary.sh",
-            "timeout": 30,
-            "statusMessage": "Generating session summary..."
-          }
-        ]
-      }
     ]
-  },
-  "enabledPlugins": {}
+  }
 }

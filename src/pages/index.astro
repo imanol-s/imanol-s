@@ -3,17 +3,51 @@ import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/HeroSection.astro";
 import ProjectsCarousel from "../components/ProjectsCarousel.astro";
 import ExperienceTimeline from "../components/ExperienceTimeline.astro";
+import ProfileToolkit from "../components/ProfileToolkit.astro";
 import { ME, SITE } from "../config";
+import portraitLineart from "../assets/portrait-lineart.svg";
 ---
 
 <Layout
   title={`${SITE.author} | Portfolio`}
   description={ME.aboutMe}
   scrollSmooth={true}
+  heroImage={portraitLineart}
+  fieldMap
 >
-  <HeroSection />
+  <HeroSection staticTerrain={false} />
 
   <ProjectsCarousel />
 
-  <ExperienceTimeline />
+  <div class="field-map-columns">
+    <ExperienceTimeline />
+    <div class="field-map-supporting">
+      <ProfileToolkit />
+    </div>
+  </div>
 </Layout>
+
+<style>
+  .field-map-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: 3rem;
+    align-items: start;
+  }
+  .field-map-supporting {
+    min-width: 0;
+  }
+  :global(body:has(.hero-section) .project-section) {
+    margin-bottom: 4rem;
+  }
+
+  @media (max-width: 900px) {
+    .field-map-columns {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+    .field-map-supporting {
+      margin-bottom: 3rem;
+    }
+  }
+</style>

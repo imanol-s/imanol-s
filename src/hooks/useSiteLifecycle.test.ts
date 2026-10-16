@@ -15,7 +15,13 @@ import {
 
 describe("useSiteLifecycle", () => {
   beforeEach(() => {
+    vi.restoreAllMocks();
     sessionStorage.clear();
+    window.history.replaceState({}, "", "/");
+    Object.defineProperty(navigator, "connection", {
+      configurable: true,
+      value: undefined,
+    });
     window.matchMedia = vi
       .fn()
       .mockReturnValue({ matches: false, addEventListener: vi.fn() });
@@ -67,6 +73,41 @@ describe("useSiteLifecycle", () => {
       .mockReturnValue({ matches: true, addEventListener: vi.fn() });
     _resetForTesting();
     const { result } = renderHook(() => useSiteLifecycle());
+    expect(result.current.state).toBe("ready");
+  });
+
+  it("starts ready on a direct project visit", () => {
+    window.history.replaceState({}, "", "/projects/library-management/");
+    const { result } = renderHook(() => useSiteLifecycle());
+    expect(result.current.state).toBe("ready");
+  });
+
+  it.each([
+    { saveData: true },
+    { effectiveType: "slow-2g" },
+    { effectiveType: "2g" },
+    { effectiveType: "3g" },
+  ])("starts ready on a constrained connection: %j", (connection) => {
+    Object.defineProperty(navigator, "connection", {
+      configurable: true,
+      value: connection,
+    });
+    const { result } = renderHook(() => useSiteLifecycle());
+    expect(result.current.state).toBe("ready");
+  });
+
+  it("continues when session storage is denied", () => {
+    vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new DOMException("Denied", "SecurityError");
+    });
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("Denied", "SecurityError");
+    });
+    const { result } = renderHook(() => useSiteLifecycle());
+    expect(result.current.state).toBe("loading");
+    act(() => result.current.advance());
+    act(() => result.current.advance());
+    act(() => result.current.advance());
     expect(result.current.state).toBe("ready");
   });
 });

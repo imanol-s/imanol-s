@@ -1,0 +1,17 @@
+---
+import { Image } from "astro:assets";
+import type { ComponentProps } from "astro/types";
+
+type Props = ComponentProps<typeof Image>;
+
+const props = { ...Astro.props };
+const source = await props.src;
+const src =
+  typeof source === "object" && "default" in source ? source.default : source;
+const isSvg = typeof src !== "string" && src.format === "svg";
+props.format ??= isSvg ? "svg" : "avif";
+props.quality ??= 80;
+if (!props.densities) props.layout ??= "constrained";
+---
+
+<Image {...props} />

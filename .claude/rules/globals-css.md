@@ -21,12 +21,12 @@ Before adding new CSS, check if one of these already covers it:
 Defined in the `@theme` block — use these tokens, don't hardcode hex values:
 
 - `--color-primary`, `--color-accent`, slate variants
-- `--font-display` (JetBrains Mono), `--font-body` (Inter)
+- `--font-display` (JetBrains Mono), `--font-body` (IBM Plex Sans)
 - `--radius-DEFAULT` (4px)
 
 ## Font Loading
 
-Two Latin-only `@font-face` blocks for Inter Variable and JetBrains Mono Variable. Do NOT add full `@fontsource-variable` imports — they add 11 unused @font-face declarations.
+Two Latin-only `@font-face` blocks for IBM Plex Sans Variable and JetBrains Mono Variable. Do NOT add full `@fontsource-variable` imports — they add 11 unused @font-face declarations.
 
 ## Dark Mode
 

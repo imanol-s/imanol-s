@@ -18,7 +18,7 @@ Single source of truth for site identity. Do not duplicate this data elsewhere.
 
 Work experience and education data. Key accessors:
 
-- `timelineJobs()` — returns the 3 most recent jobs (used by ExperienceTimeline)
+- `timelineJobs()` — returns every timeline role in display order (used by ExperienceTimeline)
 - `primaryEducation()` — returns the primary education entry
 - `jobStartDate()` / `jobEndDate()` — date accessors for individual entries
 
