@@ -15,6 +15,8 @@ cover: "../../assets/projects/robotics.webp"
 ogImage: "../../assets/projects/robotics.webp"
 ---
 
+import SiteImage from "../../components/SiteImage.astro";
+import environmentGo2w from "../../assets/project-story/environment-go2w.png";
 import ProjectTrainingLoop from "../../components/ProjectTrainingLoop.astro";
 
 ## Why simulation
@@ -32,11 +34,10 @@ I implemented the task logic in Python:
 - **Custom rewards and penalties** supplied feedback for learning edge-following behavior.
 - **Termination conditions** defined when a training episode ends.
 
-<figure>
-  <img
-    src="/project-story/environment-go2w.png"
-    width="1908"
-    height="824"
+<figure class="environment-figure">
+  <SiteImage
+    src={environmentGo2w}
+    sizes="(min-width: 640px) 486px, calc(100vw - 96px)"
     alt="Watercolor concept illustration of a Unitree Go2-W wheeled quadruped in a simulated obstacle environment"
     loading="lazy"
     decoding="async"

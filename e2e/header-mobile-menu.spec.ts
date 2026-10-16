@@ -61,6 +61,21 @@ async function expandDockedHeader(page: Page) {
   }
 }
 
+async function expectMenuIcon(page: Page, open: boolean) {
+  const button = page.locator("#mobile-menu-btn");
+  await expect(button).toHaveAttribute("aria-expanded", String(open));
+  await expect(button).toHaveAttribute(
+    "aria-label",
+    open ? "Close menu" : "Open menu",
+  );
+  await expect(
+    button.locator(open ? ".menu-close" : ".menu-bars"),
+  ).toBeVisible();
+  await expect(
+    button.locator(open ? ".menu-bars" : ".menu-close"),
+  ).toBeHidden();
+}
+
 async function expectSeparatePanel(page: Page, width: number) {
   const surface = await page.locator(".header-surface").boundingBox();
   const panel = await page.locator("#mobile-menu").boundingBox();
@@ -98,7 +113,9 @@ for (const width of [320, 390, 596]) {
     await waitForHeader(page);
     const header = page.locator(".site-header");
     const menuButton = page.locator("#mobile-menu-btn");
+    await expectMenuIcon(page, false);
     await menuButton.click();
+    await expectMenuIcon(page, true);
     await expectSeparatePanel(page, width);
     await page.evaluate(() =>
       window.scrollTo({ top: 500, behavior: "instant" }),
@@ -114,6 +131,7 @@ for (const width of [320, 390, 596]) {
     await expect(header).toHaveAttribute("data-header-docked", "");
     await page.getByRole("button", { name: "Open navigation" }).click();
     await menuButton.click();
+    await expectMenuIcon(page, true);
     await expectSeparatePanel(page, width);
   });
 }
@@ -143,6 +161,7 @@ test("mobile menu preserves keyboard, route and desktop-resize behavior", async 
   await expect(button).toBeFocused();
   await expect(button).toHaveAttribute("aria-expanded", "false");
   await expect(panel).toBeHidden();
+  await expectMenuIcon(page, false);
   await button.click();
   await expect(
     panel.getByRole("link", { name: "WORK", exact: true }),
@@ -174,6 +193,7 @@ test("mobile menu preserves keyboard, route and desktop-resize behavior", async 
   );
   await page.getByRole("button", { name: "Open navigation" }).click();
   await button.click();
+  await expectMenuIcon(page, true);
   await expectSeparatePanel(page, 390);
   await panel.getByRole("link", { name: "WORK", exact: true }).focus();
   await expect(

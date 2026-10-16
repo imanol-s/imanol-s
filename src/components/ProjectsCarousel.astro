@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { netlifyImage } from "@/utils/netlifyImage";
+import SiteImage from "@/components/SiteImage.astro";
 import { getSortedProjects } from "@/data/projectCollection";
 import { getTechView } from "@/data/techRegistry";
 
@@ -23,8 +23,8 @@ const allProjects = getSortedProjects(await getCollection("projects"));
           class={`project-card project-${project.id} group cad-border focus-ring`}
         >
           <div class="project-artwork">
-            <img
-              {...netlifyImage(project.data.cover)}
+            <SiteImage
+              src={project.data.cover}
               alt=""
               class="project-cover"
               sizes="(min-width: 1280px) 560px, (min-width: 768px) 45vw, 90vw"
@@ -102,11 +102,6 @@ const allProjects = getSortedProjects(await getCollection("projects"));
     font-size: 0.75rem;
     line-height: 1.5;
     overflow-wrap: anywhere;
-  }
-  .project-tags span + span::before {
-    content: "/";
-    margin-right: 1rem;
-    color: #64748b;
   }
   .project-title {
     font-size: 1.1rem;

@@ -180,3 +180,50 @@ test.describe("Home page sections", () => {
     await expect(page.locator("text=/experience/i").first()).toBeVisible();
   });
 });
+
+test("homepage supporting labels remain readable and project tags wrap without separators", async ({
+  page,
+}) => {
+  for (const width of [390, 900, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto("/");
+    for (const selector of [
+      ".career-dates",
+      ".current-label",
+      ".profile-panel > .section-kicker",
+      ".profile-block h3",
+      ".nav-link",
+      ".header-resume",
+    ]) {
+      const labels = page.locator(selector);
+      expect(await labels.count(), selector).toBeGreaterThan(0);
+      for (const label of await labels.all()) {
+        expect(
+          await label.evaluate((element) =>
+            parseFloat(getComputedStyle(element).fontSize),
+          ),
+          selector,
+        ).toBeGreaterThanOrEqual(12);
+      }
+    }
+    const cards = page.locator(".project-card");
+    await expect(cards).toHaveCount(5);
+    for (const card of await cards.all()) {
+      const tags = card.locator(".project-tags span");
+      expect(await tags.count()).toBeGreaterThan(0);
+      for (const tag of await tags.all()) {
+        expect(
+          await tag.evaluate(
+            (element) => getComputedStyle(element, "::before").content,
+          ),
+        ).not.toContain("/");
+        const tagBox = await tag.boundingBox();
+        const cardBox = await card.boundingBox();
+        expect(tagBox!.x).toBeGreaterThanOrEqual(cardBox!.x);
+        expect(tagBox!.x + tagBox!.width).toBeLessThanOrEqual(
+          cardBox!.x + cardBox!.width,
+        );
+      }
+    }
+  }
+});

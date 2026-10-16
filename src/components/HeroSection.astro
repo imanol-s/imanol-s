@@ -1,5 +1,5 @@
 ---
-import { netlifyImage } from "@/utils/netlifyImage";
+import SiteImage from "@/components/SiteImage.astro";
 import TypewriterText from "./TypewriterText.tsx";
 import { ME, SOCIALS } from "../config";
 import { timelineJobs, primaryEducation } from "../data/career";
@@ -60,8 +60,8 @@ const education = primaryEducation();
     </div>
     <div class="portrait-column">
       <div class="portrait-illustration">
-        <img
-          {...netlifyImage(portraitLineart)}
+        <SiteImage
+          src={portraitLineart}
           alt={`${ME.name} illustrated portrait`}
           class="portrait-image"
           loading="eager"

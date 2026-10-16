@@ -16,7 +16,7 @@ ogImage: "../../assets/projects/housing-analysis.webp"
 ---
 
 import arrestMap from "./images/crime-analysis/crime_analysis_map.webp";
-import { netlifyImage } from "@/utils/netlifyImage";
+import SiteImage from "@/components/SiteImage.astro";
 
 ## The question and my contribution
 
@@ -29,8 +29,9 @@ We joined Dallas Police Department arrest records (roughly 50k incidents) and Zi
 The result was a table of arrest counts and average and median property prices, plus a scatter plot and a map of recorded arrest counts.
 
 <figure class="analysis-figure" style={`max-width: ${arrestMap.width}px`}>
-  <img
-    {...netlifyImage(arrestMap)}
+  <SiteImage
+    src={arrestMap}
+    format="png"
     alt="Map from the original 2024 Dallas analysis showing recorded arrest counts by ZIP code, not population-adjusted crime rates"
     class="analysis-map"
     sizes={`(min-width: 640px) ${arrestMap.width}px, calc(100vw - 48px)`}

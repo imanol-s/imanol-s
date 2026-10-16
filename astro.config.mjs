@@ -10,6 +10,9 @@ import { satteri } from "@astrojs/markdown-satteri";
 // https://astro.build/config
 export default defineConfig({
   site: "https://imanols.dev",
+  image: {
+    breakpoints: [320, 400, 640, 750, 828, 1080, 1280, 1668, 2048, 2560],
+  },
   redirects: {
     "/projects": "/#projects",
   },

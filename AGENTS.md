@@ -50,7 +50,7 @@ Instructions for AI coding assistants working with this repository.
 - Browser-level validation is available via `npm run test:e2e` with Playwright against the local preview on port 4321
 - Netlify pins Node 22 via `NODE_VERSION` in `netlify.toml`
 - Fonts self-hosted via `@fontsource-variable` (Latin-only IBM Plex Sans + JetBrains Mono) — no Google Fonts CDN
-- Raster content images use Netlify Image CDN with AVIF quality 80 and responsive widths 400/800/1200; SVG artwork stays vector. Hashed `/_astro/` assets and their Image CDN variants cache immutably for one year; HTML uses CDN stale-while-revalidate, and unversioned images revalidate.
+- Content images use `SiteImage.astro`, a thin Astro `<Image>` wrapper with responsive `layout="constrained"`, native 320/400px mobile breakpoints plus the standard larger candidates, lazy/async loading, and AVIF quality 80 for raster artwork. Callers own `sizes`, CSS sizing/cropping, and overrides; SVGs stay vector and evidence images may use PNG to preserve readable detail. Import content artwork from `src/assets/`, including Go2-W illustrations; preloads must match rendered sources and responsive candidates. Hashed `/_astro/` assets cache immutably for one year; HTML uses CDN stale-while-revalidate, and unversioned images revalidate.
 - Three React islands: `TopoBackground.tsx` (`client:only="react"`), `TypewriterText.tsx` (`client:load`), and `LoadingOverlay.tsx` (`client:only="react"`)
 - Project subagents in `.cursor/agents/`: `coding-specialist` (mandatory for code changes), `software-architect`, `performance-optimizer`
 - Work history shows every role, with full descriptions and supplied highlights; do not impose role-count caps.

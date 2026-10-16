@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
-import { netlifyImage } from "@/utils/netlifyImage";
+import openingGo2w from "@/assets/project-story/opening-go2w.png";
+import SiteImage from "@/components/SiteImage.astro";
 import Layout from "../../layouts/Layout.astro";
 import { SITE } from "../../config";
 import ProjectMetadata from "../../components/ProjectMetadata.astro";
@@ -117,14 +118,10 @@ const artworkAlt =
             <p class="project-summary">{summary}</p>
           </div>
           <figure class="project-opening-art">
-            <img
-              {...isSensori
-                ? { src: "/project-story/opening-go2w.png" }
-                : netlifyImage(cover)}
-              width={isSensori ? 1742 : cover.width}
-              height={isSensori ? 903 : cover.height}
+            <SiteImage
+              src={isSensori ? openingGo2w : cover}
               alt={artworkAlt}
-              sizes="(min-width: 1024px) 460px, calc(100vw - 96px)"
+              sizes="(min-width: 1024px) 460px, min(30rem, calc(100vw - 96px))"
               loading="eager"
               fetchpriority="high"
             />
@@ -751,7 +748,7 @@ const artworkAlt =
     margin: 2rem 0;
   }
   .project-narrative
-    :global(figure:has(img[src="/project-story/environment-go2w.png"])) {
+    :global(.environment-figure) {
     max-width: 30.375rem;
     margin-inline: auto;
   }
@@ -928,6 +925,7 @@ const artworkAlt =
       grid-template-columns: minmax(0, 1fr);
     }
     .project-opening-art {
+      width: 100%;
       max-width: 30rem;
       justify-self: center;
     }
