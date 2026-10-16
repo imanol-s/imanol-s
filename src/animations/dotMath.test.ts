@@ -1,55 +1,43 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { buildDotGrid, dotAlpha, dotGlow } from "./dotMath";
 
 describe("buildDotGrid", () => {
-  it("produces a dot for every grid cell covering the canvas", () => {
-    const gap = 12;
-    const width = 120;
-    const height = 60;
-    const cols = Math.ceil(width / gap) + 2; // -1 to cols-1 → cols+1 iters
-    const rows = Math.ceil(height / gap) + 2;
-    const dots = buildDotGrid(width, height, gap, 0.4, 1.3);
-    // implementation uses i from -1 to cols-1 and j from -1 to rows-1
-    expect(dots.length).toBe(cols * rows);
+  it("covers a partial-width canvas with the complete staggered border grid", () => {
+    const dots = buildDotGrid(13, 12, 12, 0.4, 1.2);
+    expect(dots.map(({ x, y }) => [x, y])).toEqual([
+      [-6, -12],
+      [-12, 0],
+      [-6, 12],
+      [6, -12],
+      [0, 0],
+      [6, 12],
+      [18, -12],
+      [12, 0],
+      [18, 12],
+      [30, -12],
+      [24, 0],
+      [30, 12],
+    ]);
   });
 
-  it("even rows (j % 2 === 0) have x offset 0", () => {
-    const gap = 12;
-    const dots = buildDotGrid(120, 60, gap, 0.4, 1.3);
-    // row j=0 (even): x = i * gap + 0
-    const row0 = dots.filter((d) => d.y === 0); // j=0 → y = j*gap = 0
-    for (const d of row0) {
-      expect(d.x % gap).toBeCloseTo(0);
-    }
-  });
-
-  it("odd rows (j % 2 !== 0) have x offset gap * 0.5", () => {
-    const gap = 12;
-    const dots = buildDotGrid(120, 60, gap, 0.4, 1.3);
-    // row j=1 (odd): x = i * gap + gap * 0.5 → x mod gap should ≈ gap/2
-    const row1 = dots.filter((d) => d.y === gap); // j=1 → y = 1*gap
-    for (const d of row1) {
-      expect(((d.x % gap) + gap) % gap).toBeCloseTo(gap * 0.5);
-    }
-  });
-
-  it("speed values are within [speedMin, speedMax]", () => {
-    const speedMin = 0.4;
-    const speedMax = 1.3;
-    const dots = buildDotGrid(120, 60, 12, speedMin, speedMax);
-    for (const d of dots) {
-      expect(d.speed).toBeGreaterThanOrEqual(speedMin);
-      expect(d.speed).toBeLessThanOrEqual(speedMax);
-    }
-  });
-
-  it("phase values are within [0, 2π)", () => {
-    const dots = buildDotGrid(120, 60, 12, 0.4, 1.3);
-    for (const d of dots) {
-      expect(d.phase).toBeGreaterThanOrEqual(0);
-      expect(d.phase).toBeLessThan(Math.PI * 2);
-    }
-  });
+  it.each([0.25, 0.75])(
+    "keeps nonempty randomized dots within positive phase/speed bounds for sample %s",
+    (random) => {
+      const randomInput = vi.spyOn(Math, "random").mockReturnValue(random);
+      try {
+        const dots = buildDotGrid(13, 12, 12, 0.4, 1.2);
+        expect(dots).toHaveLength(12);
+        for (const dot of dots) {
+          expect(dot.phase).toBeGreaterThan(0);
+          expect(dot.phase).toBeLessThan(Math.PI * 2);
+          expect(dot.speed).toBeGreaterThan(0.4);
+          expect(dot.speed).toBeLessThan(1.2);
+        }
+      } finally {
+        randomInput.mockRestore();
+      }
+    },
+  );
 });
 
 describe("dotAlpha", () => {

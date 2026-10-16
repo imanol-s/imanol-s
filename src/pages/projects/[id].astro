@@ -1,9 +1,10 @@
 ---
 import { getCollection, render } from "astro:content";
-import { Picture } from "astro:assets";
+import openingGo2w from "@/assets/project-story/opening-go2w.png";
+import SiteImage from "@/components/SiteImage.astro";
 import Layout from "../../layouts/Layout.astro";
-import TagPill from "../../components/TagPill.astro";
-import { formatDate } from "../../utils/formatDate";
+import { SITE } from "../../config";
+import ProjectMetadata from "../../components/ProjectMetadata.astro";
 import {
   getSortedProjects,
   getProjectPageData,
@@ -18,180 +19,955 @@ export async function getStaticPaths() {
 }
 
 const { post, sorted } = Astro.props;
-const { title, summary, tags, cover, ogImage, url, startDate, endDate } =
-  post.data;
-
-const { Content } = await render(post);
-
+const { title, summary, tags, cover, url, startDate, endDate } = post.data;
+const { Content, headings } = await render(post);
+const chapters = headings.filter((heading) => heading.depth === 2);
 const { prev, next, hasValidUrl } = getProjectPageData(sorted, post.id);
+const metadata = { title, startDate, endDate, tags, hasValidUrl, url };
+const isSensori = post.id === "sensori-robotics";
+const artworkAlt =
+  post.id === "automaton"
+    ? "Watercolor concept illustration of input sheets leading to a browser window with a gear and a checked run journal"
+    : isSensori
+      ? "Watercolor concept illustration of a Unitree Go2-W wheeled quadruped navigating obstacles in simulation"
+      : post.id === "pert-scheduling"
+        ? "Watercolor illustration of task cards connected by branching dependency arrows and a completion check mark"
+        : post.id === "crime-analysis"
+          ? "Watercolor illustration of houses on a map beside a magnifying glass over a bar chart"
+          : "Watercolor illustration of books, an open book, and a library card catalog";
 ---
 
 <Layout
   title={title}
   description={summary}
-  imageOg={ogImage}
-  scrollSmooth={true}
+  imageOg={cover.format === "svg" ? SITE.ogImage : cover.src}
 >
-  <!-- Breadcrumb -->
-  <nav aria-label="Breadcrumb" class="mb-10">
-    <a
-      href="/projects"
-      class="drawing-hover focus-ring rounded-sm inline-flex items-center gap-2 font-display text-xs uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
-    >
-      &larr; Projects
-    </a>
-  </nav>
-
-  <!-- Project Hero -->
-  <div class="mb-12">
-    <h1 class="text-4xl md:text-6xl font-display font-bold leading-tight mb-6">
-      {title}
-    </h1>
-
-    {
-      tags.length > 0 && (
-        <div class="flex flex-wrap gap-2 mb-8">
-          {tags.map((tag: string) => (
-            <TagPill techId={tag} />
-          ))}
-        </div>
-      )
-    }
-
-    <!-- Hero image -->
-    <div class="cad-border overflow-hidden">
-      <Picture
-        src={cover}
-        alt={title}
-        class="w-full h-[280px] md:h-[360px] object-cover grayscale opacity-60"
-        formats={["avif"]}
-        fallbackFormat="webp"
-        widths={[640, 960, 1280]}
-        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px"
-        loading="eager"
-        fetchpriority="high"
-      />
-    </div>
-  </div>
-
-  <!-- 2-Column Body -->
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mt-12">
-    <!-- Left col — overview + MDX content -->
-    <div class="lg:col-span-8">
-      <div class="bg-slate-50 dark:bg-slate-900 p-6 md:p-8">
-        <p
-          class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4"
-        >
-          Overview
-        </p>
-        <p
-          class="text-lg text-slate-700 dark:text-slate-200 leading-relaxed font-light mb-10"
-        >
-          {summary}
-        </p>
-
-        <div class="prose dark:prose-invert max-w-none">
-          <Content />
-        </div>
-      </div>
-    </div>
-
-    <!-- Right col — links + stack + timeline -->
-    <div class="lg:col-span-4">
-      <div
-        class="cad-border bg-slate-50 dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-800"
-      >
-        {
-          hasValidUrl && (
-            <div class="p-5">
-              <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
-                Links
-              </p>
-              <div class="flex flex-col gap-3">
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="cta-primary w-full focus-ring"
-                >
-                  Repo
-                </a>
-              </div>
-            </div>
-          )
+  <noscript>
+    <style is:inline>
+      @media (max-width: 767px) {
+        /* The shared header leaves its mobile navigation expanded without JavaScript. */
+        [data-project-walkthrough] {
+          margin-top: 8rem;
+          --story-top: 16rem;
+          --story-anchor-offset: 20rem;
         }
-
-        {
-          tags.length > 0 && (
-            <div class="p-5">
-              <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
-                Stack
-              </p>
-              <div class="flex flex-wrap gap-2">
-                {tags.map((tag: string) => (
-                  <TagPill techId={tag} />
-                ))}
-              </div>
-            </div>
-          )
-        }
-
-        {
-          (startDate || endDate) && (
-            <div class="p-5">
-              <p class="font-display text-xs uppercase tracking-widest text-slate-500 mb-4">
-                Timeline
-              </p>
-              <p class="font-display text-sm text-slate-700 dark:text-slate-200">
-                {startDate && formatDate(startDate)}
-                {startDate && endDate && " — "}
-                {endDate && formatDate(endDate)}
-              </p>
-            </div>
-          )
-        }
-      </div>
-    </div>
-  </div>
-
-  <!-- Prev / Next Navigation -->
-  <div class="mt-16 border-t border-slate-200 dark:border-slate-800 pt-8">
-    <div class="flex justify-between items-start gap-8">
-      {
-        prev ? (
-          <a
-            href={`/projects/${prev.id}`}
-            class="group drawing-hover focus-ring rounded-sm flex flex-col gap-1 max-w-xs"
-            aria-label={`Previous project: ${prev.data.title}`}
-          >
-            <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-primary transition-colors">
-              &larr; Prev
-            </span>
-            <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">
-              {prev.data.title}
-            </span>
-          </a>
-        ) : (
-          <div aria-hidden="true" />
-        )
       }
-
-      {
-        next ? (
-          <a
-            href={`/projects/${next.id}`}
-            class="group drawing-hover focus-ring rounded-sm flex flex-col gap-1 items-end max-w-xs text-right"
-            aria-label={`Next project: ${next.data.title}`}
+    </style>
+  </noscript>
+  <div class="project-story-container">
+    <div class="project-walkthrough" data-project-walkthrough>
+      <aside class="project-rail" aria-label="Project navigation and details">
+        <a class="all-projects" href="/#projects">
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"
+            ><path
+              d="m10 3-5 5 5 5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"></path></svg
           >
-            <span class="font-display text-xs uppercase tracking-widest text-slate-500 group-hover:text-primary transition-colors">
-              Next &rarr;
-            </span>
-            <span class="font-display text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">
-              {next.data.title}
-            </span>
-          </a>
-        ) : null
-      }
+          <span class="all-projects-label">All projects</span>
+        </a>
+        <details class="project-contents" open>
+          <summary>
+            <span class="contents-label">Contents</span>
+            <span class="contents-current" hidden></span>
+            <svg
+              class="contents-chevron"
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              aria-hidden="true"
+            >
+              <path
+                d="m3 4.5 3 3 3-3"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"></path>
+            </svg>
+          </summary>
+          <div class="contents-body">
+            {
+              chapters.length > 0 && (
+                <nav class="contents" aria-label="On this project">
+                  {chapters.map((heading) => (
+                    <a class="contents-link" href={`#${heading.slug}`}>
+                      {heading.text}
+                    </a>
+                  ))}
+                </nav>
+              )
+            }
+          </div>
+        </details>
+        <div class="project-facts-desktop">
+          <ProjectMetadata {...metadata} />
+        </div>
+      </aside>
+
+      <article class="project-article" aria-labelledby="project-title">
+        <header class="project-opening">
+          <div>
+            {
+              isSensori && (
+                <p class="project-subject">
+                  Reinforcement learning in simulated environments
+                </p>
+              )
+            }
+            <h1 id="project-title">{title}</h1>
+            <p class="project-summary">{summary}</p>
+          </div>
+          <figure class="project-opening-art">
+            <SiteImage
+              src={isSensori ? openingGo2w : cover}
+              alt={artworkAlt}
+              sizes="(min-width: 1024px) 460px, min(30rem, calc(100vw - 96px))"
+              loading="eager"
+              fetchpriority="high"
+            />
+            <figcaption>Concept illustration</figcaption>
+          </figure>
+        </header>
+        <div class="project-facts-compact">
+          <ProjectMetadata {...metadata} compact />
+        </div>
+        <div class="project-narrative project-mdx"><Content /></div>
+      </article>
+      <span class="project-scroll-cue" hidden aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 12 12" focusable="false">
+          <path
+            d="m3 4.5 3 3 3-3"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"></path>
+        </svg>
+      </span>
+
+      <nav class="project-pagination" aria-label="More projects">
+        {
+          prev ? (
+            <a href={`/projects/${prev.id}`}>
+              <>
+                <span>Previous project</span>
+                <strong>{prev.data.title}</strong>
+              </>
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next && (
+            <a class="project-next" href={`/projects/${next.id}`}>
+              <>
+                <span>Next project</span>
+                <strong>{next.data.title}</strong>
+              </>
+            </a>
+          )
+        }
+      </nav>
     </div>
   </div>
 </Layout>
+
+<script>
+  let cleanup: (() => void) | undefined;
+  document.addEventListener("astro:before-swap", () => cleanup?.());
+  document.addEventListener("astro:page-load", () => {
+    cleanup?.();
+    const root = document.querySelector<HTMLElement>(
+      "[data-project-walkthrough]",
+    );
+    if (!root) return;
+    const article = root.querySelector<HTMLElement>(".project-article")!;
+    const scrollCue = root.querySelector<HTMLElement>(".project-scroll-cue")!;
+    const rail = root.querySelector<HTMLElement>(".project-rail")!;
+    const main = root.closest("main")!;
+    const pagination = root.querySelector<HTMLElement>(".project-pagination")!;
+    const footer = document.querySelector<HTMLElement>(".site-footer")!;
+    const contents =
+      root.querySelector<HTMLDetailsElement>(".project-contents");
+    const summary = contents?.querySelector<HTMLElement>("summary");
+    const currentLabel =
+      summary?.querySelector<HTMLElement>(".contents-current");
+    const links = Array.from(
+      root.querySelectorAll<HTMLAnchorElement>(".contents-link"),
+    );
+    const chapters = links
+      .map((link) =>
+        document.getElementById(decodeURIComponent(link.hash.slice(1))),
+      )
+      .filter((heading): heading is HTMLElement => !!heading);
+    const header =
+      document.querySelector<HTMLElement>(".site-header .header-surface") ??
+      document.querySelector<HTMLElement>(".site-header");
+    const controller = new AbortController();
+    const { signal } = controller;
+    let frame = 0;
+    let navigationFrame = 0;
+    let compact: boolean | undefined;
+    let selected: string | null = null;
+    let selectedScrollPosition: number | null = null;
+    for (const heading of chapters) heading.tabIndex = -1;
+
+    const position = () => (compact ? window.scrollY : article.scrollTop);
+    const inset = () =>
+      article.clientTop + parseFloat(getComputedStyle(article).paddingTop);
+    const activate = (id: string) => {
+      let label = "";
+      for (const link of links) {
+        if (decodeURIComponent(link.hash.slice(1)) === id) {
+          link.setAttribute("aria-current", "location");
+          label = link.textContent?.trim() ?? "";
+        } else link.removeAttribute("aria-current");
+      }
+      if (currentLabel && currentLabel.textContent !== label) {
+        currentLabel.textContent = label;
+        currentLabel.hidden = !label;
+      }
+    };
+    const reveal = (heading: HTMLElement) => {
+      if (compact)
+        heading.scrollIntoView({ block: "start", behavior: "instant" });
+      else {
+        article.scrollTop +=
+          heading.getBoundingClientRect().top -
+          article.getBoundingClientRect().top -
+          inset();
+        const box = article.getBoundingClientRect();
+        const clearance = (header?.getBoundingClientRect().bottom ?? 68) + 16;
+        if (box.top < clearance || box.bottom > window.innerHeight)
+          window.scrollTo({
+            top: Math.max(0, window.scrollY + box.top - clearance),
+            behavior: "instant",
+          });
+      }
+      selectedScrollPosition = position();
+    };
+    const update = () => {
+      frame = 0;
+      scrollCue.hidden =
+        compact !== false ||
+        article.scrollHeight - article.clientHeight - article.scrollTop <= 2;
+      if (!chapters.length) return;
+      if (selected) {
+        activate(selected);
+        return;
+      }
+      const offset = compact
+        ? rail.getBoundingClientRect().bottom + 24
+        : article.getBoundingClientRect().top + inset();
+      let current = chapters[0];
+      for (const heading of chapters) {
+        if (heading.getBoundingClientRect().top > offset + 1) break;
+        current = heading;
+      }
+      const atEnd = compact
+        ? window.scrollY + window.innerHeight >=
+          document.documentElement.scrollHeight - 2
+        : article.scrollTop + article.clientHeight >= article.scrollHeight - 2;
+      if (position() > 0 && atEnd) current = chapters[chapters.length - 1];
+      activate(current.id);
+    };
+    const queue = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    const measure = (preserveReading = false) => {
+      const nextCompact = !!summary?.getClientRects().length;
+      const changed = compact !== undefined && nextCompact !== compact;
+      const reading =
+        selected ??
+        links.find((link) => link.hasAttribute("aria-current"))?.hash.slice(1);
+      const wasReading =
+        compact !== undefined && (position() > 2 || selected !== null);
+      if (nextCompact !== compact) {
+        if (contents) contents.open = !nextCompact;
+        compact = nextCompact;
+      }
+      const top = Math.max(
+        88,
+        (header?.getBoundingClientRect().bottom ?? 68) + 16,
+      );
+      root.style.setProperty("--story-top", `${top}px`);
+      article.toggleAttribute("data-scroll-pane", !compact);
+      const documentTop = article.getBoundingClientRect().top + window.scrollY;
+      const baseline = Math.min(
+        parseFloat(getComputedStyle(root).fontSize) * 48,
+        Math.max(0, window.innerHeight - documentTop - 24),
+      );
+      const height = Math.max(
+        baseline,
+        window.innerHeight -
+          documentTop -
+          pagination.getBoundingClientRect().height -
+          parseFloat(getComputedStyle(root).rowGap) -
+          parseFloat(getComputedStyle(main).paddingBottom) -
+          footer.getBoundingClientRect().height,
+      );
+      const paneHeight = `${height}px`;
+      const heightChanged =
+        root.style.getPropertyValue("--story-pane-height") !== paneHeight;
+      if (heightChanged)
+        root.style.setProperty("--story-pane-height", paneHeight);
+      if (compact) article.removeAttribute("tabindex");
+      else article.tabIndex = 0;
+      root.style.setProperty(
+        "--story-anchor-offset",
+        `${compact ? top + rail.getBoundingClientRect().height + 24 : inset()}px`,
+      );
+      if (
+        (changed || preserveReading || (!compact && heightChanged)) &&
+        wasReading &&
+        reading
+      ) {
+        const heading = chapters.find(
+          (chapter) => chapter.id === decodeURIComponent(reading),
+        );
+        if (heading) {
+          selected = heading.id;
+          selectedScrollPosition = null;
+          cancelAnimationFrame(navigationFrame);
+          navigationFrame = requestAnimationFrame(() => {
+            navigationFrame = 0;
+            reveal(heading);
+            queue();
+          });
+        }
+      }
+      queue();
+    };
+    const syncHash = () => {
+      let id: string;
+      try {
+        id = decodeURIComponent(window.location.hash.slice(1));
+      } catch {
+        return;
+      }
+      const heading = chapters.find((chapter) => chapter.id === id);
+      selected = heading?.id ?? null;
+      selectedScrollPosition = null;
+      if (heading) {
+        if (!compact) reveal(heading);
+        activate(heading.id);
+        heading.focus({ preventScroll: true });
+      } else {
+        if (!compact && !id) article.scrollTop = 0;
+        queue();
+      }
+    };
+    const release = () => {
+      selected = null;
+      selectedScrollPosition = null;
+      queue();
+    };
+    for (const link of links)
+      link.addEventListener(
+        "click",
+        (event) => {
+          if (
+            event.defaultPrevented ||
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey
+          )
+            return;
+          const heading = chapters.find(
+            (chapter) => chapter.id === decodeURIComponent(link.hash.slice(1)),
+          );
+          if (!heading) return;
+          if (compact && contents) {
+            contents.open = false;
+            measure();
+          }
+          selected = heading.id;
+          selectedScrollPosition = null;
+          activate(selected);
+          if (!compact) {
+            event.preventDefault();
+            if (window.location.hash !== link.hash)
+              history.pushState(null, "", link.hash);
+            reveal(heading);
+            heading.focus({ preventScroll: true });
+          } else {
+            cancelAnimationFrame(navigationFrame);
+            navigationFrame = requestAnimationFrame(() => {
+              navigationFrame = 0;
+              heading.focus({ preventScroll: true });
+            });
+          }
+        },
+        { signal },
+      );
+    contents?.addEventListener(
+      "keydown",
+      (event) => {
+        if (event.key === "Escape" && compact && contents.open) {
+          contents.open = false;
+          summary?.focus();
+          event.preventDefault();
+        }
+      },
+      { signal },
+    );
+    for (const target of [window, article]) {
+      target.addEventListener(
+        "scroll",
+        () => {
+          if ((compact ? window : article) !== target) return;
+          if (
+            selectedScrollPosition !== null &&
+            Math.abs(position() - selectedScrollPosition) > 2
+          )
+            release();
+          queue();
+        },
+        { passive: true, signal },
+      );
+      target.addEventListener(
+        "scrollend",
+        () => {
+          if ((compact ? window : article) === target && selected)
+            selectedScrollPosition = position();
+        },
+        { signal },
+      );
+    }
+    window.addEventListener("wheel", release, { passive: true, signal });
+    window.addEventListener("touchstart", release, { passive: true, signal });
+    window.addEventListener(
+      "pointerdown",
+      (event) => {
+        release();
+        if (
+          compact &&
+          contents?.open &&
+          event.target instanceof Node &&
+          !contents.contains(event.target)
+        )
+          contents.open = false;
+      },
+      { passive: true, signal },
+    );
+    window.addEventListener(
+      "keydown",
+      (event) => {
+        if (
+          [
+            "ArrowUp",
+            "ArrowDown",
+            "PageUp",
+            "PageDown",
+            "Home",
+            "End",
+            " ",
+          ].includes(event.key)
+        )
+          release();
+      },
+      { signal },
+    );
+    window.addEventListener("resize", () => measure(true), { signal });
+    window.addEventListener("hashchange", syncHash, { signal });
+    window.addEventListener("popstate", syncHash, { signal });
+    contents?.addEventListener("toggle", () => measure(), { signal });
+    const observer = new ResizeObserver(() => measure());
+    observer.observe(root);
+    observer.observe(rail);
+    observer.observe(pagination);
+    observer.observe(footer);
+    if (header) observer.observe(header);
+    measure();
+    if (window.location.hash) syncHash();
+    else update();
+    document.fonts.ready.then(() => {
+      if (!signal.aborted) {
+        measure();
+        if (selected && !compact) syncHash();
+        else queue();
+      }
+    });
+    cleanup = () => {
+      controller.abort();
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+      cancelAnimationFrame(navigationFrame);
+    };
+  });
+</script>
+
+<style>
+  @font-face {
+    font-family: "Project Story";
+    src: url("/project-story/WixMadeforText.ttf") format("truetype");
+    font-weight: 400 800;
+    font-style: normal;
+    font-display: swap;
+  }
+  :global(body:has(.project-article[data-scroll-pane])) {
+    display: flex;
+    flex-direction: column;
+  }
+  :global(body:has(.project-article[data-scroll-pane]) #main-content) {
+    flex: 1;
+    width: 100%;
+  }
+  :global(body:has(.project-article[data-scroll-pane]) .site-footer) {
+    flex-shrink: 0;
+  }
+  .project-story-container {
+    container-type: inline-size;
+    max-width: 70.125rem;
+    margin-inline: auto;
+  }
+  .project-walkthrough {
+    --story-mint: #b6e5d3;
+    --story-panel: #111c2e;
+    --story-border: #334155;
+    --story-body: #cbd5e1;
+    --story-heading: #f1f5f9;
+    position: relative;
+    display: grid;
+    grid-template-columns: 11.875rem minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+    overflow-wrap: anywhere;
+    font:
+      400 1rem/1.65 "Project Story",
+      sans-serif;
+    color: var(--story-body);
+  }
+  .project-walkthrough :global(a) {
+    text-underline-offset: 0.25em;
+  }
+  .project-walkthrough :global(a:hover) {
+    color: #fff;
+  }
+  .project-walkthrough :global(:focus-visible) {
+    outline: 2px solid var(--story-mint);
+    outline-offset: 4px;
+  }
+  .project-rail {
+    position: sticky;
+    top: var(--story-top, 5.5rem);
+    max-height: calc(100dvh - var(--story-top, 5.5rem) - 1rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #64748b transparent;
+    min-width: 0;
+    padding-block: 0.5rem;
+  }
+  .all-projects {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 2.75rem;
+    margin-bottom: 1.25rem;
+    color: var(--story-heading);
+    font-size: 1rem;
+  }
+  .all-projects svg {
+    flex: none;
+    color: var(--story-mint);
+  }
+  .contents-chevron {
+    display: none;
+  }
+  .project-contents > summary {
+    display: none;
+  }
+  summary {
+    min-height: 2.75rem;
+    padding: 0.625rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  .contents {
+    display: flex;
+    flex-direction: column;
+  }
+  .contents-link {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    overflow-wrap: anywhere;
+  }
+  .contents-link[aria-current] {
+    background: #162338;
+    border-color: var(--story-border);
+    color: #d7f5e9;
+  }
+  .project-facts-compact {
+    display: none;
+  }
+  .project-article {
+    min-width: 0;
+    padding: 2rem;
+    border: 1px solid var(--story-border);
+    border-radius: 4px;
+    background: var(--story-panel);
+  }
+  .project-walkthrough:has(.project-article[data-scroll-pane]) .project-rail {
+    max-height: var(--story-pane-height);
+  }
+  .project-article[data-scroll-pane] {
+    height: var(--story-pane-height);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #64748b transparent;
+  }
+  .project-scroll-cue {
+    position: absolute;
+    z-index: 1;
+    top: calc(var(--story-pane-height) - 2rem);
+    right: 0.5rem;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    pointer-events: none;
+    color: var(--story-mint);
+    background: var(--story-panel);
+  }
+  .project-scroll-cue[hidden] {
+    display: none;
+  }
+  .project-opening {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 1.5rem;
+    align-items: start;
+    margin-bottom: 3rem;
+  }
+  h1 {
+    margin: 0 0 1.25rem;
+    font-size: clamp(2rem, 4vw, 2.625rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    color: var(--story-heading);
+  }
+  .project-subject {
+    margin: 0 0 0.75rem;
+    color: var(--story-mint);
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  .project-summary {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  .project-opening-art {
+    margin: 0;
+  }
+  .project-opening-art img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .project-opening-art figcaption {
+    margin-top: 0.5rem;
+    text-align: right;
+    font-size: 0.75rem;
+    font-style: italic;
+  }
+  .project-narrative :global(h2) {
+    margin: 3rem 0 1rem;
+    scroll-margin-top: var(--story-anchor-offset, 7rem);
+    font-family: inherit;
+    font-size: 1.6875rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    color: var(--story-heading);
+  }
+  .project-narrative :global(h2:first-child) {
+    margin-top: 0;
+  }
+  .project-narrative :global(h3) {
+    margin: 2rem 0 0.75rem;
+    font-family: inherit;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--story-heading);
+  }
+  .project-narrative :global(p) {
+    max-width: 70ch;
+    margin: 0 0 1rem;
+  }
+  .project-narrative :global(strong) {
+    font-weight: 600;
+    color: var(--story-heading);
+  }
+  .project-narrative :global(a) {
+    color: #d7f5e9;
+    text-decoration: underline;
+  }
+  .project-narrative :global(ul:not(.loop-steps)),
+  .project-narrative :global(ol:not(.loop-steps)) {
+    padding-left: 1.25rem;
+    margin-block: 1rem 1.5rem;
+  }
+  .project-narrative :global(ul:not(.loop-steps)) {
+    list-style: disc;
+  }
+  .project-narrative :global(ol:not(.loop-steps)) {
+    list-style: decimal;
+  }
+  .project-narrative :global(li) {
+    margin-block: 0.5rem;
+  }
+  .project-narrative :global(img) {
+    max-width: 100%;
+    height: auto;
+  }
+  .project-narrative :global(.story-chapter + .story-chapter) {
+    margin-top: 3rem;
+  }
+  .project-narrative :global(.story-paired) {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .project-narrative :global(.story-paired h2) {
+    margin-top: 0;
+  }
+  .project-narrative :global(figure) {
+    margin: 2rem 0;
+  }
+  .project-narrative
+    :global(.environment-figure) {
+    max-width: 30.375rem;
+    margin-inline: auto;
+  }
+  .project-narrative :global(.story-figure),
+  .project-narrative :global(.analysis-figure) {
+    margin: 0;
+  }
+  .project-narrative :global(.story-figure img),
+  .project-narrative :global(.analysis-map) {
+    display: block;
+    width: 100%;
+  }
+  .project-narrative :global(figcaption) {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  .project-narrative :global(.story-figure figcaption) {
+    text-align: right;
+    font-style: italic;
+  }
+  .project-narrative :global(.analysis-figure) {
+    margin-block: 2rem;
+  }
+  .project-narrative :global(pre) {
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 1rem;
+    border-radius: 4px;
+  }
+  .project-narrative :global(table) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+  .project-narrative :global(th),
+  .project-narrative :global(td) {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--story-border);
+    text-align: left;
+  }
+  .project-pagination {
+    grid-column: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .project-pagination a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    max-width: 45%;
+    min-height: 2.75rem;
+    padding-block: 0.5rem;
+  }
+  .project-pagination span {
+    font-size: 0.75rem;
+  }
+  .project-pagination strong {
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--story-heading);
+  }
+  .project-next {
+    text-align: right;
+    align-items: end;
+  }
+  @container (max-width: 60rem) {
+    .project-scroll-cue {
+      display: none;
+    }
+    .project-walkthrough {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .project-rail {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      z-index: 10;
+      max-height: none;
+      overflow: visible;
+      padding: 0;
+      background: var(--color-background-dark);
+    }
+    .all-projects {
+      gap: 0.375rem;
+      min-width: 44px;
+      min-height: 44px;
+      margin: 0;
+      font-size: 0.875rem;
+      line-height: 1.4;
+    }
+    .all-projects-label {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .project-contents {
+      position: static;
+      flex: 1;
+      min-width: min-content;
+    }
+    .project-contents > summary {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      gap: 0.375rem;
+      min-height: 44px;
+      padding: 0;
+      list-style: none;
+      color: var(--story-heading);
+    }
+    .contents-label {
+      flex: none;
+      white-space: nowrap;
+    }
+    .contents-current {
+      flex: 1;
+      width: 0;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--story-mint);
+    }
+    .contents-current::before {
+      content: "· ";
+    }
+    .project-contents > summary::-webkit-details-marker {
+      display: none;
+    }
+    .contents-chevron {
+      display: block;
+      flex: none;
+      color: var(--story-mint);
+    }
+    .project-contents[open] .contents-chevron {
+      transform: rotate(180deg);
+    }
+    .contents-body {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      inset-inline: 0;
+      max-height: min(55dvh, calc(100dvh - var(--story-top, 5.5rem) - 4.25rem));
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: 0.5rem;
+      background: var(--story-panel);
+      border: 1px solid var(--story-border);
+      border-radius: 4px;
+    }
+    .project-facts-desktop {
+      display: none;
+    }
+    .project-facts-compact {
+      display: block;
+      margin-bottom: 3rem;
+    }
+    .project-article {
+      grid-column: 1 / -1;
+    }
+    .project-narrative :global(h2) {
+      scroll-margin-top: var(--story-anchor-offset, 10rem);
+    }
+    .project-pagination {
+      grid-column: 1 / -1;
+    }
+    .project-opening,
+    .project-narrative :global(.story-paired) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .project-opening-art {
+      width: 100%;
+      max-width: 30rem;
+      justify-self: center;
+    }
+  }
+  @media print {
+    .project-scroll-cue {
+      display: none;
+    }
+    :global(body:has(.project-article[data-scroll-pane])) {
+      display: block;
+    }
+    :global(body:has(.project-article[data-scroll-pane]) #main-content) {
+      flex: initial;
+      width: auto;
+    }
+    :global(body:has(.project-article[data-scroll-pane]) .site-footer) {
+      flex-shrink: 1;
+    }
+    .project-article[data-scroll-pane] {
+      height: auto;
+      max-height: none;
+      overflow: visible;
+    }
+    .project-rail,
+    .project-walkthrough:has(.project-article[data-scroll-pane]) .project-rail {
+      position: static;
+      max-height: none;
+      overflow: visible;
+    }
+  }
+  @media (max-width: 639px) {
+    .project-walkthrough {
+      gap: 1.25rem;
+    }
+    .project-article {
+      padding: 1.25rem;
+    }
+    .project-opening {
+      margin-bottom: 2.5rem;
+    }
+    .project-narrative :global(.story-chapter + .story-chapter) {
+      margin-top: 2.5rem;
+    }
+  }
+</style>

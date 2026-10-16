@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 520" fill="none">
+  <defs><pattern id="taskgrid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" stroke="#94a3b8" stroke-opacity=".1"/></pattern><radialGradient id="tasklight"><stop stop-color="#233645"/><stop offset="1" stop-color="#111c2e"/></radialGradient><marker id="mintArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M1 1L7 4L1 7" stroke="#b6e5d3" stroke-width="1.5"/></marker><marker id="slateArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M1 1L7 4L1 7" stroke="#64748b" stroke-width="1.5"/></marker></defs>
+  <rect width="880" height="520" fill="url(#tasklight)"/><rect width="880" height="520" fill="url(#taskgrid)"/>
+  <g stroke="#b6e5d3" stroke-width="2" marker-end="url(#mintArrow)"><path d="M180 245L300 160"/><path d="M380 160H492"/><path d="M580 160L700 245"/></g>
+  <g stroke="#64748b" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#slateArrow)"><path d="M180 270L300 354"/><path d="M380 354H492"/><path d="M580 354L700 270"/><path d="M360 190L510 324"/></g>
+  <g fill="#1c2d3b" stroke="#b6e5d3" stroke-width="1.5"><rect x="100" y="218" width="80" height="80" rx="12"/><rect x="300" y="118" width="80" height="80" rx="12"/><rect x="500" y="118" width="80" height="80" rx="12"/><rect x="700" y="218" width="80" height="80" rx="12"/></g>
+  <g fill="#172336" stroke="#64748b"><rect x="300" y="316" width="80" height="80" rx="12"/><rect x="500" y="316" width="80" height="80" rx="12"/></g>
+  <g font-family="monospace" font-size="20" text-anchor="middle" fill="#e2e8f0"><text x="140" y="265">S</text><text x="340" y="165">A</text><text x="540" y="165">B</text><text x="740" y="265">F</text><text x="340" y="364" fill="#94a3b8">C</text><text x="540" y="364" fill="#94a3b8">D</text></g>
+  <g font-family="monospace" font-size="12" letter-spacing="2" fill="#94a3b8"><text x="40" y="40">DEPENDENCIES / CONCEPT STUDY</text><text x="40" y="484">VALIDATE → ORDER → SCHEDULE</text><text x="748" y="484">O(V+E)</text></g>
+  <path d="M386 74H494" stroke="#b6e5d3" stroke-width="2"/><text x="440" y="60" text-anchor="middle" font-family="monospace" font-size="12" letter-spacing="2" fill="#b6e5d3">CRITICAL PATH</text>
+  <g stroke="#94a3b8"><path d="M40 64V76M34 70H46M828 440V452M822 446H834"/></g>
+</svg>
