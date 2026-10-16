@@ -1,60 +1,9 @@
-# Portfolio — Astro 6 + React 18 + Tailwind CSS 4
+# Claude agent instructions
 
-## Commands
+Read [`.github/copilot-instructions.md`](.github/copilot-instructions.md) first; it is canonical and takes precedence. Product and current design live in `PRODUCT.md` and `DESIGN.md`.
 
-npm run dev # Start dev server
-npm run build # astro check + astro build
-npm run test # vitest run (unit tests)
-npm run test:watch # vitest (watch mode)
-npm run test:e2e # playwright (UI/e2e tests, auto-starts preview server)
-npx astro check # Type-check Astro + TS files
-
-## Astro documentation
-
-- Consult the Astro Docs MCP (Model Context Protocol) server for current official documentation before making Astro-specific recommendations or changes, including APIs, routing, content collections, configuration, and best practices. Prefer retrieved documentation over remembered APIs.
-- Check `package.json` and the lockfile for the installed Astro version, and apply version-compatible guidance. Latest documentation does not authorize a dependency upgrade.
-- If the server is unavailable, use official Astro documentation and state that MCP access was unavailable. Do not claim a live lookup without retrieving documentation.
-- Follow [the canonical repository instructions](.github/copilot-instructions.md) when applying documentation to this project.
-
-## Architecture
-
-- Astro-first: default to `.astro` components. React `.tsx` only for client-side interactivity.
-- Three React islands: TopoBackground (`client:only="react"`), TypewriterText (`client:load`), LoadingOverlay (`client:only="react"`). No new islands without explicit approval.
-- Content collections in `src/content/` with Zod schemas in `src/content/config.ts`.
-- `src/config.ts` — single source of truth for site identity (SITE, ME, SOCIALS).
-- `src/data/techRegistry.ts` — single source of truth for tech tags. All tech rendering flows through this.
-- `src/data/career.ts` — work experience + education data.
-
-## Key Patterns
-
-- **Tech tags validated at build time**: `tags` in project frontmatter validates against techRegistry IDs. Unknown tags fail `astro check`. Use `keywords` for free-form topic strings.
-- **View transition guards**: Use `document.addEventListener('astro:page-load', handler)` for scripts that must re-run after view transitions. Store cleanup in a module-scoped variable.
-- **Site lifecycle**: `src/hooks/useSiteLifecycle.ts` holds a module-level store; `advance()` walks `loading → overlay-playing → overlay-fading → ready`. `useSiteLifecycle()` exposes state + advance via `useSyncExternalStore`. Overlay plays once per session; return visits skip to `ready` immediately.
-- **Reduced motion**: React components use `useReducedMotion()` hook; Astro components use `prefersReducedMotion()` utility. Never access `matchMedia` directly.
-- **Session state**: React components use `useSessionState(key, default)` hook instead of direct `sessionStorage` access.
-- **Date formatting**: All dates render via `formatDate()` from `src/utils/formatDate.ts`. Format: "Jan 2025" (mixed case, no day).
-
-## Testing
-
-Vitest + jsdom. Add `// @vitest-environment jsdom` directive for tests needing browser APIs.
-Test files live alongside source: `foo.ts` → `foo.test.ts`.
-Hooks tested with `@testing-library/react` `renderHook` + `act`.
-Playwright e2e tests in `e2e/` — run with `npm run test:e2e`. Uses `webServer` config to auto-start `npm run preview`. Use Playwright for all UI-related testing (layout, images, navigation, responsiveness).
-
-## Code Style
-
-- Conventional commits enforced by commitlint (`feat:`, `fix:`, `chore:`, etc.)
-- Props interfaces defined inline in each component (no separate type files)
-- Path alias: `@/*` maps to `src/`
-- Strict TypeScript
-
-## Gotchas
-
-- `src/content/config.ts` post `tags` are NOT validated against techRegistry (only project tags are). Blog post tags are free-form strings.
-- Adding a new tech tag requires updating `techRegistry.ts` first, then referencing it in frontmatter — order matters or build fails.
-- LoadingOverlay and TypewriterText are separate Astro islands that share state via a module-level store (`useSiteLifecycle`), not React context.
-
-## gstack
-
-- **For all web browsing, use `/browse`. Never use `mcp__claude-in-chrome__*` tools.**
-- Available skills: `/office-hours`, `/plan-ceo-review`, `/plan-eng-review`, `/plan-design-review`, `/design-consultation`, `/review`, `/ship`, `/browse`, `/qa`, `/qa-only`, `/design-review`, `/setup-browser-cookies`, `/retro`, `/investigate`, `/document-release`, `/codex`, `/careful`, `/freeze`, `/guard`, `/unfreeze`, `/gstack-upgrade`
+- Preserve dirty work. Use the required coding specialist and portfolio-writing agent/skill with explicit ownership; the coordinating parent owns validation and Git.
+- Retrieve version-compatible Astro Docs MCP guidance before Astro changes or recommendations. Verify the installed version; fall back to official docs and disclose unavailable MCP access.
+- Shared skills live in `.agents/skills/`; `.claude/skills/` links to identical active skills. Keep portable project hooks in `.claude/settings.json`; machine-specific settings belong in ignored local configuration.
+- If gstack is available, use `/browse` for Claude browsing rather than `mcp__claude-in-chrome__*`. Do not assume global tools are installed.
+- Follow the canonical build → preview → browser gate and server ownership rules. Never hardcode secrets.

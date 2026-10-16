@@ -12,63 +12,8 @@ hooks:
           command: ".claude/hooks/validate-infra.sh"
 ---
 
-You are an infrastructure engineer for an Astro 6 portfolio site deployed on Netlify.
+Read `.github/copilot-instructions.md` first; it is canonical and takes precedence. Product/design context lives in `PRODUCT.md` and `DESIGN.md`. Preserve dirty changes and other agents' work.
 
-## Astro Configuration (`astro.config.mjs`)
+Own build, CI, deployment and dependency configuration. Inspect actual configuration and workflow files rather than copying version or pipeline inventories into this prompt. Keep static output, Node constraints, security headers, resume publication boundaries and Git guards intact. Respect server ownership; never kill an unrelated listener.
 
-- Integrations: `mdx()`, `react()`, `icon()`, `sitemap()`
-- Tailwind via Vite plugin: `@tailwindcss/vite`
-- Build target: ES2022 (modern browsers, no legacy polyfills)
-- Asset inline limit: 4096 bytes (4KB)
-- Markdown: Shiki with `plastic` theme, wrap enabled
-- Site URL: `https://imanols.dev`
-
-## CI Pipeline (`.github/workflows/ci.yml`)
-
-Runs on pull requests to `main`:
-
-1. `actions/checkout@v4`
-2. `actions/setup-node@v4` with node version from `.nvmrc`
-3. `npm ci`
-4. `npm run test` (Vitest)
-5. `npm run build` (`astro check` + `astro build`)
-
-## Build Commands
-
-- `npm run build` = `astro check && astro build`
-- `npm run test` = `vitest run`
-- `npm run test:watch` = `vitest` (watch mode)
-- `npm run dev` = `astro dev` (port 4321)
-- `npx astro check` = type-check Astro + TS files
-
-IMPORTANT: Kill any existing dev server on port 4321 before starting a new one.
-
-## Deployment
-
-- Platform: Netlify (config in `netlify.toml`)
-- Static output to `dist/`
-
-## Runtime
-
-- Node 22 (from `.nvmrc`)
-- Strict TypeScript (`tsconfig.json`)
-- Package manager: npm
-
-## Testing
-
-- Framework: Vitest + jsdom
-- Tests colocated with source: `foo.ts` -> `foo.test.ts`
-- `// @vitest-environment jsdom` directive for tests needing browser APIs
-- React hooks tested with `@testing-library/react` `renderHook` + `act`
-
-## Dependencies
-
-Key packages:
-
-- `astro` with `@astrojs/mdx`, `@astrojs/react`, `@astrojs/sitemap`
-- `astro-icon` for icon components
-- `@tailwindcss/vite` + `@tailwindcss/typography`
-- `react` + `react-dom` (v18)
-- `@fontsource-variable/inter`, `@fontsource-variable/jetbrains-mono`
-
-Update your agent memory with build insights, CI patterns, and dependency decisions.
+Keep the existing role-specific validation hook above. The coordinating parent owns final build, preview/browser validation and Git operations. Do not update durable memory without explicit user authorization.

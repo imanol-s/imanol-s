@@ -103,3 +103,10 @@ _site/
 .agents/skills/impeccable/scripts/bin/
 .impeccable/config.local.json
 .impeccable/hook.cache.json
+
+# Retired generated analysis and local audit artifacts
+/graphify-out/
+/docs/graphify-out/
+/RUNLOG.md
+/FINDINGS.md
+/UBIQUITOUS_LANGUAGE.md

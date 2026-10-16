@@ -1,105 +1,36 @@
-# Site Structure
+# Site structure
 
-Navigation state diagram and page-to-component mapping for the portfolio site.
+## Public routes
 
-## State Diagram
+- `/`: homepage with hero, complete `#projects` gallery, experience, toolkit and contact footer.
+- `/projects/[id]`: generated project case studies with MDX content and neighboring-project navigation.
+- `404.astro`: not-found page.
+- Exact legacy `/projects` and `/projects/` paths redirect to `/#projects`; do not add a wildcard redirect or a second project index.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Home : /
+Posts remain archived under `src/content/posts/`; there are no public blog routes or redirects.
 
-    state Home {
-        [*] --> HeroSection
-        HeroSection --> ProjectsSection : scroll
-        ProjectsSection --> ExperienceSection : scroll
-        ExperienceSection --> AboutSection : scroll
-    }
+## Source map
 
-    Home --> ProjectDetail : Click project card / "VIEW PROJECT"
-    Home --> ProjectsList : "Browse Full Archive"
+| Responsibility                                             | Source                                                                                                           |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Shared document, metadata, preloads, navigation and footer | `src/layouts/Layout.astro`                                                                                       |
+| Homepage composition                                       | `src/pages/index.astro`                                                                                          |
+| Hero, gallery, experience and toolkit                      | `src/components/HeroSection.astro`, `ProjectsCarousel.astro`, `ExperienceTimeline.astro`, `ProfileToolkit.astro` |
+| Guided case-study template                                 | `src/pages/projects/[id].astro`                                                                                  |
+| Collection loaders and schemas                             | `src/content.config.ts`                                                                                          |
+| Personal/site content                                      | `src/config.ts`                                                                                                  |
+| Career and education                                       | `src/data/career.ts`                                                                                             |
+| Technology IDs and presentation                            | `src/data/techRegistry.ts`                                                                                       |
+| Project sorting and navigation data                        | `src/data/projectCollection.ts`                                                                                  |
+| Shared image delivery                                      | `src/components/SiteImage.astro`                                                                                 |
+| Theme and shared styles                                    | `src/styles/globals.css`                                                                                         |
 
-    state ProjectsList {
-        SortedCards : Cards sorted by startDate desc
-    }
+Project MDX lives in `src/content/projects/`. Artwork is imported from `src/assets/` or adjacent collection images. Keep evidence illustrations distinct from concept covers.
 
-    state BlogList {
-        SortedPosts : Posts sorted by publishDate desc
-    }
+## Client behavior
 
-    ProjectsList --> ProjectDetail : Click card
-    BlogList --> PostDetail : Click card
+Only three React islands exist: `TopoBackground` and `LoadingOverlay` use `client:only="react"`; `TypewriterText` uses `client:load`. Their shared state lives in `src/hooks/useSiteLifecycle.ts`, not React context. Astro components also own focused browser scripts; server-rendered Astro does not mean the whole site is JavaScript-free.
 
-    state ProjectDetail {
-        MDXContent : Two-column: MDX body (left) + sidebar (right)
-        PrevNext : Previous/Next project navigation
-    }
+`ClientRouter` handles navigation. DOM setup uses `astro:page-load` with cleanup; navigation artwork preparation lives in `src/utils/pageTransition.ts`. Header docking and menu behavior remain in their existing utilities. Field-map and forest composition stay in their own components.
 
-    state PostDetail {
-        MarkdownContent : Markdown body with prose styling
-    }
-
-    state NotFound {
-        Error404 : 404 page with CTA back to home
-    }
-    NotFound --> Home : "Back to home"
-
-    note right of Home
-        SiteHeader on all pages:
-        [IMANOL] | PROJECTS | EXPERIENCE | ABOUT | RESUME
-    end note
-```
-
-## Page → Component Tree
-
-```
-/ (index.astro)
-├── TypewriterText (React)    → client:load hydration, hero name animation
-├── Hero section              → subtitle, blurb, 3 capability tiles
-├── Portrait                  → <Image> with cad-border, social icon links
-├── Projects section          → horizontal-scroll-snap cards from content collection
-│   └── Project cards         → cover image, title, summary, VIEW PROJECT CTA
-├── Experience section
-│   ├── Timeline (left)       → data from Jobs.ts (2 jobs) + education.ts
-│   └── Profile (right)       → Education, Core Languages, Competencies, Communication
-└── About section             → blurb, location tile, contact tile
-
-/projects (projects/index.astro)
-└── Project list cards[]      → cover image, tags, title, summary → links to /projects/[id]
-
-/projects/[id] (projects/[id].astro)
-├── Breadcrumb                → ← Projects (links to /#projects)
-├── Project label             → PROJECT_01, PROJECT_02, etc.
-├── Title + tag pills
-├── Hero image                → <Image> with cad-border, grayscale
-├── Two-column body
-│   ├── Left (8/12)           → Overview label + summary + <Content/> in .project-mdx
-│   └── Right (4/12)          → Links (if url valid) + Stack pills + Timeline
-└── Prev/Next navigation
-
-/blog (blog/index.astro)
-└── PostCard[]                → links to /blog/[id]
-
-/blog/[id] (blog/[id].astro)
-├── BackBtn                   → history.back()
-├── Image (view transition)
-├── <Content/> (rendered MD in .prose)
-└── BackToTop
-
-404 (404.astro)
-└── "Back to home"            → links to /
-```
-
-## Shared Across All Pages
-
-- `Layout.astro` — wraps every page: SEO head, font preloads, dark mode init, TopoBackground, SiteHeader, SiteFooter
-- `SiteHeader.astro` — sticky top nav with [IMANOL] logo, section links, RESUME download, mobile hamburger
-- `SiteFooter.astro` — "Ready to construct?" CTA, email, GitHub/LinkedIn icons, copyright
-- `TopoBackground.tsx` — React island: animated SVG contours + parallax (before header in DOM)
-
-## Data Flow
-
-- **Project cards on home page**: `getCollection('projects')` sorted by startDate desc
-- **Project detail**: `getStaticPaths()` generates one page per MDX file in `src/content/projects/`
-- **Experience timeline**: imported from `src/data/career.ts` (work experience + education)
-- **Contact/Social**: sourced from `src/config.ts` (`ME.contactInfo`, `SOCIALS`)
-- **Blog**: `getCollection('posts')` sorted by publishDate desc
+See [performance](PERFORMANCE.md), [developer docs](README.md), and the canonical [repository instructions](../.github/copilot-instructions.md).

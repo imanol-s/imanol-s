@@ -17,6 +17,18 @@ Product context lives in `PRODUCT.md`; `DESIGN.md` records the current implement
 - `AGENTS.md` and `CLAUDE.md` should only contain tool-specific deltas and links back to this file.
 - Repository Impeccable hooks are configured in `.codex/hooks.json` with the vendored `.agents/skills/impeccable/` launcher and `.impeccable/config.json`. Preserve this complete bundle; downloaded binaries, local configuration/consent, and hook caches stay untracked. Comp-first applies to new surfaces; refinements preserve the incumbent design.
 
+## Agent workflow and repository hygiene
+
+- Preserve existing dirty changes and inspect the current checkout before edits. Default portfolio work targets `ui-migration`; do not switch an occupied branch or overwrite a checkout. Follow an explicitly authorized isolated staging checkout when provided.
+- Use concise, direct responses; answer high-level questions before exploring code. Prefer minimal focused changes, plan multi-step work, and recommend one approach with reasons. Skip major dependency upgrades unless explicitly planned.
+- Code changes require a `coding-specialist` delegate; delegate with explicit file ownership and preserve other agents' work. Portfolio writing follows the dedicated agent section below. The parent owns validation and Git operations.
+- Audit all affected style touch points before editing. Preserve incumbent design and all three React islands; no added, removed, or converted islands without explicit approval. Hover brightens rather than dims text. Accessibility fixes include measured contrast and visual comparisons.
+- Preserve every career role and supplied highlights, without role-count caps. Concept covers remain 2:1 crops; the Dallas evidence map stays complete and uncropped. Hero portrait remains the transparent vector illustration. These are not screenshots or measured results.
+- Keep comments necessary and concise. Use conventional commits and `.github/pull_request_template.md`; no redundant HTML comments. When moving or renaming files, update imports and documentation references; schema changes must keep content valid.
+- Infrastructure/config changes update this canonical file and the AGENTS pointer in the same commit. The configuration field reference below remains canonical; update it when fields change, without duplicating its table elsewhere.
+- Active local skills live in `.agents/skills/`; byte-identical Claude skills link there. Keep Impeccable's committed launcher/config/hooks and the portfolio-writing agent/skill. Do not commit downloaded runtimes or local consent/cache files.
+- Graphify output and retired session audit notes are generated artifacts, not maintained project documentation. Keep them ignored; historical copies remain in Git history. Project Claude hooks use repository-relative paths; personal launchers and machine-specific MCP/session hooks do not belong in shared configuration.
+
 ## Naming Conventions
 
 - **Astro components**: PascalCase (e.g., `SiteHeader.astro`, `SiteFooter.astro`)
@@ -52,7 +64,7 @@ const { title, description } = Astro.props;
   - `TopoBackground.tsx` — animated SVG background (`client:only="react"`, skips SSR)
   - `TypewriterText.tsx` — hero name animation (`client:load`, SSR-safe)
   - `LoadingOverlay.tsx` — session loading overlay (`client:only="react"`, skips SSR)
-- **Content collections**: All blog/project content goes through Astro content collections with Zod schemas in `src/content/config.ts` — do not bypass with raw file reads
+- **Content collections**: All blog/project content goes through Astro content collections with Zod schemas in `src/content.config.ts` — do not bypass with raw file reads
 - Optional project `cardSummary` supplies homepage gallery card copy, falling back to `summary`; the full `summary` remains the detail introduction and metadata source.
 - Blog routes, navigation, and legacy redirects are removed. Posts and their content schema remain archived; do not expose them as public pages.
 - The homepage `/#projects` gallery is the complete project index. WORK and case-study “All projects” links return there; retain every individual `/projects/[id]` page. Exact `/projects` and `/projects/` legacy paths redirect to `/#projects`: Astro supplies a static fallback and Netlify supplies forced HTTP 301 rules. Never redirect `/projects/*` or recreate a duplicate listing page.
@@ -73,7 +85,7 @@ const { title, description } = Astro.props;
 
 `src/config.ts` is the **single source of truth** for all personal and site data. Never hardcode personal values (name, bio, email, location, profession, etc.) anywhere in templates or components — always derive them from this file.
 
-**Rule**: When adding or editing a field in `src/config.ts`, update both `AGENTS.md` and `.github/copilot-instructions.md` in the same commit to keep this reference current.
+**Rule**: When adding or editing a field in `src/config.ts`, update this reference and keep the `AGENTS.md` canonical pointer current in the same commit.
 
 ### `SITE` — site-wide metadata
 
@@ -117,6 +129,13 @@ const { title, description } = Astro.props;
 
 Each entry: `{ name, url, icon, show }`. Consumed via `SOCIALS.find(s => s.name === '...')` in `SiteFooter.astro` and `index.astro`. The `icon` field is a legacy string name — inline SVGs are used instead of `<Icon>` calls.
 
+## Browser lifecycle and shared utilities
+
+- Use `astro:page-load` to initialize DOM listeners/observers after navigation; keep module-scoped cleanup and dispose prior listeners. Cross-component DOM IDs need an ownership note at the lookup site.
+- React islands coordinate through `src/hooks/useSiteLifecycle.ts`, a module-level `useSyncExternalStore`, not shared React context. Reuse `useReducedMotion`, `useSessionState`, and Astro's `prefersReducedMotion` utility rather than duplicating platform access. Format dates with `src/utils/formatDate.ts`.
+- Register technology IDs before using them in project tags. Archived post tags remain free-form.
+- Use explicit return types for exported functions; prefer `??` when zero or empty strings are valid, and optional chaining for optional data.
+
 ## Error Handling
 
 - Content collection schemas validate at build time via Zod — ensure all required fields are present in frontmatter
@@ -125,7 +144,7 @@ Each entry: `{ name, url, icon, show }`. Consumed via `SOCIALS.find(s => s.name 
 
 ## Security Considerations
 
-- Never commit secrets or API keys; no `.env` files are used in this project
+- Never hardcode or commit API keys, tokens, or secrets. Use environment variables or macOS Keychain references; ask before writing configuration if secure referencing is unclear. No `.env` files are used in this project
 - External links use `target="_blank"` with `rel="noopener noreferrer"`
 - Security headers are set in `netlify.toml` (`X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, `Content-Security-Policy`)
 - Netlify build environment pins Node 22 via `NODE_VERSION` in `netlify.toml`
@@ -201,6 +220,7 @@ function displayName(name: string) {
 ## Testing Guidelines
 
 - Vitest + jsdom is configured. Run `npm run test` for a single pass or `npm run test:watch` for watch mode
+- Expectations must be independent of the implementation: no mocked subject, copied algorithm, vacuous assertions, or generated candidate caps that hide regressions. Each changed test must catch a concrete failure.
 - Use `npm run test:e2e` for browser-level validation when page rendering, navigation, or responsive layout changes are involved
 - Add `// @vitest-environment jsdom` at the top of test files that require browser APIs
 - Type-checking via `astro check` remains the primary safety net; tests supplement it for behavioral coverage
@@ -208,9 +228,9 @@ function displayName(name: string) {
 ### Mandatory Post-Edit Validation (Agent Requirement)
 
 - After **any file edit**, agents must run `npm run build` before finalizing a response.
-- After a successful build, agents must start preview with `npm run preview -- --port 4321`.
+- After a successful build, preview with `npm run preview -- --port 4321` and inspect the affected routes in a browser (the `/test-server` workflow). The coordinating parent may run these gates for delegated work.
 - Agents must not consider a task complete until both commands have been executed and outcomes reported.
-- If port `4321` is occupied, agents should free the port and retry on `4321` rather than silently switching ports.
+- If port `4321` is occupied, identify its owner. Reuse the intended preview or stop only a server started for this verification; never terminate an unrelated/user-retained server. Stop verification servers on completion unless asked to keep them running.
 - If build or preview fails, agents must report the exact blocker and either fix it or stop only when genuinely blocked.
 
 ## Performance
@@ -229,6 +249,7 @@ function displayName(name: string) {
 - Dark mode is **class-based** via `<html class="dark">` (set by inline script in Layout.astro) — use `dark:` prefix in Tailwind or `.dark` selector in custom CSS
 - Design system: blueprint/topographic theme with slate palette
 - Color tokens: `primary` (#64748b), `accent` (#94a3b8), `background-light` (#f8fafc), `background-dark` (#0f172a)
+- Preserve Latin-only font imports rather than full font packages with unused language faces.
 - Fonts: JetBrains Mono (`font-display`) for headings/nav/CTAs, IBM Plex Sans (`font-body`) for body text
 - Custom utility classes in globals.css: `cad-border`, `cta-primary`, `drawing-hover`, `focus-ring`, `horizontal-scroll-snap`, `typing-caret`, `project-mdx`, `topo-lines`
 - Project prose uses `@tailwindcss/typography` `.prose` class with custom color overrides in globals.css
@@ -237,7 +258,7 @@ function displayName(name: string) {
 ## Resume publishing
 
 - `ME.contactInfo.resumeDoc` is `resume.pdf`; existing buttons use `/resume.pdf`, a forced Netlify 302 to the Pages PDF.
-- `resume/main.tex` is the maintained source. Push to `ui-migration` to compile with pdfLaTeX and publish independently. Never commit generated output.
+- `resume/main.tex` is the maintained source. Author changes on `ui-migration`; merge to `main` to compile with pdfLaTeX and publish independently. Never commit generated output.
 - Publication is serialized and compares current resume inputs; later site-only changes do not invalidate a valid build.
 - Resume-only changes skip Netlify through `node scripts/resume-pipeline.mjs ignore`; uncertain history builds normally.
 - Run `node --test scripts/resume-pipeline.check.mjs` for the Git-history regression checks.

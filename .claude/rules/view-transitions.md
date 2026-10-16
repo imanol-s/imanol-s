@@ -7,7 +7,7 @@ paths:
 
 # View Transition Rules
 
-Astro `<ClientRouter/>` enables view transitions. After a navigation, inline `<script>` tags in Astro components re-execute but event listeners on previous DOM nodes are lost.
+Astro `<ClientRouter/>` enables view transitions. Processed component scripts do not automatically re-run after every navigation; event listeners on replaced DOM nodes are lost.
 
 ## Script Re-initialization
 
