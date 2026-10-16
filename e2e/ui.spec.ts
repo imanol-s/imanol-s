@@ -99,7 +99,7 @@ test.describe("Layout", () => {
     await expect(page).toHaveURL(/\/projects\/library-management\/?$/);
     await expectOpaqueCanvas(page);
 
-    await page.locator('.desktop-links a[href="/#projects"]').click();
+    await page.getByRole("link", { name: "All projects", exact: true }).click();
     await expect(page).toHaveURL("/#projects");
     await expectOpaqueCanvas(page);
 
