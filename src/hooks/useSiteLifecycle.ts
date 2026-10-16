@@ -34,15 +34,29 @@ let currentState: State | null = null;
 const listeners = new Set<() => void>();
 
 /**
- * Current state, resolved lazily on first read (sessionStorage is unavailable
- * during SSR). Reduced-motion users never see the animation; return
- * navigations within a tab skip straight to ready.
+ * Current state, resolved lazily on first read (browser APIs are unavailable
+ * during SSR). Skip the decorative intro where it adds cost without value.
  */
 function getSnapshot(): State {
-  currentState ??=
+  if (currentState !== null) return currentState;
+  let returning = false;
+  try {
+    returning = Boolean(sessionStorage.getItem(LIFECYCLE_SESSION_KEY));
+  } catch {}
+  const connection =
+    typeof navigator !== "undefined"
+      ? (
+          navigator as Navigator & {
+            connection?: { saveData?: boolean; effectiveType?: string };
+          }
+        ).connection
+      : undefined;
+  currentState =
     prefersReducedMotion() ||
-    (typeof sessionStorage !== "undefined" &&
-      sessionStorage.getItem(LIFECYCLE_SESSION_KEY))
+    (typeof location !== "undefined" && location.pathname !== "/") ||
+    returning ||
+    connection?.saveData ||
+    ["slow-2g", "2g", "3g"].includes(connection?.effectiveType ?? "")
       ? "ready"
       : "loading";
   return currentState;

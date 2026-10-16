@@ -11,7 +11,6 @@ paths:
 Required fields:
 
 - `title`: string
-- `startDate`, `endDate`: YAML date (e.g., `2024-01-15`)
 - `summary`: string
 - `cover`: relative image path
 - `tags`: array of techRegistry IDs (validated at build)
@@ -19,6 +18,8 @@ Required fields:
 
 Optional:
 
+- `startDate`, `endDate`: confirmed YAML dates; omit when unknown
+- `cardSummary`: non-empty homepage card summary
 - `url`: string
 - `keywords`: array of free-form strings (NOT validated)
 
@@ -37,6 +38,4 @@ Required fields:
 Optional:
 
 - `author`: string
-- `updateDate`: YAML date
 - `keywords`: array of strings
-- `relatedPosts`: array of post IDs

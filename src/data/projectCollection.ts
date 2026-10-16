@@ -1,7 +1,7 @@
 export interface ProjectEntry {
   id: string;
   data: {
-    startDate: Date;
+    startDate?: Date;
     title: string;
     url?: string;
   };
@@ -14,11 +14,18 @@ export interface ProjectPageData<T extends ProjectEntry> {
   hasValidUrl: boolean;
 }
 
-/** Returns a new array sorted by startDate descending (newest first). */
+/** Dated projects sort newest first; undated projects follow in stable ID order. */
 export function getSortedProjects<T extends ProjectEntry>(projects: T[]): T[] {
-  return [...projects].sort(
-    (a, b) => b.data.startDate.getTime() - a.data.startDate.getTime(),
-  );
+  return [...projects].sort((a, b) => {
+    const aDate = a.data.startDate?.getTime();
+    const bDate = b.data.startDate?.getTime();
+    if (aDate !== undefined && bDate !== undefined) {
+      return bDate - aDate || a.id.localeCompare(b.id);
+    }
+    if (aDate !== undefined) return -1;
+    if (bDate !== undefined) return 1;
+    return a.id.localeCompare(b.id);
+  });
 }
 
 /**

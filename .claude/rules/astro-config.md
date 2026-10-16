@@ -19,7 +19,7 @@ Current integrations: `mdx()`, `react()`, `icon()`, `sitemap()`. Adding or remov
 
 ## CI Pipeline
 
-The CI workflow (`.github/workflows/ci.yml`) runs: `npm ci` -> `npm run test` -> `npm run build`. Changes to build config or dependencies should pass all three steps.
+`.github/workflows/ci.yml` is the source of truth for CI gates, including Git identity checks, unit tests, build and browser tests. Inspect the workflow when changing build configuration or dependencies; do not maintain a duplicate pipeline inventory here.
 
 ## Deployment
 

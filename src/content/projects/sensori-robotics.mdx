@@ -1,6 +1,7 @@
 ---
 title: Sensori Robotics
-summary: Senior capstone project developing PPO-based autonomous navigation in Nvidia IsaacSim for a mobile robotics platform.
+summary: I implemented Python training logic for a capstone robot learning to follow edges for outdoor maintenance. My work included simulated environments, custom rewards, scripted evaluation, performance visualizations, and documentation for continued development.
+cardSummary: I implemented simulation environments and training logic for our capstone team's robot to learn edge following for outdoor maintenance.
 tags:
   - Robotics
   - Nvidia IsaacLab
@@ -10,30 +11,60 @@ tags:
   - Simulation
 startDate: 2025-08-01
 endDate: 2025-12-01
-cover: "./images/sensori-robotics/cover.webp"
-ogImage: "./images/sensori-robotics/cover.webp"
+cover: "../../assets/projects/robotics.webp"
+ogImage: "../../assets/projects/robotics.webp"
 ---
 
-## Overview
+import SiteImage from "../../components/SiteImage.astro";
+import environmentGo2w from "../../assets/project-story/environment-go2w.png";
+import ProjectTrainingLoop from "../../components/ProjectTrainingLoop.astro";
 
-Senior capstone project at The University of Texas at Dallas (Fall 2025). The project developed an autonomous navigation system for a mobile robotics platform, using reinforcement learning for path planning and Nvidia IsaacSim/IsaacLab as the simulation environment.
+## Why simulation
 
-## Role
+Our capstone task was to teach a legged ground robot to follow an edge for outdoor maintenance. Simulation let us develop and evaluate navigation behavior before physical deployment.
 
-Developer on the capstone team, focused on the reinforcement-learning training loops and environment creation — porting real-world environments into Nvidia IsaacSim and defining the IsaacLab training setup (observation and action spaces, reward shaping) used to train the PPO navigation policy.
+On the Fall 2025 capstone team at UT Dallas, I was a **developer focused on implementation and documentation**. I worked on the simulation environments, reinforcement-learning training setup, and validation workflows.
 
-## Problem
+## Building the environment
 
-Training a navigation policy on physical hardware is slow and expensive — every failed trajectory risks damaging the robot or its environment, and resetting between episodes takes real time. Dynamic obstacles compound this because the agent needs thousands of interactions to learn reactive avoidance behavior, which is impractical to collect in the real world. The project needed a way to iterate on the navigation policy rapidly without physical deployment.
+I recreated real-world environments in NVIDIA IsaacSim and helped define the IsaacLab training setup, including what the robot observes and which actions it can take.
 
-## Approach
+I implemented the task logic in Python:
 
-The navigation policy was trained using Proximal Policy Optimization (PPO), a reinforcement learning algorithm suited for continuous control tasks. PPO was chosen over alternatives like SAC or DQN because it offers stable training with monotonic improvement guarantees, which mattered given the limited capstone timeline — an unstable training process would have been difficult to debug within a single semester.
+- **Custom rewards and penalties** supplied feedback for learning edge-following behavior.
+- **Termination conditions** defined when a training episode ends.
 
-Real-world environments were ported into Nvidia IsaacSim, which provided a physics-accurate simulation for the robot to train in. IsaacLab sat on top of IsaacSim as the framework for defining the RL training loop — observation space, action space, reward shaping, and episode management. This allowed the team to run thousands of training episodes in parallel on GPU, compressing what would have been weeks of physical testing into hours of simulation time.
+<figure class="environment-figure">
+  <SiteImage
+    src={environmentGo2w}
+    sizes="(min-width: 640px) 486px, calc(100vw - 96px)"
+    alt="Watercolor concept illustration of a Unitree Go2-W wheeled quadruped in a simulated obstacle environment"
+    loading="lazy"
+    decoding="async"
+  />
+  <figcaption>
+    Concept illustration, not a simulator screenshot or measured result.
+  </figcaption>
+</figure>
 
-Control systems principles were applied at the hardware-software boundary to translate the learned policy's continuous action outputs into motor commands compatible with the physical robot platform, bridging the sim-to-real gap for eventual deployment validation.
+## Training loop
 
-## Availability
+The team used Proximal Policy Optimization (PPO), a reinforcement-learning algorithm for continuous control. IsaacSim provided the physics environment; IsaacLab organized the training loop. My implementation work focused on the environments and task logic around the algorithm.
+
+I designed and trained control policies through iterative experimentation. I analyzed simulation performance data and created visualizations to evaluate behavior across varying terrain conditions and edge-following scenarios.
+
+I also implemented **scenario checks and scripted test runs**, giving the team repeatable ways to evaluate behavior in simulation.
+
+<ProjectTrainingLoop />
+
+## Hardware boundary
+
+I documented the architecture connecting perception inputs, navigation logic, and motor control. The documentation included technical references and onboarding materials for continued development.
+
+That connection also defined a boundary: the model’s continuous outputs need to become commands the physical robot can execute. Our simulation work supported development and evaluation; physical deployment still required validation on the robot.
+
+## What the work produced
+
+My deliverables brought together executable training-task logic, simulated environments, evaluation scripts, performance visualizations, and architecture documentation. They supported the team’s navigation experiments and provided references for continued development.
 
 Source code and detailed results are covered under NDA and are not publicly available.

@@ -7,11 +7,14 @@ import SiteFooter from "../components/SiteFooter.astro";
 import TopoBackground from "../components/TopoBackground.tsx";
 import LoadingOverlay from "../components/LoadingOverlay.tsx";
 import BackToTop from "../components/BackToTop.astro";
+import FieldMapScenery from "../components/FieldMapScenery.astro";
 
 import { SITE } from "@/config";
+import type { ImageMetadata } from "astro";
+import { getImage } from "astro:assets";
 
 // Resolve hashed font URLs at build time for preloading
-import interLatinUrl from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import plexSansLatinUrl from "@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url";
 import jbMonoLatinUrl from "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url";
 
 interface Props {
@@ -19,6 +22,8 @@ interface Props {
   scrollSmooth?: boolean;
   description?: string;
   imageOg?: string;
+  heroImage?: ImageMetadata;
+  fieldMap?: boolean;
 }
 
 const {
@@ -26,7 +31,20 @@ const {
   description = SITE.description,
   scrollSmooth = false,
   imageOg = SITE.ogImage,
+  heroImage,
+  fieldMap = false,
 } = Astro.props;
+
+const heroPreload = heroImage
+  ? await getImage({
+      src: heroImage,
+      layout: "constrained",
+      format: heroImage.format === "svg" ? "svg" : "avif",
+      quality: 80,
+      fit: "cover",
+      position: "center",
+    })
+  : undefined;
 
 const tags = SITE.tags;
 const author = SITE.author;
@@ -37,7 +55,7 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
 <!doctype html>
 <html
   lang={SITE.lang ?? "en"}
-  class={`dark bg-[var(--color-background-dark)]${scrollSmooth ? " scroll-smooth" : ""}`}
+  class:list={["dark", "bg-background-dark", { "scroll-smooth": scrollSmooth }]}
 >
   <head>
     <meta charset="UTF-8" />
@@ -49,7 +67,7 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
       rel="preload"
       as="font"
       type="font/woff2"
-      href={interLatinUrl}
+      href={plexSansLatinUrl}
       crossorigin
     />
     <link
@@ -59,6 +77,19 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
       href={jbMonoLatinUrl}
       crossorigin
     />
+
+    {
+      heroPreload && (
+        <link
+          rel="preload"
+          as="image"
+          href={heroPreload.src}
+          imagesrcset={heroPreload.srcSet.attribute}
+          imagesizes={heroPreload.attributes.sizes}
+          fetchpriority="high"
+        />
+      )
+    }
 
     <meta name="title" content={title} />
     <meta name="description" content={description} />
@@ -82,14 +113,11 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
     <meta property="twitter:image" content={absoluteOgImage} />
 
     <title>{title}</title>
-    <noscript
-      ><style>
-        #loading-overlay {
-          display: none;
-        }
-      </style></noscript
-    >
     <ClientRouter />
+    <script>
+      import { initPageTransitions } from "@/utils/pageTransition";
+      initPageTransitions();
+    </script>
 
     {
       /* Speculation Rules API — prerender same-origin pages on hover for instant navigation.
@@ -110,11 +138,12 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
     </script>
   </head>
   <body
+    data-field-map={fieldMap || undefined}
     class="min-h-screen bg-transparent font-body text-slate-800 dark:text-slate-200 selection:bg-primary selection:text-white"
   >
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
       >Skip to main content</a
     >
 
@@ -122,21 +151,35 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
       document.documentElement.classList.add("dark");
     </script>
 
-    <div
-      id="loading-overlay"
-      class="fixed inset-0 z-50 bg-[var(--color-background-dark)] pointer-events-none"
-      aria-hidden="true"
-    >
-    </div>
     <LoadingOverlay client:only="react" />
-    <TopoBackground client:only="react" />
+    <div class="topo-layer">
+      <TopoBackground
+        client:only="react"
+        transition:persist="topo-background"
+      />
+    </div>
     <BackToTop />
     <SiteHeader />
+    {fieldMap && <FieldMapScenery />}
 
-    <main id="main-content" class="relative z-10 max-w-7xl mx-auto px-6 py-12">
+    <main
+      id="main-content"
+      tabindex="-1"
+      class="relative z-10 max-w-7xl mx-auto px-6 py-10 md:py-12"
+    >
       <slot />
     </main>
 
     <SiteFooter />
   </body>
 </html>
+
+<style>
+  :global(body[data-field-map]) {
+    position: relative;
+  }
+  /* display: none, not visibility: hidden: the topo filter animates every frame and a hidden layer still repaints. */
+  :global(body[data-field-map] .topo-layer) {
+    display: none;
+  }
+</style>
