@@ -7,7 +7,7 @@ paths:
 
 # View Transition Rules
 
-Astro `<ClientRouter/>` enables view transitions. After a navigation, inline `<script>` tags in Astro components re-execute but event listeners on previous DOM nodes are lost.
+Astro `<ClientRouter/>` enables view transitions. Processed component scripts do not automatically re-run after every navigation; event listeners on replaced DOM nodes are lost.
 
 ## Script Re-initialization
 
@@ -30,4 +30,4 @@ This guarantees:
 
 ## DOM IDs
 
-DOM IDs, class names, and thresholds are plain literals owned by each component/util pair (e.g. `#back-to-top` in BackToTop.astro + backToTop.ts). When an ID crosses components, note it with a comment at the lookup site (`#profile-sidebar` is defined in ExperienceTimeline.astro but used by BackToTop.astro).
+DOM IDs, class names, and thresholds are plain literals owned by each component/util pair (e.g. `#back-to-top` in BackToTop.astro + backToTop.ts). When an ID crosses components, note it with a comment at the lookup site (`#profile-sidebar` is defined in ProfileToolkit.astro but used by BackToTop.astro).

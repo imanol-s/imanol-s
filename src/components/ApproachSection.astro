@@ -1,0 +1,56 @@
+---
+import { ME } from "../config";
+---
+
+<section
+  id="approach"
+  class="approach-section scroll-mt-28"
+  aria-labelledby="approach-heading"
+>
+  <div class="approach-intro">
+    <h2 id="approach-heading" class="section-heading">How I work</h2>
+    <p class="section-intro">{ME.workingStyle}</p>
+  </div>
+  <div class="approach-list">
+    {
+      ME.approach.map((step) => (
+        <article class="approach-item">
+          <h3>{step.title}</h3>
+          <p>{step.description}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .approach-section {
+    margin-bottom: 3rem;
+  }
+  .approach-intro {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .section-heading {
+    font-size: clamp(1.5rem, 2.3vw, 2rem);
+  }
+  .approach-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .approach-item h3 {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.035em;
+  }
+  .approach-item p {
+    color: #b4c1d2;
+    font-size: 0.875rem;
+    line-height: 1.85;
+  }
+</style>

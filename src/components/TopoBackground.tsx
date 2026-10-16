@@ -18,7 +18,6 @@ const TOPO_LINES_STYLE: CSSProperties = {
 export default function TopoBackground() {
   const reduced = useReducedMotion();
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
-  const rafId = useRef(0);
   const [dims, setDims] = useState({ width: 2000, height: 2000 });
   const [seed, setSeed] = useSessionState<number | null>("topo-seed", null);
 
@@ -70,22 +69,42 @@ export default function TopoBackground() {
     // so the animation slows gracefully when the tab is throttled.
     let phase = 0;
     let driftTime = 0;
+    let rafId = 0;
+    let lastFrequency = "";
 
     const tick = () => {
       phase += 0.0006;
       driftTime += 1 / 60;
 
       const { bfx, bfy, transform } = computeTopoFrame(phase, driftTime);
-      turbulenceRef.current?.setAttribute("baseFrequency", `${bfx} ${bfy}`);
+      const frequency = `${bfx} ${bfy}`;
+      if (turbulenceRef.current && frequency !== lastFrequency) {
+        turbulenceRef.current.setAttribute("baseFrequency", frequency);
+        lastFrequency = frequency;
+      }
       if (containerRef.current) {
         containerRef.current.style.transform = transform;
       }
 
-      rafId.current = requestAnimationFrame(tick);
+      rafId = requestAnimationFrame(tick);
     };
 
-    rafId.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId.current);
+    const syncAnimation = () => {
+      // Layout.astro suppresses the persisted island on field-map routes.
+      if (document.body.hasAttribute("data-field-map")) {
+        cancelAnimationFrame(rafId);
+        rafId = 0;
+      } else if (!rafId) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    syncAnimation();
+    document.addEventListener("astro:after-swap", syncAnimation);
+    return () => {
+      cancelAnimationFrame(rafId);
+      document.removeEventListener("astro:after-swap", syncAnimation);
+    };
   }, [reduced]);
 
   const lineYs = buildLineYs(dims.height, 24);
@@ -97,7 +116,7 @@ export default function TopoBackground() {
         style={{ zIndex: -2 }}
         aria-hidden="true"
       >
-        <div ref={containerRef} style={TOPO_LINES_STYLE}>
+        <div data-topo-background ref={containerRef} style={TOPO_LINES_STYLE}>
           <svg
             viewBox={`0 0 ${dims.width} ${dims.height}`}
             xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +159,7 @@ export default function TopoBackground() {
               filter="url(#topo-warp)"
               fill="none"
               stroke="var(--color-accent)"
-              strokeOpacity="0.40"
+              strokeOpacity="0.10"
               strokeWidth="1.2"
             >
               {lineYs.map((y) => (
