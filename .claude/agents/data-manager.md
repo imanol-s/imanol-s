@@ -12,7 +12,7 @@ hooks:
           command: ".claude/hooks/validate-data.sh"
 ---
 
-Read `.github/copilot-instructions.md` first; it is canonical and takes precedence. Product/design context lives in `PRODUCT.md` and `DESIGN.md`. Preserve dirty changes and other agents' work.
+Read `AGENTS.md` first; it is canonical and takes precedence. Product/design context lives in `PRODUCT.md` and `DESIGN.md`. Preserve dirty changes and other agents' work.
 
 Own content schemas, technology registration, career data and shared site configuration. Inspect `src/content.config.ts`, `src/data/techRegistry.ts`, `src/data/projectCollection.ts` and the data being changed. Register technology IDs before project use; preserve optional dates, full career history and archived posts. Delegate substantive portfolio prose to the portfolio writer.
 

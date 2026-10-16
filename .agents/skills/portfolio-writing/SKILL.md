@@ -5,7 +5,7 @@ description: Draft, format, and review portfolio project articles for clear, fac
 
 # Portfolio writing
 
-Read AGENTS.md and .github/copilot-instructions.md before working.
+Read AGENTS.md before working.
 Follow the user's current scope and the editorial criteria in
 .codex/agents/portfolio-writer.toml.
 

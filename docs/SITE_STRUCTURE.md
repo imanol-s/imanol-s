@@ -33,4 +33,4 @@ Only three React islands exist: `TopoBackground` and `LoadingOverlay` use `clien
 
 `ClientRouter` handles navigation. DOM setup uses `astro:page-load` with cleanup; navigation artwork preparation lives in `src/utils/pageTransition.ts`. Header docking and menu behavior remain in their existing utilities. Field-map and forest composition stay in their own components.
 
-See [performance](PERFORMANCE.md), [developer docs](README.md), and the canonical [repository instructions](../.github/copilot-instructions.md).
+See [performance](PERFORMANCE.md), [developer docs](README.md), and the canonical [repository instructions](../AGENTS.md).

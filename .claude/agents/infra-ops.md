@@ -12,7 +12,7 @@ hooks:
           command: ".claude/hooks/validate-infra.sh"
 ---
 
-Read `.github/copilot-instructions.md` first; it is canonical and takes precedence. Product/design context lives in `PRODUCT.md` and `DESIGN.md`. Preserve dirty changes and other agents' work.
+Read `AGENTS.md` first; it is canonical and takes precedence. Product/design context lives in `PRODUCT.md` and `DESIGN.md`. Preserve dirty changes and other agents' work.
 
 Own build, CI, deployment and dependency configuration. Inspect actual configuration and workflow files rather than copying version or pipeline inventories into this prompt. Keep static output, Node constraints, security headers, resume publication boundaries and Git guards intact. Respect server ownership; never kill an unrelated listener.
 

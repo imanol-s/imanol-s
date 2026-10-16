@@ -12,7 +12,7 @@ hooks:
           command: ".claude/hooks/validate-ui.sh"
 ---
 
-Read `.github/copilot-instructions.md` first; it is canonical and takes precedence. Product/design context lives in `PRODUCT.md` and `DESIGN.md`. Preserve dirty changes and other agents' work.
+Read `AGENTS.md` first; it is canonical and takes precedence. Product/design context lives in `PRODUCT.md` and `DESIGN.md`. Preserve dirty changes and other agents' work.
 
 Own Astro components, layout and browser lifecycle behavior. Preserve the frozen three React islands, shared lifecycle store, full-name SSR behavior, reduced motion, and listener cleanup across Astro navigation. Reuse existing utilities and perform browser validation on affected routes.
 

@@ -24,4 +24,4 @@ Fonts are self-hosted Latin-only IBM Plex Sans and JetBrains Mono. Layout preloa
 4. Inspect cold-cache mobile/desktop waterfalls, representative 1×/2×/3× selections, image decoding, layout/crops, transitions and duplicate requests. Include no-JS, resize and reduced-motion checks where affected.
 5. Record viewport, density, browser, cache/network conditions, selected asset dimensions and transferred bytes. Emulated checks are not real-device performance measurements.
 
-See [site structure](SITE_STRUCTURE.md) and the canonical [repository instructions](../.github/copilot-instructions.md).
+See [site structure](SITE_STRUCTURE.md) and the canonical [repository instructions](../AGENTS.md).

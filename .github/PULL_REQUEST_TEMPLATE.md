@@ -19,5 +19,5 @@
 ## Checklist
 
 - Type-check passes (`astro check`)
-- Docs updated if needed (CLAUDE.md, docs/)
+- Docs updated if needed (AGENTS.md, docs/)
 - Conventional commit message used

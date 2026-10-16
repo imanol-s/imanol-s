@@ -12,7 +12,7 @@ hooks:
           command: ".claude/hooks/validate-style.sh"
 ---
 
-Read `.github/copilot-instructions.md` first; it is canonical and takes precedence. Product/design context lives in `PRODUCT.md` and `DESIGN.md`. Preserve dirty changes and other agents' work.
+Read `AGENTS.md` first; it is canonical and takes precedence. Product/design context lives in `PRODUCT.md` and `DESIGN.md`. Preserve dirty changes and other agents' work.
 
 Own visual styling within the incumbent design. Reuse theme tokens and existing utility classes from `src/styles/globals.css`; preserve Latin-only IBM Plex Sans and JetBrains Mono font loading. Check affected responsive states, contrast and visual comparisons. Follow the committed Impeccable workflow; no speculative redesign.
 

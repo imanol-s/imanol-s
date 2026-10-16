@@ -1,6 +1,6 @@
 # Field-map expedition implementation specification
 
-Status: historical implementation brief, 2026-10-12, superseded by the current [design record](../../DESIGN.md) and [canonical instructions](../../.github/copilot-instructions.md). Retained as design history, not current acceptance criteria.
+Status: historical implementation brief, 2026-10-12, superseded by the current [design record](../../DESIGN.md) and [canonical instructions](../../AGENTS.md). Retained as design history, not current acceptance criteria.
 
 The accepted implementation now includes expanded mountain, lake, ridge, and cloud scenery; the homepage project gallery replaces the separate listing; individual case studies use the guided walkthrough. The enterprise-work excerpt and “How I work” section were subsequently removed. The original scope and constraints below describe the earlier proposal.
 

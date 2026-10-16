@@ -28,7 +28,7 @@ Visitors can review the homepage, browse its project gallery, read individual ca
 - `src/config.ts` owns personal and site data; `src/data/career.ts` owns career and education context.
 - Preserve factual content and metrics. Career bullets require explicit authorization to change.
 - Preserve the existing three-island React architecture unless the owner explicitly approves a change.
-- Follow `.github/copilot-instructions.md`, the canonical repository guidance, and the agent-specific deltas in `AGENTS.md`. `DESIGN.md` records the current implemented design.
+- Follow `AGENTS.md`, the single source of truth for repository agent instructions. `DESIGN.md` records the current implemented design.
 
 ## Brand Commitments
 
