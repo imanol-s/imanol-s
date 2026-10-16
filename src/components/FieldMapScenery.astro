@@ -1,0 +1,467 @@
+---
+import { getImage } from "astro:assets";
+import terrain from "../assets/field-map-terrain.webp";
+import lake from "../assets/field-map-lake.webp";
+
+const terrainImage = await getImage({ src: terrain, format: "webp" });
+const lakeImage = await getImage({ src: lake, format: "webp" });
+const leftContour = [1, 0.84, 0.66, 0.5, 0.31];
+const rightContour = [1, 0.78, 0.6, 0.36];
+// Lake outline in terrain pixels: far shore along the upper hills, near shore a smooth curve along the crests that hide it.
+const farShore =
+  "M176 432L196 414L225 400L260 392L300 388L350 386L400 388L440 392L480 398L520 402L560 405L600 404L640 408L680 413L720 418L760 423L800 428L840 434L880 441L910 452C928 464 945 498 952 543";
+const nearShore =
+  "C948.8 542.3 947.2 542.8 933 539C918.8 535.2 889.2 525.5 867 520C844.8 514.5 822.3 512.2 800 506C777.7 499.8 751.8 490.7 733 483C714.2 475.3 701.3 467.2 687 460C672.7 452.8 661.5 445.3 647 440C632.5 434.7 615.7 430.3 600 428C584.3 425.7 567.5 427 553 426C538.5 425 526.3 421.3 513 422C499.7 422.7 486.3 426.3 473 430C459.7 433.7 447.3 439.3 433 444C418.7 448.7 409.2 457 387 458C364.8 459 325.7 453 300 450C274.3 447 253.7 443 233 440C212.3 437 185.5 433.3 176 432";
+const lakeShore = `${farShore}${nearShore}Z`;
+// One repeat of the lower hills: uneven spacing and sizes, never mirrored so the light stays on the left.
+// Each scale is wide enough to cover the band at its sideways shift, so no image edge shows.
+const hills = [
+  { y: 0, x: 0, scale: 1.1 },
+  { y: 230, x: -440, scale: 1.45 },
+  { y: 560, x: 0, scale: 1.2 },
+  { y: 790, x: -300, scale: 1.35 },
+];
+---
+
+<div class="field-map-scenery" aria-hidden="true">
+  <div class="field-map-clouds">
+    <span></span>
+    <span></span>
+  </div>
+  <img
+    class="field-map-terrain"
+    src={terrainImage.src}
+    width={terrain.width}
+    height={terrain.height}
+    alt=""
+    loading="eager"
+    decoding="async"
+    fetchpriority="low"
+  />
+  <div class="field-map-additions">
+    <svg viewBox="0 0 1024 1536" preserveAspectRatio="none">
+      <defs>
+        <filter id="field-map-soft-edge">
+          <feGaussianBlur stdDeviation="5"></feGaussianBlur>
+        </filter>
+        <linearGradient
+          id="field-map-range-haze"
+          gradientUnits="userSpaceOnUse"
+          x1="0"
+          y1="190"
+          x2="0"
+          y2="300"
+        >
+          <stop offset="0" stop-color="#fff"></stop>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"></stop>
+        </linearGradient>
+        <linearGradient
+          id="field-map-range-west"
+          gradientUnits="userSpaceOnUse"
+          x1="250"
+          y1="0"
+          x2="330"
+          y2="0"
+        >
+          <stop offset="0"></stop>
+          <stop offset="1" stop-opacity="0"></stop>
+        </linearGradient>
+        <!-- Sky above the existing range's west slope, so the new peaks sit behind it and fade into haze. -->
+        <mask
+          id="field-map-range-sky"
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="0"
+          width="1024"
+          height="1536"
+        >
+          <path
+            d="M0 0H630L600 166L575 178L545 186L520 195L490 213L460 228L430 245L380 268L300 310L0 310Z"
+            fill="url(#field-map-range-haze)"
+            filter="url(#field-map-soft-edge)"></path>
+          <rect width="1024" height="320" fill="url(#field-map-range-west)"
+          ></rect>
+        </mask>
+        <clipPath id="field-map-range-peaks">
+          <path
+            d="M560 204L600 187L640 162L690 122L720 88L745 110L770 138L800 130L840 95L880 66L910 90L960 110L1024 125V340H560Z"
+          ></path>
+        </clipPath>
+        <linearGradient
+          id="field-map-ridge-fade"
+          gradientUnits="userSpaceOnUse"
+          x1="0"
+          y1="560"
+          x2="0"
+          y2="640"
+        >
+          <stop offset="0" stop-color="#fff"></stop>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"></stop>
+        </linearGradient>
+        <!-- In the terrain's own pixels: the hump's crest, its west end cut down into the valley. -->
+        <mask
+          id="field-map-ridge"
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="0"
+          width="1024"
+          height="1536"
+        >
+          <path
+            d="M165 640L172 560L195 480L233 430L387 444L433 429L473 415L513 407L553 411L600 413L647 425L687 445L733 469L800 492L867 505L933 525L1024 552V640Z"
+            fill="url(#field-map-ridge-fade)"
+            filter="url(#field-map-soft-edge)"></path>
+        </mask>
+        <path class="lake-shore" d={lakeShore}></path>
+      </defs>
+      <!-- A smaller, lower copy of the summits, further away to the west. -->
+      <g mask="url(#field-map-range-sky)">
+        <image
+          href={terrainImage.src}
+          width="1024"
+          height="1536"
+          clip-path="url(#field-map-range-peaks)"
+          transform="translate(-234 109) scale(0.8 0.62)"
+          opacity="0.2"
+        />
+      </g>
+      <!-- Baked from the SVG lake in 61057dd: its masks and filters were redrawn on every animation frame. -->
+      <foreignObject
+        class="field-map-lake"
+        x="168"
+        y="378"
+        width="792"
+        height="174"
+      >
+        <picture>
+          <source
+            media="(width > 1239px) and (width < 1625px)"
+            srcset={lakeImage.src}
+          />
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E"
+            width="792"
+            height="174"
+            alt=""
+            decoding="async"
+          />
+        </picture>
+      </foreignObject>
+      <!-- A nearer ridge below the lake: the hump mirrored and enlarged, painted over the slope it covers. -->
+      <g
+        transform="matrix(-1.1 0 0 1.1 864.3 72.5)"
+        mask="url(#field-map-ridge)"
+      >
+        <rect x="160" y="395" width="864" height="245" fill="#0f172a"></rect>
+        <image
+          href={terrainImage.src}
+          width="1024"
+          height="1536"
+          opacity="0.24"
+        />
+      </g>
+    </svg>
+  </div>
+  <!-- Below the painting, its ridges repeat down the page and its lakeshore closes it at the contact footer. -->
+  <div class="field-map-lower">
+    <svg
+      class="field-map-ridges"
+      viewBox="0 0 1024 40000"
+      preserveAspectRatio="xMinYMin slice"
+    >
+      <defs>
+        <linearGradient id="field-map-band-fade" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity="0"></stop>
+          <stop offset="0.1" stop-color="#fff"></stop>
+          <stop offset="0.45" stop-color="#fff"></stop>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"></stop>
+        </linearGradient>
+        <radialGradient id="field-map-band-hole">
+          <stop offset="0.5"></stop>
+          <stop offset="1" stop-opacity="0"></stop>
+        </radialGradient>
+        <!-- The holes clear the contour lines baked into the band's corners, which would otherwise repeat down the page. -->
+        <mask id="field-map-band" maskUnits="userSpaceOnUse">
+          <rect
+            y="400"
+            width="1024"
+            height="260"
+            fill="url(#field-map-band-fade)"></rect>
+          <ellipse
+            cx="40"
+            cy="470"
+            rx="170"
+            ry="130"
+            fill="url(#field-map-band-hole)"></ellipse>
+          <ellipse
+            cx="890"
+            cy="640"
+            rx="200"
+            ry="90"
+            fill="url(#field-map-band-hole)"></ellipse>
+        </mask>
+        <pattern
+          id="field-map-ridge-bands"
+          patternUnits="userSpaceOnUse"
+          y="40"
+          width="1024"
+          height="1160"
+        >
+          {
+            hills.map(({ y, x, scale }) => (
+              <svg
+                x={x}
+                y={y}
+                width={1024 * scale}
+                height={260 * scale}
+                viewBox="0 400 1024 260"
+              >
+                <image
+                  href={terrainImage.src}
+                  width="1024"
+                  height="1536"
+                  mask="url(#field-map-band)"
+                />
+              </svg>
+            ))
+          }
+        </pattern>
+      </defs>
+      <!-- The painting's ground colour, so the bands fade into land rather than into the page. -->
+      <rect width="1024" height="40000" fill="#021a2e"></rect>
+      <rect
+        y="40"
+        width="1024"
+        height="40000"
+        fill="url(#field-map-ridge-bands)"></rect>
+    </svg>
+  </div>
+  <svg
+    class="field-map-foot"
+    viewBox="0 1180 1024 356"
+    preserveAspectRatio="none"
+  >
+    <image href={terrainImage.src} width="1024" height="1536" />
+  </svg>
+  <svg class="field-map-contour contour-left" viewBox="-100 -100 200 200">
+    <defs>
+      <path
+        id="field-map-contour-left"
+        d="M0-88C38-90 82-62 86-18C90 30 60 80 8 86C-40 92-84 58-88 10C-92-40-46-86 0-88Z"
+        vector-effect="non-scaling-stroke"></path>
+    </defs>
+    {
+      leftContour.map((scale) => (
+        <use href="#field-map-contour-left" transform={`scale(${scale})`} />
+      ))
+    }
+  </svg>
+  <svg class="field-map-contour contour-right" viewBox="-100 -100 200 200">
+    <defs>
+      <path
+        id="field-map-contour-right"
+        d="M-6-80C40-84 92-40 84 8C76 56 34 92-14 84C-60 76-90 34-84-12C-78-56-50-76-6-80Z"
+        vector-effect="non-scaling-stroke"></path>
+    </defs>
+    {
+      rightContour.map((scale) => (
+        <use href="#field-map-contour-right" transform={`scale(${scale})`} />
+      ))
+    }
+  </svg>
+  <svg class="field-map-trail">
+    <defs>
+      <mask id="field-map-trail-reveal" maskUnits="userSpaceOnUse">
+        <path id="field-map-trail-ink" vector-effect="non-scaling-stroke"
+        ></path>
+      </mask>
+    </defs>
+    <!-- initTrailInk adds the reveal mask, so the trail stays whole without JS. -->
+    <path id="field-map-trail-path" vector-effect="non-scaling-stroke"></path>
+  </svg>
+</div>
+
+<style>
+  .field-map-scenery {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: clip;
+    pointer-events: none;
+  }
+  .field-map-terrain {
+    display: block;
+    width: 100%;
+    height: auto;
+    opacity: 0.24;
+    mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  }
+  /* Cloud shadows drift over the terrain; they share its size and fade. */
+  .field-map-clouds {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 1;
+    aspect-ratio: 1024 / 1536;
+    overflow: clip;
+    mask-image: linear-gradient(to bottom, #000 45%, transparent 60%);
+  }
+  .field-map-clouds span {
+    position: absolute;
+    top: 6%;
+    left: 0;
+    width: 55%;
+    height: 16%;
+    background: radial-gradient(closest-side, rgb(2 6 23 / 55%), transparent);
+    animation: field-map-cloud 90s linear -40s infinite;
+  }
+  .field-map-clouds span + span {
+    top: 22%;
+    width: 42%;
+    height: 12%;
+    animation-duration: 120s;
+    animation-delay: -95s;
+  }
+  @keyframes field-map-cloud {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(240%);
+    }
+  }
+  /* .forest-scene[data-paused] (ForestScene.astro) covers the pause button, offscreen hero and hidden tabs. */
+  :global(body:has(.forest-scene[data-paused="true"])) .field-map-clouds span {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .field-map-clouds span {
+      animation: none;
+      transform: translateX(60%);
+    }
+  }
+  /* The additions share the terrain's size, so they stay in place on it. The hero does not scale with it:
+     below 1240px the lake reaches the trail and then the portrait, and from 1625px it runs into the trail and project cards. */
+  .field-map-additions {
+    position: absolute;
+    inset: 0 0 auto;
+    aspect-ratio: 1024 / 1536;
+  }
+  .field-map-additions svg {
+    width: 100%;
+    height: 100%;
+  }
+  .field-map-lake picture,
+  .field-map-lake img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  @media (max-width: 1239px), (min-width: 1625px) {
+    .field-map-lake {
+      display: none;
+    }
+  }
+  /* The spacer starts the lower land just below the painting's nearer ridge, so the next hill follows at the usual spacing. */
+  .field-map-lower {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 0.24;
+  }
+  .field-map-lower::before {
+    content: "";
+    flex: none;
+    aspect-ratio: 1024 / 800;
+  }
+  .field-map-ridges {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    mask-image: linear-gradient(transparent, #000 12vw);
+  }
+  /* Narrow screens see the middle of the hills at 3.5x size, so about a third as many fill the page. */
+  @media (max-width: 767px) {
+    .field-map-ridges {
+      width: 350%;
+      margin-left: -125%;
+    }
+  }
+  /* Brighter than the land above so the trail's end still reads through the footer. */
+  .field-map-foot {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    opacity: 0.45;
+    aspect-ratio: 1024 / 356;
+    mask-image: linear-gradient(transparent, #000 40%);
+  }
+  #field-map-trail-ink {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 12;
+    stroke-linecap: round;
+  }
+  .field-map-contour {
+    position: absolute;
+    width: 18rem;
+    height: 18rem;
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1;
+    opacity: 0.16;
+  }
+  .contour-left {
+    top: 42%;
+    right: calc(50% + 41rem);
+  }
+  .contour-right {
+    top: 70%;
+    left: calc(50% + 41rem);
+  }
+  .field-map-trail {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: #b6e5d3;
+    stroke-width: 1;
+    stroke-dasharray: 4 8;
+    opacity: 0.32;
+    /* Own layer: otherwise each frame of the ink reveal repaints the lower hills beneath it. */
+    will-change: transform;
+  }
+  @media (max-width: 1399px) {
+    .field-map-contour {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { initFieldMapTrail, initTrailInk } from "@/utils/fieldMapTrail";
+
+  let cleanup: (() => void) | undefined;
+  document.addEventListener("astro:page-load", () => {
+    cleanup?.();
+    cleanup = undefined;
+    const path = document.getElementById(
+      "field-map-trail-path",
+    ) as SVGPathElement | null;
+    const ink = document.getElementById(
+      "field-map-trail-ink",
+    ) as SVGPathElement | null;
+    if (!path || !ink) return;
+    const stopTrail = initFieldMapTrail(path);
+    const stopInk = initTrailInk(path, ink);
+    cleanup = () => {
+      stopTrail();
+      stopInk();
+    };
+  });
+  document.addEventListener("astro:before-swap", () => {
+    cleanup?.();
+    cleanup = undefined;
+  });
+</script>

@@ -2,14 +2,13 @@
 # https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # Default owners for everything
-* @imanol
+* @imanol-s
 
 # Documentation
-CLAUDE.md @imanol
-AGENTS.md @imanol
-docs/ @imanol
+CLAUDE.md @imanol-s
+AGENTS.md @imanol-s
+docs/ @imanol-s
 
 # Configuration
-.github/ @imanol
-.claude/ @imanol
-.cursor/ @imanol
+.github/ @imanol-s
+.claude/ @imanol-s

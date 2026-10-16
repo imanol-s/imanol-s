@@ -18,18 +18,36 @@ export interface Education {
 
 export const workExperience: WorkExperience[] = [
   {
-    title: "Associate Data Analyst",
-    startDate: "2026-01-16",
+    title: "Data Analyst",
+    startDate: "2026-10-01",
     company: "Freeman",
     location: "United States",
     description:
-      "Own data governance and documentation for material master data across legacy and target systems. Pioneered the team's data dictionary, drove cross-functional request implementation through a newly adopted platform, and lead stakeholder alignment on data standards and operational procedures.",
+      "Own SAP data governance and connect business needs with technical delivery, from data setup and change requests to automation and reporting.",
     goals: [
-      "Pioneered a data dictionary spanning 300+ definitions — data types, frontend/backend translations, and governance metadata across legacy and target systems",
-      "Drove cross-functional request implementation through a newly adopted internal platform, establishing the operational workflow from intake to completion",
-      "Authored process documentation and led stakeholder walkthrough sessions to align teams on data standards and operational procedures",
+      "Own SAP data governance from request intake through change execution and validation.",
+      "Lead the setup of new data, including standardized workflows.",
+      "Use my technical background to connect developers, business users, and enterprise teams.",
+      "Manage project requirements and backlogs for automation, features, enhancements, and bug reports.",
+      "Work with business users across the enterprise to identify process problems, gather requirements, investigate root causes, and deliver solutions through automation, data reporting, and improvements to request workflows.",
     ],
     currentJob: true,
+  },
+  {
+    title: "Associate Data Analyst",
+    startDate: "2026-01-16",
+    endDate: "2026-10-01",
+    company: "Freeman",
+    location: "United States",
+    description:
+      "Built SAP automation and data governance tools while coordinating delivery and validating releases for enterprise data operations.",
+    goals: [
+      "Built a Python automation tool for SAP material changes, completing 3,000+ updates with built-in logging and self-healing for multi-day runs. Cut a multi-day manual task to ~3 hours (estimated).",
+      "Created and operationalized an enterprise Data Dictionary documenting lineage and technical information for ~200+ SAP fields, helping teams interpret data clearly and consistently.",
+      "Managed project and feature delivery for data operations, from requirements gathering and scoping through backlog prioritization and execution tracking. Delivered 30+ user stories.",
+      "Performed user acceptance testing ahead of release, identifying gaps beyond the stated scope and routing issues to development.",
+    ],
+    currentJob: false,
   },
 
   {
@@ -39,10 +57,10 @@ export const workExperience: WorkExperience[] = [
     company: "Freeman",
     location: "United States",
     description:
-      "Took on independent ownership of material data validation and maintenance across U.S. operations. Led requirements analysis with cross-functional stakeholders, built validation workflows across production and legacy systems, and documented internal data processing workflows ahead of team transitions.",
+      "Owned material data validation across U.S. operations during a system migration. Built workflows to compare production and legacy records, gathered stakeholder requirements, and documented processes for team handoffs.",
     goals: [
-      "Analyzed and validated material master records across U.S. operations — maintained data integrity throughout an active enterprise system migration",
-      "Led cross-functional requirements analysis and stakeholder gathering — surfaced business needs, defined scope, and structured development-ready user stories following internal SDLC standards",
+      "Analyzed and validated material master records across U.S. operations. Maintained data integrity throughout an active enterprise system migration",
+      "Led cross-functional requirements analysis and stakeholder gathering. Surfaced business needs, defined scope, and structured development-ready user stories following internal SDLC standards",
       "Built validation workflows comparing production and legacy system hierarchies to verify data integrity during migration",
       "Documented internal data processing workflows to preserve institutional knowledge ahead of team transitions",
     ],
@@ -55,12 +73,12 @@ export const workExperience: WorkExperience[] = [
     company: "Freeman",
     location: "United States",
     description:
-      "Explored material master data governance during an active enterprise system migration. Facilitated cross-functional discovery sessions, investigated data lifecycle behaviors across legacy and target systems, and authored user stories to internal SDLC standards.",
+      "Learned enterprise data governance through hands-on migration work. Facilitated discovery sessions, investigated data behavior across systems, and translated stakeholder needs into development-ready user stories.",
     goals: [
-      "Led cross-functional discovery and facilitation for a revenue-critical product attribute lacking governance — ran stakeholder sessions that produced the governance model, metadata requirements, and user story",
+      "Led cross-functional discovery and facilitation for a revenue-critical product attribute lacking governance. Ran stakeholder sessions that produced the governance model, metadata requirements, and user story",
       "Supported a bulk master data extension project enabling invoicing out of internal systems for a newly established business entity",
-      "Investigated lifecycle flag behavior across legacy and target systems — documented cross-system gaps in communication, audit trails, and stakeholder notification that informed future enhancements",
-      "Authored user stories following internal SDLC standards — led requirements gathering across cross-functional stakeholders, defined acceptance criteria, surfaced edge cases, and structured stories to development-ready state",
+      "Investigated lifecycle flag behavior across legacy and target systems. Documented cross-system gaps in communication, audit trails, and stakeholder notification that informed future enhancements",
+      "Authored user stories following internal SDLC standards. Led requirements gathering across cross-functional stakeholders, defined acceptance criteria, surfaced edge cases, and structured stories to development-ready state",
     ],
     currentJob: false,
   },
@@ -87,12 +105,9 @@ export function jobEndDate(job: WorkExperience): Date | null {
   return job.endDate ? new Date(job.endDate) : null;
 }
 
-/**
- * Returns the most recent work experiences for the homepage timeline preview.
- * The full list is available via `workExperience`.
- */
+/** Returns the full work history in display order for the homepage timeline. */
 export function timelineJobs(): WorkExperience[] {
-  return workExperience.slice(0, 3);
+  return workExperience.slice();
 }
 
 /** Returns the primary education entry, or null if none exists. */

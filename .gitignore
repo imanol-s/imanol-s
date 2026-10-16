@@ -89,3 +89,23 @@ imanol-s-threat-model.md
 # playwright artifacts
 test-results/
 playwright-report/
+
+# Generated resume artifacts
+resume/*.pdf
+resume/*.aux
+resume/*.log
+resume/*.out
+resume/*.fls
+resume/*.fdb_latexmk
+_site/
+
+# Impeccable local runtime and consent
+.agents/skills/impeccable/scripts/bin/
+.impeccable/config.local.json
+.impeccable/hook.cache.json
+
+# Retired generated analysis and local audit artifacts
+graphify-out/
+/RUNLOG.md
+/FINDINGS.md
+/UBIQUITOUS_LANGUAGE.md
