@@ -4,7 +4,6 @@ import {
   education,
   jobStartDate,
   jobEndDate,
-  timelineJobs,
   primaryEducation,
   type WorkExperience,
   type Education,
@@ -161,19 +160,6 @@ describe("career accessors", () => {
 
     it("returns null when endDate is undefined", () => {
       expect(jobEndDate(jobNoDates)).toBeNull();
-    });
-  });
-
-  describe("timelineJobs", () => {
-    it("returns every work experience", () => {
-      expect(timelineJobs().length).toBe(workExperience.length);
-    });
-
-    it("returns the first entries from workExperience", () => {
-      const jobs = timelineJobs();
-      for (let i = 0; i < jobs.length; i++) {
-        expect(jobs[i]).toBe(workExperience[i]);
-      }
     });
   });
 

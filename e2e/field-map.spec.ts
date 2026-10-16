@@ -208,7 +208,15 @@ for (const width of [900, 834]) {
 test("all projects and career highlights are rendered", async ({ page }) => {
   await open(page, 1440);
   await expect(page.locator(".project-card")).toHaveCount(5);
-  // Today's fixture counts (src/data/career.ts); update when career content changes.
+  const roles = page.locator(".career-entry h3");
+  await expect(roles).toHaveText([
+    "Data Analyst",
+    "Associate Data Analyst",
+    "Data Operations Analyst - Part Time",
+    "Material Master Data Steward Intern",
+  ]);
+  for (const role of await roles.all()) await expect(role).toBeVisible();
+  // Explicit content fixture; update only when career content intentionally changes.
   const counts = await page
     .locator(".career-entry")
     .evaluateAll((els) =>

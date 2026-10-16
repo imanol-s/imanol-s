@@ -155,20 +155,37 @@ test.describe("Layout", () => {
 });
 
 test.describe("Home page sections", () => {
-  test("profile image loads", async ({ page }) => {
-    await page.goto("/");
-    await page.waitForLoadState("networkidle");
-    const profileImg = page
-      .locator('img[alt*="Imanol" i], img[alt*="profile" i]')
-      .first();
-    if ((await profileImg.count()) > 0) {
-      await expect(profileImg).toBeVisible();
-      const natural = await profileImg.evaluate(
-        (img: HTMLImageElement) => img.naturalWidth,
+  for (const width of [390, 1280]) {
+    test(`illustrated portrait stays visible, loaded and faded at ${width}px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto("/");
+      const portrait = page.locator(".portrait-image");
+      await expect(portrait).toHaveCount(1);
+      await expect(portrait).toBeVisible();
+      await expect(portrait).toHaveAttribute(
+        "alt",
+        /Imanol.*illustrated portrait/i,
       );
-      expect(natural).toBeGreaterThan(0);
-    }
-  });
+      await expect
+        .poll(() =>
+          portrait.evaluate(
+            (image: HTMLImageElement) =>
+              image.complete &&
+              image.naturalWidth > 0 &&
+              image.naturalHeight > 0,
+          ),
+        )
+        .toBe(true);
+      const fade = await portrait.evaluate(
+        (image) => getComputedStyle(image).maskImage,
+      );
+      expect(fade).toContain("linear-gradient");
+      expect(fade).toContain("88%");
+      expect(fade).toContain("rgba(0, 0, 0, 0) 100%");
+    });
+  }
 
   test("projects section visible on home", async ({ page }) => {
     await page.goto("/");

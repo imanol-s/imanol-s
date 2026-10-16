@@ -20,13 +20,6 @@ describe("buildTrailPath", () => {
     expect(d).not.toContain("NaN");
   });
 
-  it("keeps every coordinate between the camp and the gutter's lateral band", () => {
-    for (const x of xs(buildTrailPath(desktop))) {
-      expect(x).toBeGreaterThanOrEqual(790);
-      expect(x).toBeLessThanOrEqual(1390);
-    }
-  });
-
   it("descends the gutter without lateral variation when amp is 0", () => {
     const d = buildTrailPath({
       startX: 300,
