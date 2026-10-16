@@ -126,14 +126,27 @@ const hills = [
         />
       </g>
       <!-- Baked from the SVG lake in 61057dd: its masks and filters were redrawn on every animation frame. -->
-      <image
+      <foreignObject
         class="field-map-lake"
-        href={lakeImage.src}
         x="168"
         y="378"
         width="792"
         height="174"
-      />
+      >
+        <picture>
+          <source
+            media="(width > 1239px) and (width < 1625px)"
+            srcset={lakeImage.src}
+          />
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E"
+            width="792"
+            height="174"
+            alt=""
+            decoding="async"
+          />
+        </picture>
+      </foreignObject>
       <!-- A nearer ridge below the lake: the hump mirrored and enlarged, painted over the slope it covers. -->
       <g
         transform="matrix(-1.1 0 0 1.1 864.3 72.5)"
@@ -334,6 +347,12 @@ const hills = [
     aspect-ratio: 1024 / 1536;
   }
   .field-map-additions svg {
+    width: 100%;
+    height: 100%;
+  }
+  .field-map-lake picture,
+  .field-map-lake img {
+    display: block;
     width: 100%;
     height: 100%;
   }

@@ -329,10 +329,13 @@ for (const [width, shown] of [
 
 for (const [width, shown] of [
   [1920, false],
+  [1625, false],
+  [1624, true],
   [1600, true],
   [1440, true],
   [1280, true],
   [1240, true],
+  [1239, false],
   [1200, false],
   [1024, false],
   [390, false],
@@ -342,10 +345,14 @@ for (const [width, shown] of [
     page,
   }) => {
     const terrain = new Set<string>();
+    const lakeRequests: string[] = [];
     page.on("request", (r) => {
       if (r.url().includes("field-map-terrain")) terrain.add(r.url());
+      if (r.url().includes("field-map-lake")) lakeRequests.push(r.url());
     });
     await open(page, width);
+    await page.waitForLoadState("networkidle");
+    expect(lakeRequests).toHaveLength(shown ? 1 : 0);
     const additions = page.locator(
       ".field-map-scenery .field-map-additions svg",
     );
@@ -356,6 +363,13 @@ for (const [width, shown] of [
       return;
     }
     await expect(lake).toBeVisible();
+    await expect(lake.locator("img")).toHaveAttribute("alt", "");
+    expect(
+      await lake.locator("img").evaluate(async (img: HTMLImageElement) => {
+        await img.decode();
+        return img.naturalWidth;
+      }),
+    ).toBeGreaterThan(1);
     const hits = await additions.evaluate((svg, sel) => {
       const shore = svg.querySelector<SVGPathElement>(".lake-shore")!;
       const box = svg.getBoundingClientRect();
@@ -401,3 +415,62 @@ for (const [width, shown] of [
     expect(terrain.size).toBe(1);
   });
 }
+
+test("lake loads once when resizing into its visible range", async ({
+  page,
+}) => {
+  const requests: string[] = [];
+  page.on("request", (request) => {
+    if (request.url().includes("field-map-lake")) requests.push(request.url());
+  });
+  await open(page, 390);
+  await page.waitForLoadState("networkidle");
+  expect(requests).toHaveLength(0);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const lake = page.locator(".field-map-lake img");
+  await expect(lake).toBeVisible();
+  await expect
+    .poll(() => lake.evaluate((image: HTMLImageElement) => image.currentSrc))
+    .toContain("field-map-lake");
+  expect(
+    await lake.evaluate(async (image: HTMLImageElement) => {
+      await image.decode();
+      return image.naturalWidth;
+    }),
+  ).toBeGreaterThan(1);
+  expect(requests).toHaveLength(1);
+  await page.setViewportSize({ width: 1625, height: 1000 });
+  await expect(lake).toBeHidden();
+  expect(requests).toHaveLength(1);
+});
+
+test("lake remains visible and decoded without JavaScript", async ({
+  browser,
+  baseURL,
+}) => {
+  const context = await browser.newContext({
+    baseURL,
+    javaScriptEnabled: false,
+    viewport: { width: 1440, height: 1000 },
+  });
+  try {
+    const page = await context.newPage();
+    const requests: string[] = [];
+    page.on("request", (request) => {
+      if (request.url().includes("field-map-lake"))
+        requests.push(request.url());
+    });
+    await page.goto("/");
+    const lake = page.locator(".field-map-lake img");
+    await expect(lake).toBeVisible();
+    expect(
+      await lake.evaluate(async (image: HTMLImageElement) => {
+        await image.decode();
+        return image.naturalWidth;
+      }),
+    ).toBeGreaterThan(1);
+    expect(requests).toHaveLength(1);
+  } finally {
+    await context.close();
+  }
+});
