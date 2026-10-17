@@ -19,22 +19,13 @@ export async function getStaticPaths() {
 }
 
 const { post, sorted } = Astro.props;
-const { title, summary, tags, cover, url, startDate, endDate } = post.data;
+const { title, summary, tags, cover, coverAlt, url, startDate, endDate } =
+  post.data;
 const { Content, headings } = await render(post);
 const chapters = headings.filter((heading) => heading.depth === 2);
 const { prev, next, hasValidUrl } = getProjectPageData(sorted, post.id);
 const metadata = { title, startDate, endDate, tags, hasValidUrl, url };
 const isSensori = post.id === "sensori-robotics";
-const artworkAlt =
-  post.id === "automaton"
-    ? "Watercolor concept illustration of input sheets leading to a browser window with a gear and a checked run journal"
-    : isSensori
-      ? "Watercolor concept illustration of a Unitree Go2-W wheeled quadruped navigating obstacles in simulation"
-      : post.id === "pert-scheduling"
-        ? "Watercolor illustration of task cards connected by branching dependency arrows and a completion check mark"
-        : post.id === "crime-analysis"
-          ? "Watercolor illustration of houses on a map beside a magnifying glass over a bar chart"
-          : "Watercolor illustration of books, an open book, and a library card catalog";
 ---
 
 <Layout
@@ -120,7 +111,7 @@ const artworkAlt =
           <figure class="project-opening-art">
             <SiteImage
               src={isSensori ? openingGo2w : cover}
-              alt={artworkAlt}
+              alt={coverAlt}
               sizes="(min-width: 1024px) 460px, min(30rem, calc(100vw - 96px))"
               loading="eager"
               fetchpriority="high"
