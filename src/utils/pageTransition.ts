@@ -54,7 +54,7 @@ async function prepareArtwork(event: TransitionBeforePreparationEvent) {
   });
 }
 
-export function initPageTransitions() {
+export function initPageTransitions(): void {
   document.addEventListener("astro:before-preparation", (event) => {
     const transition = event as TransitionBeforePreparationEvent;
     const loader = transition.loader;
