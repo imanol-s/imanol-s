@@ -3,15 +3,9 @@ import type { TransitionBeforePreparationEvent } from "astro:transitions/client"
 async function prepareArtwork(event: TransitionBeforePreparationEvent) {
   if (event.signal.aborted || event.defaultPrevented) return;
   const incoming = event.newDocument;
-  const sources = [
-    ...incoming.querySelectorAll(
-      ".field-map-terrain, .portrait-image, .forest-scene image[href], .project-opening-art img",
-    ),
-    ...[...incoming.querySelectorAll("[data-transition-cover]")].slice(
-      0,
-      matchMedia("(min-width: 768px)").matches ? 2 : 1,
-    ),
-  ];
+  const sources = incoming.querySelectorAll(
+    ".field-map-terrain, .portrait-image, .forest-scene image[href], .project-opening-art img",
+  );
   const images = new Map<string, HTMLImageElement>();
   for (const source of sources) {
     const src = source.getAttribute("src") ?? source.getAttribute("href");
