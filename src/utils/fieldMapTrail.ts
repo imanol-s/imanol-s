@@ -207,9 +207,9 @@ export function lengthAtY(
   return hi;
 }
 
-// Sections in ProjectsCarousel, ExperienceTimeline, ApproachSection, HeroSection and SiteFooter.
+// Sections in ProjectsCarousel, ExperienceTimeline, HeroSection and SiteFooter.
 const INK_TARGETS =
-  ".hero-section, .project-section, .career-entry, .approach-item, #profile-sidebar, #contact";
+  ".hero-section, .project-section, .career-entry, #profile-sidebar, #contact";
 const INK_TRANSITION = "stroke-dashoffset 1.6s cubic-bezier(0.16, 1, 0.3, 1)";
 
 /**

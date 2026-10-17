@@ -13,7 +13,6 @@ Before adding new CSS, check if one of these already covers it:
 - `.cad-border` — CAD-style border with corner brackets
 - `.focus-ring` — custom focus styles
 - `.cta-primary` — primary call-to-action button
-- `.horizontal-scroll-snap` — carousel scroll-snap base
 - `.render-deferred` — `content-visibility: auto` for below-fold sections
 
 ## Theme Variables
