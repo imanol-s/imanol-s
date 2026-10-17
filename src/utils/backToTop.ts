@@ -51,6 +51,7 @@ export function initBackToTop(btn: HTMLElement): () => void {
   btn.addEventListener(
     "click",
     () => {
+      // #main-content lives in Layout.astro
       document.getElementById("main-content")?.focus({ preventScroll: true });
       window.scrollTo({
         top: 0,
