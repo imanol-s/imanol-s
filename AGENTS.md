@@ -251,7 +251,7 @@ function displayName(name: string) {
 - Color tokens: `primary` (#64748b), `accent` (#94a3b8), `background-light` (#f8fafc), `background-dark` (#0f172a)
 - Preserve Latin-only font imports rather than full font packages with unused language faces.
 - Fonts: JetBrains Mono (`font-display`) for headings/nav/CTAs, IBM Plex Sans (`font-body`) for body text
-- Custom utility classes in globals.css: `cad-border`, `cta-primary`, `drawing-hover`, `focus-ring`, `horizontal-scroll-snap`, `typing-caret`, `project-mdx`, `topo-lines`
+- Custom utility classes in globals.css: `cad-border`, `cta-primary`, `drawing-hover`, `focus-ring`, `typing-caret`, `project-mdx`, `topo-lines`
 - Project prose uses `@tailwindcss/typography` `.prose` class with custom color overrides in globals.css
 - Scoped Astro `<style>` blocks cannot use `@apply` with Tailwind classes unless `@reference` is added — prefer plain CSS in scoped styles
 

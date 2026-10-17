@@ -76,7 +76,6 @@ Expected impact surface:
 - `src/pages/index.astro`: homepage composition and scoped integration.
 - `src/components/HeroSection.astro` / `ForestScene.astro`: only hooks required to distinguish original static terrain from preserved animation; avoid geometry changes.
 - `src/components/ExperienceTimeline.astro`: separate the existing toolkit aside into a reusable Astro component so it can follow Approach without client-side DOM reparenting. Preserve the career timeline output.
-- `src/components/ApproachSection.astro`: homepage treatment of existing content; preserve config-derived values.
 - A single new static scenery Astro component plus a small trail-positioning utility, if needed.
 - `src/layouts/Layout.astro` and/or `SiteFooter.astro`: the smallest explicit homepage-only scenery hook so the backdrop includes the footer without leaking to other routes. Prefer an opt-in flag over incidental selectors based on text or route substrings.
 - Copy the terrain asset into `src/assets/` and use the existing Astro image pipeline. Do not depend on `docs/design/` or generated `dist/` at runtime.
