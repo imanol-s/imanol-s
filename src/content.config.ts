@@ -35,6 +35,7 @@ const projects = defineCollection({
       cardSummary: z.string().trim().min(1).optional(),
       url: z.string().optional(),
       cover: image(),
+      coverAlt: z.string().trim().min(1),
       tags: z.array(techTagSchema),
       keywords: z.array(z.string()).optional(),
       ogImage: z.string(),

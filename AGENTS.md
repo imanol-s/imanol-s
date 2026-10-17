@@ -66,6 +66,7 @@ const { title, description } = Astro.props;
   - `LoadingOverlay.tsx` — session loading overlay (`client:only="react"`, skips SSR)
 - **Content collections**: All blog/project content goes through Astro content collections with Zod schemas in `src/content.config.ts` — do not bypass with raw file reads
 - Optional project `cardSummary` supplies homepage gallery card copy, falling back to `summary`; the full `summary` remains the detail introduction and metadata source.
+- Required project `coverAlt` is the alt text for the concept cover on the project page; keep it with the artwork in frontmatter rather than in page templates.
 - Blog routes, navigation, and legacy redirects are removed. Posts and their content schema remain archived; do not expose them as public pages.
 - The homepage `/#projects` gallery is the complete project index. WORK and case-study “All projects” links return there; retain every individual `/projects/[id]` page. Exact `/projects` and `/projects/` legacy paths redirect to `/#projects`: Astro supplies a static fallback and Netlify supplies forced HTTP 301 rules. Never redirect `/projects/*` or recreate a duplicate listing page.
 - Project `startDate` and `endDate` are optional when unconfirmed. Never invent dates: omit unavailable date text, sort dated projects newest first, use stable ID ordering for ties, and place undated projects last in stable ID order.
