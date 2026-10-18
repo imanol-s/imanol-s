@@ -1,4 +1,5 @@
 #!/bin/sh
 set -e
 node scripts/git-identity.mjs
+.husky/token-limit
 npx lint-staged
