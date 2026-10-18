@@ -6,6 +6,9 @@
 # output, binaries, data fixtures, and anything marked linguist-generated or
 # linguist-vendored in .gitattributes.
 #
+# Files already over the limit at HEAD are grandfathered: they stay editable, but no
+# file may newly cross the limit. New files and files crossing the limit are blocked.
+#
 # Bypass for a single commit:  SKIP_TOKEN_LIMIT=1 git commit ...
 set -euo pipefail
 
@@ -56,14 +59,24 @@ is_skipped() {
 
 # --- Scan staged files ---------------------------------------------------------
 violations=()
+grandfathered=()
 while IFS= read -r -d '' path; do
     is_skipped "$path" && continue
     bytes="$(git cat-file -s ":$path" 2>/dev/null || echo 0)"
     tokens=$(( bytes / 4 ))
-    if [ "$tokens" -gt "$MAX_TOKENS" ]; then
-        violations+=("$path|$bytes|$tokens")
+    [ "$tokens" -gt "$MAX_TOKENS" ] || continue
+    # Grandfather: already over the limit at HEAD.
+    head_bytes="$(git cat-file -s "HEAD:$path" 2>/dev/null || echo 0)"
+    if [ "$head_bytes" -gt "$MAX_BYTES" ]; then
+        grandfathered+=("$path")
+        continue
     fi
+    violations+=("$path|$bytes|$tokens")
 done < <(git diff --cached --name-only --diff-filter=ACMR -z)
+
+if [ "${#grandfathered[@]}" -gt 0 ]; then
+    echo "token-limit: skipped ${#grandfathered[@]} file(s) already over ${MAX_TOKENS} tokens at HEAD: ${grandfathered[*]}" >&2
+fi
 
 [ "${#violations[@]}" -eq 0 ] && exit 0
 
@@ -78,8 +91,9 @@ done < <(git diff --cached --name-only --diff-filter=ACMR -z)
     done
     cat <<'MSG'
 
-Large files are hard for agents and reviewers to load and edit reliably. Split each file
-above so that every resulting file is under the limit, then re-stage and commit again.
+Large files are hard for agents and reviewers to load and edit reliably. Each file above
+is new or has just crossed the limit. Split it so that every resulting file is under the
+limit, then re-stage and commit again.
 
 How to split:
 
