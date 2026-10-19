@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # PreToolUse hook. On the first file-changing tool call of a session (per working
-# directory), inject the "Read before" index from the nearest CLAUDE.md so the
+# directory), inject the "Read before" index from the nearest AGENTS.md (or CLAUDE.md) so the
 # applicable guidance files are read at the moment of the first edit.
 input=$(cat)
 read -r tool sid cwd cmd < <(printf '%s' "$input" | python3 -c '
@@ -20,11 +20,11 @@ state="${TMPDIR:-/tmp}/guidance-gate-$(printf '%s|%s' "$sid" "$cwd" | md5sum | c
 [ -e "$state" ] && exit 0
 touch "$state"
 src=""
-for c in "${CLAUDE_PROJECT_DIR:-$cwd}/CLAUDE.md" "$cwd/CLAUDE.md" "$HOME/.claude/CLAUDE.md"; do
-  if [ -f "$c" ] && grep -q '^## Read before' "$c"; then src="$c"; break; fi
+for c in "${CLAUDE_PROJECT_DIR:-$cwd}/AGENTS.md" "$cwd/AGENTS.md" "${CLAUDE_PROJECT_DIR:-$cwd}/CLAUDE.md" "$HOME/.claude/CLAUDE.md"; do
+  if [ -f "$c" ] && grep -Eq '^#+ Read before' "$c"; then src="$c"; break; fi
 done
 [ -n "$src" ] || exit 0
-section=$(awk '/^## Read before/{f=1} f' "$src")
+section=$(awk '/^#+ Read before/{f=1} f' "$src")
 python3 - "$section" <<'PY'
 import json, sys
 section = sys.argv[1]
