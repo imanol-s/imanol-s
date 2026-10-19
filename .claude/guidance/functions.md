@@ -1,0 +1,13 @@
+# Inside a function
+
+**Function length is decided by abstraction seams, not line count.** Extract when a block mixes a level of abstraction with its neighbors, when a block needs a comment to say what it computes, when the extracted name says more than the code, or when the block is reused or tested separately. Leave a long function intact when it is a flat, single-level sequence (validations, a state machine, a parser loop), when extraction would need many parameters or shared mutable state, or when the helper has one caller and can only be named by what it does. Clean Code and Refactoring extract by default; APOSD keeps cohesive code together by default. The repo's conventions and lints decide first; with neither, apply the extract and leave conditions above, and when both apply, keep the code together. In review, flag mixed levels, not length.
+
+**Do not create a parameter object to satisfy a count.** Introduce one only when the values form a concept already used together elsewhere. Split a boolean-flag function into two only when the branches diverge; a pure formatting option stays a parameter. In languages with named arguments, leave several named parameters in place rather than adding a wrapper type. Leave dependency-injected constructors with many parameters alone.
+
+**Replace an overloaded sentinel with a named constant or explicit flag.** When a value such as -1 or an empty string also carries status, split the status out, unless the language lacks optional types and the sentinel is named and documented.
+
+**Add guard clauses or extract before adding a branch to deep nesting.** When a function already nests three or four deep, restructure before adding the branch. Introduce polymorphism only when the same discriminant is switched on in several places or variants are added regularly; a single switch in one place stays a switch. For value-mapping ladders, apply the table rule in section 1.
+
+**Index arithmetic gets an invariant.** For binary search, partition, two-pointer scans, merging, and windowing, state the loop invariant, and check that initialization establishes it, the body preserves it, and termination implies the result. Prefer the standard-library routine when one exists. When replacing a simple routine with an optimized one, keep the simple version as an oracle and run both on exhaustive small inputs, random inputs, and the edge cases (empty, one element, duplicates, first and last position).
+
+**Group by a canonical key instead of comparing all pairs.** When code compares every item to every other to find equivalents, define a canonical key, group by sort or hash, and verify collisions if the key is lossy. Skip this when equivalence is fuzzy or non-transitive, or N is tiny.

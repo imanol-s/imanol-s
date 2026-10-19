@@ -10,7 +10,7 @@ Product context lives in `PRODUCT.md`; `DESIGN.md` records the current implement
 
 - Root `AGENTS.md` is the single source of truth for shared repository agent instructions.
 - If `CLAUDE.md`, `.github/copilot-instructions.md`, or a tool-specific role prompt conflicts with this file, `AGENTS.md` takes precedence.
-- `CLAUDE.md` and `.github/copilot-instructions.md` are pointer-only tool adapters; maintain shared rules here.
+- `CLAUDE.md` imports this file with `@AGENTS.md` and otherwise carries only repo-agnostic engineering guidance (its always-on directives, conflict resolutions, and the read-before index into `.claude/guidance/`); `.github/copilot-instructions.md` is a pointer-only tool adapter. Maintain shared repository rules here.
 - Repository Impeccable hooks are configured in `.codex/hooks.json` with the vendored `.agents/skills/impeccable/` launcher and `.impeccable/config.json`. Preserve this complete bundle; downloaded binaries, local configuration/consent, and hook caches stay untracked. Comp-first applies to new surfaces; refinements preserve the incumbent design.
 
 ## Agent workflow and repository hygiene
