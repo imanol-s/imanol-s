@@ -1,0 +1,33 @@
+# Shaping modules and interfaces
+
+**Prefer deep modules.** Merge a pass-through helper or single-use wrapper back into its caller. Give a class one entry point with sensible defaults rather than several methods that must be called in order. Do not fuse unrelated responsibilities to look deep.
+
+**Do not add an interface, abstract base, or wrapper for a single implementation.** Extract an interface when a second real implementation or a test seam exists, and extract only the operations callers use, not the class's full surface.
+
+**Wrap an external dependency only when its types would otherwise spread.** Put an adapter at the boundary when an external SDK's types appear in several modules or in public signatures, when the dependency is volatile, or when a foreign system's field names and codes would otherwise scatter through business logic. Call the library directly when it is used once, when it is a stable standard-library or framework type, or in a short-lived script. Do not write a wrapper that mirrors the library method for method.
+
+**Isolate a variation only when it has shown up.** Build a strategy, factory, plugin point, or configuration option when a second case exists, the user says one is coming, or the task's history shows repeated requests of that kind. Otherwise implement the one case and note the likely variation in the report. Exception: at boundaries that are expensive to change later (public API, persisted format, schema), a cheap step now that prevents a costly retrofit is justified. During a rewrite, implement the old system's actual use cases first and defer every generalization.
+
+**One module owns each piece of knowledge.** When a reader and a writer of a format live in different modules, or when a pipeline is split by execution order (read, parse, process, write) with every stage touching the same raw structure, put encode and decode together behind a semantic API. Derive a second representation of a rule (types, config, docs) from the first instead of hand-copying it. Count how many files a single requirement change touches; a large count means the seam is in the wrong place.
+
+**Pull complexity down instead of adding a parameter.** When most callers would pass the same value, compute the default inside the module. Add a parameter only when callers differ or only the caller knows the policy. Before adding any flag, check whether existing parameters or their composition already cover the case, and say so.
+
+**Keep lower layers general and upper layers specific.** When a lower-level class gains a method named after a screen or feature, or several near-identical methods differ by one flag, give the lower layer primitive operations and put the feature logic above. Test for overshoot: if the current use case now takes more code to call than before, the interface is too general.
+
+**Class-based OO only: composition, interface inheritance, and closed variants.** Before writing a subclass to reuse code, check that the subclass is substitutable everywhere and overrides less than it inherits; otherwise hold the parent and delegate. Subclass when the variation is fixed per type; inject a collaborator when behavior must change after construction. Do not rewrite a shallow framework-mandated subclass into composition. When code branches on a concrete class in an open hierarchy, consider an interface or protocol; when the type is a closed variant set (sum type, sealed hierarchy), keep the exhaustive match.
+
+**In languages with first-class functions, pass a callable.** When a pattern would have one method and no state (strategy, command, single-callback observer, one-hook template method), pass a function or a map of functions instead of an interface plus one class per variant. Use the language's iterators or generators instead of an iterator class. Use a small class when the behavior needs identity, several operations, state, serialization, or undo.
+
+**Create the single instance at the composition root and pass it in.** Do not add a global accessor or module-level mutable singleton. In a codebase that already uses one, follow the local convention for new code rather than rewriting it unprompted.
+
+**Reuse the domain's term; keep one model per context.** Before naming a new concept, search the repo and docs for the existing term and reuse it exactly. When two terms appear to mean the same thing, flag it rather than silently choosing. When one shared class accumulates fields used only by some modules, or the same word carries different rules in different parts of the system, add a context-specific type or mapping at the boundary instead of another optional field. Keep external names (database columns, API fields) at the boundary and domain names inside, except in a single-use script, where raw external names stay inline. Do not draw contexts in a small single-meaning codebase.
+
+**Give primitives that travel together a small immutable type when they share a rule.** Introduce the type when two or more values are always passed together and carry validation, arithmetic, or normalization. Do not wrap a lone string with no rule, and do not add an ID or setters to something that is only a value. Return a small named type instead of a tuple or generic container across an API boundary. Keep DTOs, API payloads, records, and config as plain data; do not add behavior to them or forwarding getters to satisfy encapsulation.
+
+**An invariant that spans several objects gets one owner.** Write the invariant down, place the mutating operations on the one object that can enforce it, and make child state changeable only through it. Skip this for plain CRUD, reporting, and bulk loads with no cross-object rule.
+
+**Separate the decision from the effect.** Extract the computation (what to write, which rows qualify) into a function that returns a result and changes nothing, and have the writing path, the dry-run path, and the tests call it. Split a function that both mutates and reports into a command and a query, except for atomic read-modify-return operations (compare-and-swap, pop, dequeue, insert-returning-key) where splitting introduces a race.
+
+**Give every indirection a named reason.** Before adding a decorator, proxy, observer, mediator, or layer, state the concrete change it makes cheap; choose a direct call when you cannot name one. With one known dependent, call it directly. When adding observers, add unsubscribe and do not mutate the subject inside a callback.
+
+**Inside a framework, find the hook first.** Before patching around a framework's control flow, look for its documented extension point and check existing subclasses or plugins for the established convention.

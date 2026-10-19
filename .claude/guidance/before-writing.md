@@ -1,0 +1,13 @@
+# Before writing
+
+**Pin the problem to its data.** When a request names a mechanism ("sort this", "add a cache") rather than a goal, or when size, key range, uniqueness, or run frequency are unstated, inspect the data or state assumed values in one line, then choose the approach from those numbers. Do not implement the first general-purpose approach that matches the verbs in the request. Skip this when tests, a schema, or a contract already fix the problem.
+
+**Write a one-to-three line estimate before choosing between in-memory and streaming, before adding a cache or index, and before accepting a claim that something is too slow.** If the code already runs, measure instead of estimating.
+
+**Run a thin end-to-end path first for work that crosses layers.** When a feature spans UI, API, storage, or an external service, wire one trivial case through every layer, run it, then widen, instead of finishing one layer completely. Stubs on that path must be side-effect free. A spike that answers one technical question is a different thing: label it, keep it outside the source tree, report the answer, and delete it. Do not let a spike grow into the feature. When the design is already known, refine the existing system in small steps rather than proposing a rewrite.
+
+**Design hard-to-change interfaces twice.** For a public API, a persisted schema, a file format, or a module with several callers, write two candidate signatures with a sample caller each and pick by caller simplicity. For local, easily reversed code, pick the first workable design.
+
+**Choose the representation before the control flow.** When a function has many conditionals over combinations of flags, when parallel lists are indexed together, or when a lookup is a linear scan inside a loop, sketch the data (types, tables, state set) and replace the branching with a table, map, sorted structure, or precomputed index. Use a table when the branches differ only by a value or a function to call and cases are added often. Keep the conditional when each branch has distinct logic, when there are few cases, or when the table would live in a different file from its only consumer. For a one-off script, a data model is overhead.
+
+**Separate essential from accidental complexity before reaching for a framework.** When code is hard to read, state whether the difficulty comes from many real domain rules or from structure. Propose a refactor or abstraction only for the structural part. Leave visible domain special cases as explicit code; do not hide them behind a generic layer. Classify a hard part as essential only after examining whether a different representation shrinks it.
