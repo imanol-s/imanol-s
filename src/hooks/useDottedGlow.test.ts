@@ -69,6 +69,7 @@ beforeEach(() => {
     setTransform: vi.fn(),
     createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
     fillRect: vi.fn(),
+    drawImage: vi.fn(),
     get fillStyle() {
       return "";
     },
