@@ -36,9 +36,28 @@ jobs:
         if: steps.site.outputs.build == 'true'
       - run: npm run test
         if: steps.site.outputs.build == 'true'
+      # Optimized images are content-addressed, so a partial restore is safe.
+      - uses: actions/cache@v4
+        if: steps.site.outputs.build == 'true'
+        with:
+          path: node_modules/.astro/assets
+          key: astro-assets-${{ runner.os }}-${{ hashFiles('src/**/*.png', 'src/**/*.jpg', 'src/**/*.jpeg', 'src/**/*.webp', 'src/**/*.svg', 'astro.config.mjs', 'package-lock.json') }}
+          restore-keys: astro-assets-${{ runner.os }}-
       - run: npm run build
         if: steps.site.outputs.build == 'true'
-      - run: npx playwright install --with-deps chromium
+      - name: Read Playwright version
+        id: playwright
         if: steps.site.outputs.build == 'true'
+        run: echo "version=$(npx playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: playwright-cache
+        if: steps.site.outputs.build == 'true'
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+      - run: npx playwright install --with-deps chromium
+        if: steps.site.outputs.build == 'true' && steps.playwright-cache.outputs.cache-hit != 'true'
+      - run: npx playwright install-deps chromium
+        if: steps.site.outputs.build == 'true' && steps.playwright-cache.outputs.cache-hit == 'true'
       - run: npm run test:e2e
         if: steps.site.outputs.build == 'true'
