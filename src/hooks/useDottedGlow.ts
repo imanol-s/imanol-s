@@ -41,10 +41,21 @@ function resolveCssVar(varName: string): string {
  * Returns a callback ref to attach to the <canvas> element.
  */
 export function useDottedGlow(): React.RefCallback<HTMLCanvasElement> {
-  // Called for its side-effect: triggers re-render on theme change so
-  // getComputedStyle in the draw loop reads fresh CSS variable values.
-  useDarkMode();
+  // Read for its side-effect too: a theme change re-renders the component, and
+  // the effect below refreshes the resolved colors once instead of on every frame.
+  const dark = useDarkMode();
   const reduced = useReducedMotion();
+
+  // Resolved once per theme instead of twice per frame: reading a custom
+  // property forces a style recalculation, which on its own dominated the
+  // frame budget on throttled devices.
+  const colorsRef = useRef<{ accent: string; glow: string } | null>(null);
+  useEffect(() => {
+    colorsRef.current = {
+      accent: resolveCssVar(ACCENT_VAR),
+      glow: resolveCssVar(GLOW_VAR),
+    };
+  }, [dark]);
 
   // Stable ref so the RAF closure always sees the latest value without
   // needing to re-run the full setup (observers + RAF) on every render.
@@ -129,12 +140,14 @@ export function useDottedGlow(): React.RefCallback<HTMLCanvasElement> {
         return;
       }
 
-      const accentColor = resolveCssVar(ACCENT_VAR);
-      const glowColor = resolveCssVar(GLOW_VAR);
-      const colors = `${accentColor}|${glowColor}`;
-      if (colors !== spriteColors) {
-        buildSprites(accentColor, glowColor);
-        spriteColors = colors;
+      const colors = colorsRef.current ?? (colorsRef.current = {
+        accent: resolveCssVar(ACCENT_VAR),
+        glow: resolveCssVar(GLOW_VAR),
+      });
+      const colorKey = `${colors.accent}|${colors.glow}`;
+      if (colorKey !== spriteColors) {
+        buildSprites(colors.accent, colors.glow);
+        spriteColors = colorKey;
       }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
