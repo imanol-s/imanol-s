@@ -34,6 +34,8 @@ const routes = [
 test("content images preserve semantics, dimensions and presentation on every page", async ({
   page,
 }) => {
+  // Twelve page loads with every image checked in turn: about 30s on 4-worker CI, the default budget.
+  test.slow();
   for (const width of [390, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     for (const route of routes) {

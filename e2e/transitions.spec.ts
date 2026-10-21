@@ -203,10 +203,9 @@ test("aborts stale artwork preparation and preserves keyboard and history naviga
   );
   await page.goForward();
   await expect(page.locator("body[data-field-map]")).toHaveCount(1);
-  await expect(page.locator("[data-loading-overlay]")).toHaveCount(0);
 });
 
-test("repeated CPU-throttled swaps never capture the fallback or replay the intro", async ({
+test("repeated CPU-throttled swaps never capture the fallback", async ({
   page,
   context,
 }) => {
@@ -223,7 +222,6 @@ test("repeated CPU-throttled swaps never capture the fallback or replay the intr
     );
     await page.locator(".site-brand").click();
     await expect(page.locator("body[data-field-map]")).toHaveCount(1);
-    await expect(page.locator("[data-loading-overlay]")).toHaveCount(0);
   }
   await expect.poll(() => paints(page)).toHaveLength(6);
   expect((await paints(page)).every((paint) => !paint.covered)).toBe(true);

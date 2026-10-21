@@ -144,6 +144,7 @@ const hills = [
             height="174"
             alt=""
             decoding="async"
+            onload="this.dataset.loaded = ''"
           />
         </picture>
       </foreignObject>
@@ -355,6 +356,17 @@ const hills = [
     display: block;
     width: 100%;
     height: 100%;
+  }
+  /* Set by the img's onload; the lake arrives after the terrain, so fade it in. */
+  @media (scripting: enabled) {
+    .field-map-lake img:not([data-loaded]) {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .field-map-lake img {
+      transition: opacity 600ms ease-out;
+    }
   }
   @media (max-width: 1239px), (min-width: 1625px) {
     .field-map-lake {

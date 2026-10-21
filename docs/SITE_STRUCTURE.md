@@ -29,7 +29,7 @@ Project MDX lives in `src/content/projects/`. Artwork is imported from `src/asse
 
 ## Client behavior
 
-Only three React islands exist: `TopoBackground` and `LoadingOverlay` use `client:only="react"`; `TypewriterText` uses `client:load`. Their shared state lives in `src/hooks/useSiteLifecycle.ts`, not React context. Astro components also own focused browser scripts; server-rendered Astro does not mean the whole site is JavaScript-free.
+Only one React island exists: `TopoBackground` uses `client:only="react"`. Astro components also own focused browser scripts; server-rendered Astro does not mean the whole site is JavaScript-free.
 
 `ClientRouter` handles navigation. DOM setup uses `astro:page-load` with cleanup; navigation artwork preparation lives in `src/utils/pageTransition.ts`. Header docking and menu behavior remain in their existing utilities. Field-map and forest composition stay in their own components.
 

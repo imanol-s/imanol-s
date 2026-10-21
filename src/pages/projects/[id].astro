@@ -472,6 +472,7 @@ const isSensori = post.id === "sensori-robotics";
     observer.observe(footer);
     if (header) observer.observe(header);
     measure();
+    contents?.setAttribute("data-settled", "");
     if (window.location.hash) syncHash();
     else update();
     document.fonts.ready.then(() => {
@@ -897,6 +898,12 @@ const isSensori = post.id === "sensori-robotics";
       background: var(--story-panel);
       border: 1px solid var(--story-border);
       border-radius: 4px;
+    }
+    /* The server HTML keeps the contents open for the wide layout; hold the dropdown until the script has closed it. */
+    @media (scripting: enabled) {
+      .project-contents:not([data-settled]) > .contents-body {
+        display: none;
+      }
     }
     .project-facts-desktop {
       display: none;

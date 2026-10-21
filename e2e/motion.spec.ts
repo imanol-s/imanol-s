@@ -1,51 +1,21 @@
 import { test, expect } from "@playwright/test";
+import { ME } from "../src/config";
 
 type MotionWindow = Window & {
-  nameSamples: string[];
   topoNode: HTMLElement | null;
 };
 
-for (const width of [1280, 390]) {
-  test(`first-visit name stays complete during the intro at ${width}px`, async ({
-    page,
-  }) => {
-    await page.setViewportSize({ width, height: 800 });
-    await page.emulateMedia({ reducedMotion: "no-preference" });
-    await page.addInitScript(() => {
-      sessionStorage.removeItem("site-lifecycle-ready");
-      const browser = window as unknown as MotionWindow;
-      browser.nameSamples = [];
-      const start = performance.now();
-      const sample = () => {
-        const output = document.querySelector("[data-typewriter-output]");
-        if (output) browser.nameSamples.push(output.textContent ?? "");
-        if (performance.now() - start < 4000) requestAnimationFrame(sample);
-      };
-      requestAnimationFrame(sample);
-    });
-    await page.goto("/");
-    const fullName = await page.locator("h1").getAttribute("aria-label");
-    expect(fullName).toBeTruthy();
-    await page
-      .locator('astro-island[component-url*="TypewriterText"]:not([ssr])')
-      .waitFor({ state: "attached" });
-    await expect(page.locator("[data-loading-overlay]")).toHaveCount(0);
-    await expect
-      .poll(() =>
-        page.evaluate(() =>
-          (window as unknown as MotionWindow).nameSamples.at(-1),
-        ),
-      )
-      .toBe(fullName);
-    await expect(page.locator("[data-typewriter-output]")).toHaveText(
-      fullName!,
-    );
-    const samples = await page.evaluate(
-      () => (window as unknown as MotionWindow).nameSamples,
-    );
-    expect(samples.every((sample) => sample === fullName)).toBe(true);
-  });
-}
+test("server-rendered name is complete and the hero action works without JavaScript", async ({
+  page,
+}) => {
+  await page.route(/\/_astro\/.*\.js(?:\?|$)/, (route) => route.abort());
+  await page.goto("/");
+  await expect(page.locator(".hero-name h1")).toHaveText(ME.name);
+  const action = page.getByRole("link", { name: /Explore my work/ });
+  await expect(action).toBeVisible();
+  await action.click();
+  await expect(page).toHaveURL(/#projects$/);
+});
 
 test("Back to top keeps its outlined hit target while overlapping the desktop sidebar", async ({
   page,

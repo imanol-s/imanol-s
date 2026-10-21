@@ -1,6 +1,5 @@
 ---
 import SiteImage from "@/components/SiteImage.astro";
-import TypewriterText from "./TypewriterText.tsx";
 import { ME, SOCIALS } from "../config";
 import { timelineJobs, primaryEducation } from "../data/career";
 import portraitLineart from "../assets/portrait-lineart.svg";
@@ -17,17 +16,19 @@ const education = primaryEducation();
 ---
 
 <section class="hero-section" aria-label="Introduction">
-  <div class="hero-landscape">
-    <ForestScene staticTerrain={staticTerrain} />
-  </div>
   <div class="hero-main">
     <div class="hero-copy">
-      <div class="hero-name"><TypewriterText client:load text={ME.name} /></div>
+      <div class="hero-name">
+        <h1 class="text-5xl md:text-7xl font-display font-bold mb-4 leading-tight">
+          {ME.name}
+        </h1>
+      </div>
       <p class="hero-profession">{ME.profession.join(" / ")}</p>
       <h2 class="hero-headline">
         {ME.headline.map((line) => <span>{line}</span>)}
       </h2>
-      <p class="hero-description">{ME.aboutMe}</p>
+      {/* One copy per breakpoint so the server HTML already has the settled order; the hidden copy is display: none, so it is out of the accessibility tree. */}
+      <p class="hero-description" data-breakpoint="desktop">{ME.aboutMe}</p>
       <div class="hero-actions">
         <a class="cta-primary focus-ring" href="#projects"
           >Explore my work <span aria-hidden="true">↗</span></a
@@ -43,7 +44,6 @@ const education = primaryEducation();
           type="button"
           class="scenery-control focus-ring"
           aria-label="Pause scenery animation"
-          hidden
         >
           <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
             <path
@@ -57,6 +57,7 @@ const education = primaryEducation();
           </svg>
         </button>
       </div>
+      <p class="hero-description" data-breakpoint="mobile">{ME.aboutMe}</p>
     </div>
     <div class="portrait-column">
       <div class="portrait-illustration">
@@ -126,6 +127,10 @@ const education = primaryEducation();
       </p>
     </div>
   </div>
+  {/* Decorative scenery follows the content: on phones it is placed from the hero's bottom, so a first paint before the content parsed would drop it in the wrong place. */}
+  <div class="hero-landscape">
+    <ForestScene staticTerrain={staticTerrain} />
+  </div>
 </section>
 
 <style>
@@ -145,6 +150,12 @@ const education = primaryEducation();
   }
   .scenery-control[hidden] {
     display: none;
+  }
+  /* Present from first paint wherever it works, rather than revealed by the script. */
+  @media (scripting: none), (prefers-reduced-motion: reduce) {
+    .scenery-control {
+      display: none;
+    }
   }
   .scenery-control:hover {
     color: #f0fff9;
@@ -226,6 +237,9 @@ const education = primaryEducation();
   .hero-headline span:last-child {
     color: #b6e5d3;
   }
+  .hero-description[data-breakpoint="mobile"] {
+    display: none;
+  }
   .hero-description {
     color: #cbd5e1;
     font-size: 1rem;
@@ -293,6 +307,10 @@ const education = primaryEducation();
     white-space: nowrap;
     clip-path: inset(0 100% 0 0);
     animation: iteration-dots 1.4s steps(1, end) infinite;
+  }
+  /* Set by the script below while the note is offscreen: the steps() animation otherwise restyles every frame. */
+  .portrait-note[data-offscreen] .iteration-dots {
+    animation-play-state: paused;
   }
   @keyframes iteration-dots {
     0% {
@@ -371,6 +389,12 @@ const education = primaryEducation();
     }
   }
   @media (max-width: 767px) {
+    .hero-description[data-breakpoint="desktop"] {
+      display: none;
+    }
+    .hero-description[data-breakpoint="mobile"] {
+      display: block;
+    }
     .hero-landscape {
       top: auto;
       bottom: 8rem;
@@ -463,24 +487,20 @@ const education = primaryEducation();
 </style>
 
 <script>
-  let cleanupActions: (() => void) | undefined;
+  let cleanupDots: (() => void) | undefined;
   document.addEventListener("astro:before-swap", () => {
-    cleanupActions?.();
-    cleanupActions = undefined;
+    cleanupDots?.();
+    cleanupDots = undefined;
   });
   document.addEventListener("astro:page-load", () => {
-    cleanupActions?.();
-    cleanupActions = undefined;
-    const copy = document.querySelector(".hero-copy");
-    const actions = copy?.querySelector(".hero-actions");
-    const intro = copy?.querySelector(".hero-description");
-    if (!copy || !actions || !intro) return;
-    const mobile = window.matchMedia("(max-width: 767px)");
-    // DOM order keeps mobile reading and keyboard navigation aligned with the layout.
-    const arrange = () =>
-      mobile.matches ? copy.insertBefore(actions, intro) : copy.append(actions);
-    arrange();
-    mobile.addEventListener("change", arrange);
-    cleanupActions = () => mobile.removeEventListener("change", arrange);
+    cleanupDots?.();
+    cleanupDots = undefined;
+    const note = document.querySelector<HTMLElement>(".portrait-note");
+    if (!note || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      note.toggleAttribute("data-offscreen", !entry.isIntersecting);
+    });
+    observer.observe(note);
+    cleanupDots = () => observer.disconnect();
   });
 </script>

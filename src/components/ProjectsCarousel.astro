@@ -17,7 +17,7 @@ const allProjects = getSortedProjects(await getCollection("projects"));
   </h2>
   <div class="project-grid">
     {
-      allProjects.map((project) => (
+      allProjects.map((project, index) => (
         <a
           href={`/projects/${project.id}`}
           class={`project-card project-${project.id} group cad-border focus-ring`}
@@ -28,8 +28,9 @@ const allProjects = getSortedProjects(await getCollection("projects"));
               alt=""
               class="project-cover"
               sizes="(min-width: 1280px) 560px, (min-width: 768px) 45vw, 90vw"
-              loading="lazy"
+              loading={index < 2 ? "eager" : "lazy"}
               decoding="async"
+              onload="this.dataset.loaded = ''"
             />
           </div>
           <div class="project-copy">
@@ -85,6 +86,12 @@ const allProjects = getSortedProjects(await getCollection("projects"));
     height: 100%;
     object-fit: cover;
     object-position: center;
+  }
+  /* Set by the cover's onload; fade in rather than snap from the placeholder. Without scripting the cover shows as is. */
+  @media (scripting: enabled) {
+    .project-artwork :global(.project-cover:not([data-loaded])) {
+      opacity: 0;
+    }
   }
 
   .project-copy {
@@ -160,7 +167,9 @@ const allProjects = getSortedProjects(await getCollection("projects"));
   }
   @media (prefers-reduced-motion: no-preference) {
     .project-artwork :global(.project-cover) {
-      transition: transform 250ms ease;
+      transition:
+        transform 250ms ease,
+        opacity 400ms ease-out;
     }
     .project-card:hover .project-artwork :global(.project-cover) {
       transform: scale(1.035);
