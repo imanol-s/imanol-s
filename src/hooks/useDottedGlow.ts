@@ -19,7 +19,12 @@ const ACCENT_VAR = "--color-accent";
 const GLOW_VAR = "--color-primary";
 // Glow is quantized into pre-rendered sprites; per-dot shadowBlur on every
 // frame dominated main-thread time on throttled devices.
-const GLOW_LEVELS = 16;
+// Alpha is baked into the sprites too: changing globalAlpha per draw made
+// Chrome 107's canvas flush take ~16s per frame for a full-viewport grid.
+const ALPHA_LEVELS = 32;
+// Range of dotAlpha() in animations/dotMath.ts.
+const ALPHA_MIN = 0.25;
+const ALPHA_MAX = 0.8;
 const MAX_BLUR = 6;
 const SPRITE_HALF = RADIUS + MAX_BLUR * 2;
 
@@ -109,22 +114,25 @@ export function useDottedGlow(): React.RefCallback<HTMLCanvasElement> {
     resize();
     regenDots();
 
-    // One sprite per glow level, rebuilt only when the theme colors change.
+    // One sprite per alpha level, rebuilt only when the theme colors change.
     let sprites: HTMLCanvasElement[] = [];
     let spriteColors = "";
     const buildSprites = (accentColor: string, glowColor: string) => {
       const size = Math.ceil(SPRITE_HALF * 2 * dpr);
-      sprites = Array.from({ length: GLOW_LEVELS + 1 }, (_, level) => {
+      sprites = Array.from({ length: ALPHA_LEVELS + 1 }, (_, level) => {
         const sprite = document.createElement("canvas");
         sprite.width = size;
         sprite.height = size;
         const sctx = sprite.getContext("2d");
         if (!sctx) return sprite;
+        const a = ALPHA_MIN + ((ALPHA_MAX - ALPHA_MIN) * level) / ALPHA_LEVELS;
+        const glow = dotGlow(a);
         sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        sctx.globalAlpha = a * OPACITY;
         sctx.fillStyle = accentColor;
-        if (level > 0) {
+        if (glow > 0) {
           sctx.shadowColor = glowColor;
-          sctx.shadowBlur = (MAX_BLUR * level) / GLOW_LEVELS;
+          sctx.shadowBlur = MAX_BLUR * glow;
         }
         sctx.beginPath();
         sctx.arc(SPRITE_HALF, SPRITE_HALF, RADIUS, 0, Math.PI * 2);
@@ -140,10 +148,12 @@ export function useDottedGlow(): React.RefCallback<HTMLCanvasElement> {
         return;
       }
 
-      const colors = colorsRef.current ?? (colorsRef.current = {
-        accent: resolveCssVar(ACCENT_VAR),
-        glow: resolveCssVar(GLOW_VAR),
-      });
+      const colors =
+        colorsRef.current ??
+        (colorsRef.current = {
+          accent: resolveCssVar(ACCENT_VAR),
+          glow: resolveCssVar(GLOW_VAR),
+        });
       const colorKey = `${colors.accent}|${colors.glow}`;
       if (colorKey !== spriteColors) {
         buildSprites(colors.accent, colors.glow);
@@ -160,9 +170,10 @@ export function useDottedGlow(): React.RefCallback<HTMLCanvasElement> {
       for (let i = 0; i < dots.length; i++) {
         const d = dots[i];
         const a = dotAlpha(d, timeSec, 1);
-        const level = Math.round(dotGlow(a) * GLOW_LEVELS);
+        const level = Math.round(
+          ((a - ALPHA_MIN) / (ALPHA_MAX - ALPHA_MIN)) * ALPHA_LEVELS,
+        );
 
-        ctx.globalAlpha = a * OPACITY;
         ctx.drawImage(
           sprites[level],
           d.x - SPRITE_HALF,

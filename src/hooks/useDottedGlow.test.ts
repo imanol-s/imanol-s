@@ -183,6 +183,31 @@ describe("useDottedGlow", () => {
     expect(ResizeObserver).not.toHaveBeenCalled();
   });
 
+  it("never changes globalAlpha on the main canvas while drawing a frame", () => {
+    const { result } = renderHook(() => useDottedGlow());
+    const canvas = makeCanvas();
+    const setAlpha = vi.fn();
+    const mainCtx = {
+      clearRect: vi.fn(),
+      save: vi.fn(),
+      restore: vi.fn(),
+      setTransform: vi.fn(),
+      drawImage: vi.fn(),
+      set globalAlpha(v: number) {
+        setAlpha(v);
+      },
+    };
+    canvas.getContext = vi.fn(
+      () => mainCtx,
+    ) as unknown as typeof canvas.getContext;
+
+    result.current(canvas);
+    rafCallbacks[0](1000);
+
+    expect(mainCtx.drawImage).toHaveBeenCalled();
+    expect(setAlpha).not.toHaveBeenCalled();
+  });
+
   it("re-attaches cleanly when called with a new canvas", () => {
     const { result } = renderHook(() => useDottedGlow());
 
