@@ -27,6 +27,7 @@ Product context lives in `PRODUCT.md`; `DESIGN.md` records the current implement
 
 - Use native subagent tooling when delegation is requested or required; do not create user-owned chats for internal subtasks.
 - Before Astro-specific changes or recommendations, retrieve version-compatible Astro Docs MCP guidance and verify the installed Astro version. Documentation never authorizes a dependency upgrade. If MCP is unavailable, use official Astro documentation and disclose the limitation.
+- Project-scoped Astro Docs MCP configuration lives in `.mcp.json` for Claude and `.codex/config.toml` for Codex. Both use the public Streamable HTTP endpoint `https://mcp.docs.astro.build/mcp`; keep the URLs in sync. Codex loads project configuration only for trusted projects. Restart the client after configuration changes.
 - For Claude browsing, use `/browse` if gstack is available rather than `mcp__claude-in-chrome__*`; do not assume global tools are installed.
 
 ## Naming Conventions
