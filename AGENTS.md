@@ -223,6 +223,7 @@ function displayName(name: string) {
 - Vitest + jsdom is configured. Run `npm run test` for a single pass or `npm run test:watch` for watch mode
 - Expectations must be independent of the implementation: no mocked subject, copied algorithm, vacuous assertions, or generated candidate caps that hide regressions. Each changed test must catch a concrete failure.
 - Use `npm run test:e2e` for browser-level validation when page rendering, navigation, or responsive layout changes are involved
+- Playwright runs 4 workers when `CI` is set. PR CI caches Astro's optimized images (`node_modules/.astro/assets`) and Playwright's Chromium download (keyed on the installed Playwright version); keep e2e specs independent across files.
 - Add `// @vitest-environment jsdom` at the top of test files that require browser APIs
 - Type-checking via `astro check` remains the primary safety net; tests supplement it for behavioral coverage
 

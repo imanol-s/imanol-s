@@ -12,6 +12,8 @@ export default defineConfig({
     screenshot: "on",
     trace: "retain-on-failure",
   },
+  // GitHub-hosted ubuntu-latest runners have 4 vCPUs; Playwright's CI default uses half.
+  workers: process.env.CI ? 4 : undefined,
   reporter: [["html", { open: "on-failure" }], ["list"]],
   testDir: "e2e",
   outputDir: "test-results",
