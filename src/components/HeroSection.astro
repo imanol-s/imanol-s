@@ -17,9 +17,6 @@ const education = primaryEducation();
 ---
 
 <section class="hero-section" aria-label="Introduction">
-  <div class="hero-landscape">
-    <ForestScene staticTerrain={staticTerrain} />
-  </div>
   <div class="hero-main">
     <div class="hero-copy">
       <div class="hero-name"><TypewriterText client:load text={ME.name} /></div>
@@ -125,6 +122,10 @@ const education = primaryEducation();
         {ME.focusAreas.map((area) => <span class="context-focus">{area}</span>)}
       </p>
     </div>
+  </div>
+  {/* Decorative scenery follows the content: on phones it is placed from the hero's bottom, so a first paint before the content parsed would drop it in the wrong place. */}
+  <div class="hero-landscape">
+    <ForestScene staticTerrain={staticTerrain} />
   </div>
 </section>
 
