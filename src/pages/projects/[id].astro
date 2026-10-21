@@ -32,6 +32,7 @@ const isSensori = post.id === "sensori-robotics";
   title={title}
   description={summary}
   imageOg={cover.format === "svg" ? SITE.ogImage : cover.src}
+  storyFont
 >
   <noscript>
     <style is:inline>
@@ -492,7 +493,9 @@ const isSensori = post.id === "sensori-robotics";
 <style>
   @font-face {
     font-family: "Project Story";
-    src: url("/project-story/WixMadeforText.ttf") format("truetype");
+    src:
+      url("/project-story/WixMadeforText.woff2") format("woff2"),
+      url("/project-story/WixMadeforText.ttf") format("truetype");
     font-weight: 400 800;
     font-style: normal;
     font-display: swap;

@@ -17,6 +17,16 @@ const SPEED_MIN = 0.3;
 const SPEED_MAX = 1.0;
 const ACCENT_VAR = "--color-accent";
 const GLOW_VAR = "--color-primary";
+// Glow is quantized into pre-rendered sprites; per-dot shadowBlur on every
+// frame dominated main-thread time on throttled devices.
+// Alpha is baked into the sprites too: changing globalAlpha per draw made
+// Chrome 107's canvas flush take ~16s per frame for a full-viewport grid.
+const ALPHA_LEVELS = 32;
+// Range of dotAlpha() in animations/dotMath.ts.
+const ALPHA_MIN = 0.25;
+const ALPHA_MAX = 0.8;
+const MAX_BLUR = 6;
+const SPRITE_HALF = RADIUS + MAX_BLUR * 2;
 
 /**
  * Reads a CSS custom property value from `:root` at call-time.
@@ -36,10 +46,21 @@ function resolveCssVar(varName: string): string {
  * Returns a callback ref to attach to the <canvas> element.
  */
 export function useDottedGlow(): React.RefCallback<HTMLCanvasElement> {
-  // Called for its side-effect: triggers re-render on theme change so
-  // getComputedStyle in the draw loop reads fresh CSS variable values.
-  useDarkMode();
+  // Read for its side-effect too: a theme change re-renders the component, and
+  // the effect below refreshes the resolved colors once instead of on every frame.
+  const dark = useDarkMode();
   const reduced = useReducedMotion();
+
+  // Resolved once per theme instead of twice per frame: reading a custom
+  // property forces a style recalculation, which on its own dominated the
+  // frame budget on throttled devices.
+  const colorsRef = useRef<{ accent: string; glow: string } | null>(null);
+  useEffect(() => {
+    colorsRef.current = {
+      accent: resolveCssVar(ACCENT_VAR),
+      glow: resolveCssVar(GLOW_VAR),
+    };
+  }, [dark]);
 
   // Stable ref so the RAF closure always sees the latest value without
   // needing to re-run the full setup (observers + RAF) on every render.
@@ -93,6 +114,33 @@ export function useDottedGlow(): React.RefCallback<HTMLCanvasElement> {
     resize();
     regenDots();
 
+    // One sprite per alpha level, rebuilt only when the theme colors change.
+    let sprites: HTMLCanvasElement[] = [];
+    let spriteColors = "";
+    const buildSprites = (accentColor: string, glowColor: string) => {
+      const size = Math.ceil(SPRITE_HALF * 2 * dpr);
+      sprites = Array.from({ length: ALPHA_LEVELS + 1 }, (_, level) => {
+        const sprite = document.createElement("canvas");
+        sprite.width = size;
+        sprite.height = size;
+        const sctx = sprite.getContext("2d");
+        if (!sctx) return sprite;
+        const a = ALPHA_MIN + ((ALPHA_MAX - ALPHA_MIN) * level) / ALPHA_LEVELS;
+        const glow = dotGlow(a);
+        sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        sctx.globalAlpha = a * OPACITY;
+        sctx.fillStyle = accentColor;
+        if (glow > 0) {
+          sctx.shadowColor = glowColor;
+          sctx.shadowBlur = MAX_BLUR * glow;
+        }
+        sctx.beginPath();
+        sctx.arc(SPRITE_HALF, SPRITE_HALF, RADIUS, 0, Math.PI * 2);
+        sctx.fill();
+        return sprite;
+      });
+    };
+
     const draw = (now: number) => {
       if (stopped) return;
       if (!isVisible || reducedRef.current) {
@@ -100,33 +148,39 @@ export function useDottedGlow(): React.RefCallback<HTMLCanvasElement> {
         return;
       }
 
-      const accentColor = resolveCssVar(ACCENT_VAR);
-      const glowColor = resolveCssVar(GLOW_VAR);
+      const colors =
+        colorsRef.current ??
+        (colorsRef.current = {
+          accent: resolveCssVar(ACCENT_VAR),
+          glow: resolveCssVar(GLOW_VAR),
+        });
+      const colorKey = `${colors.accent}|${colors.glow}`;
+      if (colorKey !== spriteColors) {
+        buildSprites(colors.accent, colors.glow);
+        spriteColors = colorKey;
+      }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       ctx.save();
-      ctx.fillStyle = accentColor;
 
       const timeSec = now / 1000;
+      const spriteSize = SPRITE_HALF * 2;
 
       for (let i = 0; i < dots.length; i++) {
         const d = dots[i];
         const a = dotAlpha(d, timeSec, 1);
-        const glow = dotGlow(a);
+        const level = Math.round(
+          ((a - ALPHA_MIN) / (ALPHA_MAX - ALPHA_MIN)) * ALPHA_LEVELS,
+        );
 
-        if (glow > 0) {
-          ctx.shadowColor = glowColor;
-          ctx.shadowBlur = 6 * glow;
-        } else {
-          ctx.shadowColor = "transparent";
-          ctx.shadowBlur = 0;
-        }
-
-        ctx.globalAlpha = a * OPACITY;
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, RADIUS, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.drawImage(
+          sprites[level],
+          d.x - SPRITE_HALF,
+          d.y - SPRITE_HALF,
+          spriteSize,
+          spriteSize,
+        );
       }
 
       ctx.restore();

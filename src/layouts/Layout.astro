@@ -24,6 +24,7 @@ interface Props {
   imageOg?: string;
   heroImage?: ImageMetadata;
   fieldMap?: boolean;
+  storyFont?: boolean;
 }
 
 const {
@@ -33,6 +34,7 @@ const {
   imageOg = SITE.ogImage,
   heroImage,
   fieldMap = false,
+  storyFont = false,
 } = Astro.props;
 
 const heroPreload = heroImage
@@ -77,6 +79,17 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
       href={jbMonoLatinUrl}
       crossorigin
     />
+    {
+      storyFont && (
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href="/project-story/WixMadeforText.woff2"
+          crossorigin
+        />
+      )
+    }
 
     {
       heroPreload && (

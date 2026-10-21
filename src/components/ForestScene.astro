@@ -16,7 +16,7 @@ const optimizedLandscape = await getImage({
   quality: 70,
 });
 // Same options as FieldMapScenery.astro, so the camp ground reuses the terrain request.
-const terrainImage = await getImage({ src: terrain, format: "webp" });
+const terrainImage = await getImage({ src: terrain, format: "webp", quality: 60 });
 ---
 
 <div class="forest-scene" data-paused="true">

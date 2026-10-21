@@ -3,7 +3,7 @@ import { getImage } from "astro:assets";
 import terrain from "../assets/field-map-terrain.webp";
 import lake from "../assets/field-map-lake.webp";
 
-const terrainImage = await getImage({ src: terrain, format: "webp" });
+const terrainImage = await getImage({ src: terrain, format: "webp", quality: 60 });
 const lakeImage = await getImage({ src: lake, format: "webp" });
 const leftContour = [1, 0.84, 0.66, 0.5, 0.31];
 const rightContour = [1, 0.78, 0.6, 0.36];
@@ -36,7 +36,7 @@ const hills = [
     alt=""
     loading="eager"
     decoding="async"
-    fetchpriority="low"
+    fetchpriority="high"
   />
   <div class="field-map-additions">
     <svg viewBox="0 0 1024 1536" preserveAspectRatio="none">
