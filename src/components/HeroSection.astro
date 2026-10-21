@@ -294,6 +294,10 @@ const education = primaryEducation();
     clip-path: inset(0 100% 0 0);
     animation: iteration-dots 1.4s steps(1, end) infinite;
   }
+  /* Set by the script below while the note is offscreen: the steps() animation otherwise restyles every frame. */
+  .portrait-note[data-offscreen] .iteration-dots {
+    animation-play-state: paused;
+  }
   @keyframes iteration-dots {
     0% {
       clip-path: inset(0 100% 0 0);
@@ -482,5 +486,22 @@ const education = primaryEducation();
     arrange();
     mobile.addEventListener("change", arrange);
     cleanupActions = () => mobile.removeEventListener("change", arrange);
+  });
+
+  let cleanupDots: (() => void) | undefined;
+  document.addEventListener("astro:before-swap", () => {
+    cleanupDots?.();
+    cleanupDots = undefined;
+  });
+  document.addEventListener("astro:page-load", () => {
+    cleanupDots?.();
+    cleanupDots = undefined;
+    const note = document.querySelector<HTMLElement>(".portrait-note");
+    if (!note || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      note.toggleAttribute("data-offscreen", !entry.isIntersecting);
+    });
+    observer.observe(note);
+    cleanupDots = () => observer.disconnect();
   });
 </script>
