@@ -27,7 +27,8 @@ const education = primaryEducation();
       <h2 class="hero-headline">
         {ME.headline.map((line) => <span>{line}</span>)}
       </h2>
-      <p class="hero-description">{ME.aboutMe}</p>
+      {/* One copy per breakpoint so the server HTML already has the settled order; the hidden copy is display: none, so it is out of the accessibility tree. */}
+      <p class="hero-description" data-breakpoint="desktop">{ME.aboutMe}</p>
       <div class="hero-actions">
         <a class="cta-primary focus-ring" href="#projects"
           >Explore my work <span aria-hidden="true">↗</span></a
@@ -43,7 +44,6 @@ const education = primaryEducation();
           type="button"
           class="scenery-control focus-ring"
           aria-label="Pause scenery animation"
-          hidden
         >
           <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
             <path
@@ -57,6 +57,7 @@ const education = primaryEducation();
           </svg>
         </button>
       </div>
+      <p class="hero-description" data-breakpoint="mobile">{ME.aboutMe}</p>
     </div>
     <div class="portrait-column">
       <div class="portrait-illustration">
@@ -150,6 +151,12 @@ const education = primaryEducation();
   .scenery-control[hidden] {
     display: none;
   }
+  /* Present from first paint wherever it works, rather than revealed by the script. */
+  @media (scripting: none), (prefers-reduced-motion: reduce) {
+    .scenery-control {
+      display: none;
+    }
+  }
   .scenery-control:hover {
     color: #f0fff9;
   }
@@ -229,6 +236,9 @@ const education = primaryEducation();
   }
   .hero-headline span:last-child {
     color: #b6e5d3;
+  }
+  .hero-description[data-breakpoint="mobile"] {
+    display: none;
   }
   .hero-description {
     color: #cbd5e1;
@@ -379,6 +389,12 @@ const education = primaryEducation();
     }
   }
   @media (max-width: 767px) {
+    .hero-description[data-breakpoint="desktop"] {
+      display: none;
+    }
+    .hero-description[data-breakpoint="mobile"] {
+      display: block;
+    }
     .hero-landscape {
       top: auto;
       bottom: 8rem;
@@ -471,27 +487,6 @@ const education = primaryEducation();
 </style>
 
 <script>
-  let cleanupActions: (() => void) | undefined;
-  document.addEventListener("astro:before-swap", () => {
-    cleanupActions?.();
-    cleanupActions = undefined;
-  });
-  document.addEventListener("astro:page-load", () => {
-    cleanupActions?.();
-    cleanupActions = undefined;
-    const copy = document.querySelector(".hero-copy");
-    const actions = copy?.querySelector(".hero-actions");
-    const intro = copy?.querySelector(".hero-description");
-    if (!copy || !actions || !intro) return;
-    const mobile = window.matchMedia("(max-width: 767px)");
-    // DOM order keeps mobile reading and keyboard navigation aligned with the layout.
-    const arrange = () =>
-      mobile.matches ? copy.insertBefore(actions, intro) : copy.append(actions);
-    arrange();
-    mobile.addEventListener("change", arrange);
-    cleanupActions = () => mobile.removeEventListener("change", arrange);
-  });
-
   let cleanupDots: (() => void) | undefined;
   document.addEventListener("astro:before-swap", () => {
     cleanupDots?.();

@@ -123,7 +123,7 @@ test("forest tells its story once after 25 seconds", async ({ page }) => {
     await seekScene(page, stage);
     const actor = await page.locator(".forest-person").boundingBox();
     expect(actor).not.toBeNull();
-    for (const selector of [".hero-headline", ".hero-description"]) {
+    for (const selector of [".hero-headline", ".hero-description:visible"]) {
       const text = await page.locator(selector).boundingBox();
       expect(text).not.toBeNull();
       expect(
