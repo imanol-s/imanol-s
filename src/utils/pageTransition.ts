@@ -6,8 +6,9 @@ import type {
 async function prepareArtwork(event: TransitionBeforePreparationEvent) {
   if (event.signal.aborted || event.defaultPrevented) return;
   const incoming = event.newDocument;
+  // Case-study text can render immediately; its dimensioned artwork loads normally.
   const sources = incoming.querySelectorAll(
-    ".field-map-terrain, .portrait-image, .forest-scene image[href], .project-opening-art img",
+    ".field-map-terrain, .portrait-image, .forest-scene image[href]",
   );
   const images = new Map<string, HTMLImageElement>();
   for (const source of sources) {
