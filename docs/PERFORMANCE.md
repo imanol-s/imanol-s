@@ -12,7 +12,7 @@ This describes the current delivery contract, not benchmark results. Measure a f
 
 ## Runtime and caching
 
-Keep the existing three React islands; Astro scripts also provide focused interactions. Preserve cleanup on navigation, reduced-motion behavior, visibility/offscreen pausing and the existing topography phase across navigation. Do not add a runtime for static charts or diagrams.
+Keep the single React island; Astro scripts also provide focused interactions. Preserve cleanup on navigation, reduced-motion behavior, visibility/offscreen pausing and the existing topography phase across navigation. Do not add a runtime for static charts or diagrams.
 
 Fonts are self-hosted Latin-only IBM Plex Sans and JetBrains Mono. Layout preloads their hashed URLs. Retain the caching/security rules in `netlify.toml`: hashed assets cache immutably, HTML uses CDN stale-while-revalidate, and unversioned images revalidate. Existing CDN-variant caching remains useful for previously published URLs.
 

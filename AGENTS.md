@@ -18,7 +18,7 @@ Product context lives in `PRODUCT.md`; `DESIGN.md` records the current implement
 - Preserve existing dirty changes and inspect the current checkout before edits. Default portfolio work targets `ui-migration`; do not switch an occupied branch or overwrite a checkout. Follow an explicitly authorized isolated staging checkout when provided.
 - Use concise, direct responses; answer high-level questions before exploring code. Prefer minimal focused changes, plan multi-step work, and recommend one approach with reasons. Skip major dependency upgrades unless explicitly planned.
 - Make code changes directly unless delegation is explicitly requested; when delegating, give each delegate explicit file ownership and preserve other agents' work. Portfolio writing follows the dedicated agent section below. The parent owns validation and Git operations.
-- Audit all affected style touch points before editing. Preserve incumbent design and all three React islands; no added, removed, or converted islands without explicit approval. Hover brightens rather than dims text. Accessibility fixes include measured contrast and visual comparisons.
+- Audit all affected style touch points before editing. Preserve incumbent design and the single React island; no added, removed, or converted islands without explicit approval. Hover brightens rather than dims text. Accessibility fixes include measured contrast and visual comparisons.
 - Preserve every career role and supplied highlights, without role-count caps. Concept covers remain 2:1 crops; the Dallas evidence map stays complete and uncropped. Hero portrait remains the transparent vector illustration. These are not screenshots or measured results.
 - Keep comments necessary and concise. Use conventional commits and `.github/PULL_REQUEST_TEMPLATE.md`; no redundant HTML comments. When moving or renaming files, update imports and documentation references; schema changes must keep content valid.
 - Infrastructure/config changes update `AGENTS.md` in the same commit. Keep the configuration field reference below current when fields change; do not duplicate its table in tool adapters.
@@ -32,7 +32,7 @@ Product context lives in `PRODUCT.md`; `DESIGN.md` records the current implement
 ## Naming Conventions
 
 - **Astro components**: PascalCase (e.g., `SiteHeader.astro`, `SiteFooter.astro`)
-- **React components**: PascalCase `.tsx` files (e.g., `TopoBackground.tsx`, `TypewriterText.tsx`)
+- **React components**: PascalCase `.tsx` files (e.g., `TopoBackground.tsx`)
 - **Data files**: PascalCase or camelCase in `src/data/` (e.g., `Jobs.ts`, `education.ts`)
 - **Content files**: kebab-case for posts and projects (e.g., `crime-analysis.mdx`)
 - **SVG icons**: kebab-case in `src/icons/` (e.g., `github-fill.svg`)
@@ -60,10 +60,8 @@ const { title, description } = Astro.props;
 ## Architecture Rules
 
 - **Astro-first**: Default to `.astro` components. Only use React (`.tsx`) when client-side interactivity is required
-- **Island architecture**: Only three React islands ship JS to the client:
+- **Island architecture**: Only one React island ships JS to the client:
   - `TopoBackground.tsx` — animated SVG background (`client:only="react"`, skips SSR)
-  - `TypewriterText.tsx` — hero name animation (`client:load`, SSR-safe)
-  - `LoadingOverlay.tsx` — session loading overlay (`client:only="react"`, skips SSR)
 - **Content collections**: All blog/project content goes through Astro content collections with Zod schemas in `src/content.config.ts` — do not bypass with raw file reads
 - Optional project `cardSummary` supplies homepage gallery card copy, falling back to `summary`; the full `summary` remains the detail introduction and metadata source.
 - Required project `coverAlt` is the alt text for the concept cover on the project page; keep it with the artwork in frontmatter rather than in page templates.
@@ -109,7 +107,7 @@ const { title, description } = Astro.props;
 
 | Field                   | Type                     | Used by                                      |
 | ----------------------- | ------------------------ | -------------------------------------------- |
-| `name`                  | `string`                 | TypewriterText, portrait alt, nav aria-label |
+| `name`                  | `string`                 | Hero heading, portrait alt, nav aria-label   |
 | `profession`            | `string[]`               | Hero profession line                         |
 | `aboutMe`               | `string`                 | Hero introduction, homepage meta description |
 | `headline`              | `string[]`               | Hero two-line value statement                |
@@ -133,7 +131,7 @@ Each entry: `{ name, url, icon, show }`. Consumed via `SOCIALS.find(s => s.name 
 ## Browser lifecycle and shared utilities
 
 - Use `astro:page-load` to initialize DOM listeners/observers after navigation; keep module-scoped cleanup and dispose prior listeners. Cross-component DOM IDs need an ownership note at the lookup site.
-- React islands coordinate through `src/hooks/useSiteLifecycle.ts`, a module-level `useSyncExternalStore`, not shared React context. Reuse `useReducedMotion`, `useSessionState`, and Astro's `prefersReducedMotion` utility rather than duplicating platform access. Format dates with `src/utils/formatDate.ts`.
+- Reuse `useReducedMotion`, `useSessionState`, and Astro's `prefersReducedMotion` utility rather than duplicating platform access. Format dates with `src/utils/formatDate.ts`.
 - Register technology IDs before using them in project tags. Archived post tags remain free-form.
 - Use explicit return types for exported functions; prefer `??` when zero or empty strings are valid, and optional chaining for optional data.
 
@@ -242,8 +240,8 @@ function displayName(name: string) {
 - Set `loading="eager"` and `fetchpriority="high"` only for above-the-fold images; use `loading="lazy"` for everything else
 - The project-story font ships as WOFF2 (`/project-story/WixMadeforText.woff2`, TTF kept as fallback) and is preloaded on case-study routes through the `storyFont` flag on `Layout.astro`; keep the preload and the `@font-face` source list in sync
 - Scenery rasters are re-encoded with `getImage()` at quality 60 (WebP); the field-map terrain is shared by the hero and the scenery layer, so both call sites must use the same options to reuse one request
-- Keep client JS minimal: only `TopoBackground.tsx`, `TypewriterText.tsx`, and `LoadingOverlay.tsx` hydrate — avoid adding new React islands unless truly interactive
-- The full hero name remains visible through hydration. Intro dots are transparent, decorative, and nonblocking; the caret and dots finish once per session. Non-home routes, reduced motion, return visits, and constrained connections skip the intro. Denied session storage must not break rendering. The existing topography island persists across Astro navigation to retain its animation phase; Back to Top keeps a stable 48px outlined target.
+- Keep client JS minimal: only `TopoBackground.tsx` hydrates — avoid adding new React islands unless truly interactive
+- Loading stays invisible: no intro overlay, caret, or loading indicator. The hero name is static server HTML. Server markup must already match the settled layout at every breakpoint (no post-load reordering or reveal); JavaScript-dependent controls show only under `@media (scripting: enabled)`, and late artwork fades in rather than snapping. The existing topography island fades in once on mount, persists across Astro navigation to retain its animation phase; Back to Top keeps a stable 48px outlined target.
 - Header docking animates only its fixed-height decorative rail/endcap transforms and navigation opacity. Text and layout dimensions stay fixed; the frog and 56px dock target stay anchored. Underline hover uses scaleX, and Back to Top retains its 48px target. Reduced motion removes transitions.
 - Container: `max-w-7xl mx-auto px-6`
 

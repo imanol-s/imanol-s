@@ -5,7 +5,6 @@ import "@/styles/globals.css";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import TopoBackground from "../components/TopoBackground.tsx";
-import LoadingOverlay from "../components/LoadingOverlay.tsx";
 import BackToTop from "../components/BackToTop.astro";
 import FieldMapScenery from "../components/FieldMapScenery.astro";
 
@@ -164,7 +163,6 @@ const absoluteOgImage = new URL(imageOg, Astro.site).href;
       document.documentElement.classList.add("dark");
     </script>
 
-    <LoadingOverlay client:only="react" />
     <div class="topo-layer">
       <TopoBackground
         client:only="react"

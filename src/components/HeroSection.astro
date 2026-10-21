@@ -1,6 +1,5 @@
 ---
 import SiteImage from "@/components/SiteImage.astro";
-import TypewriterText from "./TypewriterText.tsx";
 import { ME, SOCIALS } from "../config";
 import { timelineJobs, primaryEducation } from "../data/career";
 import portraitLineart from "../assets/portrait-lineart.svg";
@@ -19,7 +18,11 @@ const education = primaryEducation();
 <section class="hero-section" aria-label="Introduction">
   <div class="hero-main">
     <div class="hero-copy">
-      <div class="hero-name"><TypewriterText client:load text={ME.name} /></div>
+      <div class="hero-name">
+        <h1 class="text-5xl md:text-7xl font-display font-bold mb-4 leading-tight">
+          {ME.name}
+        </h1>
+      </div>
       <p class="hero-profession">{ME.profession.join(" / ")}</p>
       <h2 class="hero-headline">
         {ME.headline.map((line) => <span>{line}</span>)}
