@@ -1,5 +1,17 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import { readdirSync } from "node:fs";
+
+async function assertNamedControls(page: Page): Promise<void> {
+  // Opacity-hidden controls can retain a box while intentionally absent from accessibility.
+  const controls = page.locator(
+    ':is(button,a[href],input:not([type=hidden]),textarea,select,summary):not([aria-hidden="true"], [aria-hidden="true"] *, [inert], [inert] *)',
+  );
+  await expect(controls).not.toHaveCount(0);
+  for (const control of await controls.all()) {
+    if (await control.isVisible())
+      await expect(control).toHaveAccessibleName(/\S/);
+  }
+}
 
 const routes = [
   "/",
@@ -50,31 +62,18 @@ for (const route of routes) {
         if (image.complete && !image.naturalWidth)
           problems.push(`Broken image: ${image.src}`);
       }
-      for (const control of document.querySelectorAll(
-        "button,a[href],input,textarea,select",
-      )) {
-        if (!(control as HTMLElement).getClientRects().length) continue;
-        const name =
-          control.getAttribute("aria-label") ||
-          control.getAttribute("aria-labelledby") ||
-          control.textContent?.trim() ||
-          control.querySelector("img")?.alt;
-        if (
-          !name &&
-          !(control instanceof HTMLInputElement && control.labels?.length)
-        )
-          problems.push(`Unnamed control: ${control.outerHTML}`);
-      }
       return problems;
     });
     expect.soft(issues).toEqual([]);
     expect.soft(errors).toEqual([]);
     expect.soft(failed).toEqual([]);
+    await assertNamedControls(page);
     await page.screenshot({
       path: testInfo.outputPath("desktop.png"),
       fullPage: true,
     });
     await page.setViewportSize({ width: 390, height: 844 });
+    await assertNamedControls(page);
     await page.screenshot({
       path: testInfo.outputPath("mobile.png"),
       fullPage: true,
@@ -82,6 +81,25 @@ for (const route of routes) {
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(390);
+  });
+}
+
+test("accessible names resolve label references and native labels", async ({ page }) => {
+  await page.setContent(`
+    <span id="label" hidden>Open projects</span>
+    <button aria-labelledby="label"></button>
+    <label for="query">Search projects</label><input id="query">
+    <button title="Close projects"></button>
+    <button aria-hidden="true" tabindex="-1"></button>
+    <div inert><button></button></div>
+  `);
+  await assertNamedControls(page);
+});
+
+for (const label of ["missing", "empty"]) {
+  test(`the accessibility audit rejects a ${label} referenced label`, async ({ page }) => {
+    await page.setContent(`<span id="empty"></span><button aria-labelledby="${label}"></button>`);
+    await expect(assertNamedControls(page)).rejects.toThrow(/toHaveAccessibleName/);
   });
 }
 

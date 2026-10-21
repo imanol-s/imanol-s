@@ -222,7 +222,8 @@ function displayName(name: string) {
 - Vitest + jsdom is configured. Run `npm run test` for a single pass or `npm run test:watch` for watch mode
 - Expectations must be independent of the implementation: no mocked subject, copied algorithm, vacuous assertions, or generated candidate caps that hide regressions. Each changed test must catch a concrete failure.
 - Use `npm run test:e2e` for browser-level validation when page rendering, navigation, or responsive layout changes are involved
-- Playwright runs 4 workers when `CI` is set. PR CI caches Astro's optimized images (`node_modules/.astro/assets`) and Playwright's Chromium download (keyed on the installed Playwright version); keep e2e specs independent across files.
+- Playwright runs 4 workers when `CI` is set. PR CI caches Astro's optimized images (`node_modules/.astro/assets`) and Playwright's Chromium/WebKit downloads (keyed on browser set and installed Playwright version); keep e2e specs independent across files.
+- Playwright runs the full suite in Chromium and `e2e/webkit-smoke.spec.ts` in WebKit. CI installs and caches both browsers. Accessibility checks use computed accessible names, including resolved label references.
 - Add `// @vitest-environment jsdom` at the top of test files that require browser APIs
 - Type-checking via `astro check` remains the primary safety net; tests supplement it for behavioral coverage
 
@@ -265,7 +266,8 @@ function displayName(name: string) {
 - Publication is serialized and compares current resume inputs; later site-only changes do not invalidate a valid build.
 - Resume-only changes skip Netlify through `node scripts/resume-pipeline.mjs ignore`; uncertain history builds normally.
 - Run `node --test scripts/resume-pipeline.check.mjs` for the Git-history regression checks.
-- PR CI also skips site checks on resume-only synchronize pushes using the full before/head range; opened PRs and uncertain history keep site checks.
+- PR CI skips site checks on resume-only synchronize pushes only after confirming the preceding CI run succeeded for the same PR and base SHA. Failed, pending, missing, or unreadable results run site checks; opened PRs always run them. `scripts/site-checks.mjs` uses the read-only Actions API, with `actions: read` permission. Run its regression checks with `node --test scripts/site-checks.node-test.mjs`.
+- Relevant PRs compile the resume without deployment permissions in `.github/workflows/check-resume.yml`. PR validation and main publication share `.github/actions/compile-resume/action.yml`; changes to either workflow or the shared compiler are resume publication inputs. Pipeline regression checks also run in site CI, including resume-only updates.
 
 ## Git identity
 

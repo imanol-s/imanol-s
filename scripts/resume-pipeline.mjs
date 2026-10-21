@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
 
-const inputs = ['resume', '.github/workflows/publish-resume.yml', 'scripts/resume-pipeline.mjs', 'scripts/resume-pipeline.check.mjs'];
+const inputs = ['resume', '.github/actions/compile-resume/action.yml', '.github/workflows/check-resume.yml', '.github/workflows/publish-resume.yml', 'scripts/resume-pipeline.mjs', 'scripts/resume-pipeline.check.mjs'];
 const git = (...args) => execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 const resumeOnly = (path) => path.startsWith('resume/') || inputs.slice(1).includes(path);
 

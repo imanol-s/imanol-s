@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'resume/**'
+      - '.github/actions/compile-resume/**'
+      - '.github/workflows/check-resume.yml'
       - '.github/workflows/publish-resume.yml'
       - 'scripts/resume-pipeline.mjs'
       - 'scripts/resume-pipeline.check.mjs'
@@ -32,16 +34,10 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
-      - name: Check pipeline rules
-        run: node --test scripts/resume-pipeline.check.mjs
-      - name: Compile with pdfLaTeX
-        uses: xu-cheng/latex-action@e2f99d4b3685b0da93f97e1b86ad8fab81105098 # v3
+      - uses: actions/setup-node@v4
         with:
-          working_directory: resume
-          root_file: main.tex
-          latexmk_use_lualatex: false
-          latexmk_use_xelatex: false
-          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
+          node-version-file: .nvmrc
+      - uses: ./.github/actions/compile-resume
       - name: Prepare PDF
         run: |
           test -s resume/main.pdf
