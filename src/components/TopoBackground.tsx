@@ -75,6 +75,18 @@ export default function TopoBackground() {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // The island renders only after hydration, so fade in rather than snap.
+  // Web Animations, not CSS: Astro re-inserts the persisted node on every
+  // navigation, which would restart a CSS animation and flicker the layer.
+  useEffect(() => {
+    if (reduced) return;
+    viewportRef.current?.animate?.([{ opacity: 0 }, { opacity: 1 }], {
+      duration: 900,
+      easing: "ease-out",
+    });
+    // Mount only: a later motion-preference change must not replay it.
+  }, []);
+
   useEffect(() => {
     if (reduced) return;
 
