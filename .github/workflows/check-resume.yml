@@ -1,0 +1,27 @@
+name: Check resume
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'resume/**'
+      - '.github/actions/compile-resume/**'
+      - '.github/workflows/check-resume.yml'
+      - '.github/workflows/publish-resume.yml'
+      - 'scripts/resume-pipeline.mjs'
+      - 'scripts/resume-pipeline.check.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - uses: ./.github/actions/compile-resume

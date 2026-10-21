@@ -22,5 +22,10 @@ export default defineConfig({
       name: "chromium",
       use: { browserName: "chromium" },
     },
+    {
+      name: "webkit",
+      testMatch: "webkit-smoke.spec.ts",
+      use: { browserName: "webkit" },
+    },
   ],
 });

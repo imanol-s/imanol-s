@@ -1,0 +1,14 @@
+name: Check and compile resume
+description: Validate publication rules and compile the maintained resume with pdfLaTeX.
+runs:
+  using: composite
+  steps:
+    - run: node --test scripts/resume-pipeline.check.mjs
+      shell: bash
+    - uses: xu-cheng/latex-action@e2f99d4b3685b0da93f97e1b86ad8fab81105098 # v3
+      with:
+        working_directory: resume
+        root_file: main.tex
+        latexmk_use_lualatex: false
+        latexmk_use_xelatex: false
+        args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode

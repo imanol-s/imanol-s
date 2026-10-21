@@ -58,9 +58,19 @@ test('publication freshness and Netlify decisions follow actual resume inputs an
     assert.equal(ignore(mixed, compiler), 0);
     fresh(mixed, compiler, false);
 
+    write('.github/actions/compile-resume/action.yml', 'shared compiler changed');
+    const sharedCompiler = commit();
+    assert.equal(ignore(compiler, sharedCompiler), 0);
+    fresh(compiler, sharedCompiler, false);
+
+    write('.github/workflows/check-resume.yml', 'PR validation changed');
+    const validation = commit();
+    assert.equal(ignore(sharedCompiler, validation), 0);
+    fresh(sharedCompiler, validation, false);
+
     write('resume/main.tex', 'last resume');
     const lastResume = commit();
-    assert.equal(ignore(compiler, lastResume), 0);
+    assert.equal(ignore(validation, lastResume), 0);
     assert.equal(ignore(site, lastResume), 1, 'latest resume-only commit cannot hide mixed history');
     assert.equal(ignore('', lastResume), 1);
     assert.equal(ignore('missing-revision', lastResume), 1);

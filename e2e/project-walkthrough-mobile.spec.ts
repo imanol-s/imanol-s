@@ -271,9 +271,10 @@ test.describe("mobile text reflow", () => {
         await page.setViewportSize({ width, height: 1000 });
         await page.emulateMedia({ reducedMotion: "reduce" });
         await page.goto(path);
-        await page.addStyleTag({
-          content: "html { font-size: 200% !important; }",
-        });
+        await page.locator("html").evaluate((root) =>
+          root.style.setProperty("font-size", "200%", "important"),
+        );
+        await expect(page.locator("html")).toHaveCSS("font-size", "32px");
         await page.evaluate(() => document.fonts.ready);
         await expect
           .poll(() =>
