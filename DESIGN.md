@@ -162,7 +162,7 @@ The floating header is capped at 960px with 24px desktop side clearance and 16px
 
 ## Elevation & Depth
 
-Mostly flat, with tonal layers and restrained glow. The header uses an almost-opaque slate ground, a fine translucent border, and `drop-shadow(0 8px 15px #02061726)` for separation. Shared project frames retain CAD corner marks and hover glow. Portrait lighting is atmospheric rather than a raised card treatment. The animated topographic layer is hidden on the Field-map homepage and its animation loop is stopped there; it remains on project details, with its island and phase preserved across navigation.
+Mostly flat, with tonal layers and restrained glow. The header uses an almost-opaque slate ground, a fine translucent border, and `drop-shadow(0 8px 15px #02061726)` for separation. Shared project frames retain CAD corner marks and hover glow. Portrait lighting is atmospheric rather than a raised card treatment. The animated topographic layer is hidden on the Field-map homepage and its animation loop is stopped there; it remains on project details, with its island and phase preserved across navigation. On phones (coarse pointer or under 768px) it keeps its drift but holds its line shape, and it is sized to the large viewport so URL bar changes do not resize or regenerate it.
 
 **The Work First Rule.** Depth and decoration support the work, never compete with it.
 

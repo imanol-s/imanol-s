@@ -4,9 +4,10 @@ import { useSessionState } from "../hooks/useSessionState";
 import { computeTopoFrame, buildLineYs } from "../animations/topoMath";
 
 // Oversized to 150% with -25% inset so the slow CSS rotation never exposes
-// blank corners at the viewport edges.
+// blank corners at the viewport edges. Absolute within the fixed 100lvh
+// parent so mobile URL bar toggles do not resize (and rescale) the layer.
 const TOPO_LINES_STYLE: CSSProperties = {
-  position: "fixed",
+  position: "absolute",
   inset: "-25%",
   width: "150%",
   height: "150%",
@@ -15,8 +16,13 @@ const TOPO_LINES_STYLE: CSSProperties = {
   willChange: "transform",
 };
 
+// Phones keep the compositor-only drift but hold the line shape: each
+// baseFrequency write re-rasterizes the whole oversized filter layer.
+const STATIC_SHAPE_QUERY = "(pointer: coarse), (max-width: 767px)";
+
 export default function TopoBackground() {
   const reduced = useReducedMotion();
+  const viewportRef = useRef<HTMLDivElement>(null);
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const [dims, setDims] = useState({ width: 2000, height: 2000 });
   const [seed, setSeed] = useSessionState<number | null>("topo-seed", null);
@@ -29,8 +35,17 @@ export default function TopoBackground() {
   }, [seed, setSeed]);
 
   useEffect(() => {
+    // Height comes from the 100lvh layer, not innerHeight, so mobile URL bar
+    // toggles (which fire resize) leave the pattern untouched.
     const updateDims = () => {
-      setDims({ width: window.innerWidth * 2, height: window.innerHeight * 2 });
+      const width = window.innerWidth * 2;
+      const height =
+        (viewportRef.current?.clientHeight || window.innerHeight) * 2;
+      setDims((current) =>
+        current.width === width && current.height === height
+          ? current
+          : { width, height },
+      );
     };
 
     // Debounce at 150ms — SVG viewBox resize is expensive (triggers filter
@@ -71,6 +86,7 @@ export default function TopoBackground() {
     let driftTime = 0;
     let rafId = 0;
     let lastFrequency = "";
+    const staticShape = window.matchMedia(STATIC_SHAPE_QUERY);
 
     const tick = () => {
       phase += 0.0006;
@@ -78,7 +94,11 @@ export default function TopoBackground() {
 
       const { bfx, bfy, transform } = computeTopoFrame(phase, driftTime);
       const frequency = `${bfx} ${bfy}`;
-      if (turbulenceRef.current && frequency !== lastFrequency) {
+      if (
+        turbulenceRef.current &&
+        frequency !== lastFrequency &&
+        (!lastFrequency || !staticShape.matches)
+      ) {
         turbulenceRef.current.setAttribute("baseFrequency", frequency);
         lastFrequency = frequency;
       }
@@ -112,7 +132,8 @@ export default function TopoBackground() {
   return (
     <>
       <div
-        className="fixed inset-0 pointer-events-none"
+        ref={viewportRef}
+        className="fixed inset-x-0 top-0 h-lvh pointer-events-none"
         style={{ zIndex: -2 }}
         aria-hidden="true"
       >

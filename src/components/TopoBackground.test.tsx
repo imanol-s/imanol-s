@@ -7,13 +7,15 @@ import TopoBackground from "./TopoBackground";
 const frames = new Map<number, FrameRequestCallback>();
 let nextFrame = 0;
 let reduced = false;
+let phone = false;
 
 beforeEach(() => {
   reduced = false;
+  phone = false;
   nextFrame = 0;
-  vi.stubGlobal("matchMedia", () => ({
+  vi.stubGlobal("matchMedia", (query: string) => ({
     get matches() {
-      return reduced;
+      return query.includes("reduced-motion") ? reduced : phone;
     },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
@@ -135,6 +137,52 @@ describe("TopoBackground", () => {
     );
     expect(frames.size).toBe(1);
     writes.mockRestore();
+  });
+
+  it("holds the line shape on phones while the drift keeps moving", () => {
+    phone = true;
+    const { container } = render(<TopoBackground />);
+    const background = container.querySelector<HTMLElement>(
+      "[data-topo-background]",
+    )!;
+    const turbulence = container.querySelector("feTurbulence")!;
+
+    advanceFrames(1);
+    const frequency = turbulence.getAttribute("baseFrequency");
+    const transform = background.style.transform;
+    expect(frequency).not.toBe("0.002");
+
+    advanceFrames(600);
+    expect(turbulence.getAttribute("baseFrequency")).toBe(frequency);
+    expect(background.style.transform).not.toBe(transform);
+    expect(frames.size).toBe(1);
+  });
+
+  it("keeps the pattern size when only the window height changes", () => {
+    vi.useFakeTimers();
+    // jsdom has no layout; the 100lvh layer keeps one height while the URL bar moves.
+    const layerHeight = vi
+      .spyOn(HTMLElement.prototype, "clientHeight", "get")
+      .mockReturnValue(900);
+    Object.defineProperty(window, "innerHeight", {
+      value: 800,
+      configurable: true,
+    });
+    const { container } = render(<TopoBackground />);
+    const svg = container.querySelector("svg")!;
+    const viewBox = svg.getAttribute("viewBox");
+
+    Object.defineProperty(window, "innerHeight", {
+      value: 740,
+      configurable: true,
+    });
+    act(() => {
+      window.dispatchEvent(new Event("resize"));
+      vi.advanceTimersByTime(200);
+    });
+    expect(svg.getAttribute("viewBox")).toBe(viewBox);
+    layerHeight.mockRestore();
+    vi.useRealTimers();
   });
 
   it("keeps reduced-motion topography stationary on visible routes and swaps", () => {
