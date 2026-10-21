@@ -1,4 +1,7 @@
-import type { TransitionBeforePreparationEvent } from "astro:transitions/client";
+import type {
+  TransitionBeforePreparationEvent,
+  TransitionBeforeSwapEvent,
+} from "astro:transitions/client";
 
 async function prepareArtwork(event: TransitionBeforePreparationEvent) {
   if (event.signal.aborted || event.defaultPrevented) return;
@@ -49,6 +52,16 @@ async function prepareArtwork(event: TransitionBeforePreparationEvent) {
 }
 
 export function initPageTransitions(): void {
+  document.addEventListener("astro:before-swap", (event) => {
+    const transition = event as TransitionBeforeSwapEvent;
+    if (transition.navigationType === "traverse") {
+      // Astro restores history with scrollTo(x, y), which inherits CSS smooth scrolling.
+      transition.newDocument.documentElement.style.scrollBehavior = "auto";
+    }
+  });
+  document.addEventListener("astro:after-swap", () => {
+    document.documentElement.style.removeProperty("scroll-behavior");
+  });
   document.addEventListener("astro:before-preparation", (event) => {
     const transition = event as TransitionBeforePreparationEvent;
     const loader = transition.loader;

@@ -2,6 +2,58 @@ import { test, expect, type Page } from "@playwright/test";
 
 const detail = "/projects/library-management";
 
+for (const width of [390, 1440]) {
+  test(`cold history navigation restores position without a scroll sweep at ${width}px`, async ({
+    page,
+    context,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    const cdp = await context.newCDPSession(page);
+    await cdp.send("Network.enable");
+    await cdp.send("Network.setCacheDisabled", { cacheDisabled: true });
+    await page.goto("/");
+    await page.evaluate(() => sessionStorage.clear());
+    await Promise.all([
+      page.waitForEvent("load"),
+      cdp.send("Page.reload", { ignoreCache: true }),
+    ]);
+    const card = page.locator(`a.project-card[href="${detail}"]`);
+    await card.scrollIntoViewIfNeeded();
+    await page.evaluate(() => {
+      Object.assign(window, { restoredScrolls: [] as number[] });
+      document.addEventListener("astro:after-swap", () => {
+        if (location.pathname !== "/") return;
+        const samples = Reflect.get(window, "restoredScrolls") as number[];
+        let remaining = 30;
+        const sample = () => {
+          samples.push(scrollY);
+          if (--remaining) requestAnimationFrame(sample);
+        };
+        requestAnimationFrame(sample);
+      });
+    });
+    const savedY = await page.evaluate(() => scrollY);
+    expect(savedY).toBeGreaterThan(100);
+    await card.click();
+    await expect(page).toHaveURL(detail);
+    await page.goBack();
+    await expect(page).toHaveURL("/");
+    await expect
+      .poll(() =>
+        page.evaluate(() => Reflect.get(window, "restoredScrolls").length),
+      )
+      .toBe(30);
+    const positions: number[] = await page.evaluate(() =>
+      Reflect.get(window, "restoredScrolls"),
+    );
+    expect(positions.every((y) => Math.abs(y - savedY) <= 1)).toBe(true);
+    await page.goForward();
+    await expect(page).toHaveURL(detail);
+    await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
+    await cdp.detach();
+  });
+}
+
 async function prepareHero(page: Page) {
   const response = await page.request.get(detail);
   expect(response.ok()).toBe(true);

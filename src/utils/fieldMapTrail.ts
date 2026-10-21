@@ -250,12 +250,17 @@ export function initTrailInk(
     ink.style.strokeDashoffset = String(offsetFor());
   };
   const sync = () => {
+    // Font/image loads and deferred content can change the geometry while paused.
+    const heldFraction =
+      paused() && total ? parseFloat(ink.style.strokeDashoffset) / total : null;
     const d = path.getAttribute("d") ?? "";
     ink.setAttribute("d", d);
     total = d ? path.getTotalLength() : 0;
     ink.style.strokeDasharray = `${total} ${total}`;
     ink.style.transition = "none";
-    ink.style.strokeDashoffset = String(total ? offsetFor() : 0);
+    ink.style.strokeDashoffset = String(
+      heldFraction === null ? (total ? offsetFor() : 0) : total * heldFraction,
+    );
   };
   const hold = () => {
     if (paused()) {

@@ -95,7 +95,7 @@ describe("TopoBackground", () => {
     swapRoute(false);
     advanceFrames(30);
     const resumed = snapshot();
-    expect(resumed.frequency).not.toBe(moving.frequency);
+    expect(resumed.frequency).toBe(moving.frequency);
     expect(resumed.transform).not.toBe(moving.transform);
     expect(resumed.seed).toBe(initial.seed);
     expect(background).toBe(container.querySelector("[data-topo-background]"));
@@ -107,7 +107,7 @@ describe("TopoBackground", () => {
     expect(frames.size).toBe(0);
   });
 
-  it("skips unchanged SVG frequency writes while drift continues and writes later changes", () => {
+  it("holds the filtered shape on desktop while drift continues", () => {
     const { container } = render(<TopoBackground />);
     const background = container.querySelector<HTMLElement>(
       "[data-topo-background]",
@@ -129,8 +129,8 @@ describe("TopoBackground", () => {
     expect(frames.size).toBe(1);
 
     advanceFrames(60);
-    expect(turbulence.getAttribute("baseFrequency")).not.toBe(frequency);
-    expect(writes.mock.calls.length).toBeGreaterThan(1);
+    expect(turbulence.getAttribute("baseFrequency")).toBe(frequency);
+    expect(writes).toHaveBeenCalledTimes(1);
     expect(writes).toHaveBeenLastCalledWith(
       "baseFrequency",
       turbulence.getAttribute("baseFrequency"),
