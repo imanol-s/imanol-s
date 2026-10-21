@@ -88,9 +88,9 @@ export function useDottedGlow(): React.RefCallback<HTMLCanvasElement> {
     let isVisible = true;
     let dots: Dot[] = [];
 
-    // Cap DPR at 2 — 3x displays add ~2.25x fill cost for imperceptible detail
-    // on a diffuse dot-grid animation.
-    const dpr = Math.min(Math.max(1, window.devicePixelRatio || 1), 2);
+    // Render at 1x — the grid shows at 15% opacity, and on phones the 2x
+    // canvas upload alone took ~50ms per frame under 4x CPU throttling.
+    const dpr = 1;
 
     const resize = () => {
       const { width, height } = container.getBoundingClientRect();
