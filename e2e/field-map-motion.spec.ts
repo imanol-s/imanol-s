@@ -53,6 +53,8 @@ test("pause holds the clouds and the trail ink until play", async ({
   await page.getByRole("button", { name: "Pause scenery animation" }).click();
   expect((await cloudStates(page)).every((s) => s === "paused")).toBe(true);
   const held = await drawn(page);
+  await page.setViewportSize({ width: 1280, height: 1000 });
+  await expect.poll(() => drawn(page)).toBeCloseTo(held, 3);
   await page.locator("footer#contact").scrollIntoViewIfNeeded();
   await page.waitForTimeout(500);
   expect(await drawn(page)).toBeCloseTo(held, 3);

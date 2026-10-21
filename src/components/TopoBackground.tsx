@@ -16,10 +16,6 @@ const TOPO_LINES_STYLE: CSSProperties = {
   willChange: "transform",
 };
 
-// Phones keep the compositor-only drift but hold the line shape: each
-// baseFrequency write re-rasterizes the whole oversized filter layer.
-const STATIC_SHAPE_QUERY = "(pointer: coarse), (max-width: 767px)";
-
 export default function TopoBackground() {
   const reduced = useReducedMotion();
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -90,27 +86,18 @@ export default function TopoBackground() {
   useEffect(() => {
     if (reduced) return;
 
-    // Two animation clocks: `phase` drives the feTurbulence baseFrequency
-    // oscillation (very slow), `driftTime` drives the CSS translate/rotate
-    // drift on a 55s cycle. Both are frame-counted rather than wall-clock
-    // so the animation slows gracefully when the tab is throttled.
-    let phase = 0;
+    // Hold the filtered shape on every device: changing its frequency repeatedly
+    // rasterizes the oversized SVG. Keep the existing translate/rotate drift.
     let driftTime = 0;
     let rafId = 0;
     let lastFrequency = "";
-    const staticShape = window.matchMedia(STATIC_SHAPE_QUERY);
 
     const tick = () => {
-      phase += 0.0006;
       driftTime += 1 / 60;
 
-      const { bfx, bfy, transform } = computeTopoFrame(phase, driftTime);
+      const { bfx, bfy, transform } = computeTopoFrame(0.0006, driftTime);
       const frequency = `${bfx} ${bfy}`;
-      if (
-        turbulenceRef.current &&
-        frequency !== lastFrequency &&
-        (!lastFrequency || !staticShape.matches)
-      ) {
+      if (turbulenceRef.current && !lastFrequency) {
         turbulenceRef.current.setAttribute("baseFrequency", frequency);
         lastFrequency = frequency;
       }

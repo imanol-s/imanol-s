@@ -2,6 +2,58 @@ import { test, expect, type Page } from "@playwright/test";
 
 const detail = "/projects/library-management";
 
+for (const width of [390, 1440]) {
+  test(`cold history navigation restores position without a scroll sweep at ${width}px`, async ({
+    page,
+    context,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    const cdp = await context.newCDPSession(page);
+    await cdp.send("Network.enable");
+    await cdp.send("Network.setCacheDisabled", { cacheDisabled: true });
+    await page.goto("/");
+    await page.evaluate(() => sessionStorage.clear());
+    await Promise.all([
+      page.waitForEvent("load"),
+      cdp.send("Page.reload", { ignoreCache: true }),
+    ]);
+    const card = page.locator(`a.project-card[href="${detail}"]`);
+    await card.scrollIntoViewIfNeeded();
+    await page.evaluate(() => {
+      Object.assign(window, { restoredScrolls: [] as number[] });
+      document.addEventListener("astro:after-swap", () => {
+        if (location.pathname !== "/") return;
+        const samples = Reflect.get(window, "restoredScrolls") as number[];
+        let remaining = 30;
+        const sample = () => {
+          samples.push(scrollY);
+          if (--remaining) requestAnimationFrame(sample);
+        };
+        requestAnimationFrame(sample);
+      });
+    });
+    const savedY = await page.evaluate(() => scrollY);
+    expect(savedY).toBeGreaterThan(100);
+    await card.click();
+    await expect(page).toHaveURL(detail);
+    await page.goBack();
+    await expect(page).toHaveURL("/");
+    await expect
+      .poll(() =>
+        page.evaluate(() => Reflect.get(window, "restoredScrolls").length),
+      )
+      .toBe(30);
+    const positions: number[] = await page.evaluate(() =>
+      Reflect.get(window, "restoredScrolls"),
+    );
+    expect(positions.every((y) => Math.abs(y - savedY) <= 1)).toBe(true);
+    await page.goForward();
+    await expect(page).toHaveURL(detail);
+    await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
+    await cdp.detach();
+  });
+}
+
 async function prepareHero(page: Page) {
   const response = await page.request.get(detail);
   expect(response.ok()).toBe(true);
@@ -71,7 +123,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 for (const width of [390, 1280]) {
-  test(`keeps outgoing page until responsive hero is decoded at ${width}px`, async ({
+  test(`shows the project before its responsive artwork loads at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 900 });
@@ -98,27 +150,44 @@ for (const width of [390, 1280]) {
     try {
       await page.locator(".site-brand").click();
       await seen;
-      await page.waitForTimeout(150);
-      expect(await page.locator("#main-content h1").textContent()).toBe(
-        "Page not found",
+      await expect(page.locator("#main-content h1")).toHaveText(
+        "Library Management System",
+        { timeout: 600 },
       );
+      await expect.poll(() => paints(page)).toHaveLength(1);
+      const [first] = await paints(page);
+      expect(first.ready).toBe(false);
+      expect(first.covered).toBe(false);
+      const artwork = page.locator(".project-opening-art img");
+      const reserved = await artwork.boundingBox();
+      expect(reserved?.height).toBeGreaterThan(100);
       expect(candidates).toEqual([width === 1280 ? "800" : "400"]);
+      release();
+      await expect
+        .poll(() =>
+          artwork.evaluate(
+            (image: HTMLImageElement) =>
+              image.complete && image.naturalWidth > 0,
+          ),
+        )
+        .toBe(true);
+      const loaded = await artwork.boundingBox();
+      expect(loaded?.height).toBeCloseTo(reserved!.height, 1);
     } finally {
       release();
     }
     await expect(page).toHaveURL(/\/projects\/library-management\/?$/);
     await expect.poll(() => paints(page)).toHaveLength(1);
-    const [first] = await paints(page);
-    expect(first.ready).toBe(true);
-    expect(first.covered).toBe(false);
-    expect(first.source).toContain(
-      `readiness-width=${width === 1280 ? "800" : "400"}`,
-    );
+    expect(
+      await page
+        .locator(".project-opening-art img")
+        .evaluate((image: HTMLImageElement) => image.currentSrc),
+    ).toContain(`readiness-width=${width === 1280 ? "800" : "400"}`);
   });
 }
 
 for (const failure of ["broken", "stalled"]) {
-  test(`continues within the artwork deadline when a hero is ${failure}`, async ({
+  test(`shows the project promptly when its artwork is ${failure}`, async ({
     page,
   }) => {
     await page.goto("/404/");
@@ -144,9 +213,9 @@ for (const failure of ["broken", "stalled"]) {
       await seen;
       await expect(page.locator("#main-content h1")).toHaveText(
         "Library Management System",
-        { timeout: 1500 },
+        { timeout: 600 },
       );
-      expect(Date.now() - started).toBeLessThan(1500);
+      expect(Date.now() - started).toBeLessThan(600);
       await expect.poll(() => paints(page)).toHaveLength(1);
       const [first] = await paints(page);
       expect(first.covered).toBe(false);

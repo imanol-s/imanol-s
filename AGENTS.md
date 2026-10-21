@@ -23,10 +23,11 @@ Product context lives in `PRODUCT.md`; `DESIGN.md` records the current implement
 - Keep comments necessary and concise. Use conventional commits and `.github/PULL_REQUEST_TEMPLATE.md`; no redundant HTML comments. When moving or renaming files, update imports and documentation references; schema changes must keep content valid.
 - Infrastructure/config changes update `AGENTS.md` in the same commit. Keep the configuration field reference below current when fields change; do not duplicate its table in tool adapters.
 - Active local skills live in `.agents/skills/`; byte-identical Claude skills link there. Keep Impeccable's committed launcher/config/hooks and the portfolio-writing agent/skill. Do not commit downloaded runtimes or local consent/cache files.
-- Graphify output and retired session audit notes are generated artifacts, not maintained project documentation. Keep them ignored; historical copies remain in Git history. Project Claude hooks use repository-relative paths; personal launchers and machine-specific MCP/session hooks do not belong in shared configuration.
+- Retired session audit notes are generated artifacts, not maintained project documentation. Keep them ignored; historical copies remain in Git history. Project Claude hooks use repository-relative paths; personal launchers and machine-specific MCP/session hooks do not belong in shared configuration.
 
 - Use native subagent tooling when delegation is requested or required; do not create user-owned chats for internal subtasks.
 - Before Astro-specific changes or recommendations, retrieve version-compatible Astro Docs MCP guidance and verify the installed Astro version. Documentation never authorizes a dependency upgrade. If MCP is unavailable, use official Astro documentation and disclose the limitation.
+- Project-scoped Astro Docs MCP configuration lives in `.mcp.json` for Claude and `.codex/config.toml` for Codex. Both use the public Streamable HTTP endpoint `https://mcp.docs.astro.build/mcp`; keep the URLs in sync. Codex loads project configuration only for trusted projects. Restart the client after configuration changes.
 - For Claude browsing, use `/browse` if gstack is available rather than `mcp__claude-in-chrome__*`; do not assume global tools are installed.
 
 ## Naming Conventions

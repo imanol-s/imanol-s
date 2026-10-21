@@ -1,10 +1,14 @@
-import type { TransitionBeforePreparationEvent } from "astro:transitions/client";
+import type {
+  TransitionBeforePreparationEvent,
+  TransitionBeforeSwapEvent,
+} from "astro:transitions/client";
 
 async function prepareArtwork(event: TransitionBeforePreparationEvent) {
   if (event.signal.aborted || event.defaultPrevented) return;
   const incoming = event.newDocument;
+  // Case-study text can render immediately; its dimensioned artwork loads normally.
   const sources = incoming.querySelectorAll(
-    ".field-map-terrain, .portrait-image, .forest-scene image[href], .project-opening-art img",
+    ".field-map-terrain, .portrait-image, .forest-scene image[href]",
   );
   const images = new Map<string, HTMLImageElement>();
   for (const source of sources) {
@@ -49,6 +53,16 @@ async function prepareArtwork(event: TransitionBeforePreparationEvent) {
 }
 
 export function initPageTransitions(): void {
+  document.addEventListener("astro:before-swap", (event) => {
+    const transition = event as TransitionBeforeSwapEvent;
+    if (transition.navigationType === "traverse") {
+      // Astro restores history with scrollTo(x, y), which inherits CSS smooth scrolling.
+      transition.newDocument.documentElement.style.scrollBehavior = "auto";
+    }
+  });
+  document.addEventListener("astro:after-swap", () => {
+    document.documentElement.style.removeProperty("scroll-behavior");
+  });
   document.addEventListener("astro:before-preparation", (event) => {
     const transition = event as TransitionBeforePreparationEvent;
     const loader = transition.loader;
