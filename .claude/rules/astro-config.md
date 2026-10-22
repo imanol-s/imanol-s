@@ -7,6 +7,8 @@ paths:
 
 # Astro Config Rules
 
+Before Astro-specific changes or recommendations, retrieve documentation compatible with the installed version through Astro Docs MCP; use official docs and disclose the limitation if MCP is unavailable. When changing redirects, read `PRODUCT.md` and `.claude/rules/routes.md`. Before changing CI, read `.github/AGENTS.md`.
+
 ## Integrations
 
 Current integrations: `mdx()`, `react()`, `icon()`, `sitemap()`. Adding or removing integrations changes the build pipeline — verify with `npm run build`.
