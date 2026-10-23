@@ -1,5 +1,7 @@
 # Changing existing code
 
+Before editing a function, identify tests for the changed path; types plus a higher-level suite count. Keep cleanup on the path of the change, report unrelated defects with their location, and separate behavior-preserving refactors from behavior changes. When moving code, update imports/references and preserve validation, error handling on production-data writes, and rationale, constraints, invariants, and workaround comments.
+
 **Characterize before changing untested code.** Run the code on chosen inputs, copy the observed output into the assertion, label the test as characterization, and name the quirks it pins. Cover only the paths about to change and their neighbors; normalize nondeterministic fields. If the observed behavior is the bug being fixed, do not pin it as correct.
 
 **Use the seam you have.** To substitute a heavy dependency in a test, look for an existing enabling point (an injectable parameter, an overridable method, a module attribute the language's tooling can patch) before adding a new interface or test-only flag. When a long untested method must gain behavior and cannot be harnessed cheaply, write the new logic as a separately tested function and make a one-line call from the old method; do not insert twenty lines inline. Do not sprout when the new logic needs many of the old method's locals. Seams added only for tests are temporary; replace them with proper injection once tests exist.
