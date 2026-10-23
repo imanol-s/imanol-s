@@ -33,8 +33,7 @@ There is no `lint` script. Existing Git hooks run identity guards, `lint-staged`
 
 Paths below are repository-root-relative. Read references when their condition applies, including during reviews; leave unrelated references unloaded.
 
-- Before editing or reviewing a file, read the `AGENTS.md` files along its directory path, including narrower source-folder instructions; do not load unrelated sibling folders. Read `src/content/AGENTS.md` before changing the root-level collection schema `src/content.config.ts`.
-- `.claude/rules/routes.md`: read before editing or reviewing `src/pages/`; route guidance lives outside that directory to avoid publishing it as a page.
+- Apply directory `AGENTS.md` instructions to their descendants, together with ancestor instructions. Sibling-directory instructions do not apply.
 - `.claude/rules/agent-tooling.md`: read before changing agent instructions, skills, MCP settings, Git identity setup, or hooks.
 - `.claude/rules/astro-config.md`: read before Astro-specific recommendations or changes to root build/deployment configuration; resolve versions from the lockfile or installed metadata.
 - `PRODUCT.md`: read before changing product scope, routes, capabilities, or positioning.

@@ -27,7 +27,6 @@ Visitors can review the homepage, browse its project gallery, read individual ca
 - The homepage `/#projects` gallery is the sole project index. Individual `/projects/[id]` case studies remain public; legacy `/projects` and `/projects/` redirect exactly to the gallery, without a wildcard. Blog source is archived with no public routes or redirects. Résumé access is a PDF link, not a dedicated page.
 - `src/config.ts` owns personal and site data; `src/data/career.ts` owns career and education context.
 - Preserve factual content and metrics. Career bullets require explicit authorization to change.
-- Read `AGENTS.md` for architecture approval boundaries, `src/components/AGENTS.md` before changing component behavior, and `.claude/rules/routes.md` before changing routes.
 - Follow `AGENTS.md`, the single source of truth for repository agent instructions. `DESIGN.md` records the current implemented design.
 
 ## Brand Commitments
