@@ -1,5 +1,7 @@
 # Shaping modules and interfaces
 
+For a new public function, document edge cases its signature does not explain.
+
 **Prefer deep modules.** Merge a pass-through helper or single-use wrapper back into its caller. Give a class one entry point with sensible defaults rather than several methods that must be called in order. Do not fuse unrelated responsibilities to look deep.
 
 **Do not add an interface, abstract base, or wrapper for a single implementation.** Extract an interface when a second real implementation or a test seam exists, and extract only the operations callers use, not the class's full surface.

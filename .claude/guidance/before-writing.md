@@ -1,5 +1,7 @@
 # Before writing
 
+Match the existing idiom and scale ceremony to the change's lifespan and blast radius. State the concrete cost and alternative when adding a dependency, abstraction, or process.
+
 **Pin the problem to its data.** When a request names a mechanism ("sort this", "add a cache") rather than a goal, or when size, key range, uniqueness, or run frequency are unstated, inspect the data or state assumed values in one line, then choose the approach from those numbers. Do not implement the first general-purpose approach that matches the verbs in the request. Skip this when tests, a schema, or a contract already fix the problem.
 
 **Write a one-to-three line estimate before choosing between in-memory and streaming, before adding a cache or index, and before accepting a claim that something is too slow.** If the code already runs, measure instead of estimating.
