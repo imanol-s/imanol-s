@@ -1,8 +1,10 @@
 ---
-import Redacted from "./Redacted.astro";
-
 // Synthetic prototype data: one backend field shown under three front-end labels.
-const systems = ["System 1", "System 2", "System 3"];
+const systems = [
+  { name: "System 1", label: "Label A" },
+  { name: "System 2", label: "Label B" },
+  { name: "System 3", label: "Label C" },
+];
 ---
 
 <figure class="conflict not-prose" aria-labelledby="conflict-caption">
@@ -10,8 +12,8 @@ const systems = ["System 1", "System 2", "System 3"];
     {
       systems.map((system) => (
         <li>
-          <p class="conflict-team">{system} shows it as</p>
-          <Redacted kind="label" length={12} />
+          <p class="conflict-team">{system.name} shows it as</p>
+          <p class="conflict-label">{system.label}</p>
         </li>
       ))
     }
@@ -26,11 +28,11 @@ const systems = ["System 1", "System 2", "System 3"];
     <path d="M50 0V14H250V0M150 0V40"></path>
   </svg>
   <p class="conflict-field">
-    <span class="conflict-field-label">backend</span> FIELD_A
+    <span class="conflict-field-label">Stored as</span> Field A
   </p>
   <figcaption id="conflict-caption">
-    Synthetic example. One stored field, three labels. Each bar marks where a
-    real label would sit.
+    One stored field, three labels. Names are generic stand-ins; the real system
+    and field names are withheld.
   </figcaption>
 </figure>
 
@@ -54,12 +56,15 @@ const systems = ["System 1", "System 2", "System 3"];
     background: var(--story-panel, #111c2e);
   }
   .conflict-team {
-    margin: 0 0 0.6rem;
-    font-family: var(--font-display);
-    font-size: 0.6875rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    margin: 0 0 0.35rem;
+    font-size: 0.8125rem;
     color: #94a3b8;
+  }
+  .conflict .conflict-label {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--story-heading, #f1f5f9);
   }
   .conflict-join {
     display: block;
@@ -79,15 +84,13 @@ const systems = ["System 1", "System 2", "System 3"];
     padding: 0.4rem 0.9rem;
     border: 1px solid var(--story-mint, #b6e5d3);
     border-radius: 3px;
-    font-family: var(--font-display);
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
     color: var(--story-mint, #b6e5d3);
   }
   .conflict-field-label {
     margin-right: 0.4rem;
-    font-size: 0.6875rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
     color: #94a3b8;
   }
   .conflict figcaption {
@@ -105,8 +108,10 @@ const systems = ["System 1", "System 2", "System 3"];
       padding: 0.6rem 0.5rem;
     }
     .conflict-team {
-      font-size: 0.625rem;
-      letter-spacing: 0.02em;
+      font-size: 0.75rem;
+    }
+    .conflict .conflict-label {
+      font-size: 0.9375rem;
     }
   }
 </style>

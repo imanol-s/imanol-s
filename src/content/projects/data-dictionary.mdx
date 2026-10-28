@@ -1,9 +1,9 @@
 ---
 title: Enterprise Data Dictionary
-summary: "Prototype copy. I designed an enterprise data dictionary that documents lineage and technical information for about 200 SAP fields, so teams across the business read the same data the same way."
-cardSummary: "Prototype copy. A data dictionary for about 200 SAP fields, designed as a metadata system with lineage and periodic review."
+summary: "When one SAP field goes by three names in three systems, every question about it starts with a translation. I built a data dictionary that does that translation once: each entry links the label people see to the field the system stores, then traces what that field depends on and what reads it downstream."
+cardSummary: "One SAP field, three names in three systems. I built the dictionary that links what people see to what the system stores, and traces what depends on it."
 cover: "../../assets/projects/data-dictionary.webp"
-coverAlt: "Watercolor concept illustration of three system screens feeding one dictionary entry with redacted values, leading to a small lineage graph"
+coverAlt: "Watercolor concept illustration of three system screens feeding one dictionary entry, leading to a small lineage graph"
 ogImage: "../../assets/projects/data-dictionary.webp"
 tags:
   - database design
@@ -14,58 +14,40 @@ keywords:
   - metadata
 ---
 
-import DictionaryEntryHeader from "@/components/dictionary/DictionaryEntryHeader.astro";
 import DictionaryConflict from "@/components/dictionary/DictionaryConflict.astro";
 import DictionarySchema from "@/components/dictionary/DictionarySchema.astro";
 import DictionaryLineage from "@/components/dictionary/DictionaryLineage.astro";
-import Redacted from "@/components/dictionary/Redacted.astro";
 
-<DictionaryEntryHeader
-  entryKey="PROJECT.DATA_DICTIONARY"
-  rows={[
-    { key: "type", value: "Metadata system" },
-    { key: "owner", value: "Imanol, designer and sole maintainer" },
-    { key: "scope", value: "About 200 SAP fields" },
-    { key: "definition", value: "One reference that ties every front-end label back to the field the system actually stores." },
-  ]}
-/>
+## Three names for one field
 
-## known_conflicts
-
-One field, three names. The same stored value appeared in three systems, and each front end labeled it differently. Nothing on screen said they were the same field.
+The same stored value appeared in three systems, and each front end labeled it differently. Nothing on screen said they were the same field.
 
 <DictionaryConflict />
 
-Working out what each label really meant was not something I could read off a screen. It took collaboration across departments to piece together how the field behaved in each system.
+Working out what each label meant could not be done from a screen. It took collaboration across departments to piece together how the field behaved in each system.
 
 Placeholder. Add what the confusion cost before the dictionary existed.
 
-## schema
+## What every entry has to answer
 
-A dictionary is a schema for describing schemas. Every entry carries the same five attributes: the name people see, the name the system stores, the data type with its limit, what the field depends on, and its downstream proximity.
+Each entry answers the same five questions, so any field can be traced from what a person sees to what the system stores and what depends on it.
 
 <DictionarySchema />
 
-Placeholder. Name the design decisions here: why these five, what level each entry describes, and where the dictionary lives.
+Placeholder. Explain why these five, and where the dictionary lives.
 
-## lineage
+## Following a change downstream
 
-A definition says what a field means. Lineage says what breaks when that meaning changes. Two attributes carry it: `dependencies` points upstream, and `downstream_proximity` records which consumers read a field and how many steps away each one is. Together they make every entry a node in a directed graph.
+Two of those attributes turn the dictionary into a map. Dependencies point upstream; downstream proximity records which consumers read a field and how many steps away each one is. Select a node to see both directions.
 
 <DictionaryLineage />
 
-## change_control
+## Keeping it current
 
-I maintain the dictionary myself and review entries on a periodic cycle, so labels, types and dependencies stay in step with the systems they describe.
+I maintain the dictionary myself and review entries periodically, so labels, types and dependencies stay in step with the systems they describe.
 
 Placeholder. Add how often the review runs and what it checks.
 
-Business definitions, system names and labels are withheld throughout. Each <Redacted kind="withheld value" length={10} /> marks where one would sit; the structure around it is the work.
-
-## deprecated
+## What I'd change
 
 Placeholder. One honest limitation and what I would redesign now.
-
-## last_verified
-
-Pending. This entry gets a real date when it is published.
