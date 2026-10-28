@@ -34,13 +34,24 @@ Each entry answers the same five questions, so any field can be traced from what
 
 <DictionarySchema />
 
-Placeholder. Explain why these five, and where the dictionary lives.
+The dictionary mirrors the data model, table by table, so every entry sits where the system stores it. It is the single governed reference: other teams build from it, and changes flow back through one owner.
+
+Placeholder. Explain why these five attributes.
 
 ## Following a change downstream
 
 Two of those attributes turn the dictionary into a map. Dependencies point upstream; downstream proximity records which consumers read a field and how many steps away each one is. Select a node to see both directions.
 
 <DictionaryLineage />
+
+## Where it is used
+
+The dictionary became the reference other work is built on:
+
+- A development team used it as the field reference for an internal data-maintenance application, including the business-facing labels in its interface.
+- The data-quality validation rules were built from its attribute list.
+- Templates for creating new records draw their allowed values from it.
+- It is in scope for a proof of concept that brings governance documentation, quality rules and the dictionary into one application.
 
 ## Keeping it current
 
@@ -50,4 +61,4 @@ Placeholder. Add how often the review runs and what it checks.
 
 ## What I'd change
 
-Placeholder. One honest limitation and what I would redesign now.
+Working from shared copies means merging changes by hand and depending on one maintainer. The next step, which I am now scoping, is moving the dictionary into an application where the governance documentation, quality rules and dictionary share one source and update together.
