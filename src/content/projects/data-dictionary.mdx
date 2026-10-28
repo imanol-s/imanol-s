@@ -50,13 +50,15 @@ Placeholder. Name the design decisions here: why these five, what level each ent
 
 ## lineage
 
-A definition says what a field means. Lineage says what breaks when that meaning changes. I modeled it as a directed graph from where a value is created to everything that reads it.
+A definition says what a field means. Lineage says what breaks when that meaning changes. Two attributes carry it: `dependencies` points upstream, and `downstream_proximity` records which consumers read a field and how many steps away each one is. Together they make every entry a node in a directed graph.
 
 <DictionaryLineage />
 
 ## change_control
 
-I maintain the dictionary myself. Placeholder. Explain when entries get updated, for example as part of the change requests that alter a field.
+I maintain the dictionary myself and review entries on a periodic cycle, so labels, types and dependencies stay in step with the systems they describe.
+
+Placeholder. Add how often the review runs and what it checks.
 
 Business definitions, system names and labels are withheld throughout. Each <Redacted kind="withheld value" length={10} /> marks where one would sit; the structure around it is the work.
 

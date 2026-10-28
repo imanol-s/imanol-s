@@ -309,25 +309,31 @@ const labels = new Map(
       });
     };
 
+    // Breadth-first, so each node keeps its shortest step count from the start.
     const reach = (start: string, direction: 0 | 1) => {
-      const found = new Set<string>();
+      const steps = new Map<string, number>();
       const queue = [start];
       while (queue.length) {
         const current = queue.shift()!;
+        const depth = steps.get(current) ?? 0;
         for (const edge of edges) {
           const next = edge[1 - direction];
-          if (edge[direction] === current && !found.has(next)) {
-            found.add(next);
+          if (edge[direction] === current && next !== start && !steps.has(next)) {
+            steps.set(next, depth + 1);
             queue.push(next);
           }
         }
       }
-      return found;
+      return steps;
     };
 
     const label = (id: string) => nodes.get(id)!.querySelector("strong")!.textContent;
-    const list = (ids: Set<string>) =>
-      ids.size ? Array.from(ids, label).join(", ") : "nothing on this map";
+    const dependencies = (steps: Map<string, number>) =>
+      steps.size ? Array.from(steps.keys(), label).join(", ") : "nothing on this map";
+    const proximity = (steps: Map<string, number>) =>
+      steps.size
+        ? Array.from(steps, ([id, step]) => `${label(id)} (${step} ${step === 1 ? "step" : "steps"})`).join(", ")
+        : "nothing on this map";
 
     const render = () => {
       if (!selected) {
@@ -341,7 +347,7 @@ const labels = new Map(
       }
       const upstream = reach(selected, 1);
       const downstream = reach(selected, 0);
-      const lit = new Set([selected, ...upstream, ...downstream]);
+      const lit = new Set([selected, ...upstream.keys(), ...downstream.keys()]);
       nodes.forEach((button, id) => {
         button.dataset.state = lit.has(id) ? "on" : "off";
         button.setAttribute("aria-pressed", String(id === selected));
@@ -349,7 +355,7 @@ const labels = new Map(
       edges.forEach(([from, to], index) => {
         paths[index].dataset.state = lit.has(from) && lit.has(to) ? "on" : "off";
       });
-      readout.textContent = `${label(selected)} is fed by ${list(upstream)} and feeds ${list(downstream)}.`;
+      readout.textContent = `${label(selected)} depends on ${dependencies(upstream)}. Downstream: ${proximity(downstream)}.`;
     };
 
     nodes.forEach((button, id) =>

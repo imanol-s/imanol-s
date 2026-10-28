@@ -7,7 +7,7 @@ const attributes = [
   { name: "backend_name", holds: "The technical field name the system stores.", example: "FIELD_A" },
   { name: "data_type", holds: "Type with its limit, such as int or char.", example: "CHAR(4)" },
   { name: "dependencies", holds: "What this field relies on upstream.", redact: "upstream fields" },
-  { name: "downstream_proximity", holds: "Pending: confirm what this measures.", example: "pending" },
+  { name: "downstream_proximity", holds: "Which consumers read it, and how many steps away each one is.", example: "Report X · 2 steps" },
 ];
 ---
 
