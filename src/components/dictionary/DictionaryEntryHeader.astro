@@ -1,0 +1,112 @@
+---
+interface Row {
+  key: string;
+  value: string;
+}
+
+interface Props {
+  entryKey: string;
+  rows: Row[];
+}
+
+const { entryKey, rows } = Astro.props;
+---
+
+<section class="entry-header not-prose" aria-label="Project entry">
+  <div class="entry-key-row">
+    <p class="entry-key">{entryKey}</p>
+    <p class="entry-status">entry · draft</p>
+  </div>
+  <dl class="entry-rows">
+    {
+      rows.map((row) => (
+        <div class="entry-row">
+          <dt>{row.key}</dt>
+          <dd>{row.value}</dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<style>
+  .entry-header {
+    position: relative;
+    margin: 0 0 3rem;
+    border: 1px solid var(--story-border, #334155);
+    border-radius: 4px;
+    background: var(--story-panel, #111c2e);
+  }
+  .entry-header::before,
+  .entry-header::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-color: var(--story-mint, #b6e5d3);
+    border-style: solid;
+  }
+  .entry-header::before {
+    top: -1px;
+    left: -1px;
+    border-width: 1px 0 0 1px;
+  }
+  .entry-header::after {
+    right: -1px;
+    bottom: -1px;
+    border-width: 0 1px 1px 0;
+  }
+  .entry-key-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--story-border, #334155);
+    font-family: var(--font-display);
+  }
+  .entry-key {
+    margin: 0;
+    font-size: 0.875rem;
+    letter-spacing: 0.02em;
+    color: var(--story-mint, #b6e5d3);
+  }
+  .entry-status {
+    margin: 0;
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #94a3b8;
+  }
+  .entry-rows {
+    margin: 0;
+    padding: 0.5rem 1.25rem 0.75rem;
+  }
+  .entry-row {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 0.5rem 0;
+  }
+  .entry-row + .entry-row {
+    border-top: 1px dashed #1e293b;
+  }
+  .entry-row dt {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    line-height: 1.9;
+    color: #94a3b8;
+  }
+  .entry-row dd {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--story-heading, #f1f5f9);
+  }
+  @media (max-width: 479px) {
+    .entry-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.1rem;
+    }
+  }
+</style>

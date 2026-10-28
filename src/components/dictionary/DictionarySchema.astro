@@ -1,0 +1,143 @@
+---
+import Redacted from "./Redacted.astro";
+
+// Attribute names confirmed by Imanol; descriptions and examples are prototype stand-ins.
+const attributes = [
+  { name: "name", holds: "The label people see in the front end.", redact: "front-end label" },
+  { name: "backend_name", holds: "The technical field name the system stores.", example: "FIELD_A" },
+  { name: "data_type", holds: "Type with its limit, such as int or char.", example: "CHAR(4)" },
+  { name: "dependencies", holds: "What this field relies on upstream.", redact: "upstream fields" },
+  { name: "downstream_proximity", holds: "Pending: confirm what this measures.", example: "pending" },
+];
+---
+
+<figure class="schema not-prose" aria-labelledby="schema-caption">
+  <div class="schema-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">attribute</th>
+          <th scope="col">holds</th>
+          <th scope="col">example</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          attributes.map((attribute) => (
+            <tr>
+              <th scope="row">{attribute.name}</th>
+              <td>{attribute.holds}</td>
+              <td>
+                {attribute.redact ? (
+                  <Redacted kind={attribute.redact} length={10} />
+                ) : (
+                  <code>{attribute.example}</code>
+                )}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <figcaption id="schema-caption">
+    The entry model. Examples are synthetic.
+  </figcaption>
+</figure>
+
+<style>
+  .schema {
+    margin: 2rem 0;
+  }
+  .schema-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--story-border, #334155);
+    border-radius: 4px;
+    background: var(--story-panel, #111c2e);
+  }
+  /* The case-study prose makes tables scrolling blocks; this one scrolls in its frame instead. */
+  .schema table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+  thead th {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--story-border, #334155);
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-align: left;
+    text-transform: uppercase;
+    color: #94a3b8;
+  }
+  tbody tr + tr {
+    border-top: 1px dashed #1e293b;
+  }
+  .schema tbody th,
+  .schema tbody td {
+    border: 0;
+    padding: 0.7rem 1rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  tbody th {
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    white-space: nowrap;
+    color: var(--story-mint, #b6e5d3);
+  }
+  code {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    color: #94a3b8;
+  }
+  td {
+    color: var(--story-body, #cbd5e1);
+  }
+  figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #94a3b8;
+  }
+  /* Phones read each attribute as a small card instead of a squeezed table. */
+  @media (max-width: 639px) {
+    .schema table,
+    tbody,
+    tr,
+    th,
+    td {
+      display: block;
+    }
+    thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+    tbody tr {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.25rem 0.75rem;
+      padding: 0.85rem 1rem;
+    }
+    .schema tbody th,
+    .schema tbody td {
+      padding: 0;
+    }
+    tbody td:nth-of-type(1) {
+      grid-column: 1 / -1;
+    }
+    tbody td:nth-of-type(2) {
+      grid-row: 1;
+      grid-column: 2;
+      justify-self: end;
+    }
+  }
+</style>

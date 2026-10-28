@@ -1,0 +1,50 @@
+---
+interface Props {
+  /** The kind of value withheld, e.g. "business definition". Never the value itself. */
+  kind: string;
+  /** Approximate width of the withheld value, in characters. */
+  length?: number;
+}
+
+const { kind, length = 14 } = Astro.props;
+---
+
+<span class="redacted" style={`--redacted-length: ${length}ch`}>
+  <span class="sr-only">Redacted </span><span class="redacted-kind"
+    >{kind}</span
+  >
+</span>
+
+<style>
+  .redacted {
+    display: inline-flex;
+    align-items: center;
+    min-width: min(var(--redacted-length), 100%);
+    max-width: 100%;
+    min-height: 1.35em;
+    padding: 0 0.45em;
+    vertical-align: middle;
+    border: 1px solid #475569;
+    border-radius: 2px;
+    background: repeating-linear-gradient(
+        -45deg,
+        transparent 0 6px,
+        #ffffff08 6px 7px
+      ),
+      #020617;
+  }
+  .redacted-kind {
+    font-family: var(--font-display);
+    font-size: 0.625rem;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #94a3b8;
+  }
+  .redacted-kind::before {
+    content: "[";
+  }
+  .redacted-kind::after {
+    content: "]";
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+title: Enterprise Data Dictionary
+summary: "Prototype copy. I designed an enterprise data dictionary that documents lineage and technical information for about 200 SAP fields, so teams across the business read the same data the same way."
+cardSummary: "Prototype copy. A data dictionary for about 200 SAP fields, designed as a metadata system with lineage and change control."
+cover: "../../assets/projects/data-dictionary-placeholder.svg"
+coverAlt: "Placeholder cover showing a ledger of field attributes with redaction bars"
+ogImage: "../../assets/projects/data-dictionary-placeholder.svg"
+tags:
+  - database design
+  - data analysis
+keywords:
+  - data architecture
+  - data governance
+  - metadata
+---
+
+import DictionaryEntryHeader from "@/components/dictionary/DictionaryEntryHeader.astro";
+import DictionaryConflict from "@/components/dictionary/DictionaryConflict.astro";
+import DictionarySchema from "@/components/dictionary/DictionarySchema.astro";
+import DictionaryLineage from "@/components/dictionary/DictionaryLineage.astro";
+import Redacted from "@/components/dictionary/Redacted.astro";
+
+<DictionaryEntryHeader
+  entryKey="PROJECT.DATA_DICTIONARY"
+  rows={[
+    { key: "type", value: "Metadata system" },
+    { key: "owner", value: "Imanol, designer and sole maintainer" },
+    { key: "scope", value: "About 200 SAP fields" },
+    { key: "definition", value: "One reference that ties every front-end label back to the field the system actually stores." },
+  ]}
+/>
+
+## known_conflicts
+
+One field, three names. The same stored value appeared in three systems, and each front end labeled it differently. Nothing on screen said they were the same field.
+
+<DictionaryConflict />
+
+Working out what each label really meant was not something I could read off a screen. It took collaboration across departments to piece together how the field behaved in each system.
+
+Placeholder. Add what the confusion cost before the dictionary existed.
+
+## schema
+
+A dictionary is a schema for describing schemas. Every entry carries the same five attributes: the name people see, the name the system stores, the data type with its limit, what the field depends on, and its downstream proximity.
+
+<DictionarySchema />
+
+Placeholder. Name the design decisions here: why these five, what level each entry describes, and where the dictionary lives.
+
+## lineage
+
+A definition says what a field means. Lineage says what breaks when that meaning changes. I modeled it as a directed graph from where a value is created to everything that reads it.
+
+<DictionaryLineage />
+
+## change_control
+
+I maintain the dictionary myself. Placeholder. Explain when entries get updated, for example as part of the change requests that alter a field.
+
+Business definitions, system names and labels are withheld throughout. Each <Redacted kind="withheld value" length={10} /> marks where one would sit; the structure around it is the work.
+
+## deprecated
+
+Placeholder. One honest limitation and what I would redesign now.
+
+## last_verified
+
+Pending. This entry gets a real date when it is published.

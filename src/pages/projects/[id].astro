@@ -26,6 +26,8 @@ const chapters = headings.filter((heading) => heading.depth === 2);
 const { prev, next, hasValidUrl } = getProjectPageData(sorted, post.id);
 const metadata = { title, startDate, endDate, tags, hasValidUrl, url };
 const isSensori = post.id === "sensori-robotics";
+// Prototype: the data dictionary case study is written as a dictionary entry.
+const isDictionaryEntry = post.id === "data-dictionary";
 ---
 
 <Layout
@@ -123,7 +125,14 @@ const isSensori = post.id === "sensori-robotics";
         <div class="project-facts-compact">
           <ProjectMetadata {...metadata} compact />
         </div>
-        <div class="project-narrative project-mdx"><Content /></div>
+        <div
+          class:list={[
+            "project-narrative project-mdx",
+            { "dictionary-entry": isDictionaryEntry },
+          ]}
+        >
+          <Content />
+        </div>
       </article>
       <span class="project-scroll-cue" hidden aria-hidden="true">
         <svg width="12" height="12" viewBox="0 0 12 12" focusable="false">
@@ -689,6 +698,22 @@ const isSensori = post.id === "sensori-robotics";
   }
   .project-narrative :global(h2:first-child) {
     margin-top: 0;
+  }
+  .dictionary-entry :global(h2) {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--story-border);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    letter-spacing: 0;
+    color: var(--story-mint);
+  }
+  .dictionary-entry :global(h2)::before {
+    content: "▸" / "";
+    font-size: 0.75em;
+    color: #64748b;
   }
   .project-narrative :global(h3) {
     margin: 2rem 0 0.75rem;
