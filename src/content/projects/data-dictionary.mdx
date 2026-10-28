@@ -1,0 +1,64 @@
+---
+title: Enterprise Data Dictionary
+summary: "When one SAP field goes by three names in three systems, every question about it starts with a translation. I built a data dictionary that does that translation once: each entry links the label people see to the field the system stores, then traces what that field depends on and what reads it downstream."
+cardSummary: "One SAP field, three names in three systems. I built the dictionary that links what people see to what the system stores, and traces what depends on it."
+cover: "../../assets/projects/data-dictionary.webp"
+coverAlt: "Watercolor concept illustration of three system screens feeding one dictionary entry, leading to a small lineage graph"
+ogImage: "../../assets/projects/data-dictionary.webp"
+tags:
+  - database design
+  - data analysis
+keywords:
+  - data architecture
+  - data governance
+  - metadata
+---
+
+import DictionaryConflict from "@/components/dictionary/DictionaryConflict.astro";
+import DictionarySchema from "@/components/dictionary/DictionarySchema.astro";
+import DictionaryLineage from "@/components/dictionary/DictionaryLineage.astro";
+
+## Three names for one field
+
+The same stored value appeared in three systems, and each front end labeled it differently. Nothing on screen said they were the same field.
+
+<DictionaryConflict />
+
+Working out what each label meant could not be done from a screen. It took collaboration across departments to piece together how the field behaved in each system.
+
+Placeholder. Add what the confusion cost before the dictionary existed.
+
+## What every entry has to answer
+
+Each entry answers the same five questions, so any field can be traced from what a person sees to what the system stores and what depends on it.
+
+<DictionarySchema />
+
+The dictionary mirrors the data model, table by table, so every entry sits where the system stores it. It is the single governed reference: other teams build from it, and changes flow back through one owner.
+
+Placeholder. Explain why these five attributes.
+
+## Following a change downstream
+
+Two of those attributes turn the dictionary into a map. Dependencies point upstream; downstream proximity records which consumers read a field and how many steps away each one is. Select a node to see both directions.
+
+<DictionaryLineage />
+
+## Where it is used
+
+The dictionary became the reference other work is built on:
+
+- It served as the field specification for an internal data-maintenance application: I supplied the mapping from business labels to backend fields and validated the build's fields against it.
+- The data-quality validation rules were built from its attribute list.
+- Templates for creating new records draw their allowed values from it.
+- It is in scope for a proof of concept that brings governance documentation, quality rules and the dictionary into one application.
+
+## Keeping it current
+
+I maintain the dictionary myself and review entries periodically, so labels, types and dependencies stay in step with the systems they describe.
+
+Placeholder. Add how often the review runs and what it checks.
+
+## What I'd change
+
+Working from shared copies means merging changes by hand and depending on one maintainer. The next step, which I am now scoping, is moving the dictionary into an application where the governance documentation, quality rules and dictionary share one source and update together.

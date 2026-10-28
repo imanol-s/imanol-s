@@ -1,0 +1,393 @@
+---
+// Synthetic prototype graph. Labels are generic stand-ins, never real system names.
+const stages = [
+  {
+    name: "source",
+    nodes: [
+      { id: "field-a", label: "Field A", detail: "source field" },
+      { id: "field-b", label: "Field B", detail: "source field" },
+    ],
+  },
+  {
+    name: "transform",
+    nodes: [
+      { id: "interface-1", label: "Interface 1", detail: "nightly extract" },
+      { id: "transform-2", label: "Transform 2", detail: "derived value" },
+    ],
+  },
+  {
+    name: "consume",
+    nodes: [
+      { id: "system-z", label: "System Z", detail: "system" },
+      { id: "report-x", label: "Report X", detail: "report" },
+      { id: "dashboard-y", label: "View Y", detail: "visual" },
+    ],
+  },
+];
+const edges: [string, string][] = [
+  ["field-a", "interface-1"],
+  ["field-a", "transform-2"],
+  ["field-b", "transform-2"],
+  ["interface-1", "system-z"],
+  ["interface-1", "report-x"],
+  ["transform-2", "report-x"],
+  ["transform-2", "dashboard-y"],
+];
+const labels = new Map(
+  stages.flatMap((stage) => stage.nodes.map((node) => [node.id, node.label])),
+);
+---
+
+<figure
+  class="lineage not-prose"
+  data-lineage
+  data-edges={JSON.stringify(edges)}
+  aria-labelledby="lineage-caption"
+>
+  <div class="lineage-graph" data-lineage-graph>
+    <svg class="lineage-edges" aria-hidden="true" data-lineage-edges></svg>
+    {
+      stages.map((stage) => (
+        <div class="lineage-stage">
+          <p class="lineage-stage-name">{stage.name}</p>
+          <ul class="lineage-nodes" role="list">
+            {stage.nodes.map((node) => (
+              <li>
+                <button
+                  type="button"
+                  class="lineage-node"
+                  data-node={node.id}
+                  aria-pressed="false"
+                >
+                  <strong>{node.label}</strong>
+                  <span>{node.detail}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+  <p class="lineage-readout" aria-live="polite" data-lineage-readout>
+    Select any node to trace what feeds it and what it feeds.
+  </p>
+  <details class="lineage-text">
+    <summary>Lineage as text</summary>
+    <ul>
+      {
+        edges.map(([from, to]) => (
+          <li>
+            {labels.get(from)} feeds {labels.get(to)}
+          </li>
+        ))
+      }
+    </ul>
+  </details>
+  <figcaption id="lineage-caption">
+    Synthetic lineage graph. Node names are generic placeholders.
+  </figcaption>
+</figure>
+
+<style>
+  .lineage {
+    margin: 2rem 0;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border: 1px solid var(--story-border, #334155);
+    border-radius: 4px;
+    background: var(--story-panel, #111c2e);
+  }
+  .lineage-graph {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3rem;
+  }
+  .lineage-edges {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .lineage-edges :global(path) {
+    fill: none;
+    stroke: #475569;
+    stroke-width: 1.25;
+  }
+  .lineage-edges :global(path[data-state="on"]) {
+    stroke: var(--story-mint, #b6e5d3);
+    stroke-width: 2;
+  }
+  .lineage-edges :global(path[data-state="off"]) {
+    opacity: 0.25;
+  }
+  .lineage-stage {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-width: 0;
+  }
+  .lineage-stage-name {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #94a3b8;
+  }
+  /* Doubled selectors outrank the case-study prose list styles. */
+  .lineage .lineage-nodes {
+    display: grid;
+    align-content: center;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .lineage .lineage-nodes li {
+    margin: 0;
+  }
+  .lineage-node {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #64748b;
+    border-radius: 3px;
+    background: #0f172a;
+    color: var(--story-heading, #f1f5f9);
+    text-align: left;
+    overflow-wrap: normal;
+    cursor: pointer;
+  }
+  .lineage-node strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+  .lineage-node span {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: #94a3b8;
+  }
+  .lineage-node:hover {
+    border-color: var(--story-mint, #b6e5d3);
+  }
+  .lineage-node:focus-visible {
+    outline: 2px solid var(--story-mint, #b6e5d3);
+    outline-offset: 2px;
+  }
+  .lineage-node[data-state="on"] {
+    border-color: var(--story-mint, #b6e5d3);
+    background: #172f30;
+  }
+  .lineage-node[aria-pressed="true"] {
+    box-shadow: 0 0 0 1px var(--story-mint, #b6e5d3);
+  }
+  .lineage-node[data-state="off"] {
+    opacity: 0.4;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .lineage-node,
+    .lineage-edges :global(path) {
+      transition:
+        opacity 180ms ease,
+        stroke 180ms ease,
+        border-color 180ms ease,
+        background-color 180ms ease;
+    }
+  }
+  .lineage .lineage-readout {
+    min-height: 3.2em;
+    margin: 1.5rem 0 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--story-body, #cbd5e1);
+  }
+  .lineage-text {
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+  }
+  .lineage-text summary {
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    color: #94a3b8;
+  }
+  .lineage-text ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .lineage figcaption {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--story-border, #334155);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #94a3b8;
+  }
+  /* Phones turn stages into rows so edges run top to bottom without crossing nodes. */
+  @media (max-width: 639px) {
+    .lineage {
+      padding: 0.75rem;
+    }
+    .lineage-graph {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2.25rem;
+    }
+    /* Edges cross the gaps between rows, so stage names stay for screen readers only. */
+    .lineage-stage-name {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .lineage .lineage-nodes {
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+      gap: 0.375rem;
+    }
+    .lineage-node {
+      padding: 0.45rem;
+    }
+    .lineage-node strong {
+      font-size: 0.75rem;
+    }
+    .lineage-node span {
+      font-size: 0.6875rem;
+    }
+  }
+</style>
+
+<script>
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  let cleanup: (() => void) | undefined;
+
+  function setupLineage(figure: HTMLElement, signal: AbortSignal) {
+    const graph = figure.querySelector<HTMLElement>("[data-lineage-graph]")!;
+    const svg = figure.querySelector<SVGSVGElement>("[data-lineage-edges]")!;
+    const readout = figure.querySelector<HTMLElement>("[data-lineage-readout]")!;
+    const edges: [string, string][] = JSON.parse(figure.dataset.edges ?? "[]");
+    const nodes = new Map(
+      Array.from(
+        figure.querySelectorAll<HTMLButtonElement>("[data-node]"),
+        (button) => [button.dataset.node!, button],
+      ),
+    );
+    const paths = edges.map(() => svg.appendChild(document.createElementNS(SVG_NS, "path")));
+    const stacked = matchMedia("(max-width: 639px)");
+    let selected: string | null = null;
+
+    const draw = () => {
+      const box = graph.getBoundingClientRect();
+      edges.forEach(([from, to], index) => {
+        const a = nodes.get(from)!.getBoundingClientRect();
+        const b = nodes.get(to)!.getBoundingClientRect();
+        const horizontal = !stacked.matches;
+        const d = horizontal
+          ? curve(a.right, a.top + a.height / 2, b.left, b.top + b.height / 2, true)
+          : curve(a.left + a.width / 2, a.bottom, b.left + b.width / 2, b.top, false);
+        paths[index].setAttribute("d", d);
+
+        function curve(x1: number, y1: number, x2: number, y2: number, across: boolean) {
+          const [sx, sy, ex, ey] = [x1 - box.left, y1 - box.top, x2 - box.left, y2 - box.top];
+          const mid = across ? (sx + ex) / 2 : (sy + ey) / 2;
+          return across
+            ? `M${sx} ${sy}C${mid} ${sy} ${mid} ${ey} ${ex} ${ey}`
+            : `M${sx} ${sy}C${sx} ${mid} ${ex} ${mid} ${ex} ${ey}`;
+        }
+      });
+    };
+
+    // Breadth-first, so each node keeps its shortest step count from the start.
+    const reach = (start: string, direction: 0 | 1) => {
+      const steps = new Map<string, number>();
+      const queue = [start];
+      while (queue.length) {
+        const current = queue.shift()!;
+        const depth = steps.get(current) ?? 0;
+        for (const edge of edges) {
+          const next = edge[1 - direction];
+          if (edge[direction] === current && next !== start && !steps.has(next)) {
+            steps.set(next, depth + 1);
+            queue.push(next);
+          }
+        }
+      }
+      return steps;
+    };
+
+    const label = (id: string) => nodes.get(id)!.querySelector("strong")!.textContent;
+    const dependencies = (steps: Map<string, number>) =>
+      steps.size ? Array.from(steps.keys(), label).join(", ") : "nothing on this map";
+    const proximity = (steps: Map<string, number>) =>
+      steps.size
+        ? Array.from(steps, ([id, step]) => `${label(id)} (${step} ${step === 1 ? "step" : "steps"})`).join(", ")
+        : "nothing on this map";
+
+    const render = () => {
+      if (!selected) {
+        nodes.forEach((button) => {
+          button.removeAttribute("data-state");
+          button.setAttribute("aria-pressed", "false");
+        });
+        paths.forEach((path) => path.removeAttribute("data-state"));
+        readout.textContent = "Select any node to trace what feeds it and what it feeds.";
+        return;
+      }
+      const upstream = reach(selected, 1);
+      const downstream = reach(selected, 0);
+      const lit = new Set([selected, ...upstream.keys(), ...downstream.keys()]);
+      nodes.forEach((button, id) => {
+        button.dataset.state = lit.has(id) ? "on" : "off";
+        button.setAttribute("aria-pressed", String(id === selected));
+      });
+      edges.forEach(([from, to], index) => {
+        paths[index].dataset.state = lit.has(from) && lit.has(to) ? "on" : "off";
+      });
+      readout.textContent = `${label(selected)} depends on ${dependencies(upstream)}. Downstream: ${proximity(downstream)}.`;
+    };
+
+    nodes.forEach((button, id) =>
+      button.addEventListener(
+        "click",
+        () => {
+          selected = selected === id ? null : id;
+          render();
+        },
+        { signal },
+      ),
+    );
+    const observer = new ResizeObserver(draw);
+    observer.observe(graph);
+    document.fonts.ready.then(() => signal.aborted || draw());
+    signal.addEventListener("abort", () => observer.disconnect());
+    draw();
+  }
+
+  document.addEventListener("astro:before-swap", () => cleanup?.());
+  document.addEventListener("astro:page-load", () => {
+    cleanup?.();
+    const figures = document.querySelectorAll<HTMLElement>("[data-lineage]");
+    if (!figures.length) return;
+    const controller = new AbortController();
+    figures.forEach((figure) => setupLineage(figure, controller.signal));
+    cleanup = () => {
+      controller.abort();
+      figures.forEach((figure) => {
+        figure.querySelector("[data-lineage-edges]")?.replaceChildren();
+      });
+      cleanup = undefined;
+    };
+  });
+</script>
