@@ -146,7 +146,7 @@ const links = [
   .site-header {
     position: fixed;
     z-index: 50;
-    top: 12px;
+    top: max(12px, env(safe-area-inset-top, 0px));
     left: var(--header-left, max(24px, calc((100vw - 960px) / 2)));
     width: var(--header-expanded-width, min(960px, calc(100% - 48px)));
     --header-background: #0f172af5;
@@ -296,6 +296,7 @@ const links = [
   .header-menu {
     display: none;
     opacity: 0;
+    overscroll-behavior: contain;
     transition:
       opacity 160ms ease,
       display 160ms allow-discrete;
