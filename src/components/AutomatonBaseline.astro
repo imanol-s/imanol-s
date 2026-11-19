@@ -1,0 +1,282 @@
+---
+const workflows = [
+  {
+    title: "Component-maintenance workflow",
+    unit: "Seconds per outcome",
+    scaleMax: 90,
+    ticks: [0, 30, 60, 90],
+    rows: [
+      {
+        label: "Manual baseline (model rate)",
+        value: "90.0 s",
+        widthPct: 100,
+        variant: "manual",
+      },
+      {
+        label: "Initial automated loop (median, p90 8.0 s)",
+        value: "6.0 s",
+        widthPct: (6 / 90) * 100,
+        variant: "automated",
+      },
+    ],
+  },
+  {
+    title: "Material-update workflow",
+    unit: "Seconds per record save",
+    scaleMax: 108,
+    ticks: [0, 36, 72, 108],
+    rows: [
+      {
+        label: "Manual baseline (timed example to estimate)",
+        value: "38.6–108.0 s",
+        widthPct: 100,
+        minPct: (38.6 / 108) * 100,
+        variant: "manual-range",
+      },
+      {
+        label: "Initial automated loop (138-row baseline)",
+        value: "17.5 s",
+        widthPct: (17.5 / 108) * 100,
+        variant: "automated",
+      },
+    ],
+  },
+];
+---
+
+<figure
+  class="automaton-baseline not-prose"
+  aria-labelledby="automaton-baseline-title automaton-baseline-caption"
+>
+  <div class="baseline-heading">
+    <h3 id="automaton-baseline-title" class="font-display">
+      Foundational baseline: manual effort vs. first automated loop
+    </h3>
+    <p class="baseline-context">
+      Per-record execution time before wait optimization or multi-worker
+      scaling, comparing manual SAP edits with the initial single-browser
+      driver.
+    </p>
+  </div>
+
+  <div class="baseline-grid">
+    {
+      workflows.map((workflow) => (
+        <div class="baseline-card">
+          <h4 class="font-display">{workflow.title}</h4>
+          <p class="baseline-unit">{workflow.unit}</p>
+          <dl class="baseline-series">
+            {workflow.rows.map((row) => (
+              <div class="baseline-row">
+                <dt>{row.label}</dt>
+                <dd>
+                  <span class="baseline-value font-display">{row.value}</span>
+                  <span class="baseline-track" aria-hidden="true">
+                    {row.variant === "manual-range" ? (
+                      <>
+                        <span
+                          class="baseline-bar baseline-manual-low"
+                          style={`width: ${row.minPct}%`}
+                        />
+                        <span
+                          class="baseline-bar baseline-manual-band"
+                          style={`left: ${row.minPct}%; width: ${100 - (row.minPct ?? 0)}%`}
+                        />
+                      </>
+                    ) : (
+                      <span
+                        class={`baseline-bar baseline-${row.variant}`}
+                        style={`width: ${row.widthPct}%`}
+                      />
+                    )}
+                  </span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <div class="baseline-axis font-display" aria-hidden="true">
+            {workflow.ticks.map((tick) => (
+              <span>{tick}s</span>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <figcaption id="automaton-baseline-caption">
+    Manual rates come from the project's cost-savings model (90 s per component
+    outcome; 38.6–108 s per material save, where the shaded band spans the
+    38.6–108.0 s estimate range). Initial automated timings come from early
+    single-browser run-journal cohorts (2,892 component outcomes through May 22,
+    2026; 138-row single-field material baseline on June 18, 2026).
+  </figcaption>
+</figure>
+
+<style>
+  .automaton-baseline {
+    margin: 2rem 0;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background: #fff;
+    color: #0f172a;
+  }
+  .baseline-heading h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .baseline-context {
+    margin: 0.4rem 0 0;
+    color: #475569;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  .baseline-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem;
+    margin-top: 1.5rem;
+  }
+  .baseline-card {
+    min-width: 0;
+  }
+  .baseline-card h4 {
+    margin: 0;
+    font-size: 0.825rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .baseline-unit {
+    margin: 0.2rem 0 1.1rem;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  .baseline-series {
+    margin: 0;
+  }
+  .baseline-row {
+    position: relative;
+    padding-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+  .baseline-row + .baseline-row {
+    margin-top: 1rem;
+  }
+  .baseline-row dt {
+    min-width: 0;
+  }
+  .baseline-row dd {
+    margin: 0;
+    flex-shrink: 0;
+  }
+  .baseline-value {
+    font-weight: 500;
+  }
+  .baseline-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.1rem;
+    border-left: 1px solid #94a3b8;
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(33.333% - 1px),
+      #e2e8f0 calc(33.333% - 1px),
+      #e2e8f0 33.333%
+    );
+  }
+  .baseline-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    height: 100%;
+  }
+  .baseline-manual,
+  .baseline-manual-low {
+    background: #64748b;
+  }
+  .baseline-manual-band {
+    background: rgba(100, 116, 139, 0.45);
+    border-right: 2px dashed #64748b;
+  }
+  .baseline-automated {
+    background: #166534;
+  }
+  .baseline-axis {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.45rem;
+    color: #475569;
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+  .automaton-baseline figcaption {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.65;
+  }
+  :global(.dark) .automaton-baseline {
+    background: #111c2e;
+    border-color: #334155;
+    color: #f8fafc;
+  }
+  :global(.dark) .baseline-context,
+  :global(.dark) .baseline-unit,
+  :global(.dark) .baseline-axis,
+  :global(.dark) .automaton-baseline figcaption {
+    color: #cbd5e1;
+  }
+  :global(.dark) .baseline-track {
+    border-color: #64748b;
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(33.333% - 1px),
+      #1e293b calc(33.333% - 1px),
+      #1e293b 33.333%
+    );
+  }
+  :global(.dark) .baseline-manual,
+  :global(.dark) .baseline-manual-low {
+    background: #94a3b8;
+  }
+  :global(.dark) .baseline-manual-band {
+    background: rgba(148, 163, 184, 0.35);
+    border-right-color: #cbd5e1;
+  }
+  :global(.dark) .baseline-automated {
+    background: #b6e5d3;
+  }
+  :global(.dark) .automaton-baseline figcaption {
+    border-color: #334155;
+  }
+  @media (max-width: 639px) {
+    .baseline-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .baseline-card + .baseline-card {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 1.25rem;
+    }
+    :global(.dark) .baseline-card + .baseline-card {
+      border-color: #334155;
+    }
+  }
+</style>

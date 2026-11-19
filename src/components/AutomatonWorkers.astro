@@ -1,0 +1,332 @@
+---
+const workloads = [
+  {
+    title: "21-chain distribution updates (1,513-material batch)",
+    subtitle: "July 20–23, 2026 live migration across 16 seeded chunks",
+    unit: "Effective seconds per material (lower is faster)",
+    max: 45,
+    bars: [
+      {
+        label: "1 worker (Chunks 1–12, single browser)",
+        value: "≈45.0 s/row",
+        num: 45,
+        tone: "single",
+      },
+      {
+        label: "2 workers (Chunks 11-remainder–16, ~2.3× throughput)",
+        value: "≈24.0 s/row",
+        num: 24,
+        tone: "dual",
+      },
+    ],
+  },
+  {
+    title: "Object-field updates (1,188-material production batch)",
+    subtitle: "August 5–6, 2026 single-worker baseline vs. 12-chunk 2-worker run",
+    unit: "Batch completion time and per-material rate",
+    max: 24.9,
+    bars: [
+      {
+        label: "1 worker rate (24.9 s/material, ~145/hr → ~8.2 hrs for 1,188)",
+        value: "24.9 s/row",
+        num: 24.9,
+        tone: "single",
+      },
+      {
+        label: "2 workers chunked (9.7 s/material, ~373/hr → 3.2 hrs for 1,188)",
+        value: "9.7 s/row",
+        num: 9.7,
+        tone: "dual",
+      },
+    ],
+  },
+];
+
+const safeguards = [
+  {
+    title: "60% / 25% / 15% dynamic wave balancing",
+    detail:
+      "Deals 60% of the validated scope first (for example, 267 + 267 of 890 materials) and hands queued 25% and 15% slices to whichever worker finishes first, finishing that 890-material run at 444 and 446 in 2h 42m.",
+  },
+  {
+    title: "Disjoint partitions & isolated journals",
+    detail:
+      "Enforces non-overlapping material sets before launch and binds Worker 1 (port 9222) and Worker 2 (port 9223) to separate worker-1/ and worker-2/ run-journal directories so sessions never collide on SAP drafts or files.",
+  },
+  {
+    title: "Manifest-based resume",
+    detail:
+      "Verifies the SHA-256 input digest and prunes each worker's partition against its own checkpointed SAVED and skipped outcomes without re-splitting the batch.",
+  },
+];
+---
+
+<figure
+  class="automaton-workers not-prose"
+  aria-labelledby="automaton-workers-title automaton-workers-caption"
+>
+  <div class="workers-heading">
+    <h3 id="automaton-workers-title" class="font-display">
+      Scaling throughput: one worker vs. two coordinated workers
+    </h3>
+    <p class="workers-context">
+      Once single-tab waits reached SAP's server draft-commit floor, adding a
+      second isolated Chrome worker cut batch completion time by more than half.
+    </p>
+  </div>
+
+  <div class="workers-grid">
+    {
+      workloads.map((workload) => (
+        <div class="workload-card">
+          <h4 class="font-display">{workload.title}</h4>
+          <p class="workload-sub">{workload.subtitle}</p>
+          <p class="workload-unit">{workload.unit}</p>
+          <dl class="workload-series">
+            {workload.bars.map((bar) => (
+              <div class="workload-row">
+                <dt>{bar.label}</dt>
+                <dd>
+                  <span class="workload-value font-display">{bar.value}</span>
+                  <span class="workload-track" aria-hidden="true">
+                    <span
+                      class={`workload-bar workload-${bar.tone}`}
+                      style={`width: ${(bar.num / workload.max) * 100}%`}
+                    />
+                  </span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="coordinator-box">
+    <p class="coordinator-title font-display">
+      How the two-worker coordinator keeps concurrent runs safe
+    </p>
+    <ul class="coordinator-list" role="list">
+      {
+        safeguards.map((item) => (
+          <li>
+            <strong class="font-display">{item.title}</strong>
+            <span>{item.detail}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <figcaption id="automaton-workers-caption">
+    Measured from live single-worker and two-worker (<code class="font-display"
+      >--workers</code
+    >) batch logs. Worker count is structurally fixed at two independent Chrome
+    profiles (~1.4 GiB memory each) to double throughput while keeping
+    workstation memory and authenticated sessions bounded.
+  </figcaption>
+</figure>
+
+<style>
+  .automaton-workers {
+    margin: 2rem 0;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background: #fff;
+    color: #0f172a;
+  }
+  .workers-heading h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .workers-context {
+    margin: 0.4rem 0 0;
+    color: #475569;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  .workers-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem;
+    margin-top: 1.5rem;
+  }
+  .workload-card {
+    min-width: 0;
+  }
+  .workload-card h4 {
+    margin: 0;
+    font-size: 0.825rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .workload-sub {
+    margin: 0.2rem 0 0.25rem;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  .workload-unit {
+    margin: 0 0 1rem;
+    color: #475569;
+    font-size: 0.725rem;
+    line-height: 1.5;
+  }
+  .workload-series {
+    margin: 0;
+  }
+  .workload-row {
+    position: relative;
+    padding-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+  .workload-row + .workload-row {
+    margin-top: 1rem;
+  }
+  .workload-row dt {
+    min-width: 0;
+  }
+  .workload-row dd {
+    margin: 0;
+    flex-shrink: 0;
+  }
+  .workload-value {
+    font-weight: 500;
+  }
+  .workload-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.1rem;
+    border-left: 1px solid #94a3b8;
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(25% - 1px),
+      #e2e8f0 calc(25% - 1px),
+      #e2e8f0 25%
+    );
+  }
+  .workload-bar {
+    display: block;
+    height: 100%;
+  }
+  .workload-single {
+    background: #64748b;
+  }
+  .workload-dual {
+    background: #166534;
+  }
+  .coordinator-box {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+  }
+  .coordinator-title {
+    margin: 0 0 0.85rem;
+    font-size: 0.825rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .automaton-workers ul.coordinator-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .automaton-workers ul.coordinator-list li {
+    margin: 0;
+    padding: 0.85rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 3px;
+    background: #f8fafc;
+  }
+  .coordinator-list strong {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .coordinator-list span {
+    display: block;
+    margin-top: 0.35rem;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+  .automaton-workers figcaption {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.65;
+  }
+  :global(.dark) .automaton-workers {
+    background: #111c2e;
+    border-color: #334155;
+    color: #f8fafc;
+  }
+  :global(.dark) .workers-context,
+  :global(.dark) .workload-sub,
+  :global(.dark) .workload-unit,
+  :global(.dark) .coordinator-list span,
+  :global(.dark) .automaton-workers figcaption {
+    color: #cbd5e1;
+  }
+  :global(.dark) .workload-track {
+    border-color: #64748b;
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(25% - 1px),
+      #1e293b calc(25% - 1px),
+      #1e293b 25%
+    );
+  }
+  :global(.dark) .workload-single {
+    background: #94a3b8;
+  }
+  :global(.dark) .workload-dual {
+    background: #b6e5d3;
+  }
+  :global(.dark) .coordinator-box,
+  :global(.dark) .automaton-workers figcaption {
+    border-color: #334155;
+  }
+  :global(.dark) .automaton-workers ul.coordinator-list li {
+    background: #162338;
+    border-color: #334155;
+  }
+  @media (max-width: 767px) {
+    .automaton-workers ul.coordinator-list {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 639px) {
+    .workers-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .workload-card + .workload-card {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 1.25rem;
+    }
+    :global(.dark) .workload-card + .workload-card {
+      border-color: #334155;
+    }
+  }
+</style>

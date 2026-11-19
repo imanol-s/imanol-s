@@ -1,0 +1,366 @@
+---
+const blankFieldMeasurements = [
+  {
+    title: "Time for one blank-field check",
+    unit: "Seconds",
+    before: "8.0 s",
+    after: "≈0.1 s",
+    beforeValue: 8,
+    afterValue: 0.1,
+    ticks: ["0s", "2s", "4s", "6s", "8s"],
+  },
+  {
+    title: "Browser probes per check",
+    unit: "Probes per check",
+    before: "≈80",
+    after: "1",
+    beforeValue: 80,
+    afterValue: 1,
+    ticks: ["0", "20", "40", "60", "80"],
+  },
+];
+
+const spanIterations = [
+  {
+    title: "Single-field material save (OPEN to SAVED)",
+    note: "June 18, 2026 live batches (138-row baseline to 121-row tuned cohort)",
+    max: 17.5,
+    steps: [
+      {
+        label: "Initial single-worker baseline",
+        value: "17.5 s/row",
+        num: 17.5,
+        tone: "before",
+      },
+      {
+        label: "Remove duplicate UI5 idle waits",
+        value: "16.3 s/row",
+        num: 16.3,
+        tone: "mid",
+      },
+      {
+        label: "Targeted readiness gate and settle tuning",
+        value: "11.0 s/row",
+        num: 11.0,
+        tone: "after",
+      },
+    ],
+  },
+  {
+    title: "21-chain distribution table write (42 cells)",
+    note: "October 21, 2026 live harness (scan, 42-cell write, and readback check)",
+    max: 42.93,
+    steps: [
+      {
+        label: "Uniform value-help waits on every cell",
+        value: "42.93 s",
+        num: 42.93,
+        tone: "before",
+      },
+      {
+        label: "Skip popover waits on plain-text inputs",
+        value: "30.19 s",
+        num: 30.19,
+        tone: "mid",
+      },
+      {
+        label: "Immediate probe on empty clears and plain inputs",
+        value: "13.54 s",
+        num: 13.54,
+        tone: "after",
+      },
+    ],
+  },
+];
+---
+
+<figure
+  class="automaton-optimization not-prose"
+  aria-labelledby="automaton-optimization-title automaton-optimization-caption"
+>
+  <div class="opt-heading">
+    <h3 id="automaton-optimization-title" class="font-display">
+      Single-worker iteration: removing redundant waits
+    </h3>
+    <p class="opt-context">
+      Adding millisecond stage durations to the run journals exposed where waits
+      were polling resolved state instead of actual SAP work.
+    </p>
+  </div>
+
+  <div class="opt-section">
+    <h4 class="opt-subheading font-display">
+      Pre-edit readiness check on a legitimately blank field (September 10,
+      2026)
+    </h4>
+    <div class="metrics-grid">
+      {
+        blankFieldMeasurements.map((measurement) => (
+          <div class="metric-chart">
+            <p class="metric-title font-display">{measurement.title}</p>
+            <p class="metric-unit">{measurement.unit}</p>
+            <dl class="metric-series">
+              <div class="metric-row">
+                <dt>Polled until timeout</dt>
+                <dd>
+                  <span class="metric-value font-display">
+                    {measurement.before}
+                  </span>
+                  <span class="metric-track" aria-hidden="true">
+                    <span class="metric-bar metric-before" />
+                  </span>
+                </dd>
+              </div>
+              <div class="metric-row">
+                <dt>Resolved blank recognized</dt>
+                <dd>
+                  <span class="metric-value font-display">
+                    {measurement.after}
+                  </span>
+                  <span class="metric-track" aria-hidden="true">
+                    <span
+                      class="metric-bar metric-after"
+                      style={`width: ${Math.max(2, (measurement.afterValue / measurement.beforeValue) * 100)}%`}
+                    />
+                  </span>
+                </dd>
+              </div>
+            </dl>
+            <div class="metric-axis font-display" aria-hidden="true">
+              {measurement.ticks.map((tick) => (
+                <span>{tick}</span>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="opt-section opt-spans">
+    <div class="spans-grid">
+      {
+        spanIterations.map((group) => (
+          <div class="span-card">
+            <h4 class="opt-subheading font-display">{group.title}</h4>
+            <p class="span-note">{group.note}</p>
+            <dl class="metric-series">
+              {group.steps.map((step) => (
+                <div class="metric-row">
+                  <dt>{step.label}</dt>
+                  <dd>
+                    <span class="metric-value font-display">{step.value}</span>
+                    <span class="metric-track" aria-hidden="true">
+                      <span
+                        class={`metric-bar metric-${step.tone}`}
+                        style={`width: ${(step.num / group.max) * 100}%`}
+                      />
+                    </span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <figcaption id="automaton-optimization-caption">
+    Measurements from the project's performance lineage ledger. The blank-field
+    readiness fix removed ~27% of total row wall time (~8.0 s of ~29.15 s/row)
+    on a six-field batch while keeping the full 8.0 s retry when an OData
+    binding is genuinely unrendered.
+  </figcaption>
+</figure>
+
+<style>
+  .automaton-optimization {
+    margin: 2rem 0;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background: #fff;
+    color: #0f172a;
+  }
+  .opt-heading h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .opt-context {
+    margin: 0.4rem 0 0;
+    color: #475569;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  .opt-section {
+    margin-top: 1.5rem;
+  }
+  .opt-spans {
+    padding-top: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+  }
+  .opt-subheading {
+    margin: 0;
+    font-size: 0.825rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .span-note {
+    margin: 0.2rem 0 1rem;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  .metrics-grid,
+  .spans-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem;
+    margin-top: 1rem;
+  }
+  .spans-grid {
+    margin-top: 0;
+  }
+  .metric-chart,
+  .span-card {
+    min-width: 0;
+  }
+  .metric-title {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .metric-unit {
+    margin: 0.2rem 0 1rem;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  .metric-series {
+    margin: 0;
+  }
+  .metric-row {
+    position: relative;
+    padding-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+  .metric-row + .metric-row {
+    margin-top: 0.95rem;
+  }
+  .metric-row dt {
+    min-width: 0;
+  }
+  .metric-row dd {
+    margin: 0;
+    flex-shrink: 0;
+  }
+  .metric-value {
+    font-weight: 500;
+  }
+  .metric-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.1rem;
+    border-left: 1px solid #94a3b8;
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(25% - 1px),
+      #e2e8f0 calc(25% - 1px),
+      #e2e8f0 25%
+    );
+  }
+  .metric-bar {
+    display: block;
+    height: 100%;
+  }
+  .metric-before {
+    width: 100%;
+    background: #64748b;
+  }
+  .metric-mid {
+    background: #475569;
+  }
+  .metric-after {
+    background: #166534;
+  }
+  .metric-axis {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.45rem;
+    color: #475569;
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+  .automaton-optimization figcaption {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.75rem;
+    line-height: 1.65;
+  }
+  :global(.dark) .automaton-optimization {
+    background: #111c2e;
+    border-color: #334155;
+    color: #f8fafc;
+  }
+  :global(.dark) .opt-context,
+  :global(.dark) .span-note,
+  :global(.dark) .metric-unit,
+  :global(.dark) .metric-axis,
+  :global(.dark) .automaton-optimization figcaption {
+    color: #cbd5e1;
+  }
+  :global(.dark) .opt-spans,
+  :global(.dark) .automaton-optimization figcaption {
+    border-color: #334155;
+  }
+  :global(.dark) .metric-track {
+    border-color: #64748b;
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(25% - 1px),
+      #1e293b calc(25% - 1px),
+      #1e293b 25%
+    );
+  }
+  :global(.dark) .metric-before {
+    background: #94a3b8;
+  }
+  :global(.dark) .metric-mid {
+    background: #64748b;
+  }
+  :global(.dark) .metric-after {
+    background: #b6e5d3;
+  }
+  @media (max-width: 639px) {
+    .metrics-grid,
+    .spans-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .metric-chart + .metric-chart,
+    .span-card + .span-card {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 1.25rem;
+    }
+    :global(.dark) .metric-chart + .metric-chart,
+    :global(.dark) .span-card + .span-card {
+      border-color: #334155;
+    }
+  }
+</style>

@@ -774,6 +774,15 @@ const isSensori = post.id === "sensori-robotics";
     padding: 1rem;
     border-radius: 4px;
   }
+  .project-narrative :global(:not(pre) > code) {
+    padding: 0.15em 0.35em;
+    border: 1px solid var(--story-border);
+    border-radius: 3px;
+    background: #162338;
+    color: var(--story-heading);
+    font-family: "JetBrains Mono Variable", "JetBrains Mono", monospace;
+    font-size: 0.85em;
+  }
   .project-narrative :global(table) {
     display: block;
     max-width: 100%;

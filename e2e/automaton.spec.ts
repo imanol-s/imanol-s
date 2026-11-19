@@ -25,6 +25,12 @@ test("estimated time avoided and architecture diagrams remain readable at 320px"
 }) => {
   await page.setViewportSize({ width: 320, height: 800 });
   await page.goto("/projects/automaton/");
+  const baseline = page.getByRole("figure", {
+    name: /Foundational baseline: manual effort vs\. first automated loop/,
+  });
+  await expect(baseline).toBeVisible();
+  await expect(baseline).toContainText("90.0 s");
+  await expect(baseline).toContainText("17.5 s");
   const chart = page.getByRole("figure", {
     name: /Estimated manual work avoided/,
   });
@@ -34,6 +40,26 @@ test("estimated time avoided and architecture diagrams remain readable at 320px"
   await expect(chart).toContainText(
     "monitoring, and review time have not been deducted",
   );
+  const optimization = page.getByRole("figure", {
+    name: /Single-worker iteration: removing redundant waits/,
+  });
+  await expect(optimization).toBeVisible();
+  await expect(optimization).toContainText("8.0 s");
+  await expect(optimization).toContainText("≈0.1 s");
+  await expect(optimization).toContainText("11.0 s/row");
+  const workers = page.getByRole("figure", {
+    name: /Scaling throughput: one worker vs\. two coordinated workers/,
+  });
+  await expect(workers).toBeVisible();
+  await expect(workers).toContainText("≈45.0 s/row");
+  await expect(workers).toContainText("≈24.0 s/row");
+  await expect(workers).toContainText("9.7 s/row");
+  await expect(workers).toContainText("60% / 25% / 15% dynamic wave balancing");
+  expect(
+    await workers
+      .locator(".coordinator-list")
+      .evaluate((el) => getComputedStyle(el).listStyleType),
+  ).toBe("none");
   const system = page.getByRole("figure", {
     name: /Separate policy from browser mechanics/,
   });
