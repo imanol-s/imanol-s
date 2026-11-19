@@ -8,7 +8,7 @@ const allProjects = getSortedProjects(await getCollection("projects"));
 ---
 
 <section
-  class="project-section scroll-mt-24 mb-28 render-deferred"
+  class="project-section scroll-mt-24 mb-28"
   id="projects"
   aria-labelledby="projects-heading"
 >
@@ -17,7 +17,7 @@ const allProjects = getSortedProjects(await getCollection("projects"));
   </h2>
   <div class="project-grid">
     {
-      allProjects.map((project, index) => (
+      allProjects.map((project) => (
         <a
           href={`/projects/${project.id}`}
           class={`project-card project-${project.id} group cad-border focus-ring`}
@@ -28,7 +28,7 @@ const allProjects = getSortedProjects(await getCollection("projects"));
               alt=""
               class="project-cover"
               sizes="(min-width: 1280px) 560px, (min-width: 768px) 45vw, 90vw"
-              loading={index < 2 ? "eager" : "lazy"}
+              loading="eager"
               decoding="async"
               onload="this.dataset.loaded = ''"
             />
@@ -152,6 +152,7 @@ const allProjects = getSortedProjects(await getCollection("projects"));
     background: #162338;
   }
   :global(.dark) .project-artwork {
+    background: #162338;
     border-color: #334155;
   }
   :global(.dark) .project-copy p,
@@ -191,3 +192,17 @@ const allProjects = getSortedProjects(await getCollection("projects"));
     }
   }
 </style>
+
+<script>
+  const markLoadedCovers = () => {
+    for (const cover of document.querySelectorAll<HTMLImageElement>(
+      ".project-cover:not([data-loaded])",
+    )) {
+      if (cover.complete && cover.naturalWidth > 0) {
+        cover.dataset.loaded = "";
+      }
+    }
+  };
+  markLoadedCovers();
+  document.addEventListener("astro:page-load", markLoadedCovers);
+</script>
