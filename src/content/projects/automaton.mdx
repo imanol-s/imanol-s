@@ -30,7 +30,7 @@ As the **solo developer**, I designed and implemented Automaton end to end: brow
 
 <AutomatonBaseline />
 
-Even before performance tuning, that first working loop shifted the day-to-day bottleneck. Component-maintenance rows that took roughly **90 seconds by hand** finished in a **6.0-second median** (`8.0 s` p90 across 2,892 early outcomes), and single-field material updates that took **38.6–108 seconds by hand** ran in **17.5 seconds per row** while freeing me from driving the browser.
+Even before performance tuning, that first working loop shifted the day-to-day bottleneck. Component-maintenance rows that took roughly **90 seconds by hand** finished in a **6.0-second median** (`8.0 s` p90 across 2,892 early outcomes), and single-field material updates that took **38.6-108 seconds by hand** ran in **17.5 seconds per row** while freeing me from driving the browser.
 
 ## Designing around what varies
 
@@ -48,7 +48,7 @@ Different workflows preserve the evidence they need without forcing every operat
 
 ## Time freed as batches scaled
 
-With reusable adapters and resumable run journals in place, Automaton moved from small runs into regular batch maintenance. The project's savings model estimates **76–119.5 hours of manual work avoided** across 4,328 recorded row outcomes from April 23 through August 3, 2026. Continued operation through November 3, 2026 reached **4,920 delivered row outcomes** (2,248 component outcomes and 2,672 material saves across 724 run-journal files, corresponding to **84.9–136.4 hours** under the same model).
+With reusable adapters and resumable run journals in place, Automaton moved from small runs into regular batch maintenance. The project's savings model estimates **76-119.5 hours of manual work avoided** across 4,328 recorded row outcomes from April 23 through August 3, 2026. Continued operation through November 3, 2026 reached **4,920 delivered row outcomes** (2,248 component outcomes and 2,672 material saves across 724 run-journal files, corresponding to **84.9-136.4 hours** under the same model).
 
 Automaton handles the repetitive browser steps in batches, freeing time for other work while keeping outcomes available for review.
 
@@ -56,7 +56,7 @@ Automaton handles the repetitive browser steps in batches, freeing time for othe
 
 ### How the estimate works
 
-The August 3 snapshot combines 2,070 component-maintenance outcomes at 90 seconds each with 2,258 material saves at 38.6–108 seconds each. The lower material rate comes from a timed example cited in the project's report; the upper rate is a practitioner estimate.
+The August 3 snapshot combines 2,070 component-maintenance outcomes at 90 seconds each with 2,258 material saves at 38.6-108 seconds each. The lower material rate comes from a timed example cited in the project's report; the upper rate is a practitioner estimate.
 
 These rates were not benchmarked against the same population. Recorded outcomes can include repeat work, so they are not a count of unique records. **Setup, monitoring, and review time are not deducted**. The range describes estimated repetitive manual work avoided, rather than measured net time savings.
 
@@ -82,7 +82,7 @@ A Selenium-free parent coordinator preflights both browser endpoints, confirms b
 
 <AutomatonWorkers />
 
-On a live 1,513-material distribution-chain batch (July 20–23, 2026), switching mid-batch from one worker to two workers reduced effective wall time from **approximately 45 seconds per row to 24 seconds per row** (**~2.3× effective throughput**). On a 1,188-material object-field production batch (August 6, 2026), two chunked workers averaged **9.7 seconds per material** (~373 materials/hour) compared with the **24.9-second single-worker baseline** (~145 materials/hour), completing the batch in **3.2 hours instead of an estimated 8.2 hours** (**2.57× throughput**).
+On a live 1,513-material distribution-chain batch (July 20-23, 2026), switching mid-batch from one worker to two workers reduced effective wall time from **approximately 45 seconds per row to 24 seconds per row** (**~2.3× effective throughput**). On a 1,188-material object-field production batch (August 6, 2026), two chunked workers averaged **9.7 seconds per material** (~373 materials/hour) compared with the **24.9-second single-worker baseline** (~145 materials/hour), completing the batch in **3.2 hours instead of an estimated 8.2 hours** (**2.57× throughput**).
 
 ## Correctness, verification, and takeaway
 

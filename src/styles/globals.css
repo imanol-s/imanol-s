@@ -132,36 +132,37 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    background-color: var(--color-slate-50);
-    color: var(--color-background-dark);
+    min-height: 2.75rem;
+    background: #d7f5e9;
+    color: #0f172a;
+    border: 1px solid #d7f5e9;
     padding: 0.5rem 1rem;
     font-family: var(--font-display);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    border-radius: 2px;
+    border-radius: 3px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     transition:
       background-color 0.2s,
-      color 0.2s;
+      border-color 0.2s,
+      color 0.2s,
+      transform 0.15s ease;
   }
   .cta-primary:hover {
-    background-color: var(--color-primary);
-    color: white;
+    background: #f0fff9;
+    color: #0f172a;
+    border-color: #f0fff9;
   }
-  .cta-primary:focus-visible {
-    outline: none;
-    box-shadow:
-      0 0 0 2px var(--color-primary),
-      0 0 0 4px var(--color-background-dark);
+  @media (min-width: 768px) {
+    .cta-primary {
+      white-space: nowrap;
+    }
   }
-  .dark .cta-primary {
-    background-color: var(--color-slate-50);
-    color: var(--color-background-dark);
-  }
-  .dark .cta-primary:hover {
-    background-color: var(--color-primary);
-    color: white;
+  @media (prefers-reduced-motion: no-preference) {
+    .cta-primary:active {
+      transform: translateY(1px);
+    }
   }
 }
 
@@ -316,20 +317,6 @@ pre code {
     border-radius: 50%;
     background: #b6e5d3;
     box-shadow: 0 0 12px #b6e5d340;
-  }
-  .dark .cta-primary,
-  .cta-primary {
-    min-height: 2.75rem;
-    background: #d7f5e9;
-    color: #0f172a;
-    border: 1px solid #d7f5e9;
-    border-radius: 3px;
-  }
-  .dark .cta-primary:hover,
-  .cta-primary:hover {
-    background: #f0fff9;
-    color: #0f172a;
-    border-color: #f0fff9;
   }
   .focus-ring:focus-visible,
   .cta-primary:focus-visible {

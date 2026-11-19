@@ -35,7 +35,7 @@ test("estimated time avoided and architecture diagrams remain readable at 320px"
     name: /Estimated manual work avoided/,
   });
   await expect(chart).toBeVisible();
-  await expect(chart).toContainText("76–119.5");
+  await expect(chart).toContainText("76-119.5");
   await expect(chart).toContainText("not net time saved");
   await expect(chart).toContainText(
     "monitoring, and review time have not been deducted",
