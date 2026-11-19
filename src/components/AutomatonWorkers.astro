@@ -2,18 +2,18 @@
 const workloads = [
   {
     title: "21-chain distribution updates (1,513-material batch)",
-    subtitle: "July 20–23, 2026 live migration across 16 seeded chunks",
+    subtitle: "July 20-23, 2026 live migration across 16 seeded chunks",
     unit: "Effective seconds per material (lower is faster)",
     max: 45,
     bars: [
       {
-        label: "1 worker (Chunks 1–12, single browser)",
+        label: "1 worker (Chunks 1-12, single browser)",
         value: "≈45.0 s/row",
         num: 45,
         tone: "single",
       },
       {
-        label: "2 workers (Chunks 11-remainder–16, ~2.3× throughput)",
+        label: "2 workers (Chunks 11-remainder to 16, ~2.3× throughput)",
         value: "≈24.0 s/row",
         num: 24,
         tone: "dual",
@@ -22,7 +22,7 @@ const workloads = [
   },
   {
     title: "Object-field updates (1,188-material production batch)",
-    subtitle: "August 5–6, 2026 single-worker baseline vs. 12-chunk 2-worker run",
+    subtitle: "August 5-6, 2026 single-worker baseline vs. 12-chunk 2-worker run",
     unit: "Batch completion time and per-material rate",
     max: 24.9,
     bars: [
@@ -142,6 +142,7 @@ const safeguards = [
     font-size: 0.95rem;
     font-weight: 500;
     line-height: 1.5;
+    text-wrap: balance;
   }
   .workers-context {
     margin: 0.4rem 0 0;
@@ -163,6 +164,7 @@ const safeguards = [
     font-size: 0.825rem;
     font-weight: 500;
     line-height: 1.5;
+    text-wrap: balance;
   }
   .workload-sub {
     margin: 0.2rem 0 0.25rem;

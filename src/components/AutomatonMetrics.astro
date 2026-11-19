@@ -20,7 +20,7 @@ const months = [
   aria-labelledby="automaton-metrics-title automaton-metrics-caption"
 >
   <h3 id="automaton-metrics-title">Estimated manual work avoided</h3>
-  <p class="metrics-total"><strong>76–119.5</strong> <span>hours</span></p>
+  <p class="metrics-total"><strong>76-119.5</strong> <span>hours</span></p>
   <p class="metrics-context">
     Repetitive SAP work handled by automation, freeing time for other tasks.
   </p>
@@ -110,6 +110,7 @@ const months = [
     font-size: 1rem;
     font-weight: 500;
     line-height: 1.5;
+    text-wrap: balance;
   }
   .metrics-total {
     margin: 0.6rem 0 0.5rem;
@@ -120,6 +121,7 @@ const months = [
     font-size: clamp(2rem, 6vw, 3rem);
     font-weight: 600;
     letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
     color: var(--chart-high);
   }
   .metrics-total span {
