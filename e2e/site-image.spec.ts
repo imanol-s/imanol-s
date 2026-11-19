@@ -41,6 +41,18 @@ test("content images preserve semantics, dimensions and presentation on every pa
     for (const route of routes) {
       const response = await page.goto(route);
       expect(response?.status(), route).toBe(200);
+      if (route === "/") {
+        expect(
+          await page
+            .locator("#projects")
+            .evaluate((section) => getComputedStyle(section).contentVisibility),
+        ).toBe("visible");
+        for (const cover of await page.locator(".project-cover").all()) {
+          await expect(cover).toHaveAttribute("loading", "eager");
+          await expect(cover).toHaveJSProperty("complete", true);
+          await expect(cover).toHaveAttribute("data-loaded", "");
+        }
+      }
       const images = page.locator(
         ".portrait-image, .project-cover, .project-opening-art img, .environment-figure img, .analysis-map",
       );
