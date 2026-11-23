@@ -6,138 +6,11 @@ The fixed seeds make the paper grain, pigment blooms, and pencil marks repeatabl
 These editorial illustrations describe project subjects, not measured results.
 """
 
-from pathlib import Path
-
-import cv2
 import numpy as np
 
-
-WIDTH, HEIGHT = 1600, 800
-OUTPUT = Path(__file__).resolve().parents[1] / "src/assets/projects"
-PAPER = (246, 242, 233)
-INK = (71, 83, 86)
-BLUE = (84, 118, 139)
-SAGE = (121, 151, 131)
-CLAY = (192, 131, 105)
-OCHRE = (203, 167, 105)
-PALE = (223, 226, 215)
-
-
-class Watercolor:
-    def __init__(self, seed):
-        self.rng = np.random.default_rng(seed)
-        self.shape = (HEIGHT, WIDTH)
-        self.field = self.noise(9, 0.55) + self.noise(32, 0.3) + self.noise(140, 0.16)
-        self.grain = self.rng.normal(0, 1, self.shape).astype(np.float32)
-        self.fiber = cv2.GaussianBlur(self.grain, (3, 9), 0)
-        self.canvas = np.empty((*self.shape, 3), np.float32)
-        self.canvas[:] = PAPER
-        self.canvas += (self.grain * 0.85 + self.fiber * 1.4)[..., None]
-
-    def noise(self, scale, strength=1):
-        values = self.rng.normal(0, strength, (scale, scale * 2)).astype(np.float32)
-        return cv2.resize(values, (WIDTH, HEIGHT), interpolation=cv2.INTER_CUBIC)
-
-    def mask(self):
-        return np.zeros(self.shape, np.uint8)
-
-    def paint(self, mask, color, opacity=0.78, wet=1.8):
-        if not np.any(mask):
-            return
-        # A variable pigment load and an edge deposit reproduce a transparent wash.
-        distance = cv2.distanceTransform(mask, cv2.DIST_L2, 3)
-        edge = np.exp(-distance / 6) * (mask > 0)
-        bleed = cv2.GaussianBlur(mask.astype(np.float32) / 255, (0, 0), wet)
-        pigment = np.clip(0.85 + self.field * 0.24 + self.grain * 0.035, 0.35, 1.0)
-        alpha = np.clip(bleed * opacity * pigment + edge * opacity * 0.24, 0, 0.97)
-        loaded = np.array(color, np.float32)[None, None, :]
-        if color != PAPER:
-            loaded = loaded + self.field[..., None] * 3
-        self.canvas = self.canvas * (1 - alpha[..., None]) + loaded * alpha[..., None]
-
-    def polygon(self, points, color, opacity=0.8, outline=True, wet=1.7):
-        mask = self.mask()
-        cv2.fillPoly(mask, [np.array(points, np.int32)], 255, cv2.LINE_AA)
-        self.paint(mask, color, opacity, wet)
-        if outline:
-            self.line([*points, points[0]], width=2, opacity=0.50)
-
-    def ellipse(self, center, axes, color, opacity=0.8, angle=0, outline=True):
-        mask = self.mask()
-        cv2.ellipse(mask, center, axes, angle, 0, 360, 255, -1, cv2.LINE_AA)
-        self.paint(mask, color, opacity)
-        if outline:
-            t = np.linspace(0, 2 * np.pi, 100)
-            a = np.radians(angle)
-            points = np.column_stack((
-                center[0] + axes[0] * np.cos(t) * np.cos(a) - axes[1] * np.sin(t) * np.sin(a),
-                center[1] + axes[0] * np.cos(t) * np.sin(a) + axes[1] * np.sin(t) * np.cos(a),
-            ))
-            self.line(points, width=2, opacity=0.55)
-
-    def line(self, points, color=INK, width=2, opacity=0.54, wobble=0.55):
-        points = np.asarray(points, np.float32)
-        # Sample long segments so a pencil stroke can wander gently between anchors.
-        samples = []
-        for first, last in zip(points[:-1], points[1:]):
-            count = max(2, int(np.linalg.norm(last - first) / 9))
-            segment = np.linspace(first, last, count, endpoint=False)
-            drift = self.rng.normal(0, wobble, segment.shape).astype(np.float32)
-            drift = cv2.GaussianBlur(drift, (1, 9), 0)
-            segment += drift
-            samples.extend(segment)
-        samples.append(points[-1])
-        mask = self.mask()
-        cv2.polylines(mask, [np.array(samples, np.int32)], False, 255, width, cv2.LINE_AA)
-        alpha = mask.astype(np.float32) / 255 * opacity
-        alpha *= np.clip(0.92 + self.grain * 0.13, 0.35, 1)
-        self.canvas = self.canvas * (1 - alpha[..., None]) + np.array(color) * alpha[..., None]
-
-    def wash(self, center, axes, color, opacity=0.13):
-        mask = self.mask()
-        t = np.linspace(0, np.pi * 2, 110)
-        wobble = self.rng.normal(1, 0.09, len(t))
-        wobble = cv2.GaussianBlur(wobble.astype(np.float32).reshape(1, -1), (9, 1), 0).ravel()
-        points = np.column_stack((center[0] + axes[0] * np.cos(t) * wobble,
-                                  center[1] + axes[1] * np.sin(t) * wobble))
-        cv2.fillPoly(mask, [points.astype(np.int32)], 255)
-        self.paint(mask, color, opacity, wet=14)
-
-    def background(self):
-        self.wash((660, 435), (670, 325), SAGE, 0.07)
-        self.wash((1150, 355), (550, 320), BLUE, 0.035)
-        self.wash((230, 680), (420, 155), OCHRE, 0.045)
-
-    def arrow(self, points, color=SAGE, width=5, opacity=0.8):
-        self.line(points, color, width, opacity)
-        tip = np.array(points[-1], np.float32)
-        direction = tip - points[-2]
-        direction /= np.linalg.norm(direction)
-        side = np.array([-direction[1], direction[0]])
-        self.line([tip - direction * 23 + side * 12, tip,
-                   tip - direction * 23 - side * 12], color, width, opacity)
-
-    @staticmethod
-    def curve(points):
-        anchors = np.array([points[0], *points, points[-1]], np.float32)
-        samples = []
-        for a, b, c, d in zip(anchors[:-3], anchors[1:-2], anchors[2:-1], anchors[3:]):
-            for t in np.linspace(0, 1, 18, endpoint=False):
-                samples.append(0.5 * ((2 * b) + (-a + c) * t
-                                     + (2 * a - 5 * b + 4 * c - d) * t ** 2
-                                     + (-a + 3 * b - 3 * c + d) * t ** 3))
-        return [*samples, np.array(points[-1], np.float32)]
-
-    def save(self, name):
-        OUTPUT.mkdir(parents=True, exist_ok=True)
-        rgb = np.clip(self.canvas[40:760, 80:1520], 0, 255).astype(np.uint8)
-        rgb = cv2.resize(rgb, (WIDTH, HEIGHT), interpolation=cv2.INTER_CUBIC)
-        path = OUTPUT / f"{name}.webp"
-        if not cv2.imwrite(str(path), cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR),
-                           [cv2.IMWRITE_WEBP_QUALITY, 90]):
-            raise RuntimeError(f"Could not write {path}")
-        print(f"{path.name}: {WIDTH} × {HEIGHT}, {path.stat().st_size // 1024} KiB")
-
+from watercolor_engine import (
+    BLUE, CLAY, INK, OCHRE, PALE, PAPER, SAGE, Watercolor,
+)
 
 def robotics():
     p = Watercolor(1221)
@@ -344,6 +217,59 @@ def scheduling():
     p.save("task-scheduling")
 
 
+def data_dictionary():
+    p = Watercolor(1226)
+    p.background()
+    p.wash((790, 650), (560, 46), BLUE, 0.13)
+    # Three system screens label one field differently; their lines meet in one entry.
+    screens = [((214, 196), CLAY), ((236, 350), OCHRE), ((214, 504), BLUE)]
+    for (x, y), color in screens:
+        p.wash((x + 98, y + 122), (104, 20), BLUE, 0.1)
+        p.polygon([(x, y), (x + 186, y + 6), (x + 182, y + 112), (x - 3, y + 106)],
+                  PAPER, 0.98)
+        p.polygon([(x, y), (x + 186, y + 6), (x + 185, y + 31), (x - 1, y + 25)],
+                  color, 0.8, outline=False)
+        p.line([(x + 24, y + 62), (x + 92 + (y % 3) * 14, y + 64)], INK, 3, 0.5)
+        p.line([(x + 24, y + 84), (x + 70, y + 85)], INK, 2, 0.28)
+    joint = (532, 416)
+    for start in [(404, 254), (424, 408), (400, 562)]:
+        p.line(p.curve([start, ((start[0] + joint[0]) / 2, (start[1] * 2 + joint[1]) / 3),
+                        joint]), SAGE, 4, 0.72)
+    p.arrow([joint, (566, 416), (594, 418)], SAGE, 5, 0.8)
+    # The dictionary entry: an index card whose values are partly withheld.
+    p.wash((790, 642), (188, 30), BLUE, 0.14)
+    p.polygon([(616, 196), (726, 192), (730, 230), (618, 234)], SAGE, 0.8)
+    p.polygon([(612, 224), (962, 214), (972, 616), (620, 626)], PAPER, 0.98)
+    p.polygon([(612, 224), (962, 214), (963, 262), (613, 271)], BLUE, 0.74,
+              outline=False)
+    p.line([(706, 270), (712, 620)], INK, 1, 0.3)
+    for row, y in enumerate([306, 372, 438, 504, 568]):
+        p.line([(638, y), (684, y - 1)], SAGE, 4, 0.7)
+        if row in (1, 3):
+            p.polygon([(734, y - 11), (896 - row * 12, y - 14), (897 - row * 12, y + 9),
+                       (735, y + 12)], INK, 0.78, outline=False)
+        else:
+            p.line([(734, y), (874 - row * 18, y - 3)], BLUE, 3, 0.44)
+        p.line([(630, y + 32), (950, y + 25)], INK, 1, 0.13)
+    # Lineage leaves the entry as a small directed graph.
+    p.arrow([(986, 418), (1030, 418), (1062, 420)], SAGE, 5, 0.8)
+    nodes = {"field": ((1104, 420), SAGE, 34), "a": ((1236, 304), BLUE, 26),
+             "b": ((1236, 540), BLUE, 26), "x": ((1360, 226), OCHRE, 20),
+             "y": ((1374, 420), CLAY, 20), "z": ((1356, 612), OCHRE, 20)}
+    for first, last in [("field", "a"), ("field", "b"), ("a", "x"), ("a", "y"),
+                        ("b", "y"), ("b", "z")]:
+        (x1, y1), (x2, y2) = nodes[first][0], nodes[last][0]
+        p.line(p.curve([(x1, y1), ((x1 + x2) / 2, y1 * 0.35 + y2 * 0.65), (x2, y2)]),
+               INK, 2, 0.42)
+    for center, color, radius in nodes.values():
+        p.wash((center[0] + 6, center[1] + radius + 10), (radius, 7), BLUE, 0.1)
+        p.ellipse(center, (radius, radius), PAPER, 0.99, outline=False)
+        p.ellipse(center, (radius, radius), color, 0.86)
+    p.ellipse(nodes["field"][0], (13, 13), PAPER, 0.92)
+    p.line([(250, 664), (1330, 664)], INK, 1, 0.14)
+    p.save("data-dictionary")
+
+
 if __name__ == "__main__":
-    for draw in (robotics, library, housing, scheduling, automation):
+    for draw in (robotics, library, housing, scheduling, automation, data_dictionary):
         draw()

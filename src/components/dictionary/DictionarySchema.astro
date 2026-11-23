@@ -1,0 +1,54 @@
+---
+// Attributes confirmed by Imanol. Descriptions paraphrase what each one records.
+const attributes = [
+  { name: "Name", records: "The label people see in the front end." },
+  { name: "Backend name", records: "The field name the system actually stores." },
+  { name: "Data type and limit", records: "How the value is stored, such as int or char, and its length." },
+  { name: "Dependencies", records: "What the field relies on upstream." },
+  { name: "Downstream proximity", records: "Which consumers read it, and how many steps away each one is." },
+];
+---
+
+<dl class="schema not-prose">
+  {
+    attributes.map((attribute) => (
+      <div class="schema-row">
+        <dt>{attribute.name}</dt>
+        <dd>{attribute.records}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .schema {
+    margin: 2rem 0;
+    border: 1px solid var(--story-border, #334155);
+    border-radius: 4px;
+    background: var(--story-panel, #111c2e);
+  }
+  .schema-row {
+    display: grid;
+    grid-template-columns: 12rem minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: 0.85rem 1.25rem;
+  }
+  .schema-row + .schema-row {
+    border-top: 1px solid #1e293b;
+  }
+  dt {
+    font-weight: 500;
+    color: var(--story-heading, #f1f5f9);
+  }
+  dd {
+    margin: 0;
+    color: var(--story-body, #cbd5e1);
+  }
+  @media (max-width: 639px) {
+    .schema-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.2rem;
+      padding: 0.85rem 1rem;
+    }
+  }
+</style>
